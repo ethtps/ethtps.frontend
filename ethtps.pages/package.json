@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "description": "Pages for ethtps.info",
   "main": "src/index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "relative-deps"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ethtps/ethtps.frontend.git"
@@ -22,9 +18,20 @@
   "bugs": {
     "url": "https://github.com/ethtps/ethtps.frontend/issues"
   },
-  "homepage": "https://github.com/ethtps/ethtps.frontend#readme",
-  "devDependencies": {
-    "relative-deps": "^1.0.7"
+  "scripts": {
+    "install": "yarn install",
+    "prepare": "relative-deps"
   },
-  "relativeDependencies": {}
+  "homepage": "https://github.com/ethtps/ethtps.frontend#readme",
+  "dependencies": {
+    "@types/react": "^18.0.28",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "relative-deps": "^1.0.7",
+    "typescript": "4.9.5"
+  },
+  "relativeDependencies": {
+    "ethtps.data": "../ethtps.data",
+    "ethtps.components.old": "../ethtps.components.old"
+  }
 }
