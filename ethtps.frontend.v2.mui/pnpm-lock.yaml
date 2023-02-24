@@ -19,8 +19,8 @@ specifiers:
   eslint-plugin-promise: ^6.0.0
   eslint-plugin-react: ^7.32.2
   ethtps.api.client: ../ethtps.api.client
-  ethtps.components: ../ethtps.components
-  ethtps.components.utils: ../ethtps.components.utils
+  ethtps.components.old: ../ethtps.components.old
+  ethtps.components.old.utils: ../ethtps.components.old.utils
   ethtps.data: ../ethtps.data
   groupby-js: ^1.1.9
   localforage: ^1.10.0
@@ -58,8 +58,8 @@ dependencies:
   date-fns: 2.29.3
   env-cmd: 10.1.0
   ethtps.api.client: link:../ethtps.api.client
-  ethtps.components: link:../ethtps.components
-  ethtps.components.utils: link:../ethtps.components.utils
+  ethtps.components.old: link:../ethtps.components.old
+  ethtps.components.old.utils: link:../ethtps.components.old.utils
   ethtps.data: link:../ethtps.data
   groupby-js: 1.1.9
   localforage: 1.10.0

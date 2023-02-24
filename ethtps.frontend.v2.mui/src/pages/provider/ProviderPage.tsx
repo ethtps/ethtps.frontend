@@ -3,7 +3,7 @@ import { Container, Box } from '@mui/system'
 import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
-import { TabPanel, TabPanelProps, a11yProps } from 'ethtps.components'
+import { TabPanel, TabPanelProps, a11yProps } from 'ethtps.components.old'
 import { ProviderOverview } from './ProviderOverview'
 import { ProviderAnalysis } from './ProviderAnalysis'
 

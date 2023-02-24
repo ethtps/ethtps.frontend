@@ -1,5 +1,5 @@
 {
-	"name": "ethtps.components",
+	"name": "ethtps.components.old",
 	"version": "0.1.2",
 	"description": "Components for ethtps.info",
 	"main": "dist/index.js",

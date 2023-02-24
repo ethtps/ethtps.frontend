@@ -13,7 +13,7 @@ import {
 	DataModeButtonGroup,
 	CustomVISXStreamgraph,
 	AllProvidersTable,
-} from 'ethtps.components'
+} from 'ethtps.components.old'
 
 export default function MainPage(): JSX.Element {
 	const providers = useGetProvidersFromAppStore()

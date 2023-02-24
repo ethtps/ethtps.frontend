@@ -1,6 +1,6 @@
 import { Paper, Typography } from '@mui/material'
 import { Fragment, useEffect, useRef } from 'react'
-import { ThresholdChart } from 'ethtps.components'
+import { ThresholdChart } from 'ethtps.components.old'
 import { useState } from 'react'
 import { IProviderPageModel } from 'ethtps.data'
 

@@ -5,7 +5,7 @@ import {
 	ProviderDataChart,
 	SocialMediaLinks,
 	ConditionalSkeletonRender,
-} from 'ethtps.components'
+} from 'ethtps.components.old'
 import { api } from '../../services/DependenciesIOC'
 import { IProviderPageModel, useGetQueryWithAutoRefetch } from 'ethtps.data'
 
