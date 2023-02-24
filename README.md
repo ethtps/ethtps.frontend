@@ -1,2 +1,2 @@
-# ethtps.frontend
-ethtps.info frontend
+# ethtps.frontend.v2
+v2 version of the frontend
