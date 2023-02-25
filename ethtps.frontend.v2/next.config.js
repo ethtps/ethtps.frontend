@@ -4,5 +4,8 @@ const withTM = require("next-transpile-modules")(["ethtps.pages"]);
 
 module.exports = withTM({
   reactStrictMode: true,
-  env: {},
+  env: {
+    ETHTPS_API_URL: process.env.ETHTPS_API_URL,
+    ETHTPS_WS_URL: process.env.ETHTPS_WS_URL,
+  },
 });

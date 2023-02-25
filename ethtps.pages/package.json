@@ -24,17 +24,13 @@
   "homepage": "https://github.com/ethtps/ethtps.frontend#readme",
   "dependencies": {
     "@types/react": "^18.0.28",
+    "ethtps.data": "file:../ethtps.data",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "relative-deps": "^1.0.7",
     "typescript": "4.9.5"
   },
   "relativeDependencies": {
-    "ethtps.data": "../ethtps.data",
-    "ethtps.components.old": "../ethtps.components.old"
-  },
-  "devDependencies": {
-    "@swc/cli": "^0.1.62",
-    "@swc/core": "^1.3.36"
+    "ethtps.data": "../ethtps.data"
   }
 }

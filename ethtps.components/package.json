@@ -1,0 +1,55 @@
+{
+  "name": "ethtps.components",
+  "version": "0.1.0",
+  "description": "Components for ethtps.info",
+  "main": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethtps/ethtps.frontend.git"
+  },
+  "keywords": [
+    "components",
+    "ethtps",
+    "ethereum",
+    "tps"
+  ],
+  "author": "Mister_Eth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ethtps/ethtps.frontend/issues"
+  },
+  "scripts": {
+    "prepare": "relative-deps"
+  },
+  "homepage": "https://github.com/ethtps/ethtps.frontend#readme",
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@mantine/carousel": "^5.10.4",
+    "@mantine/core": "^5.10.4",
+    "@mantine/dates": "^5.10.4",
+    "@mantine/dropzone": "^5.10.4",
+    "@mantine/form": "^5.10.4",
+    "@mantine/hooks": "^5.10.4",
+    "@mantine/modals": "^5.10.4",
+    "@mantine/notifications": "^5.10.4",
+    "@mantine/nprogress": "^5.10.4",
+    "@mantine/prism": "^5.10.4",
+    "@mantine/spotlight": "^5.10.4",
+    "@mantine/tiptap": "^5.10.4",
+    "@tabler/icons": "1.119.0",
+    "@tiptap/extension-link": "^2.0.0-beta.218",
+    "@tiptap/react": "^2.0.0-beta.218",
+    "@tiptap/starter-kit": "^2.0.0-beta.218",
+    "@types/react": "^18.0.28",
+    "dayjs": "^1.11.7",
+    "embla-carousel-react": "^7.0.9",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "relative-deps": "^1.0.7",
+    "typescript": "4.9.5"
+  },
+  "relativeDependencies": {
+    "ethtps.data": "../ethtps.data",
+    "ethtps.components.old": "../ethtps.components.old"
+  }
+}
