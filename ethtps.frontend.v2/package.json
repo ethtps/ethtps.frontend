@@ -8,6 +8,11 @@
     "prepare": "relative-deps"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@mantine/core": "^5.10.4",
+    "@mantine/hooks": "^5.10.4",
+    "@mantine/next": "^5.10.4",
     "ethtps.components": "file:../ethtps.components",
     "ethtps.data": "file:../ethtps.data",
     "ethtps.pages": "file:../ethtps.pages",

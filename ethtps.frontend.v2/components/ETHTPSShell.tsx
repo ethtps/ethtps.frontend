@@ -15,6 +15,7 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons";
 import { useColorScheme } from "@mantine/hooks";
+import { Logo } from "ethtps.components";
 export default function ETHTPSShell() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
@@ -61,12 +62,7 @@ export default function ETHTPSShell() {
                 mr="xl"
               />
             </MediaQuery>
-
-            <Anchor href="/" target="_blank">
-              <Center inline>
-                <Box ml={5}>ethtps.info</Box>
-              </Center>
-            </Anchor>
+            <Logo />
           </div>
         </Header>
       }

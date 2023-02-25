@@ -1,3 +1,4 @@
+import "index.css";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { TestPage } from "ethtps.pages";
