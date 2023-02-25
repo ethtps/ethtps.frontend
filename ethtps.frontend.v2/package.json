@@ -24,22 +24,23 @@
     "@mantine/nprogress": "^5.10.4",
     "@mantine/prism": "^5.10.4",
     "@mantine/spotlight": "^5.10.4",
+    "@mantine/ssr": "^5.10.4",
     "@mantine/tiptap": "^5.10.4",
     "@tabler/icons": "1.119.0",
     "@tiptap/extension-link": "^2.0.0-beta.218",
     "@tiptap/react": "^2.0.0-beta.218",
     "@tiptap/starter-kit": "^2.0.0-beta.218",
     "@types/node": "18.14.1",
+    "@types/react": "^18.0.28",
     "@types/react-dom": "18.0.11",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.0.9",
     "eslint": "8.34.0",
     "eslint-config-next": "13.2.1",
+    "ethtps.pages": "../ethtps.pages",
     "next": "13.2.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "@types/react": "^18.0.28",
-    "ethtps.pages": "../ethtps.pages"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "relative-deps": "^1.0.7"
