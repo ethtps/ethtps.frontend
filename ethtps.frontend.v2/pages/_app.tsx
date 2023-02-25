@@ -2,6 +2,7 @@
 import { AppProps } from "next/app";
 import { MantineProvider } from "@mantine/core";
 import { rtlCache } from "../rtl-cache";
+import { TestPage } from "../../ethtps.pages/src/TestPage";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -14,6 +15,7 @@ export default function App(props: AppProps) {
         emotionCache={rtlCache}
       >
         <Component {...pageProps} />
+        <TestPage />
       </MantineProvider>
     </div>
   );
