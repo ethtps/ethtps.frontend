@@ -1,9 +1,10 @@
 import { Fragment } from 'react'
-import { IconButtonWithTooltip } from './buttons/with-tooltip/IconButtonWithTooltip'
+import { IconButtonWithTooltip } from './with-tooltip/IconButtonWithTooltip'
 import { BrandDiscord, BrandGithub, BrandTwitter } from 'tabler-icons-react'
 import { Box } from '@mantine/core'
+import { ThemeButton } from './ThemeButton'
 
-export function SocialMediaTopBarLinks() {
+export function TopBarButtons() {
   return (
     <Fragment>
       <Box
@@ -31,6 +32,7 @@ export function SocialMediaTopBarLinks() {
           link="https://github.com/ethtps"
           tooltipMessage="GitHub"
         />
+        <ThemeButton />
       </Box>
     </Fragment>
   )

@@ -22,21 +22,18 @@ import {
 import { IconArrowLeft, IconPhoto } from '@tabler/icons'
 import { useColorScheme } from '@mantine/hooks'
 import { Logo } from 'ethtps.components'
-import { SocialMediaTopBarLinks } from './SocialMediaTopBarLinks'
+import { TopBarButtons } from './buttons/TopBarButtons'
 import { SignatureFooter } from './footer/SignatureFooter'
+import { ThemeButton } from './buttons/ThemeButton'
+import { useThemeColors } from '../theming/ThemeHooks'
 export default function ETHTPSShell() {
-  const theme = useMantineTheme()
+  const colors = useThemeColors()
   const [opened, setOpened] = useState(false)
-  const colorScheme = useColorScheme()
-
   return (
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0]
+          background: 'white'
         }
       }}
       navbarOffsetBreakpoint="sm"
@@ -70,7 +67,7 @@ export default function ETHTPSShell() {
                 opened={opened}
                 onClick={() => setOpened((o) => !o)}
                 size="sm"
-                color={theme.colors.gray[6]}
+                color={colors.gray[6]}
                 mr="xl"
               />
             </MediaQuery>
@@ -81,7 +78,7 @@ export default function ETHTPSShell() {
                 width: '100%'
               }}
             >
-              <SocialMediaTopBarLinks />
+              <TopBarButtons />
             </Grid>
           </div>
         </Header>
