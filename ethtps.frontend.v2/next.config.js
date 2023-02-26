@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 // see https://github.com/martpie/next-transpile-modules#readme
-const withTM = require("next-transpile-modules")(["ethtps.pages"]);
+const withTM = require("next-transpile-modules")([
+  "ethtps.pages",
+  "ethtps.components",
+]);
 
 module.exports = withTM({
   reactStrictMode: true,

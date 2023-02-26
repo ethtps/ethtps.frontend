@@ -1,12 +1,11 @@
-import "index.css";
-import Link from "next/link";
-import Layout from "../components/Layout";
-import { TestPage } from "ethtps.pages";
-import { store } from "ethtps.data";
-import { App } from "ethtps.components";
-import { MantineProvider } from "@mantine/core";
-import ETHTPSShell from "../components/ETHTPSShell";
-import { CustomTheme } from "../theming/CustomTheme";
+import 'index.css'
+import Link from 'next/link'
+import Layout from '../components/Layout'
+import { TestPage } from 'ethtps.pages'
+import { store } from 'ethtps.data'
+import { MantineProvider, ThemeIcon } from '@mantine/core'
+import ETHTPSShell from '../components/ETHTPSShell'
+import { CustomTheme } from '../theming/CustomTheme'
 
 const IndexPage = () => {
   return (
@@ -15,13 +14,14 @@ const IndexPage = () => {
         withGlobalStyles
         withNormalizeCSS
         theme={{
-          colorScheme: "light",
+          colorScheme: 'light',
+          primaryColor: 'violet'
         }}
       >
         <ETHTPSShell />
       </MantineProvider>
     </Layout>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage

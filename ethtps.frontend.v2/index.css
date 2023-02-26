@@ -43,3 +43,23 @@
             0 0 0 #fefc4b;
     }
 }
+.inline {
+    display: inline-block;
+}
+
+.trick {
+    display: inline-block;
+    text-decoration: underline dotted;
+}
+
+.trick:hover span {
+    display: none;
+}
+
+.trick:hover::before {
+    content: 'Ethereum';
+}
+
+.ul-hover:hover {
+    text-decoration: underline;
+}
