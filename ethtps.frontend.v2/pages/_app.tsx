@@ -1,13 +1,14 @@
 import 'index.css'
-import Link from 'next/link'
 import Layout from '../components/Layout'
-import { TestPage } from 'ethtps.pages'
-import { store } from 'ethtps.data'
-import { MantineProvider, ThemeIcon } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import ETHTPSShell from '../components/ETHTPSShell'
-import { CustomTheme } from '../theming/CustomTheme'
+import MainPage from '../pages/MainPage'
+import { IWithRouter } from '../interfaces/IWithRouter'
+import { withRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-const IndexPage = () => {
+const IndexPage = (props: IWithRouter) => {
   return (
     <Layout title="ethtps.info">
       <MantineProvider
@@ -18,10 +19,12 @@ const IndexPage = () => {
           primaryColor: 'violet'
         }}
       >
-        <ETHTPSShell />
+        <ETHTPSShell>
+          <MainPage />
+        </ETHTPSShell>
       </MantineProvider>
     </Layout>
   )
 }
 
-export default IndexPage
+export default withRouter(IndexPage)

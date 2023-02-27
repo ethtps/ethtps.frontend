@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import {
   AppShell,
   Navbar,
@@ -23,10 +23,10 @@ import { IconArrowLeft, IconPhoto } from '@tabler/icons'
 import { useColorScheme } from '@mantine/hooks'
 import { Logo } from 'ethtps.components'
 import { TopBarButtons } from './buttons/TopBarButtons'
-import { SignatureFooter } from './footer/SignatureFooter'
 import { ThemeButton } from './buttons/ThemeButton'
 import { useThemeColors } from '../theming/ThemeHooks'
-export default function ETHTPSShell() {
+import { SignatureFooter } from './footer/SignatureFooter'
+export default function ETHTPSShell(props: { children: ReactNode }) {
   const colors = useThemeColors()
   const [opened, setOpened] = useState(false)
   return (
@@ -84,7 +84,7 @@ export default function ETHTPSShell() {
         </Header>
       }
     >
-      <Text>Resize app to see responsive navbar in action</Text>
+      {props.children}
     </AppShell>
   )
 }

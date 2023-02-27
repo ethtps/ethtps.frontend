@@ -1,3 +1,4 @@
+exports = {}
 import { ApplicationState } from './models/dependencies/ApplicationState'
 import { IGlobalDependencies } from './models/dependencies/IGlobalDependencies'
 import { IColorDictionaries } from './models/interfaces/IColorDictionaries'
