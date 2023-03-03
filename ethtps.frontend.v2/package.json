@@ -13,9 +13,7 @@
     "@mantine/core": "^5.10.4",
     "@mantine/hooks": "^5.10.4",
     "@mantine/next": "^5.10.4",
-    "ethtps.components": "file:../ethtps.components",
     "ethtps.data": "file:../ethtps.data",
-    "ethtps.pages": "file:../ethtps.pages",
     "next": "latest",
     "next-transpile-modules": "^10.0.0",
     "react": "^18.2.0",
@@ -30,8 +28,6 @@
     "typescript": "^4.9.5"
   },
   "relativeDependencies": {
-    "ethtps.pages": "../ethtps.pages",
-    "ethtps.data": "../ethtps.data",
-    "ethtps.components": "../ethtps.components"
+    "ethtps.data": "../ethtps.data"
   }
 }

@@ -1,8 +1,6 @@
 import { Fragment } from 'react'
 import { IIconButtonWithTooltipProps } from './IIconButtonWithTooltipProps'
-import { IconPhoto } from '@tabler/icons'
-import { NavLink, ThemeIcon, Tooltip } from '@mantine/core'
-import { BrandDiscord } from 'tabler-icons-react'
+import { NavLink, Tooltip } from '@mantine/core'
 
 export function IconButtonWithTooltip(props: IIconButtonWithTooltipProps) {
   return (

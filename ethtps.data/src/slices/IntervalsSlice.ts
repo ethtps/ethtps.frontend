@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 const initialState: Array<string> = JSON.parse(
-	localStorage.getItem('intervals') ?? '[]'
+	maybeStorage?.getItem('intervals') ?? '[]'
 )
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const intervalsSlice = createSlice({
 	name: 'intervals',
@@ -12,7 +13,7 @@ const intervalsSlice = createSlice({
 			action: PayloadAction<string[] | undefined>
 		) {
 			if (action.payload !== undefined) {
-				localStorage.setItem(
+				maybeStorage?.setItem(
 					'intervals',
 					JSON.stringify(action.payload)
 				)

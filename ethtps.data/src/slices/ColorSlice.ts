@@ -1,9 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IColorDictionaries } from '../models/interfaces/IColorDictionaries'
 import { StringDictionary } from '../common-types/Dictionaries'
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const initialState: IColorDictionaries = JSON.parse(
-	localStorage.getItem('IColorDictionaries') ?? '{}'
+	maybeStorage?.getItem('IColorDictionaries') ?? '{}'
 )
 
 const colorSlice = createSlice({
@@ -25,7 +26,7 @@ const colorSlice = createSlice({
 		) {
 			if (action.payload === undefined) return state
 			action.payload['Others'] = 'yellow'
-			localStorage.setItem(
+			maybeStorage?.setItem(
 				'IColorDictionaries',
 				JSON.stringify(action.payload)
 			)

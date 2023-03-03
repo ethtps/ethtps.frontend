@@ -2,11 +2,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IMaxDataModel } from '../models/interfaces/IMaxDataModel'
 import { DataType } from 'ethtps.api.client'
 import { DataPointDictionary } from '../common-types/Dictionaries'
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const initialState: IMaxDataModel = {
-	maxTPSData: JSON.parse(localStorage.getItem('maxTPSData') ?? '{}'),
-	maxGPSData: JSON.parse(localStorage.getItem('maxGPSData') ?? '{}'),
-	maxGTPSData: JSON.parse(localStorage.getItem('maxGTPSData') ?? '{}'),
+	maxTPSData: JSON.parse(maybeStorage?.getItem('maxTPSData') ?? '{}'),
+	maxGPSData: JSON.parse(maybeStorage?.getItem('maxGPSData') ?? '{}'),
+	maxGTPSData: JSON.parse(maybeStorage?.getItem('maxGTPSData') ?? '{}'),
 	getMaxDataFor(provider, type) {
 		switch (type) {
 			case DataType.Tps:
@@ -69,7 +70,7 @@ const dataSlice = createSlice({
 			state: IMaxDataModel,
 			action: PayloadAction<DataPointDictionary | undefined>
 		) {
-			localStorage.setItem('maxTPSData', JSON.stringify(action.payload))
+			maybeStorage?.setItem('maxTPSData', JSON.stringify(action.payload))
 			return modifyMaxDataState(
 				state,
 				action.payload,
@@ -80,7 +81,7 @@ const dataSlice = createSlice({
 			state: IMaxDataModel,
 			action: PayloadAction<DataPointDictionary | undefined>
 		) {
-			localStorage.setItem('maxGPSData', JSON.stringify(action.payload))
+			maybeStorage?.setItem('maxGPSData', JSON.stringify(action.payload))
 			return modifyMaxDataState(
 				state,
 				action.payload,
@@ -91,7 +92,7 @@ const dataSlice = createSlice({
 			state: IMaxDataModel,
 			action: PayloadAction<DataPointDictionary | undefined>
 		) {
-			localStorage.setItem('maxGTPSData', JSON.stringify(action.payload))
+			maybeStorage?.setItem('maxGTPSData', JSON.stringify(action.payload))
 			return modifyMaxDataState(
 				state,
 				action.payload,

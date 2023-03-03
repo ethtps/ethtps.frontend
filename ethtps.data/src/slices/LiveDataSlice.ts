@@ -5,21 +5,22 @@ import {
 	DataResponseModelDictionary,
 } from '../common-types/Dictionaries'
 import { ILiveDataModeModel } from '../models/interfaces/ILiveDataModeModel'
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const initialState: ILiveDataModeModel = {
 	liveDataSmoothing: TimeInterval.Instant,
 	liveDataType: DataType.Tps,
 	includeSidechains: JSON.parse(
-		localStorage.getItem('includeSidechains') ?? 'false'
+		maybeStorage?.getItem('includeSidechains') ?? 'false'
 	),
 	oneMinuteTPSData: JSON.parse(
-		localStorage.getItem('oneMinuteTPSData') ?? '{}'
+		maybeStorage?.getItem('oneMinuteTPSData') ?? '{}'
 	),
 	oneMinuteGPSData: JSON.parse(
-		localStorage.getItem('oneMinuteGPSData') ?? '{}'
+		maybeStorage?.getItem('oneMinuteGPSData') ?? '{}'
 	),
 	oneMinuteGTPSData: JSON.parse(
-		localStorage.getItem('oneMinuteGTPSData') ?? '{}'
+		maybeStorage?.getItem('oneMinuteGTPSData') ?? '{}'
 	),
 	currentVisitors: 0,
 }
@@ -63,7 +64,7 @@ const liveDataSlice = createSlice({
 			state: ILiveDataModeModel,
 			action: PayloadAction<boolean | undefined>
 		) {
-			localStorage.setItem(
+			maybeStorage?.setItem(
 				'includeSidechains',
 				JSON.stringify(action.payload)
 			)
@@ -76,21 +77,21 @@ const liveDataSlice = createSlice({
 		) {
 			switch (state.liveDataType) {
 				case DataType.Tps:
-					localStorage.setItem(
+					maybeStorage?.setItem(
 						'oneMinuteTPSData',
 						JSON.stringify(action.payload)
 					)
 					state.oneMinuteTPSData = action.payload
 					break
 				case DataType.Gps:
-					localStorage.setItem(
+					maybeStorage?.setItem(
 						'oneMinuteGPSData',
 						JSON.stringify(action.payload)
 					)
 					state.oneMinuteGPSData = action.payload
 					break
 				default:
-					localStorage.setItem(
+					maybeStorage?.setItem(
 						'oneMinuteTPSData',
 						JSON.stringify(action.payload)
 					)

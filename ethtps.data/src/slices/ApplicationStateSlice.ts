@@ -1,10 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IDataLoadingModel } from '../models/interfaces/IDataLoadingModel'
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,
 	completeApplicationDataAvailableInLocalStorage: false,
-	apiKey: localStorage.getItem('XAPIKey'),
+	apiKey: maybeStorage?.getItem('XAPIKey'),
 }
 
 const applicationStateSlice = createSlice({
@@ -24,7 +25,7 @@ const applicationStateSlice = createSlice({
 			state: IDataLoadingModel,
 			action: PayloadAction<string | undefined>
 		) {
-			localStorage.setItem('XAPIKey', action.payload as string)
+			maybeStorage?.setItem('XAPIKey', action.payload as string)
 			state.apiKey = action.payload as string
 			return state
 		},

@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const initialState: number[] = JSON.parse(
-	localStorage.getItem('experiments') ?? '[]'
+	maybeStorage?.getItem('experiments') ?? '[]'
 )
 
 const experimentSlice = createSlice({
@@ -12,7 +13,7 @@ const experimentSlice = createSlice({
 			state: number[],
 			action: PayloadAction<number[] | undefined>
 		) {
-			localStorage.setItem('experiments', JSON.stringify(action.payload))
+			maybeStorage?.setItem('experiments', JSON.stringify(action.payload))
 			return action.payload
 		},
 	},

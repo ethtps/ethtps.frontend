@@ -5,8 +5,6 @@ import ETHTPSShell from '../components/ETHTPSShell'
 import MainPage from '../pages/MainPage'
 import { IWithRouter } from '../interfaces/IWithRouter'
 import { withRouter } from 'next/router'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 
 const IndexPage = (props: IWithRouter) => {
   return (

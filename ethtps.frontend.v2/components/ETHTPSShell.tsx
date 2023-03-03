@@ -4,28 +4,16 @@ import {
   Navbar,
   Header,
   Footer,
-  Aside,
   Text,
   MediaQuery,
   Burger,
-  useMantineTheme,
-  Center,
-  Anchor,
-  Box,
-  NavLink,
-  ThemeIcon,
-  Container,
-  Flex,
-  Stack,
   Grid
 } from '@mantine/core'
-import { IconArrowLeft, IconPhoto } from '@tabler/icons'
-import { useColorScheme } from '@mantine/hooks'
-import { Logo } from 'ethtps.components'
+import { Logo } from './header/Logo'
 import { TopBarButtons } from './buttons/TopBarButtons'
-import { ThemeButton } from './buttons/ThemeButton'
 import { useThemeColors } from '../theming/ThemeHooks'
 import { SignatureFooter } from './footer/SignatureFooter'
+
 export default function ETHTPSShell(props: { children: ReactNode }) {
   const colors = useThemeColors()
   const [opened, setOpened] = useState(false)
@@ -48,11 +36,7 @@ export default function ETHTPSShell(props: { children: ReactNode }) {
           <Text>Sidebar sits here</Text>
         </Navbar>
       }
-      footer={
-        <Footer height={60} p="md">
-          <SignatureFooter />
-        </Footer>
-      }
+      footer={<SignatureFooter />}
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
           <div

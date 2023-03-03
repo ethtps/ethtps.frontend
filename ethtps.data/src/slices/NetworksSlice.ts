@@ -1,6 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { maybeStorage } from 'src/infra/LocalStorageHelper'
+
 const initialState: Array<string> = JSON.parse(
-	localStorage.getItem('networks') ?? '[]'
+	maybeStorage?.getItem('networks') ?? '[]'
 )
 
 const networksSlice = createSlice({
@@ -12,7 +14,10 @@ const networksSlice = createSlice({
 			action: PayloadAction<string[] | undefined>
 		) {
 			if (action.payload !== undefined) {
-				localStorage.setItem('networks', JSON.stringify(action.payload))
+				maybeStorage?.setItem(
+					'networks',
+					JSON.stringify(action.payload)
+				)
 				state.length = 0
 				state = [...(action.payload as string[])]
 			}
