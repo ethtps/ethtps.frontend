@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IProviderModel } from '../models/interfaces/IProviderModel'
 import { ProviderResponseModel } from 'ethtps.api.client'
-import { maybeStorage } from 'src/infra/LocalStorageHelper'
+import { maybeStorage } from '../infra/LocalStorageHelper'
 
 const initialState: ProviderResponseModel[] = JSON.parse(
 	maybeStorage?.getItem('providers') ?? '[]'

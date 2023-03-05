@@ -927,7 +927,7 @@ escape-string-regexp@^4.0.0:
 ethtps.api.client@../ethtps.api.client:
   version "3.0.0"
 
-"ethtps.data@file:../ethtps.data":
+ethtps.data@../ethtps.data:
   version "0.1.0"
   dependencies:
     "@reduxjs/toolkit" "^1.9.1"

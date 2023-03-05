@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { maybeStorage } from '../infra/LocalStorageHelper'
+
 const initialState: Array<string> = JSON.parse(
 	maybeStorage?.getItem('intervals') ?? '[]'
 )
-import { maybeStorage } from 'src/infra/LocalStorageHelper'
 
 const intervalsSlice = createSlice({
 	name: 'intervals',

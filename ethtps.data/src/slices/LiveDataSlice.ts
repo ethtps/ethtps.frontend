@@ -5,7 +5,7 @@ import {
 	DataResponseModelDictionary,
 } from '../common-types/Dictionaries'
 import { ILiveDataModeModel } from '../models/interfaces/ILiveDataModeModel'
-import { maybeStorage } from 'src/infra/LocalStorageHelper'
+import { maybeStorage } from '../infra/LocalStorageHelper'
 
 const initialState: ILiveDataModeModel = {
 	liveDataSmoothing: TimeInterval.Instant,

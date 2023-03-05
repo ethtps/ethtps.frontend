@@ -3,7 +3,8 @@
 const withTM = require('next-transpile-modules')([
   // "ethtps.pages",
   // "ethtps.components",
-  'ethtps.data'
+  'ethtps.data',
+  'ethtps.api.client'
 ])
 
 module.exports = withTM({

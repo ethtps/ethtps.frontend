@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IDataLoadingModel } from '../models/interfaces/IDataLoadingModel'
-import { maybeStorage } from 'src/infra/LocalStorageHelper'
+import { maybeStorage } from '../infra/LocalStorageHelper'
 
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,

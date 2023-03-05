@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IMaxDataModel } from '../models/interfaces/IMaxDataModel'
 import { DataType } from 'ethtps.api.client'
 import { DataPointDictionary } from '../common-types/Dictionaries'
-import { maybeStorage } from 'src/infra/LocalStorageHelper'
+import { maybeStorage } from '../infra/LocalStorageHelper'
 
 const initialState: IMaxDataModel = {
 	maxTPSData: JSON.parse(maybeStorage?.getItem('maxTPSData') ?? '{}'),

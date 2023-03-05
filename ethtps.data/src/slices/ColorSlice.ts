@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IColorDictionaries } from '../models/interfaces/IColorDictionaries'
 import { StringDictionary } from '../common-types/Dictionaries'
-import { maybeStorage } from 'src/infra/LocalStorageHelper'
+import { maybeStorage } from '../infra/LocalStorageHelper'
 
 const initialState: IColorDictionaries = JSON.parse(
 	maybeStorage?.getItem('IColorDictionaries') ?? '{}'
