@@ -1,4 +1,4 @@
-import PageWithQueryString from "../../pages/PageWithQueryString";
+import PageWithQueryString from "../PageWithQueryString";
 import HistoricalChart from "../../charts/HistoricalChart";
 import { colorDictionary } from "../../../services/defaultData";
 import "./NetworkPage.css";
