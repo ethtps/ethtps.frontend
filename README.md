@@ -1,47 +1,70 @@
-# ethtps.frontend.
+# Getting Started with Create React App
 
-v2 version of the frontend
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# Component diagram
+## Available Scripts
 
-![component](/assets/component%20diagram.png)
+In the project directory, you can run:
 
-# Setup
+### `npm start`
 
-1. Build `ethtps.api.client`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-`cd ethtps.api.client`
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-`yarn install`
+### `npm test`
 
-`npx tsc`
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-2. Link `ethtps.api.client` to `ethtps.data`
+### `npm run build`
 
-`cd ethtps.data`
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-`npx relative-deps`
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-`yarn add ../ethtps.api.client`
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-3. Build `ethtps.data`
+### `npm run eject`
 
-`yarn install`
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-`npx tsc`
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-4. Link `ethtps.data` to `ethtps.frontend.v2`
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-`cd ethtps.frontend.v2`
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-`npx relative-deps`
+## Learn More
 
-5. Build `ethtps.frontend.v2`
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-`yarn install`
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-`npx tsc ethtps.frontend.v2`
+### Code Splitting
 
-Done! Start with
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-`npm run dev`
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
