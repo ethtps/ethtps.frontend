@@ -1,0 +1,61 @@
+.jumpy {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    margin-top: 30px;
+}
+
+.unselectable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.jumpy:hover {
+    animation: text-shadow 1s ease-in-out;
+    cursor: default;
+}
+
+.jumpy {
+    @extend unselectable !optional;
+    color: #0f71b3;
+}
+
+.jumpy:hover {
+    text-decoration: none;
+}
+
+.logoish {
+    @extend .jumpy;
+}
+
+@keyframes text-shadow {
+    0% {
+        text-shadow:
+            0 0 0 #0c2ffb,
+            0 0 0 #2cfcfd,
+            0 0 0 #fb203b,
+            0 0 0 #fefc4b;
+    }
+
+    50% {
+        text-shadow:
+            0 0.125em 0 #0c2ffb,
+            0 0.25em 0 #2cfcfd,
+            0 -0.125em 0 #fb203b,
+            0 -0.25em 0 #fefc4b;
+    }
+}
+.trick {
+    display: inline-block;
+    text-decoration: underline dotted;
+}
+
+.trick:hover span {
+    display: none;
+}
+
+.trick:hover::before {
+    content: 'Ethereum';
+}

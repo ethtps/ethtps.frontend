@@ -1,0 +1,348 @@
+:root {
+  --max-width: 1100px;
+  --border-radius: 12px;
+  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  --primary-glow: conic-gradient(
+    from 180deg at 50% 50%,
+    #16abff33 0deg,
+    #0885ff33 55deg,
+    #54d6ff33 120deg,
+    #0071ff33 160deg,
+    transparent 360deg
+  );
+  --secondary-glow: radial-gradient(
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+
+  --tile-start-rgb: 239, 245, 249;
+  --tile-end-rgb: 228, 232, 233;
+  --tile-border: conic-gradient(
+    #00000080,
+    #00000040,
+    #00000030,
+    #00000020,
+    #00000010,
+    #00000010,
+    #00000080
+  );
+
+  --callout-rgb: 238, 240, 241;
+  --callout-border-rgb: 172, 175, 176;
+  --card-rgb: 180, 185, 188;
+  --card-border-rgb: 131, 134, 135;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+
+    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+    --secondary-glow: linear-gradient(
+      to bottom right,
+      rgba(1, 65, 255, 0),
+      rgba(1, 65, 255, 0),
+      rgba(1, 65, 255, 0.3)
+    );
+
+    --tile-start-rgb: 2, 13, 46;
+    --tile-end-rgb: 2, 5, 19;
+    --tile-border: conic-gradient(
+      #ffffff80,
+      #ffffff40,
+      #ffffff30,
+      #ffffff20,
+      #ffffff10,
+      #ffffff10,
+      #ffffff80
+    );
+
+    --callout-rgb: 20, 20, 20;
+    --callout-border-rgb: 108, 108, 108;
+    --card-rgb: 100, 100, 100;
+    --card-border-rgb: 200, 200, 200;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+
+.inline{
+  display: inline-block;
+}
+
+.trick{
+  display: inline-block;
+  text-decoration: underline dotted;
+}
+
+.trick:hover span{display: none;}
+.trick:hover::before { 
+  content: 'Ethereum';
+}
+
+.ul-hover:hover{
+  text-decoration: underline;
+}
+
+.red{
+  color: red;
+}
+
+.orange{
+  color: rgb(167, 125, 74);
+}
+
+.jumpy {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    margin-top: 30px;
+}
+
+.unselectable{
+  -webkit-user-select: none;      
+  -moz-user-select: none;
+  -ms-user-select: none; 
+  user-select: none; 
+}
+
+.jumpy:hover {
+    animation: text-shadow 1s ease-in-out;
+    cursor: default;
+}
+
+.jumpy {
+    color: #0f71b3;
+}
+
+.jumpy:hover {
+    text-decoration: none;
+}
+
+@keyframes text-shadow {
+    0% {  
+        text-shadow: 
+            0 0 0 #0c2ffb, 
+            0 0 0 #2cfcfd, 
+            0 0 0 #fb203b, 
+            0 0 0 #fefc4b;
+    }
+
+    50% {  
+        text-shadow: 
+            0 0.125em 0 #0c2ffb, 
+            0 0.25em 0 #2cfcfd, 
+            0 -0.125em 0 #fb203b, 
+            0 -0.25em 0 #fefc4b;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+}
+
+.modeSwitchToggle{
+  position: absolute;
+  right: 0px;
+}
+
+body.light-mode {
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+body.dark-mode {
+  background-color: #1a1919;
+  color: #999;
+}
+
+hr{
+  border: 1px dotted black;
+}
+
+.container{
+  width: 95%;
+  margin: auto;
+  max-width: 900px;
+}
+
+h3 {
+  text-decoration: underline dotted;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 14px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  margin-left: -100%;
+  margin-top: 1.5rem;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.l1{
+  font-size: 16px;
+}
+
+.lh{
+  font-size: 16px;
+}
+
+.invisible{
+  position: absolute;
+  right:0;
+  font-size: 0;
+  color: transparent;
+  float: right;
+}
+
+.b{
+  font-weight: 600;
+}
+
+.provider-icon{
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+
+a{
+  color:black;
+}
+a:link { color: #000000; text-decoration: none}
+a:visited { color: #000000; text-decoration: none}
+a:hover { color: #000000; text-decoration: underline}
+a:active { color: #000000; text-decoration: none}
+
+.green{
+  color:green;
+}
+
+img{
+  vertical-align: middle;
+}
+ 
+.box {
+  display: flex;
+  align-items:center;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.gradient-border {
+  --border-width: 3px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Lato, sans-serif;
+  font-size: 12;
+  text-transform: uppercase;
+  border-radius: var(--border-width);
+}
+
+.gradient-border::after {
+  position: absolute;
+  content: "";
+  top: calc(-1 * var(--border-width));
+  left: calc(-1 * var(--border-width));
+  z-index: -1;
+  width: calc(100% + var(--border-width) * 2);
+  height: calc(100% + var(--border-width) * 2);
+  background: linear-gradient(
+    60deg,
+    hsl(224, 85%, 66%),
+    hsl(255, 100%, 100%),
+    hsl(179, 85%, 66%)
+  );
+  background-size: 300% 300%;
+  background-position: 0 50%;
+  border-radius: calc(2 * var(--border-width));
+  animation: moveGradient 4s alternate infinite;
+}
+
+@keyframes moveGradient {
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.bottomnavbar{
+  font-size: small;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+
+.arrow_box {
+  background: white;
+}
