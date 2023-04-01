@@ -21,6 +21,7 @@ import { AppProps } from "next/app";
 import { NextPage } from "next";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/buttons";
+import { HeaderWithTabs } from "@/components/headers";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -79,24 +80,14 @@ export default function AppShellDemo({
             </Footer>
           }
           header={
-            <Header height={{ base: 50, md: 70 }} p="md">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <div>
-                  <Link href="/">
-                    <Text className={styles.logoish}>ETHTPS.info</Text>
-                  </Link>
-                </div>
-                <Container style={{ float: "right", marginRight: 0 }}>
-                  <ThemeToggle />
-                </Container>
-              </div>
-            </Header>
+            <HeaderWithTabs
+              links={[
+                {
+                  link: "",
+                  label: "something",
+                },
+              ]}
+            />
           }
         >
           {<Component {...pageProps} />}
