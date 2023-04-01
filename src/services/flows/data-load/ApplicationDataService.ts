@@ -1,14 +1,10 @@
 import { ETHTPSApi } from '@/services/api/ETHTPSAPI'
 import { IOptionalCallback } from '../../../data/src/models/charts/handlers/IOptionalCallback'
 import { QueryClient } from 'react-query'
-import { useAppState } from '@/services/data/Hooks'
-import { useDispatch } from 'react-redux'
 import { setNetworks } from '@/data/src/slices/NetworksSlice'
 import { setAPIKey } from '@/services/DependenciesIOC'
-import { error } from 'console'
-import { queryClient } from '../../DependenciesIOC'
-import { AppDispatch, RootState } from '../../../data/src/store'
-import { AppState } from '@/data/src/store'
+import { AppDispatch } from '../../../data/src/store'
+import { setProviderColorDictionary } from '@/data/src/slices/ColorSlice'
 
 type Loadee<T> = {
   loaded: boolean
@@ -19,6 +15,7 @@ type Loadee<T> = {
 
 export class ApplicationDataService {
   private loaders = [() => {}]
+  private loadedCount = 0
   constructor(
     private api: ETHTPSApi,
     private queryClient: QueryClient,
@@ -30,6 +27,11 @@ export class ApplicationDataService {
       'networks',
       async (api) => await api.getNetworksAsync(),
       (v) => dispatch(setNetworks(v))
+    )
+    this.addLoadee(
+      'provider-color-dictionary',
+      async (api) => await api.getProviderColorDictionary(),
+      (v) => dispatch(setProviderColorDictionary(v))
     )
   }
 
@@ -44,6 +46,12 @@ export class ApplicationDataService {
         async () => await getter(this.api)
       )
       setter(data)
+      this.loadedCount++
+      if (this.progressChanged?.callback) {
+        this.progressChanged?.callback(
+          Math.round((this.loadedCount * 100) / this.loaders.length)
+        )
+      }
     })
   }
 
@@ -54,6 +62,7 @@ export class ApplicationDataService {
     }
     setAPIKey(key.key?.toString() ?? '')
     this.api.resetConfig()
+    this.loadedCount = 0
     this.setLoadees(dispatch, this.api)
     this.loaders.forEach((x) => x())
   }
