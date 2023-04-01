@@ -1,5 +1,11 @@
+import {
+  ColorScheme,
+  ColorSchemeProvider,
+  MantineProvider,
+} from "@mantine/core";
 import { createGetInitialProps } from "@mantine/next";
 import Document, { Head, Html, Main, NextScript } from "next/document";
+import { useState } from "react";
 
 const getInitialProps = createGetInitialProps();
 

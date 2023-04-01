@@ -1,6 +1,6 @@
 import styles from "../styles/app.module.scss";
 
-import { useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import {
   AppShell,
   Navbar,
@@ -11,60 +11,90 @@ import {
   MediaQuery,
   Burger,
   useMantineTheme,
+  ColorScheme,
+  ColorSchemeProvider,
+  MantineProvider,
+  Container,
 } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import HomePage from "./home";
+import { AppProps } from "next/app";
+import { NextPage } from "next";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/buttons";
 
-export default function AppShellDemo() {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function AppShellDemo({
+  Component,
+  pageProps,
+}: AppPropsWithLayout) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [scroll, scrollTo] = useWindowScroll();
+  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
   return (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      footer={
-        <Footer height={60} p="md">
-          <div className={"inline"}>
-            Brought to you by
-            <div style={{ marginLeft: "5px" }} className={styles.trick}>
-              <span>Mister_Eth</span>
-            </div>
-          </div>
-        </Footer>
-      }
-      header={
-        <Header height={{ base: 50, md: 70 }} p="md">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-
-            <div
-              className={styles.logoish}
-              style={{ fontSize: 20, display: "inline" }}
-            >
-              ETHTPS.info
-            </div>
-          </div>
-        </Header>
-      }
-    ></AppShell>
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
+    >
+      <MantineProvider
+        theme={{ colorScheme }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
+        <AppShell
+          styles={{
+            main: {
+              background:
+                theme.colorScheme === "dark"
+                  ? theme.colors.dark[8]
+                  : theme.colors.gray[0],
+            },
+          }}
+          navbarOffsetBreakpoint="sm"
+          asideOffsetBreakpoint="sm"
+          footer={
+            <Footer height={60} p="md">
+              <div className={"inline"}>
+                Brought to you by
+                <div style={{ marginLeft: "5px" }} className={styles.trick}>
+                  <span>Mister_Eth</span>
+                </div>
+              </div>
+            </Footer>
+          }
+          header={
+            <Header height={{ base: 50, md: 70 }} p="md">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <div>
+                  <Link href="/">
+                    <Text className={styles.logoish}>ETHTPS.info</Text>
+                  </Link>
+                </div>
+                <Container style={{ float: "right", marginRight: 0 }}>
+                  <ThemeToggle />
+                </Container>
+              </div>
+            </Header>
+          }
+        >
+          {<Component {...pageProps} />}
+        </AppShell>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 }

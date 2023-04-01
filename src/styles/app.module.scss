@@ -27,6 +27,8 @@
 
 .logoish {
     @extend .jumpy;
+    text-decoration: none;
+    font-size: 20;
 }
 
 @keyframes text-shadow {
