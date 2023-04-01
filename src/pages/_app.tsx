@@ -16,7 +16,7 @@ import {
   MantineProvider,
   Container,
 } from "@mantine/core";
-import { useWindowScroll } from "@mantine/hooks";
+import { useWindowScroll, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { AppProps } from "next/app";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -37,9 +37,16 @@ export default function AppShellDemo({
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [scroll, scrollTo] = useWindowScroll();
-  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "light",
+    getInitialValueInEffect: true,
+  });
+
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  useHotkeys([["mod+J", () => toggleColorScheme()]]);
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
