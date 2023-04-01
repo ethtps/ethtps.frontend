@@ -1,15 +1,42 @@
-import { useAppState } from '@/services'
+'use client'
+import { createHandlerFromCallback } from '@/data/src'
+import { api, getAPIKey, queryClient } from '@/services/DependenciesIOC'
+import { sleep } from '@/services/Helpers'
+import { ApplicationDataService } from '@/services/flows'
 import {
   Box,
   LoadingOverlay,
   Group,
-  Button,
-  Text,
-  Progress
+  Progress,
+  Card,
+  createStyles,
+  Text
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { ReactElement, ReactNode, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor: theme.fn.primaryColor()
+  },
+
+  title: {
+    color: theme.fn.rgba(theme.white, 0.65)
+  },
+
+  stats: {
+    color: theme.white
+  },
+
+  progressBar: {
+    backgroundColor: theme.white
+  },
+
+  progressTrack: {
+    backgroundColor: theme.fn.rgba(theme.white, 0.4)
+  }
+}))
 interface IHumanityProofPartialProps {
   element: ReactElement
 }
@@ -17,30 +44,84 @@ interface IHumanityProofPartialProps {
 export default function HumanityProofPartial(
   props: IHumanityProofPartialProps
 ) {
-  const [visible, { toggle }] = useDisclosure(true)
-  const [progress, setProgress] = useState(25)
-  const isHuman = useAppState().applicationState.hasProvenIsHuman
+  const dispatch = useDispatch()
+  const [progress, setProgress] = useState(5)
+  const [visible, { toggle }] = useDisclosure(
+    getAPIKey()?.length === 0 || progress !== 100
+  )
+  const [loadingMessage, setLoadingMessage] = useState('Loading...')
+  const progressHandler = createHandlerFromCallback<number>((x) =>
+    setProgress(x ?? 0)
+  )
+  const dataService = visible
+    ? new ApplicationDataService(api, queryClient, progressHandler)
+    : undefined
+  const [failureCount, setFailureCount] = useState(1)
+  useEffect(() => {
+    if (failureCount >= 2) {
+      setLoadingMessage('Loading... this is taking a while')
+    }
+    if (failureCount >= maxFailures) {
+      setLoadingMessage('Retrying...')
+    }
+  }, [failureCount])
+  const maxFailures = 5
+  let waitTime = 1000
+  let loading = false
+  const loadData = async () => {
+    if (!loading) {
+      loading = true
+      let requesting = false
+      while (true) {
+        try {
+          if (!requesting) {
+            requesting = true
+            await dataService?.loadDataAsync(dispatch)
+            break
+          }
+        } catch {
+          setFailureCount(failureCount + 1)
+          waitTime *= 2
+        } finally {
+          await sleep(waitTime)
+          requesting = false
+          if (failureCount >= maxFailures) {
+            await sleep(2500)
+            location.reload()
+          }
+        }
+      }
+    }
+  }
+  if (dataService) loadData()
   return (
     <>
       <Box w={'100%'} h={'100%'} pos="relative">
         <LoadingOverlay
-          visible={!isHuman}
+          visible={visible}
           overlayBlur={2}
           style={{ width: '100%' }}
           loader={
             <>
-              <Group position="center" style={{ width: '100%' }}>
-                <Progress
-                  color="violet"
-                  radius="xl"
-                  w={'500px'}
-                  size={24}
-                  value={progress < 20 ? 20 : progress}
-                  striped
-                  animate
-                  label="Loading..."
-                />
-              </Group>
+              <Card radius="md" p="xl">
+                <Group position="center" style={{ width: '100%' }}>
+                  <Progress
+                    color="violet"
+                    radius="xl"
+                    w={'500px'}
+                    size={24}
+                    value={progress}
+                    striped
+                    animate
+                    label={`${progress <= 5 ? 0 : progress}%`}
+                  />
+                </Group>
+                <Group position="center" style={{ width: '100%' }}>
+                  <Text fz="md" fw={700}>
+                    {loadingMessage}
+                  </Text>
+                </Group>
+              </Card>
             </>
           }
         >

@@ -6,7 +6,8 @@ var _api_key: string | undefined | null = ''
 
 export const storage: LocalStorageService = new LocalStorageService()
 export const api = new ETHTPSApi(
-  process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT as string
+  (process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT as string) ??
+    'http://localhost:10202'
 )
 
 //export const websocketsService = new WebsocketsService()
@@ -20,6 +21,7 @@ export function getAPIKey() {
 export function setAPIKey(value: string) {
   try {
     localStorage.setItem('XAPIKey', value)
+    console.log(`Got new API key: ${value}`)
   } catch {
     console.log('Local storage disabled')
   } finally {

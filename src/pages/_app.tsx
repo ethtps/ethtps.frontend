@@ -1,6 +1,6 @@
 import styles from '../styles/app.module.scss'
 
-import { ReactElement, ReactNode, useState } from 'react'
+import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import {
   AppShell,
   Footer,
@@ -17,7 +17,6 @@ import { QueryClientProvider } from 'react-query'
 import { queryClient } from '@/services'
 import { wrapper } from '@/data/src'
 import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
-import { Main } from 'next/document'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -40,54 +39,67 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
 
   useHotkeys([['mod+J', () => toggleColorScheme()]])
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ColorSchemeProvider
-        colorScheme={colorScheme}
-        toggleColorScheme={toggleColorScheme}
-      >
-        <MantineProvider
-          theme={{ colorScheme }}
-          withGlobalStyles
-          withNormalizeCSS
+
+  const [showChild, setShowChild] = useState(false)
+  useEffect(() => {
+    setShowChild(true)
+  }, [])
+
+  if (!showChild) {
+    return null
+  }
+
+  if (typeof window === 'undefined') {
+    return <></>
+  } else
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ColorSchemeProvider
+          colorScheme={colorScheme}
+          toggleColorScheme={toggleColorScheme}
         >
-          <AppShell
-            styles={{
-              main: {
-                background:
-                  theme.colorScheme === 'dark'
-                    ? theme.colors.dark[8]
-                    : theme.colors.gray[0]
-              }
-            }}
-            navbarOffsetBreakpoint="sm"
-            asideOffsetBreakpoint="sm"
-            footer={
-              <Footer height={60} p="md">
-                <div className={'inline'}>
-                  Brought to you by
-                  <div style={{ marginLeft: '5px' }} className={styles.trick}>
-                    <span>Mister_Eth</span>
-                  </div>
-                </div>
-              </Footer>
-            }
-            header={
-              <HeaderWithTabs
-                links={[
-                  {
-                    link: '',
-                    label: 'something'
-                  }
-                ]}
-              />
-            }
+          <MantineProvider
+            theme={{ colorScheme }}
+            withGlobalStyles
+            withNormalizeCSS
           >
-            <HumanityProofPartial element={<Component {...pageProps} />} />
-          </AppShell>
-        </MantineProvider>
-      </ColorSchemeProvider>
-    </QueryClientProvider>
-  )
+            <AppShell
+              styles={{
+                main: {
+                  background:
+                    theme.colorScheme === 'dark'
+                      ? theme.colors.dark[8]
+                      : theme.colors.gray[0]
+                }
+              }}
+              navbarOffsetBreakpoint="sm"
+              asideOffsetBreakpoint="sm"
+              footer={
+                <Footer height={60} p="md">
+                  <div className={'inline'}>
+                    Brought to you by
+                    <div style={{ marginLeft: '5px' }} className={styles.trick}>
+                      <span>Mister_Eth</span>
+                    </div>
+                  </div>
+                </Footer>
+              }
+              header={
+                <HeaderWithTabs
+                  links={[
+                    {
+                      link: '',
+                      label: 'something'
+                    }
+                  ]}
+                />
+              }
+            >
+              <HumanityProofPartial element={<Component {...pageProps} />} />
+            </AppShell>
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </QueryClientProvider>
+    )
 }
 export default wrapper.withRedux(AppShellDemo)

@@ -1,3 +1,4 @@
+'use client'
 import {
   APIKeyApi,
   ApiV3ChartDataGetStackedChartDataGetRequest,
@@ -16,7 +17,6 @@ import {
 import { Configuration } from '@/api-client/src/runtime'
 import {
   ProviderResponseModel,
-  DataType,
   TimeInterval,
   DataResponseModelDictionary,
   DataPointDictionary,
@@ -24,6 +24,7 @@ import {
 } from '@/data/src'
 import { APIKeyMiddleware } from './APIKeyMiddleware'
 import { getAPIKey, tryLoadAPIKeyFromLocalStorage } from '../DependenciesIOC'
+import { DataType } from '@/api-client/src/models'
 
 export class ETHTPSApi {
   public generalApi: GeneralApi = new GeneralApi()
@@ -96,7 +97,7 @@ export class ETHTPSApi {
     return this.generalApi.apiV2ProvidersGet()
   }
 
-  public getNetworks(): Promise<Array<string>> {
+  public getNetworksAsync(): Promise<Array<string>> {
     return this.generalApi.apiV2NetworksGet()
   }
 
@@ -175,8 +176,8 @@ export class ETHTPSApi {
     })
   }
 
-  public getNewAPIKey(humanityProof: string) {
-    return this.apiKeyAPI.apiV3APIKeysRegisterNewKeyForProofGetNewKeyGet({
+  public async getNewAPIKey(humanityProof: string) {
+    return await this.apiKeyAPI.apiV3APIKeysRegisterNewKeyForProofGetNewKeyGet({
       humanityProof
     })
   }

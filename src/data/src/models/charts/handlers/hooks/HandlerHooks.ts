@@ -1,5 +1,6 @@
 import React from 'react'
 import { IHandler } from '../IHandler'
+import { IOptionalCallback } from '../IOptionalCallback';
 
 export function createHandlerFromCallback<TReturnValue>(
 	callback: (newValue?: TReturnValue) => void
@@ -39,7 +40,7 @@ function createHandler<THandler extends IHandler<TReturnValue>, TReturnValue>(
 	return new Handler<TReturnValue>(setter, value)
 }
 
-export class Handler<TReturnValue> {
+export class Handler<TReturnValue> implements IOptionalCallback<TReturnValue> {
 	constructor(
 		public setter: (newValue?: TReturnValue) => void = (
 			newValue?: TReturnValue
@@ -49,9 +50,10 @@ export class Handler<TReturnValue> {
 		public value?: TReturnValue | undefined
 	) {}
 
-	public convertToIHandler(): IHandler<TReturnValue> {
+	private convertToIHandler(): IHandler<TReturnValue> {
 		return {
 			defaultValue: this.value,
 		}
 	}
+	public readonly callback?: (value: TReturnValue) => void = this.convertToIHandler().callback
 }

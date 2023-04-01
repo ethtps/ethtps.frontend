@@ -6,7 +6,7 @@ import { liveDataReducer } from './slices/LiveDataSlice'
 import { colorReducer } from './slices/ColorSlice'
 import { experimentReducer } from './slices/ExperimentSlice'
 import { applicationStateReducer } from './slices/ApplicationStateSlice'
-import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit'
+import { Action, AnyAction, Dispatch, ThunkAction, ThunkDispatch, configureStore } from '@reduxjs/toolkit'
 import {
 	ApplicationState,
 	IApplicationState,
@@ -38,5 +38,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   AppState,
   unknown,
   Action
->;
+	>;
+export type RootState = { appState: AppState }
+export type AppDispatch = Dispatch<AnyAction> & ThunkDispatch<RootState, null, AnyAction>
 export const wrapper = createWrapper<AppStore>(makeStore);
