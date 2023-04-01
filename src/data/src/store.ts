@@ -6,17 +6,15 @@ import { liveDataReducer } from './slices/LiveDataSlice'
 import { colorReducer } from './slices/ColorSlice'
 import { experimentReducer } from './slices/ExperimentSlice'
 import { applicationStateReducer } from './slices/ApplicationStateSlice'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import websocketMiddleware from './slices/WebsocketSubscriptionMiddleware'
-import { websocketReducer } from './slices/WebsocketSubscriptionSlice'
-import { configureStore } from '@reduxjs/toolkit'
+import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit'
 import {
 	ApplicationState,
 	IApplicationState,
 } from './models/dependencies/ApplicationState'
+import { createWrapper } from "next-redux-wrapper";
 
-const preloadedState = new ApplicationState()
-export const store = configureStore({
+const preloadedState = new ApplicationState(false, false)
+const makeStore = () => configureStore({
 	reducer: {
 		providers: providersReducer,
 		networks: networksReducer,
@@ -26,7 +24,6 @@ export const store = configureStore({
 		colors: colorReducer,
 		experiments: experimentReducer,
 		applicationState: applicationStateReducer,
-		websockets: websocketReducer,
 	},
 	...(preloadedState as IApplicationState),
 	middleware: (getDefaultMiddleware) =>
@@ -34,11 +31,12 @@ export const store = configureStore({
 			serializableCheck: false,
 		})
 })
-
-export type RootState = ReturnType<typeof store.getState>
-
-export type AppDispatch = typeof store.dispatch
-// Use throughout your app instead of plain `useDispatch` and `useSelector`
-type DispatchFunc = () => AppDispatch
-export const useAppDispatch: DispatchFunc = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+export type AppStore = ReturnType<typeof makeStore>;
+export type AppState = ReturnType<AppStore["getState"]>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppState,
+  unknown,
+  Action
+>;
+export const wrapper = createWrapper<AppStore>(makeStore);

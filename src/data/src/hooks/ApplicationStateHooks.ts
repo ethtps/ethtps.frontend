@@ -2,7 +2,6 @@ import {
 	setApplicationDataLoaded,
 	setStoreAPIKey,
 } from '../slices/ApplicationStateSlice'
-import { useAppSelector, store } from '../store'
 import { websocketActions } from '../slices/WebsocketSubscriptionSlice'
 import { wsBaseURL } from '../models/services/DependenciesIOC'
 

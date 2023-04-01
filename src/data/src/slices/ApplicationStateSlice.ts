@@ -1,14 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IDataLoadingModel } from '../models/interfaces/IDataLoadingModel'
 import { maybeStorage } from '../infra/LocalStorageHelper'
+import { ApplicationState } from 'src'
+import { dataReducer } from './DataSlice';
+import { AppState } from '../store';
 
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,
 	completeApplicationDataAvailableInLocalStorage: false,
 	apiKey: maybeStorage?.getItem('XAPIKey'),
+	hasProvenIsHuman: maybeStorage?.getItem("hasProvenIsHuman") === "true"??false
 }
 
-const applicationStateSlice = createSlice({
+export const applicationStateSlice = createSlice({
 	name: 'applicationStates',
 	initialState,
 	reducers: {
@@ -35,3 +39,4 @@ const applicationStateSlice = createSlice({
 export const { setApplicationDataLoaded, setStoreAPIKey } =
 	applicationStateSlice.actions
 export const applicationStateReducer = applicationStateSlice.reducer
+export const selectAppState = (state: AppState) => state.applicationState

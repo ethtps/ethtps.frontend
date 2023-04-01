@@ -25,7 +25,6 @@ import { networksReducer } from './slices/NetworksSlice'
 import { providersReducer } from './slices/ProvidersSlice'
 import websocketMiddleware from './slices/WebsocketSubscriptionMiddleware'
 import websocketSlice from './slices/WebsocketSubscriptionSlice'
-import { store, useAppSelector, useAppDispatch } from './store'
 import * as appStateHooks from './hooks/ApplicationStateHooks'
 import * as colorHooks from './hooks/ColorHooks'
 import * as dataHooks from './hooks/DataHooks'
@@ -102,6 +101,7 @@ import {
 	useGetProviderColorDictionaryFromAppStore,
 	useGetProviderTypeColorDictionaryFromAppStore,
 } from './hooks/ColorHooks'
+import { wrapper } from './store'
 export {
 	ApplicationState,
 	IGlobalDependencies,
@@ -136,9 +136,7 @@ export {
 	providerHooks,
 	queryHooks,
 	useLoadValueHooks,
-	store,
-	useAppSelector,
-	useAppDispatch,
+	wrapper,
 	useSetSidechainsIncluded,
 	dataTypeToString,
 	useSetStoreAPIKey,

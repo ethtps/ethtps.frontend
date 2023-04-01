@@ -1,14 +1,14 @@
 import { IMaxDataModel } from '../interfaces/IMaxDataModel'
 import { IDataModeModel } from '../interfaces/IDataModeModel'
 import { ILiveDataModeModel } from '../interfaces/ILiveDataModeModel'
-import { ProviderResponseModel } from 'ethtps.api.client'
 import { IColorDictionaries } from '../interfaces/IColorDictionaries'
-import { IDataLoadingModel } from '../interfaces/IDataLoadingModel'
+import { IDataLoadingModel } from '../interfaces/IDataLoadingModel';
 import { IMainPageModel } from '../interfaces/IMainPageModel'
 import { IPagesState } from '../IPagesState'
 import { WebsocketSubscriptionState } from '../../slices/WebsocketSubscriptionSlice'
+import { ProviderResponseModel } from '../../../../api-client/src/models/ProviderResponseModel'
 
-export interface IApplicationState {
+export interface IApplicationState extends IDataLoadingModel {
 	websockets?: WebsocketSubscriptionState
 	colorDictionaries?: IColorDictionaries
 	dataLoading?: IDataLoadingModel
@@ -20,11 +20,14 @@ export interface IApplicationState {
 	intervals?: Array<string>
 	networks?: Array<string>
 	providers?: ProviderResponseModel[]
-	pages: IPagesState
 }
 
 export class ApplicationState implements IApplicationState {
 	constructor(
+		public	applicationDataLoaded: boolean=false,
+		public	completeApplicationDataAvailableInLocalStorage: boolean,
+		public	apiKey?: string,
+		public	hasProvenIsHuman: boolean = false,
 		public websockets?: WebsocketSubscriptionState,
 		public colorDictionaries?: IColorDictionaries,
 		public dataLoading?: IDataLoadingModel,
@@ -36,12 +39,5 @@ export class ApplicationState implements IApplicationState {
 		public intervals?: Array<string>,
 		public networks?: Array<string>,
 		public providers?: ProviderResponseModel[],
-		public pages: {
-			mainPage: IMainPageModel
-		} = {
-			mainPage: {
-				sidechainsIncluded: false,
-			},
-		}
 	) {}
 }
