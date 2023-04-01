@@ -12,10 +12,13 @@ import {
   Burger,
   useMantineTheme,
 } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
+import HomePage from "./home";
 
 export default function AppShellDemo() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [scroll, scrollTo] = useWindowScroll();
   return (
     <AppShell
       styles={{
@@ -28,23 +31,6 @@ export default function AppShellDemo() {
       }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      navbar={
-        <Navbar
-          p="md"
-          hiddenBreakpoint="sm"
-          hidden={!opened}
-          width={{ sm: 200, lg: 300 }}
-        >
-          <Text>Application navbar</Text>
-        </Navbar>
-      }
-      aside={
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-          <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-            <Text>Application sidebar</Text>
-          </Aside>
-        </MediaQuery>
-      }
       footer={
         <Footer height={60} p="md">
           <div className={"inline"}>
@@ -79,8 +65,6 @@ export default function AppShellDemo() {
           </div>
         </Header>
       }
-    >
-      <Text>Resize app to see responsive navbar in action</Text>
-    </AppShell>
+    ></AppShell>
   );
 }
