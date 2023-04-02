@@ -3,7 +3,7 @@
   "tabWidth": 2,
   "semi": false,
   "singleQuote": true,
-  "arrowParens": "always",
+  "withArrowParens": "always",
   "bracketSameLine": true,
   "parser": "typescript",
   "jsxSingleQuote": true

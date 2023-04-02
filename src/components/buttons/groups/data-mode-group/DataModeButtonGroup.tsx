@@ -1,11 +1,12 @@
 import React from 'react'
-import { Box, IconButton, Tooltip, Typography } from '@mui/material'
 import { EvStation, LocalGasStation, Numbers } from '@mui/icons-material'
 import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
 import { useHandler } from '@/data/src'
 import { DataType } from '@/api-client/src/models'
 import { conditionalRender, useAppSelector } from '@/services'
+import { Box, Tooltip, Text } from '@mantine/core'
+import { IconButton } from '../../IconButton'
 
 export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
   const mode = useHandler(model.modeHandle)
@@ -22,33 +23,36 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           experimentsAppStoreValue?.includes(5) && false
         )}
         <Tooltip
-          arrow
-          placement={'top'}
+          withArrow
+          position={'top'}
           {...getColorComparedTo(DataType.Tps)}
-          title={<Text>Transactions per second</Text>}>
-          <IconButton onClick={() => mode?.setter(DataType.Tps)}>
-            <Numbers />
-          </IconButton>
+          label={<Text>Transactions per second</Text>}>
+          <IconButton
+            onClick={() => mode?.setter(DataType.Tps)}
+            icon={<Numbers />}
+          />
         </Tooltip>
 
         <Tooltip
-          arrow
-          placement={'top'}
+          withArrow
+          position={'top'}
           {...getColorComparedTo(DataType.Gps)}
-          title={<Text>Gas per second</Text>}>
-          <IconButton onClick={() => mode?.setter(DataType.Gps)}>
-            <LocalGasStation />
-          </IconButton>
+          label={<Text>Gas per second</Text>}>
+          <IconButton
+            onClick={() => mode?.setter(DataType.Gps)}
+            icon={<LocalGasStation />}
+          />
         </Tooltip>
 
         <Tooltip
-          arrow
-          placement={'top'}
+          withArrow
+          position={'top'}
           {...getColorComparedTo(DataType.GasAdjustedTps)}
-          title={<Text>Gas-adjusted transactions per second</Text>}>
-          <IconButton onClick={() => mode?.setter(DataType.GasAdjustedTps)}>
-            <EvStation />
-          </IconButton>
+          label={<Text>Gas-adjusted transactions per second</Text>}>
+          <IconButton
+            onClick={() => mode?.setter(DataType.GasAdjustedTps)}
+            icon={<EvStation />}
+          />
         </Tooltip>
       </Box>
     </React.Fragment>

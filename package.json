@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start -p 3007",
     "start:dev": "next dev -p 3007",
-		"lint": "npx eslint src test",
-		"lint:fix": "npm run lint -- --fix",
-		"prettier": "npx prettier src test --check",
-		"prettier:fix": "npm run prettier -- --write"
+    "lint": "npx eslint src test",
+    "lint:fix": "npm run lint -- --fix",
+    "prettier": "npx prettier src test --check",
+    "prettier:fix": "npm run prettier -- --write"
   },
   "dependencies": {
     "@babel/plugin-syntax-flow": "^7.18.6",
@@ -31,6 +31,7 @@
     "@mantine/prism": "^6.0.5",
     "@mantine/spotlight": "^6.0.5",
     "@mantine/tiptap": "^6.0.5",
+    "@mui/icons-material": "^5.11.11",
     "@react-spring/web": "^9.7.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@tabler/icons-react": "^2.12.0",

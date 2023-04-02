@@ -1,8 +1,8 @@
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
-import { Button } from '@mui/material'
 import { useState } from 'react'
 import { ISeeMoreButtonProps } from './ISeeMoreButtonProps'
 import React from 'react'
+import { Button } from '@mantine/core'
 
 export function SeeMoreButton(events: ISeeMoreButtonProps) {
   const [expand, setExpand] = useState(true)
@@ -27,8 +27,6 @@ export function SeeMoreButton(events: ISeeMoreButtonProps) {
         sx={{
           width: '100%'
         }}
-        startIcon={getIcon()}
-        endIcon={getIcon()}
         onClick={() => onClick()}>
         See {expand ? 'more' : 'less'}
       </Button>

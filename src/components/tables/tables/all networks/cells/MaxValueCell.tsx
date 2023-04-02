@@ -44,7 +44,6 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
   return (
     <React.Fragment>
       <td
-        {...centered}
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined

@@ -1,4 +1,3 @@
-import { IconButton } from '@mui/material'
 import {
   ICustomCellConfiguration,
   buildClassNames
@@ -6,6 +5,7 @@ import {
 import { ArrowRight } from '@mui/icons-material'
 import React from 'react'
 import { conditionalRender } from '@/services'
+import { IconButton } from '@/components/buttons/IconButton'
 
 interface IIndexCellConfiguration extends ICustomCellConfiguration {
   index: number
@@ -28,12 +28,14 @@ export function IndexCell(config: IIndexCellConfiguration) {
             height: '1rem',
             width: '2rem',
             fontWeight: config.showTick ? 'bold' : undefined
-          }}>
-          <>
-            {conditionalRender(<ArrowRight />, config.showTick)}
-            {config.index}
-          </>
-        </IconButton>
+          }}
+          icon={
+            <>
+              {conditionalRender(<ArrowRight />, config.showTick)}
+              {config.index}
+            </>
+          }
+        />
       </td>
     </React.Fragment>
   )

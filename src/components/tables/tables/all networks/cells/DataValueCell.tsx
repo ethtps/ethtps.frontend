@@ -2,7 +2,6 @@ import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
-import {} from '@mui/material'
 import { tableCellTypographyStandard } from './Typography.types'
 import { centered } from '../../Cells.Types'
 import { DataType } from '@/api-client/src/models'
@@ -20,7 +19,6 @@ export function DataValueCell(config: IDataValueCellConficuration) {
   return (
     <React.Fragment>
       <td
-        {...centered}
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined

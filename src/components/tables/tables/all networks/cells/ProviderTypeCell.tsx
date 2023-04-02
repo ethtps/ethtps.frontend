@@ -15,7 +15,6 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
   return (
     <React.Fragment>
       <td
-        {...centered}
         {...buildClassNames(config)}
         style={{ color: color }}
         onClick={() =>

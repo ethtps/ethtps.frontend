@@ -11,7 +11,7 @@ export function TableHeader(params: ITableHeaderParams): JSX.Element {
     <React.Fragment>
       <tr>
         {params.text?.map((x, i) => (
-          <td style={{ fontWeight: 'bold' }} key={i} {...centered}>
+          <td style={{ fontWeight: 'bold' }} key={i}>
             <Text {...tableHeaderCellTypography}> {x}</Text>
           </td>
         ))}

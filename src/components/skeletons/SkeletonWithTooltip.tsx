@@ -1,9 +1,8 @@
-import { Skeleton, Tooltip, Typography } from '@mui/material'
 import { useState } from 'react'
-import { Box } from '@mui/system'
 import { ISkeletonWithTooltipConfiguration } from './ISkeletonWithTooltipConfiguration'
 import React from 'react'
 import { conditionalRender } from '@/services'
+import { Box, Skeleton, Tooltip, Text } from '@mantine/core'
 
 export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
   const message = config.text ?? 'Loading...'
@@ -17,7 +16,7 @@ export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
     <>
       <React.Fragment>
         {conditionalRender(
-          <Tooltip arrow title={<Text>{message}</Text>}>
+          <Tooltip withArrow label={<Text>{message}</Text>}>
             <Box sx={{ width: '90%' }}>
               <Skeleton
                 className={'w-hundred'}

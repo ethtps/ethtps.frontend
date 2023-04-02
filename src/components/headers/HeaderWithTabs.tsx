@@ -7,14 +7,12 @@ import {
   Group,
   Burger,
   Text,
-  rem,
   Tooltip,
   ActionIcon
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { ThemeToggle } from '../buttons'
-import { Icon } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -74,7 +72,7 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
   const { classes, cx } = useStyles()
   const items = links.map((link) => (
     <ActionIcon size={'xl'} key={link.link}>
-      <Tooltip label={link.label} withArrow arrowPosition={'center'}>
+      <Tooltip label={link.label} withArrow position={'bottom'}>
         <a href={link.link}>{link.icon}</a>
       </Tooltip>
     </ActionIcon>

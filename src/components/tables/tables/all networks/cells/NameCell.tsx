@@ -30,7 +30,6 @@ export function NameCell(config: ICustomCellConfiguration) {
         withArrow
         label={<Text>{`Click to read more about ${name}`}</Text>}>
         <td
-          {...centered}
           {...buildClassNames(config)}
           onClick={() =>
             config.clickCallback !== undefined
