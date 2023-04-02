@@ -52,6 +52,7 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
         }>
         <Tooltip withArrow label={tooltipTypography}>
           <Text
+            className={'boldcell'}
             {...tableCellTypographyStandard}
             sx={{
               textDecoration:

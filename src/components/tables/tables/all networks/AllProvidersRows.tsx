@@ -1,3 +1,4 @@
+import styles from '../../../../styles/app.module.scss'
 import { range } from 'd3-array'
 import React, { useEffect, useState } from 'react'
 import { IndexCell } from './cells/IndexCell'

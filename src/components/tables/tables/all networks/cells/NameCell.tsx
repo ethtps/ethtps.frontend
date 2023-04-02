@@ -1,4 +1,3 @@
-import styles from '../../../../../styles/app.module.scss'
 import {
   ICustomCellConfiguration,
   buildClassNames
@@ -47,14 +46,11 @@ export function NameCell(config: ICustomCellConfiguration) {
                 <Image
                   alt={`${config.provider?.name} icon`}
                   src={`/provider-icons/${config.provider?.name}.png`}
-                  className={styles.inline}
+                  className={'inline'}
                   width={30}
                   height={30}
                   style={{ marginRight: '15px' }}></Image>
-                <Text
-                  {...inline}
-                  color={color}
-                  {...tableCellTypographyStandard}>
+                <Text color={color} className={'boldcell'}>
                   {config.provider?.name}
                 </Text>
               </Group>
@@ -62,7 +58,6 @@ export function NameCell(config: ICustomCellConfiguration) {
                 <>
                   <Tooltip
                     withArrow
-                    className={styles.spacedHorizontally}
                     label={
                       <Text>
                         There are issues getting data for{' '}

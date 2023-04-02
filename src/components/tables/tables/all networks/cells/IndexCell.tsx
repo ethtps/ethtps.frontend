@@ -24,7 +24,7 @@ export function IndexCell(config: IIndexCellConfiguration) {
         }>
         <IconButton
           sx={{
-            fontSize: '13px',
+            fontSize: '1rem',
             height: '1rem',
             width: '2rem',
             fontWeight: config.showTick ? 'bold' : undefined

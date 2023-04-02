@@ -1,3 +1,4 @@
+import styles from '../../../../../styles/app.module.scss'
 import {
   ICustomCellConfiguration,
   buildClassNames
@@ -19,7 +20,6 @@ export function DataValueCell(config: IDataValueCellConficuration) {
   return (
     <React.Fragment>
       <td
-        {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'DataValue')

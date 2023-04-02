@@ -14,6 +14,7 @@ export function AnimatedTypography(config: IAnimatedTypographyConfiguration) {
     <React.Fragment>
       <Text
         {...config.standard}
+        sx={{ fontSize: '1rem', fontWeight: 'bold' }}
         className={config.animationClassName}
         key={config.child.toString()}
         textAlign={config.centerText ? 'center' : undefined}>

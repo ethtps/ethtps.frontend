@@ -7,6 +7,6 @@ export function useGetProvidersFromAppStore() {
 	return useAppSelector((state: AppState) =>
 		state.providers.filter((x) =>
 			sidechainsIncluded ? x : x.type !== 'Sidechain'
-		) as ProviderResponseModel[]
-	)
+		) 
+	)as ProviderResponseModel[]
 }

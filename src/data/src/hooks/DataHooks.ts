@@ -3,9 +3,10 @@ import { DataPointDictionary } from 'src/common-types/Dictionaries'
 import { DataPoint } from '../../../api-client/src/models/DataPoint'
 import { DataType } from '../../../api-client/src/models/DataType'
 import { useAppSelector, AppState } from '../store'
+import { IMaxDataModel } from 'src/models/interfaces/IMaxDataModel'
 
 export function useGetMaxDataFromAppStore() {
-	return useAppSelector((state: AppState) => state.maxData)
+	return useAppSelector((state: AppState) => state.maxData) as IMaxDataModel
 }
 
 export function useGetMaxDataForProviderFromAppStore(

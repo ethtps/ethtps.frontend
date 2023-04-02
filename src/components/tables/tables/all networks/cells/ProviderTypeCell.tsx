@@ -4,7 +4,6 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import React from 'react'
-import { centered } from '../../Cells.Types'
 import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data/src'
 
 export function ProviderTypeCell(config: ICustomCellConfiguration) {
@@ -22,7 +21,7 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
             ? config.clickCallback(config.provider, 'ProviderType')
             : () => {}
         }>
-        <Text>{config.provider?.type}</Text>
+        <Text className={'boldcell'}>{config.provider?.type}</Text>
       </td>
     </React.Fragment>
   )

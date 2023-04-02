@@ -1,5 +1,5 @@
-import styles from '../styles/app.module.scss'
-
+import '../styles/app.module.scss'
+import '../styles/cells.styles.scss'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import {
   AppShell,
@@ -97,7 +97,7 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
                 <Footer height={60} p='md'>
                   <div className={'inline'}>
                     Brought to you by
-                    <div style={{ marginLeft: '5px' }} className={styles.trick}>
+                    <div style={{ marginLeft: '5px' }} className={'trick'}>
                       <span>Mister_Eth</span>
                     </div>
                   </div>
