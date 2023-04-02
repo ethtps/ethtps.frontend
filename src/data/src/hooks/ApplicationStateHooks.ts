@@ -4,18 +4,19 @@ import {
 } from '../slices/ApplicationStateSlice'
 import { websocketActions } from '../slices/WebsocketSubscriptionSlice'
 import { wsBaseURL } from '../models/services/DependenciesIOC'
+import { useAppDispatch, useAppSelector } from '../store';
 
 export const useGetApplicationDataLoadedFromAppStore = () => {
 	return useAppSelector(
 		(state) => state.applicationState.applicationDataLoaded
-	)
+	) as boolean
 }
 
 export const useMarkApplicationDataLoaded = () => {
-	store.dispatch(setApplicationDataLoaded(true))
+	useAppDispatch(setApplicationDataLoaded(true))
 }
 
 export const useSetStoreAPIKey = (apiKey?: string) => {
-	store.dispatch(setStoreAPIKey(apiKey))
-	store.dispatch(websocketActions.setWSURL(wsBaseURL + apiKey))
+	useAppDispatch(setStoreAPIKey(apiKey))
+	useAppDispatch(websocketActions.setWSURL(wsBaseURL + apiKey))
 }

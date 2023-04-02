@@ -1,11 +1,11 @@
-import { IconButton, TableCell } from '@mui/material'
+import { IconButton } from '@mui/material'
 import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
 import { ArrowRight } from '@mui/icons-material'
-import { conditionalRender } from '../../../../Types'
 import React from 'react'
+import { conditionalRender } from '@/services'
 
 interface IIndexCellConfiguration extends ICustomCellConfiguration {
   index: number
@@ -15,7 +15,7 @@ interface IIndexCellConfiguration extends ICustomCellConfiguration {
 export function IndexCell(config: IIndexCellConfiguration) {
   return (
     <React.Fragment>
-      <TableCell
+      <td
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined
@@ -23,20 +23,18 @@ export function IndexCell(config: IIndexCellConfiguration) {
             : () => {}
         }>
         <IconButton
-          children={
-            <>
-              {conditionalRender(<ArrowRight />, config.showTick)}
-              {config.index}
-            </>
-          }
           sx={{
             fontSize: '13px',
             height: '1rem',
             width: '2rem',
             fontWeight: config.showTick ? 'bold' : undefined
-          }}
-        />
-      </TableCell>
+          }}>
+          <>
+            {conditionalRender(<ArrowRight />, config.showTick)}
+            {config.index}
+          </>
+        </IconButton>
+      </td>
     </React.Fragment>
   )
 }

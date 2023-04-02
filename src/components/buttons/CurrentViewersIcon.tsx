@@ -5,7 +5,7 @@ import React from 'react'
 export function CurrentViewersIcon() {
   return (
     <React.Fragment>
-      <Tooltip arrow title={<Typography>Nobody's here</Typography>}>
+      <Tooltip arrow title={<Text>Nobody's here</Text>}>
         <IconButton>
           <Visibility></Visibility>
         </IconButton>

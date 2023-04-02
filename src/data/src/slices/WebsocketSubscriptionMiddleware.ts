@@ -25,15 +25,15 @@ const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 				useAppSelector((state) => state.websockets.wsURL) ?? ''
 			)
 		)
-		store.dispatch(websocketActions.connecting())
+		useAppDispatch(websocketActions.connecting())
 
 		rws.addEventListener('open', () => {
-			store.dispatch(websocketActions.connected())
+			useAppDispatch(websocketActions.connected())
 		})
 
 		rws.addEventListener('close', () => {
-			store.dispatch(websocketActions.disconnected())
-			store.dispatch(websocketActions.connecting())
+			useAppDispatch(websocketActions.disconnected())
+			useAppDispatch(websocketActions.connecting())
 		})
 
 		rws.addEventListener('message', (e) => {
@@ -42,7 +42,7 @@ const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 				let type: string = obj.Type ?? 'unknown'
 				switch (type) {
 					case WebsocketEvent.LiveDataReceived:
-						store.dispatch(
+						useAppDispatch(
 							setLiveData(obj.Data as InstantDataResponseModel)
 						)
 						break

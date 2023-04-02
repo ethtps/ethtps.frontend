@@ -23,10 +23,10 @@ export function SidechainToggleButton(
       <Tooltip
         arrow
         title={
-          <Typography>
+          <Text>
             Sidechains are {on ? 'included' : 'excluded'}. Click to
             {on ? 'exclude' : 'include'}
-          </Typography>
+          </Text>
         }>
         <IconButton onClick={toggle}>
           {on ? <Link color='primary' /> : <LinkOff />}

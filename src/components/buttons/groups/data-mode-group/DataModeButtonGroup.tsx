@@ -25,7 +25,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           arrow
           placement={'top'}
           {...getColorComparedTo(DataType.Tps)}
-          title={<Typography>Transactions per second</Typography>}>
+          title={<Text>Transactions per second</Text>}>
           <IconButton onClick={() => mode?.setter(DataType.Tps)}>
             <Numbers />
           </IconButton>
@@ -35,7 +35,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           arrow
           placement={'top'}
           {...getColorComparedTo(DataType.Gps)}
-          title={<Typography>Gas per second</Typography>}>
+          title={<Text>Gas per second</Text>}>
           <IconButton onClick={() => mode?.setter(DataType.Gps)}>
             <LocalGasStation />
           </IconButton>
@@ -45,7 +45,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           arrow
           placement={'top'}
           {...getColorComparedTo(DataType.GasAdjustedTps)}
-          title={<Typography>Gas-adjusted transactions per second</Typography>}>
+          title={<Text>Gas-adjusted transactions per second</Text>}>
           <IconButton onClick={() => mode?.setter(DataType.GasAdjustedTps)}>
             <EvStation />
           </IconButton>

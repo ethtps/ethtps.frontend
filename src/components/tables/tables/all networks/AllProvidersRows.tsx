@@ -1,18 +1,17 @@
-import { TableCell, TableRow } from '@mui/material'
 import { range } from 'd3-array'
-import {
-  IProviderTableModel,
-  extractData,
-  getModeData,
-  liveDataHooks
-} from 'ethtps.data'
 import React, { useEffect, useState } from 'react'
 import { IndexCell } from './cells/IndexCell'
 import { NameCell } from './cells/NameCell'
 import { DataValueCell } from './cells/DataValueCell'
 import { MaxValueCell } from './cells/MaxValueCell'
 import { ProviderTypeCell } from './cells/ProviderTypeCell'
-import { SkeletonWithTooltip } from '../../partials/skeletons/SkeletonWithTooltip'
+import {
+  IProviderTableModel,
+  extractData,
+  getModeData,
+  liveDataHooks
+} from '@/data/src'
+import { SkeletonWithTooltip } from '../..'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
@@ -35,7 +34,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
               )
             )
             ?.map((x, i) => (
-              <TableRow key={i}>
+              <tr key={i}>
                 <IndexCell clickCallback={model.clickCallback} index={i + 1} />
                 <NameCell clickCallback={model.clickCallback} provider={x} />
                 <DataValueCell
@@ -52,19 +51,19 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                   clickCallback={model.clickCallback}
                   provider={x}
                 />
-              </TableRow>
+              </tr>
             ))}
         </>
       ) : (
         range(0, 4 + 1).map((y) => {
           return (
-            <TableRow key={y}>
+            <tr key={y}>
               {range(0, 5).map((x) => (
-                <TableCell key={x}>
+                <td key={x}>
                   <SkeletonWithTooltip randomDelay rectangular={false} />
-                </TableCell>
+                </td>
               ))}
-            </TableRow>
+            </tr>
           )
         })
       )}

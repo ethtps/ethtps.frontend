@@ -12,7 +12,8 @@
 		"removeComments": false,
 		"preserveConstEnums": true,
 		"declaration": true,
-		"sourceMap": true
+		"sourceMap": true,
+		"allowSyntheticDefaultImports": true
 	},
 	"include": ["src/**/*.ts", "tests/**/*.ts", "src/index.ts", "src/*.tsx"],
 	"exclude": ["node_modules/*", "dist/*", ".vscode/*"]

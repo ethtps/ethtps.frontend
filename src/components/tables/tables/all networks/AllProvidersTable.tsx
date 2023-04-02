@@ -1,10 +1,3 @@
-import {
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableBody
-} from '@mui/material'
 import { useState } from 'react'
 import { AllProvidersHeader } from './AllProvidersHeader'
 import { AllProvidersRows } from './AllProvidersRows'
@@ -12,6 +5,8 @@ import React from 'react'
 import { conditionalRender } from '@/services'
 import { SeeMoreButton } from '@/components/buttons'
 import { IProviderTableModel } from '@/data/src'
+import { Container } from '@mui/system'
+import { Table } from '@mantine/core'
 
 export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
   const oldShowRowCountValue = tableData.maxRowsBeforeShowingExpand as number
@@ -26,24 +21,24 @@ export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
   }
   return (
     <React.Fragment>
-      <TableContainer component={Paper}>
-        <Table
-          //size="small"
-          sx={{
-            minWidth: 750
-          }}
-          aria-label='collapsible table'>
-          <TableHead>
+      <Table
+        //size="small"
+        sx={{
+          minWidth: 750
+        }}
+        aria-label='collapsible table'>
+        <thead>
+          <tr>
             <AllProvidersHeader />
-          </TableHead>
-          <TableBody>
-            <AllProvidersRows
-              {...tableData}
-              maxRowsBeforeShowingExpand={showRowCount}
-            />
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tr>
+        </thead>
+        <tbody>
+          <AllProvidersRows
+            {...tableData}
+            maxRowsBeforeShowingExpand={showRowCount}
+          />
+        </tbody>
+      </Table>
       {conditionalRender(
         <SeeMoreButton
           enabled={(tableData.providerData?.length as number) > 0}

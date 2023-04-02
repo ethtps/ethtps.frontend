@@ -7,47 +7,52 @@ import { colorReducer } from './slices/ColorSlice'
 import { experimentReducer } from './slices/ExperimentSlice'
 import { applicationStateReducer } from './slices/ApplicationStateSlice'
 import {
-	Action,
-	AnyAction,
-	Dispatch,
-	ThunkAction,
-	ThunkDispatch,
-	configureStore,
+  type Action,
+	type AnyAction,
+	type Dispatch,
+	type ThunkAction,
+	type ThunkDispatch,
+  configureStore
 } from '@reduxjs/toolkit'
 import {
-	ApplicationState,
-	IApplicationState,
+  ApplicationState,
+  type IApplicationState,
 } from './models/dependencies/ApplicationState'
 import { createWrapper } from 'next-redux-wrapper'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { PayloadAction } from '@reduxjs/toolkit';
 const preloadedState = new ApplicationState(false, false)
 const makeStore = () =>
-	configureStore({
-		reducer: {
-			providers: providersReducer,
-			networks: networksReducer,
-			intervals: intervalsReducer,
-			maxData: dataReducer,
-			liveData: liveDataReducer,
-			colors: colorReducer,
-			experiments: experimentReducer,
-			applicationState: applicationStateReducer,
+  configureStore({
+    reducer: {
+      providers: providersReducer,
+      networks: networksReducer,
+      intervals: intervalsReducer,
+      maxData: dataReducer,
+      liveData: liveDataReducer,
+      colors: colorReducer,
+      experiments: experimentReducer,
+      applicationState: applicationStateReducer
 		},
-		...(preloadedState as IApplicationState),
-		middleware: (getDefaultMiddleware) =>
-			getDefaultMiddleware({
-				serializableCheck: false,
-			}),
+    ...(preloadedState as IApplicationState),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false
+			})
 	})
 export type AppStore = ReturnType<typeof makeStore>
 export type AppState = ReturnType<AppStore['getState']>
 export type AppThunk<ReturnType = void> = ThunkAction<
-	ReturnType,
-	AppState,
-	unknown,
-	Action
+ReturnType,
+AppState,
+unknown,
+Action
 >
-export type RootState = { appState: AppState }
+export interface RootState { appState: AppState }
 export type AppDispatch = Dispatch<AnyAction> &
-	ThunkDispatch<RootState, null, AnyAction>
+ThunkDispatch<RootState, null, AnyAction>
 export const wrapper = createWrapper<AppStore>(makeStore)
+export const useAppState = () => useSelector<AppState>((x) => x) as AppState
+export const useAppSelector = useSelector<AppState>
+export const useAppDispatch = (action:AnyAction) => useDispatch()(action)

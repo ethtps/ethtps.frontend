@@ -1,8 +1,9 @@
+import { TimeInterval } from 'src'
 import {
 	InstantDataResponseModel,
 	DataResponseModelDictionary,
 } from '../../common-types/Dictionaries'
-import { DataType, TimeInterval } from 'ethtps.api.client'
+import { DataType } from '../../../../api-client/src/models/DataType'
 
 export interface ILiveDataModeModel {
 	liveDataSmoothing: TimeInterval

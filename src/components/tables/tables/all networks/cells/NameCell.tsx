@@ -1,27 +1,25 @@
-import { TableCell, Tooltip, Typography } from '@mui/material'
 import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
-
+import { Text, Tooltip } from '@mantine/core'
 import { centered } from '../../Cells.Types'
+import React, { useEffect, useState } from 'react'
+import { conditionalRender } from '@/services'
+import { useGetProviderColorDictionaryFromAppStore } from '@/data/src'
 import { tableCellTypographyStandard } from './Typography.types'
-import { useEffect } from 'react'
-import { conditionalRender } from '../../../../Types'
+import Image from 'next/image'
 import * as icons from '@mui/icons-material'
-import { Link } from 'react-router-dom'
-import { useGetProviderColorDictionaryFromAppStore } from 'ethtps.data/dist/hooks/ColorHooks'
-import React from 'react'
 
 export function NameCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderColorDictionaryFromAppStore()
   const name = config.provider?.name ?? ''
-  let color: string = config.provider?.color ?? 'primary'
+  const [color, setColor] = useState(config.provider?.color ?? 'primary')
   useEffect(() => {
     if (colorDictionary) {
-      color = colorDictionary[name]
+      setColor(colorDictionary[name])
     }
-  }, [colorDictionary])
+  }, [colorDictionary, setColor, name])
   const hasIssues =
     (config.provider?.status?.isUnreliable ?? false) &&
     (config.provider?.status?.isProbablyDown ?? false)
@@ -29,10 +27,9 @@ export function NameCell(config: ICustomCellConfiguration) {
   return (
     <React.Fragment>
       <Tooltip
-        arrow
-        placement='right'
-        title={<Typography>{`Click to read more about ${name}`}</Typography>}>
-        <TableCell
+        withArrow
+        label={<Text>{`Click to read more about ${name}`}</Text>}>
+        <td
           {...centered}
           {...buildClassNames(config)}
           onClick={() =>
@@ -42,35 +39,31 @@ export function NameCell(config: ICustomCellConfiguration) {
           }>
           <>
             <div className={'box'}>
-              <Link
-                to={`/Providers/${config.provider?.name as string}/Overview`}>
-                <div>
-                  <img
-                    alt={`${config.provider?.name} icon`}
-                    src={`provider-icons/${config.provider?.name}.png`}
-                    className={'tiny-img inline'}
-                    style={{ marginRight: '15px' }}></img>
-                  <Typography
-                    className={`inline ${
-                      config.clickCallback !== undefined ? 'pointable' : ''
-                    }`}
-                    color={color}
-                    {...tableCellTypographyStandard}>
-                    {config.provider?.name}
-                  </Typography>
-                </div>
-              </Link>
+              <div>
+                <Image
+                  alt={`${config.provider?.name} icon`}
+                  src={`provider-icons/${config.provider?.name}.png`}
+                  className={'tiny-img inline'}
+                  style={{ marginRight: '15px' }}></Image>
+                <Text
+                  className={`inline ${
+                    config.clickCallback !== undefined ? 'pointable' : ''
+                  }`}
+                  color={color}
+                  {...tableCellTypographyStandard}>
+                  {config.provider?.name}
+                </Text>
+              </div>
               {conditionalRender(
                 <>
                   <Tooltip
-                    arrow
-                    placement='top'
+                    withArrow
                     className='spaced-horizontally'
-                    title={
-                      <Typography>
+                    label={
+                      <Text>
                         There are issues getting data for{' '}
                         {config.provider?.name}
-                      </Typography>
+                      </Text>
                     }>
                     <icons.CloudOff className='inline small centered-vertically' />
                   </Tooltip>
@@ -80,12 +73,11 @@ export function NameCell(config: ICustomCellConfiguration) {
               {conditionalRender(
                 <>
                   <Tooltip
-                    arrow
-                    placement='top'
-                    title={
-                      <Typography>
+                    withArrow
+                    label={
+                      <Text>
                         There is no data provider for {config.provider?.name} :/
-                      </Typography>
+                      </Text>
                     }>
                     <icons.Warning className='spaced-horizontally' />
                   </Tooltip>
@@ -94,7 +86,7 @@ export function NameCell(config: ICustomCellConfiguration) {
               )}
             </div>
           </>
-        </TableCell>
+        </td>
       </Tooltip>
     </React.Fragment>
   )

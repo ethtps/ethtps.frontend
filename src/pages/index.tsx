@@ -1,6 +1,5 @@
 import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
-import { ProviderTable } from '@/components/tables'
-import { useAppState } from '@/services/data/Hooks'
+import { AllProvidersTable } from '@/components/tables'
 import { Group, Paper } from '@mantine/core'
 
 export default function Home() {
@@ -8,7 +7,7 @@ export default function Home() {
     <>
       <Paper>hello</Paper>
       <Paper>
-        <ProviderTable />
+        <AllProvidersTable />
       </Paper>
     </>
   )

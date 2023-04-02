@@ -2,15 +2,14 @@ import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
-import { TableCell } from '@mui/material'
+import {} from '@mui/material'
 import { tableCellTypographyStandard } from './Typography.types'
 import { centered } from '../../Cells.Types'
-import '../../cells.styles.css'
-import { AnimatedTypography } from '../../../text/AnimatedTypography'
-import { DataType } from 'ethtps.data'
-import { toShortString, numberFormat } from 'ethtps.data'
+import { DataType } from '@/api-client/src/models'
 import React from 'react'
-import { SkeletonWithTooltip } from '../../../partials/skeletons/SkeletonWithTooltip'
+import { SkeletonWithTooltip } from '@/components/skeletons/SkeletonWithTooltip'
+import { AnimatedTypography } from '@/components/text/AnimatedTypography'
+import { numberFormat, toShortString } from '@/data/src'
 
 interface IDataValueCellConficuration extends ICustomCellConfiguration {
   value?: number
@@ -20,7 +19,7 @@ interface IDataValueCellConficuration extends ICustomCellConfiguration {
 export function DataValueCell(config: IDataValueCellConficuration) {
   return (
     <React.Fragment>
-      <TableCell
+      <td
         {...centered}
         {...buildClassNames(config)}
         onClick={() =>
@@ -42,7 +41,7 @@ export function DataValueCell(config: IDataValueCellConficuration) {
             durationMs={1000}
           />
         )}
-      </TableCell>
+      </td>
     </React.Fragment>
   )
 }

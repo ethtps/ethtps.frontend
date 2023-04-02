@@ -16,12 +16,12 @@ export function AnimatedLinkButtonWithIcon(
   }
   return (
     <React.Fragment>
-      <Tooltip arrow title={<Typography>{props.text}</Typography>}>
+      <Tooltip arrow title={<Text>{props.text}</Text>}>
         <IconButton onClick={handleClick} color={'primary'}>
           {props.image}
         </IconButton>
       </Tooltip>
-      {props.showText ? <Typography>{props.text}</Typography> : <></>}
+      {props.showText ? <Text>{props.text}</Text> : <></>}
     </React.Fragment>
   )
 }

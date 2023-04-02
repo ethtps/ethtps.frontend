@@ -1,12 +1,11 @@
-import { TableCell, Typography } from '@mui/material'
+import { Text } from '@mantine/core'
 import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
 import React from 'react'
 import { centered } from '../../Cells.Types'
-import { tableCellTypographyStandard } from './Typography.types'
-import { useGetProviderTypeColorDictionaryFromAppStore } from 'ethtps.data/dist/hooks/ColorHooks'
+import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data/src'
 
 export function ProviderTypeCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderTypeColorDictionaryFromAppStore()
@@ -15,19 +14,17 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
     colorDictionary !== undefined ? colorDictionary[name] : 'primary'
   return (
     <React.Fragment>
-      <TableCell
+      <td
         {...centered}
         {...buildClassNames(config)}
-        sx={{ color: color }}
+        style={{ color: color }}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'ProviderType')
             : () => {}
         }>
-        <Typography {...tableCellTypographyStandard}>
-          {config.provider?.type}
-        </Typography>
-      </TableCell>
+        <Text>{config.provider?.type}</Text>
+      </td>
     </React.Fragment>
   )
 }

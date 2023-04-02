@@ -13,6 +13,6 @@ export function useGetQueryWithAutoRefetch<T>(
 		if (!isSuccess) {
 			refetch()
 		}
-	}, [data])
+	}, [data, isSuccess, refetch])
 	return data
 }

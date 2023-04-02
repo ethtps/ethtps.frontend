@@ -19,6 +19,6 @@ export function useLoadValuesHook<T>(
 			setCompleted(true)
 			setValueFunction(data)
 		}
-	}, [data, status])
+	}, [data, status, setValueFunction])
 	return completed
 }

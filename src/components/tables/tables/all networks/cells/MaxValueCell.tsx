@@ -1,7 +1,3 @@
-import { Typography, TableCell, Tooltip } from '@mui/material'
-import { DataPoint } from 'ethtps.data'
-import { numberFormat, liveDataHooks } from 'ethtps.data'
-import { useGetMaxDataForProviderFromAppStore } from 'ethtps.data/dist/hooks/DataHooks'
 import moment from 'moment'
 import React from 'react'
 import { centered } from '../../Cells.Types'
@@ -10,6 +6,10 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
+import { DataPoint, numberFormat, liveDataHooks } from '@/data/src'
+import { useGetMaxDataForProviderFromAppStore } from '@/data/src/hooks/DataHooks'
+import { Tooltip } from '@mantine/core'
+import { Text } from '@mantine/core'
 
 function generateMaxHoverMessage(data?: DataPoint): string {
   if (
@@ -31,7 +31,7 @@ function generateMaxHoverMessage(data?: DataPoint): string {
 
 function generateMaxTypography(data?: DataPoint) {
   const message = generateMaxHoverMessage(data)
-  return message?.length > 0 ? <Typography>{message}</Typography> : undefined
+  return message?.length > 0 ? <Text>{message}</Text> : undefined
 }
 
 export function MaxValueCell(config: ICustomCellConfiguration) {
@@ -43,7 +43,7 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
   const tooltipTypography = generateMaxTypography(maxData)
   return (
     <React.Fragment>
-      <TableCell
+      <td
         {...centered}
         {...buildClassNames(config)}
         onClick={() =>
@@ -51,17 +51,17 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
             ? config.clickCallback(config.provider, 'MaxValue')
             : () => {}
         }>
-        <Tooltip arrow placement='top-start' title={tooltipTypography}>
-          <Typography
+        <Tooltip withArrow label={tooltipTypography}>
+          <Text
             {...tableCellTypographyStandard}
             sx={{
               textDecoration:
                 tooltipTypography !== undefined ? 'underline' : undefined
             }}>
             {numberFormat(maxData?.value).toString()}
-          </Typography>
+          </Text>
         </Tooltip>
-      </TableCell>
+      </td>
     </React.Fragment>
   )
 }
