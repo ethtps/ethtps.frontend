@@ -18,15 +18,15 @@ const websocketSlice = createSlice({
 	name: 'websockets',
 	initialState,
 	reducers: {
-		connecting: (state) => {
+		connecting: (state: AppState) => {
 			state.isConnecting = true
 			state.isConnected = false
 		},
-		connected: (state) => {
+		connected: (state: AppState) => {
 			state.isConnected = true
 			state.isConnecting = false
 		},
-		disconnected: (state) => {
+		disconnected: (state: AppState) => {
 			state.isConnecting = false
 			state.isConnected = false
 		},

@@ -3,7 +3,7 @@ import { WebsocketEvent, websocketActions } from './WebsocketSubscriptionSlice'
 import websocketSlice from './WebsocketSubscriptionSlice'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { setLiveData } from './LiveDataSlice'
-import { useAppSelector } from '../store'
+import { useAppSelector, AppState } from '../store'
 import { useState, useEffect } from 'react'
 import {
 	reconnect,
@@ -18,11 +18,11 @@ const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 		return next(action)
 	}
 	return next(action)
-	if (reconnect && useAppSelector((state) => state.websockets.wsURL)) {
+	if (reconnect && useAppSelector((state: AppState) => state.websockets.wsURL)) {
 		setReconnect(false) //Only needs to be done once
 		setRWS(
 			new ReconnectingWebSocket(
-				useAppSelector((state) => state.websockets.wsURL) ?? ''
+				useAppSelector((state: AppState) => state.websockets.wsURL) ?? ''
 			)
 		)
 		useAppDispatch(websocketActions.connecting())

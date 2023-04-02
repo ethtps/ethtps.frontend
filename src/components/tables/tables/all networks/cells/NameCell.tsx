@@ -1,15 +1,21 @@
+import styles from '../../../../../styles/app.module.scss'
 import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
-import { Text, Tooltip } from '@mantine/core'
+import { Group, Text, Tooltip } from '@mantine/core'
 import { centered } from '../../Cells.Types'
 import React, { useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
-import { useGetProviderColorDictionaryFromAppStore } from '@/data/src'
+import { inline, useGetProviderColorDictionaryFromAppStore } from '@/data/src'
 import { tableCellTypographyStandard } from './Typography.types'
 import Image from 'next/image'
-import { IconCloud, IconTriangle } from '@tabler/icons-react'
+import {
+  IconCloud,
+  IconCloudOff,
+  IconTriangle,
+  IconTriangleOff
+} from '@tabler/icons-react'
 
 export function NameCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderColorDictionaryFromAppStore()
@@ -26,45 +32,44 @@ export function NameCell(config: ICustomCellConfiguration) {
   const noDataProvider = config.provider?.status === undefined
   return (
     <React.Fragment>
-      <Tooltip
-        withArrow
-        label={<Text>{`Click to read more about ${name}`}</Text>}>
-        <td
-          {...buildClassNames(config)}
-          onClick={() =>
-            config.clickCallback !== undefined
-              ? config.clickCallback(config.provider, 'Name')
-              : () => {}
-          }>
-          <>
-            <div className={'box'}>
-              <div>
+      <td
+        onClick={() =>
+          config.clickCallback !== undefined
+            ? config.clickCallback(config.provider, 'Name')
+            : () => {}
+        }>
+        <>
+          <Tooltip
+            withArrow
+            label={<Text>{`Click to read more about ${name}`}</Text>}>
+            <Group>
+              <Group>
                 <Image
                   alt={`${config.provider?.name} icon`}
-                  src={`provider-icons/${config.provider?.name}.png`}
-                  className={'tiny-img inline'}
+                  src={`/provider-icons/${config.provider?.name}.png`}
+                  className={styles.inline}
+                  width={30}
+                  height={30}
                   style={{ marginRight: '15px' }}></Image>
                 <Text
-                  className={`inline ${
-                    config.clickCallback !== undefined ? 'pointable' : ''
-                  }`}
+                  {...inline}
                   color={color}
                   {...tableCellTypographyStandard}>
                   {config.provider?.name}
                 </Text>
-              </div>
+              </Group>
               {conditionalRender(
                 <>
                   <Tooltip
                     withArrow
-                    className='spaced-horizontally'
+                    className={styles.spacedHorizontally}
                     label={
                       <Text>
                         There are issues getting data for{' '}
                         {config.provider?.name}
                       </Text>
                     }>
-                    <IconCloud className='inline small centered-vertically' />
+                    <IconCloudOff className='inline small centered-vertically' />
                   </Tooltip>
                 </>,
                 hasIssues && !noDataProvider
@@ -78,15 +83,15 @@ export function NameCell(config: ICustomCellConfiguration) {
                         There is no data provider for {config.provider?.name} :/
                       </Text>
                     }>
-                    <IconTriangle className='spaced-horizontally' />
+                    <IconTriangleOff className='spaced-horizontally' />
                   </Tooltip>
                 </>,
                 noDataProvider
               )}
-            </div>
-          </>
-        </td>
-      </Tooltip>
+            </Group>
+          </Tooltip>
+        </>
+      </td>
     </React.Fragment>
   )
 }

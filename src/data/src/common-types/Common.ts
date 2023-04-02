@@ -111,10 +111,6 @@ export const shortTimeIntervalToUIFormat = (interval: string): string => {
 	}
 }
 
-export const inline = {
-	className: 'inline',
-}
-
 export function uniform<T>(size: T) {
 	return {
 		style: {

@@ -1,11 +1,12 @@
 import React from 'react'
 import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
-import { useHandler } from '@/data/src'
+import { useGetExperimentsFromAppStore, useHandler } from '@/data/src'
 import { DataType } from '@/api-client/src/models'
-import { conditionalRender, useAppSelector } from '@/services'
+import { conditionalRender } from '@/services'
 import { Box, Tooltip, Text } from '@mantine/core'
 import { IconButton } from '../../IconButton'
+import { AppState, useAppSelector, useAppState } from '@/data/src/store'
 import {
   IconGasStation,
   IconNumber,
@@ -16,9 +17,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
   const mode = useHandler(model.modeHandle)
   const getColorComparedTo = (proposedMode: DataType) =>
     proposedMode == mode?.value ? { color: 'primary' } : undefined
-  const experimentsAppStoreValue = useAppSelector(
-    (state) => state.experiments
-  ) as number[] | undefined
+  const experimentsAppStoreValue = useGetExperimentsFromAppStore()
   return (
     <React.Fragment>
       <Box sx={{ float: 'right' }}>

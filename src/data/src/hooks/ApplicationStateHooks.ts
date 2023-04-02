@@ -4,11 +4,11 @@ import {
 } from '../slices/ApplicationStateSlice'
 import { websocketActions } from '../slices/WebsocketSubscriptionSlice'
 import { wsBaseURL } from '../models/services/DependenciesIOC'
-import { useAppDispatch, useAppSelector } from '../store';
+import { AppState, useAppDispatch, useAppSelector } from '../store';
 
 export const useGetApplicationDataLoadedFromAppStore = () => {
 	return useAppSelector(
-		(state) => state.applicationState.applicationDataLoaded
+		(state: AppState) => state.applicationState.applicationDataLoaded
 	) as boolean
 }
 
