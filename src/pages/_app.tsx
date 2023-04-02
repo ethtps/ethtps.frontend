@@ -7,8 +7,7 @@ import {
   useMantineTheme,
   ColorScheme,
   ColorSchemeProvider,
-  MantineProvider,
-  Paper
+  MantineProvider
 } from '@mantine/core'
 import { useWindowScroll, useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { AppProps } from 'next/app'
@@ -77,13 +76,11 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <ColorSchemeProvider
           colorScheme={colorScheme}
-          toggleColorScheme={toggleColorScheme}
-        >
+          toggleColorScheme={toggleColorScheme}>
           <MantineProvider
             theme={{ colorScheme }}
             withGlobalStyles
-            withNormalizeCSS
-          >
+            withNormalizeCSS>
             <AppShell
               styles={{
                 main: {
@@ -93,10 +90,10 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
                       : theme.colors.gray[0]
                 }
               }}
-              navbarOffsetBreakpoint="sm"
-              asideOffsetBreakpoint="sm"
+              navbarOffsetBreakpoint='sm'
+              asideOffsetBreakpoint='sm'
               footer={
-                <Footer height={60} p="md">
+                <Footer height={60} p='md'>
                   <div className={'inline'}>
                     Brought to you by
                     <div style={{ marginLeft: '5px' }} className={styles.trick}>
@@ -125,8 +122,7 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
                     }
                   ]}
                 />
-              }
-            >
+              }>
               {conditionalRender(
                 <HumanityProofPartial
                   dataLoaded={dataLoaded}

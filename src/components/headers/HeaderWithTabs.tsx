@@ -83,15 +83,14 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
   return (
     <Header height={60} mb={120}>
       <Container className={classes.header}>
-        <Link href="/">
+        <Link href='/'>
           <Text className={styles.logoish}>ETHTPS.info</Text>
         </Link>
         <Container
           style={{
             marginRight: 0
-          }}
-        ></Container>
-        <Group spacing={0} className={classes.links} position="center" my="xl">
+          }}></Container>
+        <Group spacing={0} className={classes.links} position='center' my='xl'>
           {items}
           <ThemeToggle />
         </Group>
@@ -99,7 +98,7 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
           opened={opened}
           onClick={toggle}
           className={classes.burger}
-          size="sm"
+          size='sm'
         />
       </Container>
     </Header>

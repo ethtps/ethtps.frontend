@@ -1,7 +1,6 @@
 'use client'
-import { createHandlerFromCallback, useHandler } from '@/data/src'
+import { createHandlerFromCallback } from '@/data/src'
 import { api, getAPIKey, queryClient } from '@/services/DependenciesIOC'
-import { sleep } from '@/services/Helpers'
 import { ApplicationDataService } from '@/services/flows'
 import {
   Box,
@@ -14,12 +13,9 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { ReactElement, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useAppState } from '../../../services/data/Hooks'
-import {
-  selectAppState,
-  setApplicationDataLoaded
-} from '@/data/src/slices/ApplicationStateSlice'
+import { useDispatch } from 'react-redux'
+import { setApplicationDataLoaded } from '@/data/src/slices/ApplicationStateSlice'
+import { sleep } from '@/services'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -107,18 +103,18 @@ export default function HumanityProofPartial(
   }
   return (
     <>
-      <Box w={'100%'} h={'100%'} pos="relative">
+      <Box w={'100%'} h={'100%'} pos='relative'>
         <LoadingOverlay
           visible={visible}
           overlayBlur={2}
           style={{ width: '100%' }}
           loader={
             <>
-              <Card radius="md" p="xl">
-                <Group position="center" style={{ width: '100%' }}>
+              <Card radius='md' p='xl'>
+                <Group position='center' style={{ width: '100%' }}>
                   <Progress
-                    color="violet"
-                    radius="xl"
+                    color='violet'
+                    radius='xl'
                     w={'500px'}
                     size={24}
                     value={progress}
@@ -127,15 +123,14 @@ export default function HumanityProofPartial(
                     label={`${progress <= 5 ? 0 : progress}%`}
                   />
                 </Group>
-                <Group position="center" style={{ width: '100%' }}>
-                  <Text fz="md" fw={700}>
+                <Group position='center' style={{ width: '100%' }}>
+                  <Text fz='md' fw={700}>
                     {loadingMessage}
                   </Text>
                 </Group>
               </Card>
             </>
-          }
-        >
+          }>
           {props.element}
         </LoadingOverlay>
       </Box>
