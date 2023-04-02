@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
-
-module.exports = nextConfig
+const withTM = require('next-transpile-modules')(['d3-scale'])
+module.exports = withTM({
+  reactStrictMode: true
+})

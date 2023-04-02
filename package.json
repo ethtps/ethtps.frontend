@@ -59,7 +59,7 @@
     "@visx/shape": "^3.0.0",
     "@visx/threshold": "^3.0.0",
     "@visx/xychart": "^3.0.1",
-    "d3-array": "^3.2.3",
+    "d3-array": "^3.2.2",
     "d3-format": "^3.1.0",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
@@ -70,6 +70,7 @@
     "moment": "^2.29.4",
     "next": "13.2.4",
     "next-redux-wrapper": "^8.1.0",
+    "next-transpile-modules": "^10.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-google-recaptcha-v3": "^1.10.1",
@@ -77,9 +78,9 @@
     "react-redux": "^8.0.5",
     "react-transition-group": "^4.4.5",
     "reconnecting-websocket": "^4.4.0",
-    "redux-query": "^3.5.0-alpha.3",
-    "redux-query-interface-superagent": "^3.5.0-alpha.3",
-    "redux-query-react": "^3.5.0-alpha.3",
+    "redux-query": "3.5.0-alpha.3",
+    "redux-query-interface-superagent": "3.5.0-alpha.3",
+    "redux-query-react": "3.5.0-alpha.3",
     "sass": "^1.60.0",
     "ts-extras": "^0.11.0",
     "typescript": "5.0.3",
@@ -92,5 +93,10 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.32.2"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!d3-)"
+    ]
   }
 }

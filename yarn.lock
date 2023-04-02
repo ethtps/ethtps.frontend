@@ -1748,7 +1748,7 @@ d3-array@2, d3-array@^2.6.0:
   dependencies:
     internmap "^1.0.0"
 
-"d3-array@2 - 3", "d3-array@2.10.0 - 3", d3-array@^3.2.3:
+"d3-array@2 - 3", "d3-array@2.10.0 - 3", d3-array@^3.2.2:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-3.2.3.tgz#39f1f4954e4a09ff69ac597c2d61906b04e84740"
   integrity sha512-JRHwbQQ84XuAESWhvIPaUV4/1UYTBOLiOPGWqgFDHZS1D5QN9c57FbH3QpEnQMYiOXNzKUQyGTZf+EVO7RT5TQ==
@@ -2026,7 +2026,7 @@ emoji-regex@^9.2.2:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.2.2.tgz#840c8803b0d8047f4ff0cf963176b32d4ef3ed72"
   integrity sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==
 
-enhanced-resolve@^5.12.0:
+enhanced-resolve@^5.10.0, enhanced-resolve@^5.12.0:
   version "5.12.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.12.0.tgz#300e1c90228f5b570c4d35babf263f6da7155634"
   integrity sha512-QHTXI/sZQmko1cbDoNAa3mJ5qhWUUNAq3vR0/YiD379fWQrcfuoX1+HW2S0MTt7XmoPLapdaDKUtelUSPic7hQ==
@@ -3336,6 +3336,13 @@ next-redux-wrapper@^8.1.0:
   resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-8.1.0.tgz#d9c135f1ceeb2478375bdacd356eb9db273d3a07"
   integrity sha512-2hIau0hcI6uQszOtrvAFqgc0NkZegKYhBB7ZAKiG3jk7zfuQb4E7OV9jfxViqqojh3SEHdnFfPkN9KErttUKuw==
 
+next-transpile-modules@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/next-transpile-modules/-/next-transpile-modules-10.0.0.tgz#7152880048835acb64d05fc7aa34910cbe7994da"
+  integrity sha512-FyeJ++Lm2Fq31gbThiRCrJlYpIY9QaI7A3TjuhQLzOix8ChQrvn5ny4MhfIthS5cy6+uK1AhDRvxVdW17y3Xdw==
+  dependencies:
+    enhanced-resolve "^5.10.0"
+
 next@13.2.4:
   version "13.2.4"
   resolved "https://registry.yarnpkg.com/next/-/next-13.2.4.tgz#2363330392b0f7da02ab41301f60857ffa7f67d6"
@@ -3793,21 +3800,21 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^1.0.0"
 
-redux-query-interface-superagent@^3.5.0-alpha.3:
+redux-query-interface-superagent@3.5.0-alpha.3:
   version "3.5.0-alpha.3"
   resolved "https://registry.yarnpkg.com/redux-query-interface-superagent/-/redux-query-interface-superagent-3.5.0-alpha.3.tgz#9ba0f638e1e55ba70f921509cfe391ac7e0dd8d6"
   integrity sha512-gwfs9xLFNvvC3ixNt1TvysJWGUR9xJHDnbkSqt27auLkjrrxvY3gGfYPk+yaYYBcUt5ntpK/r2yaDeJ2zLHRXA==
   dependencies:
     superagent "^5.0.6"
 
-redux-query-react@^3.5.0-alpha.3:
+redux-query-react@3.5.0-alpha.3:
   version "3.5.0-alpha.3"
   resolved "https://registry.yarnpkg.com/redux-query-react/-/redux-query-react-3.5.0-alpha.3.tgz#0fddfb46d888c6c16db6596501d5ce2cf16a55ea"
   integrity sha512-Qs5wgPwDJoUGnYAQxQBSeIbL+gHGyme4IGLFgS//Ty4wELyDpJfaM4CxjSSBgNYvV/QMwAZ8MUQvv3JLfJ2k5Q==
   dependencies:
     hoist-non-react-statics "^3.3.0"
 
-redux-query@^3.5.0-alpha.3:
+redux-query@3.5.0-alpha.3:
   version "3.5.0-alpha.3"
   resolved "https://registry.yarnpkg.com/redux-query/-/redux-query-3.5.0-alpha.3.tgz#3aad3415599d57229a3ef982b241bae1948d7168"
   integrity sha512-oqzScFf3/TaQI2p7h6t1IapcAZ+q59BHYVURwjFJQsoBpfdKK9a2JJRY3yw8SfYm9PeFTq4xg+3cM9+dBm2kiw==
