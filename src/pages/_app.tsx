@@ -7,7 +7,8 @@ import {
   useMantineTheme,
   ColorScheme,
   ColorSchemeProvider,
-  MantineProvider
+  MantineProvider,
+  Paper
 } from '@mantine/core'
 import { useWindowScroll, useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { AppProps } from 'next/app'
@@ -20,6 +21,11 @@ import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityP
 import { getAPIKey, setAPIKey } from '@/services/DependenciesIOC'
 import { useDispatch } from 'react-redux'
 import { setApplicationDataLoaded } from '@/data/src/slices/ApplicationStateSlice'
+import {
+  IconBrandDiscord,
+  IconBrandGithub,
+  IconBrandTwitter
+} from '@tabler/icons-react'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -103,8 +109,19 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
                 <HeaderWithTabs
                   links={[
                     {
-                      link: '',
-                      label: 'something'
+                      link: 'https://github.com/ethtps',
+                      label: 'GitHub repository',
+                      icon: <IconBrandGithub size={'1.2rem'} />
+                    },
+                    {
+                      link: 'https://twitter.com/ethtps',
+                      label: 'Follow us on Twitter',
+                      icon: <IconBrandTwitter size={'1.2rem'} />
+                    },
+                    {
+                      link: 'https://discord.gg/jWPcsTzpCT',
+                      label: 'Join our Discord channel',
+                      icon: <IconBrandDiscord size={'1.2rem'} />
                     }
                   ]}
                 />

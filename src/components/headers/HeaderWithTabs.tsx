@@ -1,5 +1,5 @@
-import styles from "../../styles/app.module.scss";
-import { useState } from "react";
+import styles from '../../styles/app.module.scss'
+import { useState } from 'react'
 import {
   createStyles,
   Header,
@@ -8,88 +8,77 @@ import {
   Burger,
   Text,
   rem,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import Link from "next/link";
-import { ThemeToggle } from "../buttons";
+  Tooltip,
+  ActionIcon
+} from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import Link from 'next/link'
+import { ThemeToggle } from '../buttons'
+import { Icon } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "100%",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '100%'
   },
 
   links: {
-    [theme.fn.smallerThan("xs")]: {
-      display: "none",
-    },
+    [theme.fn.smallerThan('xs')]: {
+      display: 'none'
+    }
   },
 
   burger: {
-    [theme.fn.largerThan("xs")]: {
-      display: "none",
-    },
+    [theme.fn.largerThan('xs')]: {
+      display: 'none'
+    }
   },
 
   link: {
-    display: "block",
-    lineHeight: 1,
-    padding: `${rem(8)} ${rem(12)}`,
+    display: 'block',
     borderRadius: theme.radius.sm,
-    textDecoration: "none",
+    textDecoration: 'none',
     color:
-      theme.colorScheme === "dark"
+      theme.colorScheme === 'dark'
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    fontSize: theme.fontSizes.sm,
-    fontWeight: 500,
-
-    "&:hover": {
+    '&:hover': {
       backgroundColor:
-        theme.colorScheme === "dark"
+        theme.colorScheme === 'dark'
           ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    },
+          : theme.colors.gray[0]
+    }
   },
 
   linkActive: {
-    "&, &:hover": {
+    '&, &:hover': {
       backgroundColor: theme.fn.variant({
-        variant: "light",
-        color: theme.primaryColor,
+        variant: 'light',
+        color: theme.primaryColor
       }).background,
-      color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
-        .color,
-    },
-  },
-}));
+      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
+        .color
+    }
+  }
+}))
 
 interface HeaderSimpleProps {
-  links: { link: string; label: string }[];
+  links: { link: string; label: string; icon: JSX.Element }[]
 }
 
 export function HeaderWithTabs({ links }: HeaderSimpleProps) {
-  const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
-  const { classes, cx } = useStyles();
-
+  const [opened, { toggle }] = useDisclosure(false)
+  const [active, setActive] = useState(links[0].link)
+  const { classes, cx } = useStyles()
   const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={cx(classes.link, {
-        [classes.linkActive]: active === link.link,
-      })}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
-      }}
-    >
-      {link.label}
-    </a>
-  ));
+    <ActionIcon size={'xl'} key={link.link}>
+      <Tooltip label={link.label} withArrow arrowPosition={'center'}>
+        <a href={link.link}>{link.icon}</a>
+      </Tooltip>
+    </ActionIcon>
+  ))
 
   return (
     <Header height={60} mb={120}>
@@ -99,15 +88,13 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
         </Link>
         <Container
           style={{
-            float: "right",
-            marginRight: 0,
+            marginRight: 0
           }}
         ></Container>
-        <Group spacing={5} className={classes.links}>
+        <Group spacing={0} className={classes.links} position="center" my="xl">
           {items}
+          <ThemeToggle />
         </Group>
-
-        <ThemeToggle />
         <Burger
           opened={opened}
           onClick={toggle}
@@ -116,5 +103,5 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
         />
       </Container>
     </Header>
-  );
+  )
 }
