@@ -1,2 +1,2 @@
-import { ProviderTable } from "./providers/ProviderTable";
-export { ProviderTable };
+import { ProviderTable } from './providers/ProviderTable'
+export { ProviderTable }

@@ -82,17 +82,17 @@ import { IOptionalCallback } from './models/charts/handlers/IOptionalCallback'
 import { IOptionalDefault } from './models/charts/handlers/IOptionalDefault'
 import { useGetQueryWithAutoRefetch } from './hooks/QueryHooks'
 import { useGetProvidersFromAppStore } from './hooks/ProviderHooks'
-import { ProviderResponseModel } from '../../api-client/src/models/ProviderResponseModel';
-import { ProviderModel } from '../../api-client/src/models/ProviderModel';
-import { DataPoint } from '../../api-client/src/models/DataPoint';
-import { IProviderExternalWebsite } from '../../api-client/src/models/IProviderExternalWebsite';
-import { DatedXYDataPoint } from '../../api-client/src/models/DatedXYDataPoint';
-import { StringXYDataPoint } from '../../api-client/src/models/StringXYDataPoint';
-import { NumericXYDataPoint } from '../../api-client/src/models/NumericXYDataPoint';
-import { TimeInterval } from '../../api-client/src/models/TimeInterval';
-import { Dataset } from '../../api-client/src/models/Dataset';
-import { L2DataResponseModel } from '../../api-client/src/models/L2DataResponseModel';
-import { L2DataRequestModel } from '../../api-client/src/models/L2DataRequestModel';
+import { ProviderResponseModel } from '../../api-client/src/models/ProviderResponseModel'
+import { ProviderModel } from '../../api-client/src/models/ProviderModel'
+import { DataPoint } from '../../api-client/src/models/DataPoint'
+import { IProviderExternalWebsite } from '../../api-client/src/models/IProviderExternalWebsite'
+import { DatedXYDataPoint } from '../../api-client/src/models/DatedXYDataPoint'
+import { StringXYDataPoint } from '../../api-client/src/models/StringXYDataPoint'
+import { NumericXYDataPoint } from '../../api-client/src/models/NumericXYDataPoint'
+import { TimeInterval } from '../../api-client/src/models/TimeInterval'
+import { Dataset } from '../../api-client/src/models/Dataset'
+import { L2DataResponseModel } from '../../api-client/src/models/L2DataResponseModel'
+import { L2DataRequestModel } from '../../api-client/src/models/L2DataRequestModel'
 import {
 	useGetSidechainsIncludedFromAppStore,
 	useSetDataModeMutation,

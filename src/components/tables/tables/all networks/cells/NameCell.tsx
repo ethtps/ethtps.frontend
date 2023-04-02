@@ -30,9 +30,8 @@ export function NameCell(config: ICustomCellConfiguration) {
     <React.Fragment>
       <Tooltip
         arrow
-        placement="right"
-        title={<Typography>{`Click to read more about ${name}`}</Typography>}
-      >
+        placement='right'
+        title={<Typography>{`Click to read more about ${name}`}</Typography>}>
         <TableCell
           {...centered}
           {...buildClassNames(config)}
@@ -40,27 +39,23 @@ export function NameCell(config: ICustomCellConfiguration) {
             config.clickCallback !== undefined
               ? config.clickCallback(config.provider, 'Name')
               : () => {}
-          }
-        >
+          }>
           <>
             <div className={'box'}>
               <Link
-                to={`/Providers/${config.provider?.name as string}/Overview`}
-              >
+                to={`/Providers/${config.provider?.name as string}/Overview`}>
                 <div>
                   <img
                     alt={`${config.provider?.name} icon`}
                     src={`provider-icons/${config.provider?.name}.png`}
                     className={'tiny-img inline'}
-                    style={{ marginRight: '15px' }}
-                  ></img>
+                    style={{ marginRight: '15px' }}></img>
                   <Typography
                     className={`inline ${
                       config.clickCallback !== undefined ? 'pointable' : ''
                     }`}
                     color={color}
-                    {...tableCellTypographyStandard}
-                  >
+                    {...tableCellTypographyStandard}>
                     {config.provider?.name}
                   </Typography>
                 </div>
@@ -69,16 +64,15 @@ export function NameCell(config: ICustomCellConfiguration) {
                 <>
                   <Tooltip
                     arrow
-                    placement="top"
-                    className="spaced-horizontally"
+                    placement='top'
+                    className='spaced-horizontally'
                     title={
                       <Typography>
                         There are issues getting data for{' '}
                         {config.provider?.name}
                       </Typography>
-                    }
-                  >
-                    <icons.CloudOff className="inline small centered-vertically" />
+                    }>
+                    <icons.CloudOff className='inline small centered-vertically' />
                   </Tooltip>
                 </>,
                 hasIssues && !noDataProvider
@@ -87,14 +81,13 @@ export function NameCell(config: ICustomCellConfiguration) {
                 <>
                   <Tooltip
                     arrow
-                    placement="top"
+                    placement='top'
                     title={
                       <Typography>
                         There is no data provider for {config.provider?.name} :/
                       </Typography>
-                    }
-                  >
-                    <icons.Warning className="spaced-horizontally" />
+                    }>
+                    <icons.Warning className='spaced-horizontally' />
                   </Tooltip>
                 </>,
                 noDataProvider

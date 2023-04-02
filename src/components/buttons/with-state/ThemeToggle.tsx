@@ -14,7 +14,7 @@ export function ThemeToggle() {
     <Tooltip withArrow label={`Change theme [CTRL+J]`}>
       <ActionIcon
         onClick={() => toggleColorScheme()}
-        size="lg"
+        size='lg'
         sx={(theme) => ({
           backgroundColor:
             theme.colorScheme === 'dark'
@@ -25,12 +25,11 @@ export function ThemeToggle() {
               ? theme.colors.yellow[4]
               : theme.colors.blue[6]
         })}
-        style={{ float: 'right' }}
-      >
+        style={{ float: 'right' }}>
         {colorScheme === 'dark' ? (
-          <IconSun size="1.2rem" />
+          <IconSun size='1.2rem' />
         ) : (
-          <IconMoonStars size="1.2rem" />
+          <IconMoonStars size='1.2rem' />
         )}
       </ActionIcon>
     </Tooltip>

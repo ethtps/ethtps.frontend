@@ -17,7 +17,7 @@ const rows = elements.map((element) => (
 
 export function ProviderTable() {
   return (
-    <Table horizontalSpacing="sm" verticalSpacing="md">
+    <Table horizontalSpacing='sm' verticalSpacing='md'>
       <tbody>{rows}</tbody>
     </Table>
   )

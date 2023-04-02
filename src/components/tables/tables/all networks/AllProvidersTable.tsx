@@ -32,8 +32,7 @@ export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
           sx={{
             minWidth: 750
           }}
-          aria-label="collapsible table"
-        >
+          aria-label='collapsible table'>
           <TableHead>
             <AllProvidersHeader />
           </TableHead>

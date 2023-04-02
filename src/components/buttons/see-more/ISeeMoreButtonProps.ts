@@ -1,5 +1,5 @@
 export interface ISeeMoreButtonProps {
-	onSeeMore?: () => void
-	onSeeLess?: () => void
-	enabled: boolean
+  onSeeMore?: () => void
+  onSeeLess?: () => void
+  enabled: boolean
 }

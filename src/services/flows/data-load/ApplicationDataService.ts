@@ -8,7 +8,6 @@ import {
   setProviderTypeColorDictionary
 } from '@/data/src/slices/ColorSlice'
 import { Handler } from '@/data/src'
-import { setApplicationDataLoaded } from '@/data/src/slices/ApplicationStateSlice'
 import { setIntervals } from '@/data/src/slices/IntervalsSlice'
 import { setProviders } from '@/data/src/slices/ProvidersSlice'
 import {

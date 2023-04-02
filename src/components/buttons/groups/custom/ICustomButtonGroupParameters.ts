@@ -1,3 +1,3 @@
 export interface ICustomButtonGroupParameters {
-	buttons?: string[]
+  buttons?: string[]
 }

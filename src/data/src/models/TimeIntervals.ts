@@ -1,5 +1,5 @@
-import { DataType } from '../../../api-client/src/models/DataType';
-import { TimeInterval } from '../../../api-client/src/models/TimeInterval';
+import { DataType } from '../../../api-client/src/models/DataType'
+import { TimeInterval } from '../../../api-client/src/models/TimeInterval'
 
 export function toShortString(interval: TimeInterval) {
 	switch (interval) {

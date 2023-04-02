@@ -5,8 +5,8 @@ import {
 	InstantDataResponseModel,
 } from './Dictionaries'
 import { toShortString_2 } from '../models/TimeIntervals'
-import { DataType } from '../../../api-client/src/models/DataType';
-import { DataPoint } from '../../../api-client/src/models/DataPoint';
+import { DataType } from '../../../api-client/src/models/DataType'
+import { DataPoint } from '../../../api-client/src/models/DataPoint'
 
 export function toShortString(type: DataType): string {
 	switch (type) {

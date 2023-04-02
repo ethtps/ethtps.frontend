@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start -p 3007",
     "start:dev": "next dev -p 3007",
-    "lint": "next lint"
+		"lint": "npx eslint src test",
+		"lint:fix": "npm run lint -- --fix",
+		"prettier": "npx prettier src test --check",
+		"prettier:fix": "npm run prettier -- --write"
   },
   "dependencies": {
     "@babel/plugin-syntax-flow": "^7.18.6",

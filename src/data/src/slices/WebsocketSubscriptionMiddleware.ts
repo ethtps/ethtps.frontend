@@ -13,7 +13,6 @@ import {
 } from '../models/services/DependenciesIOC'
 import { InstantDataResponseModel } from '../common-types/Dictionaries'
 
-
 const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 	if (!websocketActions.connecting.match(action)) {
 		return next(action)
@@ -21,7 +20,11 @@ const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 	return next(action)
 	if (reconnect && useAppSelector((state) => state.websockets.wsURL)) {
 		setReconnect(false) //Only needs to be done once
-		setRWS(new ReconnectingWebSocket(useAppSelector((state) => state.websockets.wsURL) ?? ''))
+		setRWS(
+			new ReconnectingWebSocket(
+				useAppSelector((state) => state.websockets.wsURL) ?? ''
+			)
+		)
 		store.dispatch(websocketActions.connecting())
 
 		rws.addEventListener('open', () => {

@@ -21,8 +21,7 @@ export function IndexCell(config: IIndexCellConfiguration) {
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Index')
             : () => {}
-        }
-      >
+        }>
         <IconButton
           children={
             <>

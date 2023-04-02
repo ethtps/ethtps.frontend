@@ -36,8 +36,7 @@ export function RecaptchaTokenLoader(props: {
     <React.Fragment>
       {conditionalRender(
         <GoogleReCaptchaProvider
-          reCaptchaKey={'6Le_XTUkAAAAAJKXCh8Cvq6UFvokPtjfTLCp1JAP'}
-        >
+          reCaptchaKey={'6Le_XTUkAAAAAJKXCh8Cvq6UFvokPtjfTLCp1JAP'}>
           <div>
             <GoogleReCaptcha
               onVerify={(x) => {

@@ -1,2 +1,2 @@
-import { HeaderWithTabs } from "./HeaderWithTabs";
-export { HeaderWithTabs };
+import { HeaderWithTabs } from './HeaderWithTabs'
+export { HeaderWithTabs }

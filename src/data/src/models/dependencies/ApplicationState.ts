@@ -2,7 +2,7 @@ import { IMaxDataModel } from '../interfaces/IMaxDataModel'
 import { IDataModeModel } from '../interfaces/IDataModeModel'
 import { ILiveDataModeModel } from '../interfaces/ILiveDataModeModel'
 import { IColorDictionaries } from '../interfaces/IColorDictionaries'
-import { IDataLoadingModel } from '../interfaces/IDataLoadingModel';
+import { IDataLoadingModel } from '../interfaces/IDataLoadingModel'
 import { IMainPageModel } from '../interfaces/IMainPageModel'
 import { IPagesState } from '../IPagesState'
 import { WebsocketSubscriptionState } from '../../slices/WebsocketSubscriptionSlice'
@@ -24,10 +24,10 @@ export interface IApplicationState extends IDataLoadingModel {
 
 export class ApplicationState implements IApplicationState {
 	constructor(
-		public	applicationDataLoaded: boolean=false,
-		public	completeApplicationDataAvailableInLocalStorage: boolean,
-		public	apiKey?: string,
-		public	hasProvenIsHuman: boolean = false,
+		public applicationDataLoaded: boolean = false,
+		public completeApplicationDataAvailableInLocalStorage: boolean,
+		public apiKey?: string,
+		public hasProvenIsHuman: boolean = false,
 		public websockets?: WebsocketSubscriptionState,
 		public colorDictionaries?: IColorDictionaries,
 		public dataLoading?: IDataLoadingModel,
@@ -38,6 +38,6 @@ export class ApplicationState implements IApplicationState {
 		public experiments?: number[],
 		public intervals?: Array<string>,
 		public networks?: Array<string>,
-		public providers?: ProviderResponseModel[],
+		public providers?: ProviderResponseModel[]
 	) {}
 }
