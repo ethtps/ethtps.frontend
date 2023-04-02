@@ -46,6 +46,7 @@ export class Handler<TReturnValue> implements IOptionalCallback<TReturnValue> {
 			newValue?: TReturnValue
 		) => {
 			this.value = newValue
+			if (this.callback)this.callback(newValue)
 		},
 		public value?: TReturnValue | undefined
 	) {}

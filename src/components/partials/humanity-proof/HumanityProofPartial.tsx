@@ -1,5 +1,5 @@
 'use client'
-import { createHandlerFromCallback } from '@/data/src'
+import { createHandlerFromCallback, useHandler } from '@/data/src'
 import { api, getAPIKey, queryClient } from '@/services/DependenciesIOC'
 import { sleep } from '@/services/Helpers'
 import { ApplicationDataService } from '@/services/flows'
@@ -14,7 +14,12 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { ReactElement, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useAppState } from '../../../services/data/Hooks'
+import {
+  selectAppState,
+  setApplicationDataLoaded
+} from '@/data/src/slices/ApplicationStateSlice'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -39,24 +44,33 @@ const useStyles = createStyles((theme) => ({
 }))
 interface IHumanityProofPartialProps {
   element: ReactElement
+  dataLoaded: boolean
 }
 
+let loading = false
 export default function HumanityProofPartial(
   props: IHumanityProofPartialProps
 ) {
   const dispatch = useDispatch()
-  const [progress, setProgress] = useState(5)
+  const [progress, setProgress] = useState<number>(5)
   const [visible, { toggle }] = useDisclosure(
     getAPIKey()?.length === 0 || progress !== 100
   )
+  if (props.dataLoaded && visible) {
+    toggle()
+  }
   const [loadingMessage, setLoadingMessage] = useState('Loading...')
-  const progressHandler = createHandlerFromCallback<number>((x) =>
-    setProgress(x ?? 0)
-  )
+  const progressHandler = createHandlerFromCallback<number>((x) => {
+    x ??= 0
+    setProgress(x)
+    if (x >= 100) {
+      dispatch(setApplicationDataLoaded(true))
+    }
+  })
   const dataService = visible
     ? new ApplicationDataService(api, queryClient, progressHandler)
     : undefined
-  const [failureCount, setFailureCount] = useState(1)
+  const [failureCount, setFailureCount] = useState(0)
   useEffect(() => {
     if (failureCount >= 2) {
       setLoadingMessage('Loading... this is taking a while')
@@ -67,24 +81,18 @@ export default function HumanityProofPartial(
   }, [failureCount])
   const maxFailures = 5
   let waitTime = 1000
-  let loading = false
   const loadData = async () => {
-    if (!loading) {
+    if (!loading && !props.dataLoaded) {
       loading = true
-      let requesting = false
       while (true) {
         try {
-          if (!requesting) {
-            requesting = true
-            await dataService?.loadDataAsync(dispatch)
-            break
-          }
+          dataService?.loadDataAsync(dispatch)
+          break
         } catch {
           setFailureCount(failureCount + 1)
           waitTime *= 2
         } finally {
           await sleep(waitTime)
-          requesting = false
           if (failureCount >= maxFailures) {
             await sleep(2500)
             location.reload()
@@ -93,7 +101,10 @@ export default function HumanityProofPartial(
       }
     }
   }
-  if (dataService) loadData()
+  if (dataService) {
+    dispatch(setApplicationDataLoaded(false))
+    loadData()
+  }
   return (
     <>
       <Box w={'100%'} h={'100%'} pos="relative">

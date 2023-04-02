@@ -14,9 +14,12 @@ import { AppProps } from 'next/app'
 import { NextPage } from 'next'
 import { HeaderWithTabs } from '@/components/headers'
 import { QueryClientProvider } from 'react-query'
-import { queryClient } from '@/services'
+import { conditionalRender, queryClient, useAppState } from '@/services'
 import { wrapper } from '@/data/src'
 import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
+import { getAPIKey, setAPIKey } from '@/services/DependenciesIOC'
+import { useDispatch } from 'react-redux'
+import { setApplicationDataLoaded } from '@/data/src/slices/ApplicationStateSlice'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -37,14 +40,26 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
-
+  const [pendingReset, setPendingReset] = useState(false)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (pendingReset) {
+      const key = getAPIKey()
+      localStorage.clear()
+      sessionStorage.clear()
+      console.log('Cleared storage')
+      setAPIKey(key as string)
+      dispatch(setApplicationDataLoaded(false))
+      window.location.reload()
+    }
+  }, [pendingReset, dispatch])
   useHotkeys([['mod+J', () => toggleColorScheme()]])
-
+  useHotkeys([['mod+Z', () => setPendingReset(true)]])
+  const dataLoaded = useAppState().applicationState.applicationDataLoaded
   const [showChild, setShowChild] = useState(false)
   useEffect(() => {
     setShowChild(true)
   }, [])
-
   if (!showChild) {
     return null
   }
@@ -95,7 +110,14 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
                 />
               }
             >
-              <HumanityProofPartial element={<Component {...pageProps} />} />
+              {conditionalRender(
+                <HumanityProofPartial
+                  dataLoaded={dataLoaded}
+                  element={<Component {...pageProps} />}
+                />,
+                !dataLoaded
+              )}
+              {conditionalRender(<Component {...pageProps} />, dataLoaded)}
             </AppShell>
           </MantineProvider>
         </ColorSchemeProvider>
