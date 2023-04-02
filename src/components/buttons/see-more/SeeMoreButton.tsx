@@ -1,8 +1,8 @@
-import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
 import { useState } from 'react'
 import { ISeeMoreButtonProps } from './ISeeMoreButtonProps'
 import React from 'react'
 import { Button } from '@mantine/core'
+import { IconArrowDown, IconArrowUp } from '@tabler/icons-react'
 
 export function SeeMoreButton(events: ISeeMoreButtonProps) {
   const [expand, setExpand] = useState(true)
@@ -18,7 +18,7 @@ export function SeeMoreButton(events: ISeeMoreButtonProps) {
     }
     setExpand(!expand)
   }
-  const getIcon = () => (expand ? <ArrowDownward /> : <ArrowUpward />)
+  const getIcon = () => (expand ? <IconArrowDown /> : <IconArrowUp />)
   return (
     <React.Fragment>
       <Button

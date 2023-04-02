@@ -1,16 +1,16 @@
-import { Link, LinkOff } from '@mui/icons-material'
 import { useState } from 'react'
 import React from 'react'
 import { ISidechainToggleButtonConfiguration } from './ISidechainToggleButtonConfiguration'
 import { setIncludeSidechains } from '@/data/src/slices/LiveDataSlice'
-import { useDispatch } from 'react-redux'
 import { Tooltip, Text } from '@mantine/core'
 import { IconButton } from '../IconButton'
+import { IconLink, IconLinkOff } from '@tabler/icons-react'
+import { useAppDispatch } from '@/data/src/store'
 export function SidechainToggleButton(
   config: ISidechainToggleButtonConfiguration
 ) {
   const [on, setOn] = useState(config.defaultIncluded)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch
   const toggle = () => {
     if (config.toggled) {
       config.toggled(!on)
@@ -30,7 +30,9 @@ export function SidechainToggleButton(
         }>
         <IconButton
           onClick={toggle}
-          icon={on ? <Link color='primary' /> : <LinkOff />}></IconButton>
+          icon={
+            on ? <IconLink color='primary' /> : <IconLinkOff />
+          }></IconButton>
       </Tooltip>
     </React.Fragment>
   )

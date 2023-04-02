@@ -1,5 +1,4 @@
 import React from 'react'
-import { EvStation, LocalGasStation, Numbers } from '@mui/icons-material'
 import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
 import { useHandler } from '@/data/src'
@@ -7,6 +6,11 @@ import { DataType } from '@/api-client/src/models'
 import { conditionalRender, useAppSelector } from '@/services'
 import { Box, Tooltip, Text } from '@mantine/core'
 import { IconButton } from '../../IconButton'
+import {
+  IconGasStation,
+  IconNumber,
+  IconRazorElectric
+} from '@tabler/icons-react'
 
 export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
   const mode = useHandler(model.modeHandle)
@@ -29,7 +33,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           label={<Text>Transactions per second</Text>}>
           <IconButton
             onClick={() => mode?.setter(DataType.Tps)}
-            icon={<Numbers />}
+            icon={<IconNumber />}
           />
         </Tooltip>
 
@@ -40,7 +44,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           label={<Text>Gas per second</Text>}>
           <IconButton
             onClick={() => mode?.setter(DataType.Gps)}
-            icon={<LocalGasStation />}
+            icon={<IconGasStation />}
           />
         </Tooltip>
 
@@ -51,7 +55,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           label={<Text>Gas-adjusted transactions per second</Text>}>
           <IconButton
             onClick={() => mode?.setter(DataType.GasAdjustedTps)}
-            icon={<EvStation />}
+            icon={<IconRazorElectric />}
           />
         </Tooltip>
       </Box>

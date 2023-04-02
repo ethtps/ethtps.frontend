@@ -9,7 +9,7 @@ import { conditionalRender } from '@/services'
 import { useGetProviderColorDictionaryFromAppStore } from '@/data/src'
 import { tableCellTypographyStandard } from './Typography.types'
 import Image from 'next/image'
-import * as icons from '@mui/icons-material'
+import { IconCloud, IconTriangle } from '@tabler/icons-react'
 
 export function NameCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderColorDictionaryFromAppStore()
@@ -64,7 +64,7 @@ export function NameCell(config: ICustomCellConfiguration) {
                         {config.provider?.name}
                       </Text>
                     }>
-                    <icons.CloudOff className='inline small centered-vertically' />
+                    <IconCloud className='inline small centered-vertically' />
                   </Tooltip>
                 </>,
                 hasIssues && !noDataProvider
@@ -78,7 +78,7 @@ export function NameCell(config: ICustomCellConfiguration) {
                         There is no data provider for {config.provider?.name} :/
                       </Text>
                     }>
-                    <icons.Warning className='spaced-horizontally' />
+                    <IconTriangle className='spaced-horizontally' />
                   </Tooltip>
                 </>,
                 noDataProvider

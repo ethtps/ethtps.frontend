@@ -2,10 +2,10 @@ import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
-import { ArrowRight } from '@mui/icons-material'
 import React from 'react'
 import { conditionalRender } from '@/services'
 import { IconButton } from '@/components/buttons/IconButton'
+import { IconArrowRight } from '@tabler/icons-react'
 
 interface IIndexCellConfiguration extends ICustomCellConfiguration {
   index: number
@@ -31,7 +31,7 @@ export function IndexCell(config: IIndexCellConfiguration) {
           }}
           icon={
             <>
-              {conditionalRender(<ArrowRight />, config.showTick)}
+              {conditionalRender(<IconArrowRight />, config.showTick)}
               {config.index}
             </>
           }

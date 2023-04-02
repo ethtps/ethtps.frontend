@@ -9,13 +9,11 @@ interface ITableHeaderParams {
 export function TableHeader(params: ITableHeaderParams): JSX.Element {
   return (
     <React.Fragment>
-      <tr>
-        {params.text?.map((x, i) => (
-          <td style={{ fontWeight: 'bold' }} key={i}>
-            <Text {...tableHeaderCellTypography}> {x}</Text>
-          </td>
-        ))}
-      </tr>
+      {params.text?.map((x, i) => (
+        <td style={{ fontWeight: 'bold' }} key={i}>
+          <Text {...tableHeaderCellTypography}> {x}</Text>
+        </td>
+      ))}
     </React.Fragment>
   )
 }
