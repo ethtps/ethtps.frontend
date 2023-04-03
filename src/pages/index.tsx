@@ -1,5 +1,4 @@
-import CustomVISXStreamgraph from '@/components/instant data animations/CustomVISXStreamgraph'
-import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
+import { DataOverviewChart, LivePSPartial } from '@/components'
 import { AllProvidersTable } from '@/components/tables'
 import { ProviderResponseModel, useGetProvidersFromAppStore } from '@/data/src'
 import { useGetMaxDataFromAppStore } from '@/data/src/hooks/DataHooks'
@@ -22,15 +21,27 @@ export default function Home() {
       <Grid>
         <Grid.Col span={2}></Grid.Col>
         <Grid.Col span={'auto'}>
-          <Paper ref={containerRef}>
-            <CustomVISXStreamgraph width={containerWidth} height={500} />
+          <Paper
+            sx={{
+              height: 400,
+              border: '1px solid red'
+            }}>
+            <LivePSPartial width={containerWidth} />
           </Paper>
-          <Paper>
+          <Paper ref={containerRef}>
             <AllProvidersTable
+              width={containerWidth}
               providerData={providers}
               maxRowsBeforeShowingExpand={15}
               maxData={maxData}
             />
+          </Paper>{' '}
+          <Paper
+            sx={{
+              height: 400,
+              border: '1px solid red'
+            }}>
+            <DataOverviewChart width={containerWidth} />
           </Paper>
         </Grid.Col>
         <Grid.Col span={2}></Grid.Col>

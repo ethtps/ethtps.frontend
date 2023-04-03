@@ -7,7 +7,7 @@ import {
   setProviderColorDictionary,
   setProviderTypeColorDictionary
 } from '@/data/src/slices/ColorSlice'
-import { Handler } from '@/data/src'
+import { Handler, setExperiments } from '@/data/src'
 import { setIntervals } from '@/data/src/slices/IntervalsSlice'
 import { setProviders } from '@/data/src/slices/ProvidersSlice'
 import {
@@ -16,6 +16,7 @@ import {
   setMaxTPSData
 } from '@/data/src/slices/DataSlice'
 import { DataType } from '@/api-client/src/models'
+import { ApiV2NetworksGetRequest } from '../../../api-client/src/apis/GeneralApi'
 
 let progressChangedHandler: Handler<number> | undefined
 
@@ -78,6 +79,11 @@ export class ApplicationDataService {
       'max-gps',
       async (api) => await api.getMax(DataType.Gps),
       (v) => dispatch(setMaxGPSData(v))
+    )
+    this.addLoadee(
+      'get-experiments',
+      async (api) => await api.getAvailableExperiments('Desktop'),
+      (v) => dispatch(setExperiments(v))
     )
   }
 

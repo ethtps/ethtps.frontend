@@ -39,7 +39,7 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 interface IHumanityProofPartialProps {
-  element: ReactElement
+  element?: ReactElement
   dataLoaded: boolean
 }
 

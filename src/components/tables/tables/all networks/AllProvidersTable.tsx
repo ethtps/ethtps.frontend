@@ -20,7 +20,10 @@ export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
   }
   return (
     <React.Fragment>
-      <Table aria-label='collapsible table'>
+      <Table
+        aria-label='collapsible table'
+        w={tableData.width}
+        verticalSpacing={'md'}>
         <thead>
           <tr>
             <AllProvidersHeader />

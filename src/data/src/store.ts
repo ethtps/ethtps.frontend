@@ -20,7 +20,7 @@ import {
 } from './models/dependencies/ApplicationState'
 import { createWrapper } from 'next-redux-wrapper'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { EqualityFn, useDispatch, useSelector } from 'react-redux'
 import { PayloadAction } from '@reduxjs/toolkit';
 const preloadedState = new ApplicationState(false, false)
 const makeStore = () =>
@@ -54,5 +54,5 @@ export type AppDispatch = Dispatch<AnyAction> &
 ThunkDispatch<RootState, null, AnyAction>
 export const wrapper = createWrapper<AppStore>(makeStore)
 export const useAppState = () => useSelector<AppState>((x) => x) as AppState
-export const useAppSelector = useSelector<AppState>
+export function useAppSelector<T>(selector: (state: AppState) => T, equalityFn?: EqualityFn<T>) { return useSelector<AppState, T>(selector) }
 export const useAppDispatch = (action:AnyAction) => useDispatch()(action)

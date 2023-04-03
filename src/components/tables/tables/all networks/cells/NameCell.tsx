@@ -38,10 +38,8 @@ export function NameCell(config: ICustomCellConfiguration) {
             : () => {}
         }>
         <>
-          <Tooltip
-            withArrow
-            label={<Text>{`Click to read more about ${name}`}</Text>}>
-            <Group>
+          <Tooltip withArrow label={<Text>{`Read more about ${name}`}</Text>}>
+            <Group align={'center'}>
               <Group>
                 <Image
                   alt={`${config.provider?.name} icon`}
@@ -58,6 +56,7 @@ export function NameCell(config: ICustomCellConfiguration) {
                 <>
                   <Tooltip
                     withArrow
+                    position={'bottom'}
                     label={
                       <Text>
                         There are issues getting data for{' '}
@@ -73,6 +72,7 @@ export function NameCell(config: ICustomCellConfiguration) {
                 <>
                   <Tooltip
                     withArrow
+                    position={'bottom'}
                     label={
                       <Text>
                         There is no data provider for {config.provider?.name} :/

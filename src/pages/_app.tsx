@@ -1,5 +1,7 @@
 import '../styles/app.module.scss'
 import '../styles/cells.styles.scss'
+import '../styles/Home.module.css'
+import '../styles/globals.css'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import {
   AppShell,
@@ -25,6 +27,8 @@ import {
   IconBrandGithub,
   IconBrandTwitter
 } from '@tabler/icons-react'
+import { binaryConditionalRender } from '@/services/Types'
+import { useAppSelector } from '../data/src/store'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -61,7 +65,9 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
   }, [pendingReset, dispatch])
   useHotkeys([['mod+J', () => toggleColorScheme()]])
   useHotkeys([['mod+Z', () => setPendingReset(true)]])
-  const dataLoaded = useAppState().applicationState.applicationDataLoaded
+  const dataLoaded = useAppSelector(
+    (x) => x.applicationState.applicationDataLoaded
+  )
   const [showChild, setShowChild] = useState(false)
   useEffect(() => {
     setShowChild(true)
@@ -124,14 +130,11 @@ function AppShellDemo({ Component, pageProps }: AppPropsWithLayout) {
                   ]}
                 />
               }>
-              {conditionalRender(
-                <HumanityProofPartial
-                  dataLoaded={dataLoaded}
-                  element={<Component {...pageProps} />}
-                />,
+              {binaryConditionalRender(
+                <HumanityProofPartial dataLoaded={dataLoaded} />,
+                <Component {...pageProps} />,
                 !dataLoaded
               )}
-              {conditionalRender(<Component {...pageProps} />, dataLoaded)}
             </AppShell>
           </MantineProvider>
         </ColorSchemeProvider>

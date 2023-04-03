@@ -25,6 +25,7 @@ import {
 import { APIKeyMiddleware } from './APIKeyMiddleware'
 import { getAPIKey, tryLoadAPIKeyFromLocalStorage } from '../DependenciesIOC'
 import { DataType } from '@/api-client/src/models'
+import { mainnet } from '../data/Constants'
 
 export class ETHTPSApi {
   public generalApi: GeneralApi = new GeneralApi()
@@ -142,7 +143,7 @@ export class ETHTPSApi {
   public getMax(
     dataType: DataType,
     provider?: string,
-    network?: string,
+    network: string = mainnet,
     includeSidechains?: boolean
   ): Promise<DataPointDictionary> | undefined {
     switch (dataType) {

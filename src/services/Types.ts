@@ -10,6 +10,14 @@ export const conditionalRender = (
         className: 'placeholder'
       })
 }
+
+export const binaryConditionalRender = (
+  componentIf: JSX.Element,
+  componentIfNot: JSX.Element,
+  renderIf?: boolean
+) => {
+  return renderIf ? componentIf : componentIfNot
+}
 /*
 export const ConditionalSkeletonRender = (
   component?: JSX.Element,
