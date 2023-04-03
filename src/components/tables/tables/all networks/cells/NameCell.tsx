@@ -15,6 +15,7 @@ import {
   IconTriangle,
   IconTriangleOff
 } from '@tabler/icons-react'
+import Link from 'next/link'
 
 export function NameCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderColorDictionaryFromAppStore()
@@ -49,7 +50,12 @@ export function NameCell(config: ICustomCellConfiguration) {
                   height={30}
                   style={{ marginRight: '15px' }}></Image>
                 <Text color={color} className={'boldcell'}>
-                  {config.provider?.name}
+                  <Link
+                    href={`/providers/${config.provider?.name
+                      ?.replace(' ', '-')
+                      .toLowerCase()}`}>
+                    {config.provider?.name}
+                  </Link>
                 </Text>
               </Group>
               {conditionalRender(

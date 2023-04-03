@@ -14,7 +14,10 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { ReactElement, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setApplicationDataLoaded } from '@/data/src/slices/ApplicationStateSlice'
+import {
+  setApplicationDataLoaded,
+  setCompleteApplicationDataAvailableInLocalStorage
+} from '@/data/src/slices/ApplicationStateSlice'
 import { sleep } from '@/services'
 
 const useStyles = createStyles((theme) => ({
@@ -61,6 +64,7 @@ export default function HumanityProofPartial(
     setProgress(x)
     if (x >= 100) {
       dispatch(setApplicationDataLoaded(true))
+      dispatch(setCompleteApplicationDataAvailableInLocalStorage(true))
     }
   })
   const dataService = visible

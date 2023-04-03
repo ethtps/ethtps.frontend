@@ -7,7 +7,7 @@ import { AppState } from '../store'
 
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,
-	completeApplicationDataAvailableInLocalStorage: false,
+	completeApplicationDataAvailableInLocalStorage: JSON.parse(maybeStorage?.getItem('completeApplicationDataAvailableInLocalStorage')??"false"),
 	apiKey: maybeStorage?.getItem('XAPIKey'),
 	hasProvenIsHuman:
 		maybeStorage?.getItem('hasProvenIsHuman') === 'true' ?? false,
@@ -26,6 +26,16 @@ export const applicationStateSlice = createSlice({
 			state.applicationDataLoaded = action.payload
 			return state
 		},
+		setCompleteApplicationDataAvailableInLocalStorage(
+			state: IDataLoadingModel,
+			action: PayloadAction<boolean | undefined>
+		) {
+			if (action.payload === undefined) return state
+
+			maybeStorage?.setItem('completeApplicationDataAvailableInLocalStorage', JSON.stringify(action.payload))
+			state.completeApplicationDataAvailableInLocalStorage = action.payload
+			return state
+		},
 		setStoreAPIKey(
 			state: IDataLoadingModel,
 			action: PayloadAction<string | undefined>
@@ -37,7 +47,7 @@ export const applicationStateSlice = createSlice({
 	},
 })
 
-export const { setApplicationDataLoaded, setStoreAPIKey } =
+export const { setApplicationDataLoaded, setStoreAPIKey, setCompleteApplicationDataAvailableInLocalStorage } =
 	applicationStateSlice.actions
 export const applicationStateReducer = applicationStateSlice.reducer
 export const selectAppState = (state: AppState) => state.applicationState

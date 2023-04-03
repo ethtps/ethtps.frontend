@@ -1,4 +1,5 @@
-import { DataOverviewChart, LivePSPartial } from '@/components'
+import { LivePSPartial } from '@/components'
+import DataOverviewChart from '@/components/charts/historical-data/DataOverviewChart'
 import { AllProvidersTable } from '@/components/tables'
 import { ProviderResponseModel, useGetProvidersFromAppStore } from '@/data/src'
 import { useGetMaxDataFromAppStore } from '@/data/src/hooks/DataHooks'
