@@ -62,7 +62,7 @@ export class ApplicationDataService {
     )
     this.addLoadee(
       'providers',
-      async (api) => await api.getProviders(),
+      async (api) => await api.getProvidersAsync(),
       (v) => dispatch(setProviders(v))
     )
     this.addLoadee(

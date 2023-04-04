@@ -12,7 +12,6 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
-import { ThemeToggle } from '../buttons'
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -87,11 +86,12 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
         <Container
           style={{
             marginRight: 0
-          }}></Container>
+          }}>
         <Group spacing={0} className={classes.links} position='center' my='xl'>
           {items}
-          <ThemeToggle />
-        </Group>
+          {/*<ThemeToggle />*/}
+          </Group>
+        </Container>
         <Burger
           opened={opened}
           onClick={toggle}

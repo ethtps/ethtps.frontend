@@ -36,7 +36,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/pages/components/ErrorBoundary.jsx", "src/pages/providers/[slug]/page.js", "next.config.js"  ],
   "exclude": [
     "node_modules",
     "dist"

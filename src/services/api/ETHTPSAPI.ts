@@ -94,8 +94,8 @@ export class ETHTPSApi {
     )*/
   }
 
-  public getProviders(): Promise<ProviderResponseModel[]> {
-    return this.generalApi.apiV2ProvidersGet()
+  public async getProvidersAsync() {
+    return await this.generalApi.apiV2ProvidersGet()
   }
 
   public getNetworksAsync(): Promise<Array<string>> {
