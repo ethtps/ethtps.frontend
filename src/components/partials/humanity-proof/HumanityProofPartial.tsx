@@ -86,7 +86,7 @@ export default function HumanityProofPartial(
       loading = true
       while (true) {
         try {
-          dataService?.loadDataAsync(dispatch)
+          dataService?.loadDataAsync()
           break
         } catch {
           setFailureCount(failureCount + 1)

@@ -112,7 +112,7 @@ export class ApplicationDataService {
     })
   }
 
-  public async loadDataAsync(dispatch: AppDispatch) {
+  public async loadDataIntoReduxStoreAsync(dispatch: AppDispatch) {
     if ((getAPIKey()?.length ?? 0) === 0) {
       const key = await this.api.getNewAPIKey('nokey')
       if (key.failureReason) {
@@ -124,5 +124,9 @@ export class ApplicationDataService {
     this.loadedCount = 1
     this.setLoadees(dispatch, this.api)
     this.loaders.forEach((x) => x())
+  }
+
+  public async loadDataAsync() {
+    
   }
 }

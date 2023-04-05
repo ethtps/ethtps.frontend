@@ -50,6 +50,9 @@ export class ETHTPSApi {
         this.apiKey = supposedlyAKey //Definitely a key
       }
     }
+    else{
+      this.apiKey = apiKey
+    }
     this.apiKeyAPI = new APIKeyApi(
       new Configuration({
         basePath: this._apiURL
