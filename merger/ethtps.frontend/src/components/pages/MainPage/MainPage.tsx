@@ -5,30 +5,26 @@ import {
   globalInstantDataService
 } from '../../../services/common'
 import {
-  allInstantData,
-  colorDictionary,
-  providerTypeColorDictionary,
-  maxData,
-  providerData
+  colorDictionary
 } from '../../../services/defaultData'
-import React, { useState } from 'react'
-import DataStatByType from './components/instant-stats/DataStatByType'
+import { useState } from 'react'
+import { DataStatByType } from './components/instant-stats/DataStatByType'
 import ModeSelector from './ModeSelector'
 import HistoricalChart from '../../charts/HistoricalChart'
 import { Helmet } from 'react-helmet'
 import IntervalSlider from '../../IntervalSlider'
 import { LargeHeader } from '../../Headers/LargeHeader'
 import ProviderTable from './components/ProviderTable'
-import { DefaultRequestParameters } from '../../../models'
+import { DefaultRequestParameters } from '../../../models/Common'
 import {
   useExcludeNonGeneralPurposeNetworks,
   useExcludeSidechains,
   useMode,
   useNetwork,
   useSmoothing
-} from '../../../hooks'
+} from '../../../hooks/ETHTPSHooks'
 import { HomePageResponseModel } from '../../../services/api-client/src/models/HomePageResponseModel'
-import { DataType } from '../../../services/api-client/src/models'
+import { DataType } from '../../../services/api-client/src/models/DataType'
 
 export function MainPage() {
   const networkHook = useNetwork()
@@ -222,7 +218,7 @@ export function MainPage() {
       <hr />
       <h3>Historical {formatModeName(modeHook.mode)} distribution</h3>
       <p>
-        This is a stacked line chart of all networks' historical throughput.
+        This is a stacked line chart of all networks&apos historical throughput.
       </p>
       <HistoricalChart
         height={200}

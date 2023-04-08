@@ -128,14 +128,14 @@ class ProviderTable extends SortableTable {
 
           </TableCell>
         </TableRow>
-        {noDataProviders.map((row, i) => <TableRow>
+        {noDataProviders.map((row, i) => <TableRow key={i}>
           <TableCell align="left">
             {this.state.rows.length - noDataProviders.length + i + 1}
           </TableCell>
           <TableCell align="left">
             <div className={'l1 box'}>
               <Link style={{ color: this.state.colorDictionary[row.name] }} to={`/Network/${row.name}`}>
-                <img className={'provider-icon'} src={`/provider-icons/${row.name}.png`} />
+                <img className={'provider-icon'} alt={'provider-icon'} src={`/provider-icons/${row.name}.png`} />
                 {row.name}
               </Link>
             </div>
@@ -258,7 +258,7 @@ class ProviderTable extends SortableTable {
           </Table>
         </TableContainer>
         <p>
-          Click on a network's name in the table above to visit a page showing more details about the project, including historical TPS and gas data.
+          Click on a network&aposs name in the table above to visit a page showing more details about the project, including historical TPS and gas data.
         </p>
         <p>
           {(this.state.mode !== 'tps') ? 'Some projects don\'t provide gas data. In this case, missing max data is estimated.' : ""}
@@ -283,7 +283,7 @@ class ProviderTable extends SortableTable {
     let blockNo = this.state.allMaxData['tps'][name].blockNumber;
     if (blockNo !== undefined) {
       let text = "Seen  " + this.state.allMaxData['tps'][name].date;
-      if (blockNo > 0){
+      if (blockNo > 0) {
         text = "Seen at block " + this.state.allMaxData['tps'][name].blockNumber;
       }
       return <>

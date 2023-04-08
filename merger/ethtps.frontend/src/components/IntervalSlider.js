@@ -1,9 +1,10 @@
-import Slider from '@mui/material/Slider';
+
 import React from 'react';
 import { Box } from '@mui/system';
+import { Slider } from '@mui/material';
 
-export default class IntervalSlider extends React.Component{
-    constructor(props){
+export default class IntervalSlider extends React.Component {
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -12,30 +13,30 @@ export default class IntervalSlider extends React.Component{
     }
 
     marks = [
-      {
-          value: 1,
-          label: '1 block',
-      },
-      {
-        value: 20,
-        label: '1 minute',
-      },
-      {
-        value: 40,
-        label: '1 hour',
-      },
-      {
-          value: 60,
-          label: '1 day',
-      },
-      {
-          value: 80,
-          label: '1 week',
-      },
-      {
-          value: 100,
-          label: '1 month',
-      },
+        {
+            value: 1,
+            label: '1 block',
+        },
+        {
+            value: 20,
+            label: '1 minute',
+        },
+        {
+            value: 40,
+            label: '1 hour',
+        },
+        {
+            value: 60,
+            label: '1 day',
+        },
+        {
+            value: 80,
+            label: '1 week',
+        },
+        {
+            value: 100,
+            label: '1 month',
+        },
     ];
 
     timeWarpMarks = [
@@ -44,12 +45,12 @@ export default class IntervalSlider extends React.Component{
             label: '1 block/s',
         },
         {
-          value: 20,
-          label: '1 minute/s',
+            value: 20,
+            label: '1 minute/s',
         },
         {
-          value: 40,
-          label: '1 hour/s',
+            value: 40,
+            label: '1 hour/s',
         },
         {
             value: 60,
@@ -63,7 +64,7 @@ export default class IntervalSlider extends React.Component{
             value: 100,
             label: '1 month/s',
         },
-      ];
+    ];
 
     intervals = {
         1: "Instant",
@@ -77,38 +78,38 @@ export default class IntervalSlider extends React.Component{
     lastValue = 1;
     lastInterval = "Instant";
 
-    onChange(x, y){
-        if (y !== this.lastValue){
+    onChange(x, y) {
+        if (y !== this.lastValue) {
             this.lastValue = y;
             this.lastInterval = this.intervals[y];
-            if (this.props.onChange !== undefined){
+            if (this.props.onChange !== undefined) {
                 this.props.onChange(this.lastInterval);
             }
         }
     }
-    
+
     valuetext(value) {
-      return `${value}min/s`;
-    }
-    
-    valueLabelFormat(value) {
-      return this.marks.findIndex((mark) => mark.value === value) + 1;
+        return `${value}min/s`;
     }
 
-    render(){
-        return <center> <Box style={{width: '90%'}}>
-                <Slider
-                    aria-label="Restricted values"
-                    defaultValue={1}
-                    valueLabelFormat={this.valueLabelFormat.bind(this)}
-                    getAriaValueText={this.valuetext.bind(this)}
-                    step={null}
-                    marks={(this.state.isTimeWarp)?this.timeWarpMarks:this.marks}
-                    track={false}
-                    onChange={this.onChange.bind(this)}
-                    max={100}
-                />
+    valueLabelFormat(value) {
+        return this.marks.findIndex((mark) => mark.value === value) + 1;
+    }
+
+    render() {
+        return <center> <Box style={{ width: '90%' }}>
+            <Slider
+                aria-label="Restricted values"
+                defaultValue={1}
+                valueLabelFormat={this.valueLabelFormat.bind(this)}
+                getAriaValueText={this.valuetext.bind(this)}
+                step={null}
+                marks={(this.state.isTimeWarp) ? this.timeWarpMarks : this.marks}
+                track={false}
+                onChange={this.onChange.bind(this)}
+                max={100}
+            />
         </Box>
-            </center>
+        </center>
     }
 }

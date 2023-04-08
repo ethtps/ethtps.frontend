@@ -20,13 +20,17 @@
     "incremental": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
+    "allowImportingTsExtensions": true,
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/index.js", "src/Main.js"  ],
+    "**/*.tsx",
+    "**/**.js",
+    "**/**.jsx",
+  ],
   "exclude": [
-    "node_modules", "dist"
+    "node_modules",
+    "dist"
   ]
 }

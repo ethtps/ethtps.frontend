@@ -1,5 +1,5 @@
 import { globalGeneralApi, isEmpty } from './common'
-import { DefaultRequestParameters, GenericDictionary } from '../models'
+import { DefaultRequestParameters, GenericDictionary } from '../models/index'
 
 export interface IPageLiveDataDescriptor {
   pageName
@@ -14,7 +14,7 @@ export interface IPageLiveDataDescriptor {
 export default class InstantDataService {
   private instantDataForPageCallbackDictionary: GenericDictionary<
     (data: any) => void
-  > = { nothing: () => {} }
+  > = { nothing: () => { } }
   private instantDataForPageIntervalRef: NodeJS.Timer
   public smoothing = ''
   public includeSidechains = true

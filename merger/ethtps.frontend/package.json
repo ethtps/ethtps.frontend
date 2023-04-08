@@ -2,11 +2,7 @@
   "name": "ethtps.frontend",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/plugin-syntax-flow": "^7.21.4",
-    "@babel/plugin-transform-react-jsx": "^7.21.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.16",
@@ -59,17 +55,17 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/react-helmet": "^6.1.6",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
     "babel-plugin-wildcard": "^7.0.0",
     "eslint": "^8.37.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-react": "^7.32.2",
-    "@testing-library/react": "^14.0.0",
-    "@types/react-helmet": "^6.1.6",
-    "@types/react-router-dom": "^5.3.3",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1"
+    "eslint-plugin-react": "^7.32.2"
   }
 }

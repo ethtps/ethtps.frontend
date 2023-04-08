@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { DataType, TimeInterval } from '../services/api-client/src/models'
+import { StringDictionary } from '../models'
+import { colorDictionary, providerTypeColorDictionary } from '../services/defaultData'
 
 export const useNetwork = () => {
   const [network, setNetwork] = useState('Mainnet')
@@ -43,5 +45,21 @@ export const useSmoothing = () => {
   return {
     smoothing,
     setSmoothing
+  }
+}
+
+export const useProviderColors = () => {
+  const [providerColors, setProviderColors] = useState<StringDictionary>(colorDictionary)
+  return {
+    providerColors,
+    setProviderColors
+  }
+}
+
+export const useProviderTypeColorDictinoary = () => {
+  const [dictionary, setDictionary] = useState<StringDictionary>(providerTypeColorDictionary)
+  return {
+    dictionary,
+    setDictionary
   }
 }

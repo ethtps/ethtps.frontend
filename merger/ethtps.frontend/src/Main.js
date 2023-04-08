@@ -1,8 +1,8 @@
-import MainPage from "./components/pages/MainPage/MainPage";
-import NetworkPage from "./components/pages/networks/NetworkPage";
-import TimeWarpPage from "./components/pages/TimeWarpPage";
-import StatusPage from "./components/pages/Status/StatusPage";
-import RegisterL2Page from "./components/pages/RegisterL2Page";
+import { MainPage } from "./components/pages/MainPage/MainPage.tsx";
+import NetworkPage from "./components/pages/networks/NetworkPage.js";
+import TimeWarpPage from "./components/pages/TimeWarpPage.js";
+import StatusPage from "./components/pages/Status/StatusPage.tsx";
+import RegisterL2Page from "./components/pages/RegisterL2Page.tsx";
 import React from "react";
 import { Routes, Route, Router, Switch } from "react-router-dom";
 

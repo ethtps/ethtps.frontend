@@ -7,10 +7,6 @@ import { ProviderResponseModel } from '../../../../../../services/api-client/src
 import { colorDictionary } from '../../../../../../services/defaultData'
 
 interface IInstantDataStatProps {
-  labels: string[]
-  datasets: [{ data: number[] }]
-  backgroundColors: string[]
-  max: number
   data: DataResponseModelDictionary
   providerData: ProviderResponseModel[]
   mode: string
