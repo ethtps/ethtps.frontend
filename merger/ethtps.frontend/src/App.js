@@ -1,6 +1,6 @@
 import './App.css';
 import React, { ReactDOM, useState, useEffect } from "react";
-import Main from './Main.js';
+import {Main} from './Main';
 
 class App extends React.Component {
 

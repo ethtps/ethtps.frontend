@@ -15,7 +15,7 @@ class ProviderTable extends SortableTable {
     super(props);
 
     this.state = {
-      rows: props.providerData.map(this.createRow.bind(this)),
+      rows: props.providerData?.map(this.createRow.bind(this)),
       data: props.data,
       providerData: props.providerData,
       allMaxData: props.allMaxData,

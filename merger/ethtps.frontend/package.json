@@ -10,6 +10,7 @@
     "babel-eslint": "^10.1.0",
     "chart.js": "^4.2.1",
     "dayjs": "^1.11.7",
+    "eslint-config-next": "^13.3.0",
     "fix-date": "^1.1.6",
     "query-string": "^8.1.0",
     "querystring": "^0.2.1",
@@ -30,8 +31,7 @@
     "web-vitals": "^3.3.1"
   },
   "scripts": {
-    "start": "export PORT=3007 && export HOST=0.0.0.0 && react-scripts start",
-    "win-start": "set PORT=3007 && set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "start": "export PORT=3007 && set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

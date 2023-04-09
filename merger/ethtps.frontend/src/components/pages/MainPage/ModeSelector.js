@@ -40,27 +40,29 @@ export default class ModeSelector extends React.Component {
     }
 
     render(){
-        let image = {};
+        let image = <></>;
         let para;
         let text = capitalizeFirstLetter(formatModeName(this.state.mode)) + ' mode';
         let style = {cursor:'pointer'};
         switch(this.state.mode){
             case 'tps':
-                image = <img className={'small-img'} title={'Gas mode'} src={gasIcon} onClick={this.gpsSelected.bind(this)}/>;
+                image = <img alt='gas icon' className={'small-img'} title={'Gas mode'} src={gasIcon} onClick={this.gpsSelected.bind(this)}/>;
                 para = <p className={'inline'} style={style} onClick={this.gpsSelected.bind(this)}>{text}</p>;
                 break;
             case 'gps':
-                image = <img className={'small-img'} title={'Gas-adjusted TPS mode'} src={gasAdjustedIcon} onClick={this.gasAdjustedSelected.bind(this)}/>;
+                image = <img alt='gtps icon' className={'small-img'} title={'Gas-adjusted TPS mode'} src={gasAdjustedIcon} onClick={this.gasAdjustedSelected.bind(this)}/>;
                 para = <p className={'inline'} style={style} onClick={this.gasAdjustedSelected.bind(this)}>{text}</p>;
                 break;
             case 'gasAdjustedTPS':
-                image = <img className={'small-img'} title={'TPS mode'} src={numberIcon} onClick={this.tpsSelected.bind(this)}/>;
+                image = <img alt='tps icon' className={'small-img'} title={'TPS mode'} src={numberIcon} onClick={this.tpsSelected.bind(this)}/>;
                 para = <p className={'inline'} style={style} onClick={this.tpsSelected.bind(this)}>{text}</p>;
                 break;
+            default: <></>
         }
         return <>
             <div style={style} className={'top-right box inline' + (this.state.showGradient?" gradient-border" : "")}>
                 {image}
+                {para}
             </div>
         </>;
     }

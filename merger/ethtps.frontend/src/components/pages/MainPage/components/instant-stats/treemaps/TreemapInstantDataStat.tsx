@@ -30,7 +30,7 @@ const createDataPoint = (x: ProviderResponseModel, state: TreemapInstantDataStat
 }
 
 const createSeries = (state: TreemapInstantDataStatProps) =>
-    (state.providerData || state.data || !state.colorDictionary) ?
+    (!state.providerData || !state.data || !state.colorDictionary) ?
         [{ data: [] }]
         :
         [{ data: state.providerData.filter(x => state.data[x.name] !== undefined && state.data[x.name][0] !== null).map(x => createDataPoint(x, state)) }];

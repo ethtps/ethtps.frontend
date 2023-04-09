@@ -8,13 +8,12 @@ import {
   colorDictionary
 } from '../../../services/defaultData'
 import { useState } from 'react'
-import { DataStatByType } from './components/instant-stats/DataStatByType'
+import { DataStatByType } from './components/instant-stats'
 import ModeSelector from './ModeSelector'
 import HistoricalChart from '../../charts/HistoricalChart'
 import { Helmet } from 'react-helmet'
 import IntervalSlider from '../../IntervalSlider'
 import { LargeHeader } from '../../Headers/LargeHeader'
-import ProviderTable from './components/ProviderTable'
 import { DefaultRequestParameters } from '../../../models/Common'
 import {
   useExcludeNonGeneralPurposeNetworks,
@@ -206,15 +205,6 @@ export function MainPage() {
       <hr />
 
       <h3>Networks</h3>
-      <ProviderTable
-        data={homePageModel?.instantData}
-        allData={homePageModel?.instantData}
-        colorDictionary={homePageModel?.colorDictionary}
-        allMaxData={homePageModel?.maxData}
-        mode={modeHook.mode}
-        smoothing={smoothingHook.smoothing}
-        providerData={getProviderData()}
-      />
       <hr />
       <h3>Historical {formatModeName(modeHook.mode)} distribution</h3>
       <p>

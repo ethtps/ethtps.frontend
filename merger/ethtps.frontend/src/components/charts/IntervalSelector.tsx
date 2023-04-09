@@ -27,14 +27,16 @@ export function IntervalSelector(props: IIntervalSelectorParameters) {
     <>
       <div
         style={
-          this.state.years.length > 0
+          props.years.length > 0
             ? {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around",
                 flexWrap: "wrap",
               }
-            : {}
+            : {
+              display: "none"
+            }
         }
       >
         {conditionalRender(
@@ -57,7 +59,7 @@ export function IntervalSelector(props: IIntervalSelectorParameters) {
         <ToggleButtonGroup
           color="primary"
           style={
-            this.state.years.length > 0
+            props.years.length > 0
               ? { marginTop: "5px" }
               : { float: "right" }
           }

@@ -30,17 +30,17 @@ export function DataStatByType(props: DataStatByTypeProps) {
             stat = <>
                 <MobileView>
                     <InstantDataStat
-                        data={this.state.data}
-                        colorDictionary={this.state.colorDictionary}
-                        mode={this.state.mode}
-                        providerData={this.state.providerData} />
+                        data={props.data}
+                        colorDictionary={props.colorDictionary}
+                        mode={props.mode}
+                        providerData={props.providerData} />
                 </MobileView>
                 <BrowserView>
                     <TreemapInstantDataStat
-                        data={this.state.data}
-                        colorDictionary={this.state.colorDictionary}
-                        mode={this.state.mode}
-                        providerData={this.state.providerData} />
+                        data={props.data}
+                        colorDictionary={props.colorDictionary}
+                        mode={props.mode}
+                        providerData={props.providerData} />
                 </BrowserView>
             </>
             break;
@@ -49,31 +49,31 @@ export function DataStatByType(props: DataStatByTypeProps) {
             stat = <>
                 <MobileView>
                     <TypeDataStat
-                        data={this.state.data}
-                        colorDictionary={this.state.providerTypeColorDictionary}
-                        mode={this.state.mode}
-                        providerData={this.state.providerData} />
+                        data={props.data}
+                        colorDictionary={props.providerTypeColorDictionary}
+                        mode={props.mode}
+                        providerData={props.providerData} />
                 </MobileView>
                 <BrowserView>
                     <TreemapTypeDataStat
-                        data={this.state.data}
-                        colorDictionary={this.state.providerTypeColorDictionary}
-                        mode={this.state.mode}
-                        providerData={this.state.providerData} />
+                        data={props.data}
+                        colorDictionary={props.providerTypeColorDictionary}
+                        mode={props.mode}
+                        providerData={props.providerData} />
                 </BrowserView>
             </>
             break;
     }
     return <>
         <TotalDataSummaryStat
-            smoothing={this.state.smoothing}
-            providerData={this.state.providerData}
-            mode={this.state.mode}
-            data={this.state.data} />
+            smoothing={props.smoothing}
+            providerData={props.providerData}
+            mode={props.mode}
+            data={props.data} />
         <p>
             Click one of the buttons below to change the chart type
         </p>
-        <StatTypeSelector onChange={this.onStatChanged.bind(this)} split={this.state.split} />
+        <StatTypeSelector onChange={()=>{}} split={props.split} />
         <p>
             {title}
         </p>
