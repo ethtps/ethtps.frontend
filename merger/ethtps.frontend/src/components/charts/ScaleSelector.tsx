@@ -8,10 +8,13 @@ interface IScaleSelectorProps extends IOnChange {
 }
 
 export function ScaleSelector(props: IScaleSelectorProps) {
+  if (["log", "lin"].indexOf(props.scale) === -1) {
+    props.scale = "lin"
+  }
   const [scale, setScale] = useState(props.scale);
   useEffect(() => {
     props.onChange(scale);
-  }, [scale]);
+  }, [scale, props]);
   return (
     <>
       <ToggleButtonGroup

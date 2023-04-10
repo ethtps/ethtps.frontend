@@ -210,15 +210,6 @@ export function MainPage() {
       <p>
         This is a stacked line chart of all networks&apos historical throughput.
       </p>
-      <HistoricalChart
-        height={200}
-        interval='1m'
-        mode={modeHook.mode}
-        colorDictionary={homePageModel?.colorDictionary}
-        provider='All'
-        scale='lin'
-        network={networkHook.network}
-      />
     </>
   )
 }

@@ -1,3 +1,4 @@
+import { CompactHeader } from "../../Headers/CompactHeader";
 import HistoricalChart from "../../charts/HistoricalChart";
 import { colorDictionary } from "../../../services/defaultData";
 import "./NetworkPage.css";
@@ -95,7 +96,7 @@ export default class NetworkPage extends React.Component {
   updateInstantTPS(data) {
     try {
       this.setState({ instantTPS: data["tps"][this.state.name][0].value });
-    } catch {}
+    } catch { }
   }
 
   componentDidMount() {
