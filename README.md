@@ -10,4 +10,5 @@ typical
 
 `npm run start:dev`
 
-It's still a mess, will be better organized in the future  ¯\_(ツ)_\/¯
+Everything's still a mess - it will be improved at some point in the future  ¯\_(ツ)_\/¯
+ 
