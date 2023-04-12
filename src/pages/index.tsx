@@ -1,40 +1,48 @@
-import { AppPropsWithLayout } from '@/components'
+import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import MainLayout from './components/Layout.tsx/MainLayout'
-import { ETHTPSApi } from '@/services/api/ETHTPSAPI'
-import { ProviderResponseModel } from '@/data/src'
-import { QueryClient } from 'react-query'
-import { ApplicationDataService, getAsync } from '@/services/flows'
+import { Text } from '@mantine/core'
 
 type IndexPageModel = {
-  providers: ProviderResponseModel[]
+  providers: string[]
 }
 
-export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = async (
+export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = (
   context
 ) => {
-  const api = new ETHTPSApi("http://localhost:10202" ) //dotenv hangs for some reason and I don't feel like debugging it
-  const queryClient = new QueryClient()
-  const providers = await queryClient.fetchQuery(
-            'ssr-providers',
-            async () => await api.getProvidersAsync(),
-            {
-                retry: true,
-                retryDelay: 2500
-            }
-        )
   return {
     props: {
       model: {
-        providers: providers ?? null
+        providers: ["Ethereum"]
       } as IndexPageModel
     },
     revalidate: 5
   }
 }
 
-export default function Index({ model }: InferGetStaticPropsType<typeof getStaticProps> ) {
+const defaultStyle = {
+  height: 400,
+  backgroundColor: 'darkred',
+  borderRadius: 10,
+  marginBottom: 20
+}
+
+export default function Index({ model }: InferGetStaticPropsType<typeof getStaticProps>) {
+
   return <>
-  What: {JSON.stringify(model)}
+    <Container sx={{ ...defaultStyle }}>
+      <Text>
+        Live data container
+      </Text>
+    </Container>
+    <Container sx={{ ...defaultStyle }}>
+      <Text>
+        Provider data container
+      </Text>
+    </Container>
+    <Container sx={{ ...defaultStyle }}>
+      <Text>
+        Provider chart container
+      </Text>
+    </Container>
   </>
 }

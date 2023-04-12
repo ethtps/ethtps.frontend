@@ -8,8 +8,8 @@ import {
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 
-export const getStaticProps: GetStaticProps<{  }> = async (
-  context   
+export const getStaticProps: GetStaticProps<{}> = async (
+  context
 
 ) => {
   return {
@@ -41,13 +41,14 @@ export default function MainLayout(props: { component: JSX.Element }) {
                 <Group>
                   <Link href={'/about'}>
                     <Text size={'sm'}>About</Text>
-                  </Link>{' '}
+                  </Link>
                   <Link href={'/privacy-policy'}>
                     <Text size={'sm'}>Privacy policy</Text>
-                  </Link>{' '}
+                  </Link>
                   <Link href={'https://ethtps.info?ref=v2_alpha'}>
                     <Text size={'sm'}>Old version</Text>
                   </Link>
+                  <Text className={'unselectable'} size={'xs'}>v1.5.0a1</Text>
                 </Group>
               </div>
             </Group>
