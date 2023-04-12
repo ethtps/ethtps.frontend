@@ -3,6 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text } from '@mantine/core'
 import CustomVISXStreamgraph from '@/components/instant data animations/CustomVISXStreamgraph'
 import { useEffect, useRef, useState } from 'react'
+import { ConveyorBelt, Thwrapper } from '@/components'
 
 type IndexPageModel = {
   providers: string[]
@@ -38,9 +39,7 @@ export default function Index({ model }: InferGetStaticPropsType<typeof getStati
   }, [containerRef])
   return <>
     <Container ref={containerRef} sx={{ ...defaultStyle }}>
-      <Text>
-        Live data container
-      </Text>
+      <Thwrapper component={<ConveyorBelt width={containerWidth} height={500} />} />
     </Container>
     <Container sx={{ ...defaultStyle }}>
       <Text>
