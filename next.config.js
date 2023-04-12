@@ -1,6 +1,8 @@
-const withTM = require('next-transpile-modules')([])
+const withTM = require('next-transpile-modules')([
+])
 const config = {
-  reactStrictMode: true
+  reactStrictMode: true,
+  experimental: { esmExternals: true }
 }
 
 module.exports = withTM(config)

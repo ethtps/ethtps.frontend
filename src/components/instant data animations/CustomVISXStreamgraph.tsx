@@ -217,9 +217,8 @@ export default function CustomVISXStreamgraph({
                       onMouseEnter={() => setHighlightedIndex(stack.index)}
                       onMouseLeave={() => setHighlightedIndex(-1)}
                       d={tweened.pathString}
-                      fill={`url(#${
-                        stack.index === highlightedIndex ? 'hovered-' : ''
-                      }circles)`}
+                      fill={`url(#${stack.index === highlightedIndex ? 'hovered-' : ''
+                        }circles)`}
                     />
                   </g>
                 )

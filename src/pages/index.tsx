@@ -1,7 +1,8 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text } from '@mantine/core'
-import { LiveDataContainer } from '@/components'
+import CustomVISXStreamgraph from '@/components/instant data animations/CustomVISXStreamgraph'
+import { useEffect, useRef, useState } from 'react'
 
 type IndexPageModel = {
   providers: string[]
@@ -28,13 +29,17 @@ const defaultStyle = {
 }
 
 export default function Index({ model }: InferGetStaticPropsType<typeof getStaticProps>) {
-
+  const [containerWidth, setContainerWidth] = useState(0)
+  const containerRef = useRef<any>(null)
+  useEffect(() => {
+    setContainerWidth(
+      containerRef.current ? containerRef.current.offsetWidth : 0
+    )
+  }, [containerRef])
   return <>
-    <Container sx={{ ...defaultStyle }}>
+    <Container ref={containerRef} sx={{ ...defaultStyle }}>
       <Text>
         Live data container
-        <LiveDataContainer component={<>
-        </>} />
       </Text>
     </Container>
     <Container sx={{ ...defaultStyle }}>
