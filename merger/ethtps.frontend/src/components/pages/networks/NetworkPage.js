@@ -1,5 +1,5 @@
 import { CompactHeader } from "../../Headers/CompactHeader";
-import HistoricalChart from "../../charts/HistoricalChart";
+import { HistoricalChart } from "../../charts/HistoricalChart";
 import { colorDictionary } from "../../../services/defaultData";
 import "./NetworkPage.css";
 import "../../../App.css";

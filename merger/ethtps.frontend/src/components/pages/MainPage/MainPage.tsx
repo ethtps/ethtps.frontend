@@ -10,7 +10,7 @@ import {
 import { useState } from 'react'
 import { DataStatByType } from './components/instant-stats'
 import ModeSelector from './ModeSelector'
-import HistoricalChart from '../../charts/HistoricalChart'
+import { HistoricalChart } from '../../charts/HistoricalChart'
 import { Helmet } from 'react-helmet'
 import IntervalSlider from '../../IntervalSlider'
 import { LargeHeader } from '../../Headers/LargeHeader'
@@ -24,6 +24,8 @@ import {
 } from '../../../hooks/ETHTPSHooks'
 import { HomePageResponseModel } from '../../../services/api-client/src/models/HomePageResponseModel'
 import { DataType } from '../../../services/api-client/src/models/DataType'
+import { ChartScale } from '../../charts'
+import { TimeInterval } from '../../../services/api-client/src/models'
 
 export function MainPage() {
   const networkHook = useNetwork()
@@ -210,6 +212,15 @@ export function MainPage() {
       <p>
         This is a stacked line chart of all networks&apos historical throughput.
       </p>
+      <HistoricalChart
+        height={200}
+        interval={TimeInterval.OneDay}
+        mode={modeHook.mode}
+        colorDictionary={homePageModel?.colorDictionary}
+        provider='All'
+        scale={ChartScale.linear}
+        network={networkHook.network}
+      />
     </>
   )
 }
