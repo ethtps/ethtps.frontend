@@ -6,14 +6,14 @@ export async function getAsync<T>(
     getter: (api: ETHTPSApi) => Promise<T>,
     api: ETHTPSApi,
     queryClient: QueryClient
-  ) {
-        return await queryClient.fetchQuery(
-            name,
-            async () => await getter(api),
-            {
-                retry: true,
-                retryDelay: 2500
-            }
-        )
-    
-}w
+) {
+    return await queryClient.fetchQuery(
+        name,
+        async () => await getter(api),
+        {
+            retry: true,
+            retryDelay: 2500
+        }
+    )
+
+}
