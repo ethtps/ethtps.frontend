@@ -1,6 +1,7 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text } from '@mantine/core'
+import { LiveDataContainer } from '@/components'
 
 type IndexPageModel = {
   providers: string[]
@@ -32,6 +33,8 @@ export default function Index({ model }: InferGetStaticPropsType<typeof getStati
     <Container sx={{ ...defaultStyle }}>
       <Text>
         Live data container
+        <LiveDataContainer component={<>
+        </>} />
       </Text>
     </Container>
     <Container sx={{ ...defaultStyle }}>

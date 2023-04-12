@@ -1,5 +1,5 @@
 import { AppPropsWithLayout, HeaderWithTabs } from '@/components'
-import { AppShell, Footer, Group, Text } from '@mantine/core'
+import { AppShell, Footer, Group, Text, Tooltip } from '@mantine/core'
 import {
   IconBrandGithub,
   IconBrandTwitter,
@@ -48,7 +48,9 @@ export default function MainLayout(props: { component: JSX.Element }) {
                   <Link href={'https://ethtps.info?ref=v2_alpha'}>
                     <Text size={'sm'}>Old version</Text>
                   </Link>
-                  <Text className={'unselectable'} size={'xs'}>v1.5.0a1</Text>
+                  <Tooltip label={"First alpha version. Don't expect too much :)"}>
+                    <Text className={'unselectable'} size={'xs'}>v1.5.0a1</Text>
+                  </Tooltip>
                 </Group>
               </div>
             </Group>

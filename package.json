@@ -81,6 +81,7 @@
     "react-markdown": "^8.0.6",
     "react-query": "^3.39.3",
     "react-redux": "^8.0.5",
+    "react-signalr": "^0.2.14",
     "react-transition-group": "^4.4.5",
     "reconnecting-websocket": "^4.4.0",
     "redux-query": "3.5.0-alpha.3",
