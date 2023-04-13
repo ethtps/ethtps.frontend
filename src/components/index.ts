@@ -2,7 +2,7 @@ import { LivePSPartial } from './partials/live-data/LivePSPartial'
 import { IComponentSize } from './IComponentSize'
 import DataOverviewChart from './charts/historical-data/DataOverviewChart'
 import { AppPropsWithLayout, NextPageWithLayout } from './Types'
-import { ConveyorBelt } from './instant data animations/ConveyorBelt'
+import { ConveyorBelt } from './instant data animations/conveyor belt/ConveyorBelt'
 import { Thwrapper } from './thwrapper/Thwrapper'
 
 export { LivePSPartial, DataOverviewChart, ConveyorBelt, Thwrapper }
