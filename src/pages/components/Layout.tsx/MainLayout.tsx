@@ -1,4 +1,4 @@
-import { AppPropsWithLayout, HeaderWithTabs } from '@/components'
+import { HeaderWithTabs } from '@/components'
 import { AppShell, Footer, Group, Text, Tooltip } from '@mantine/core'
 import {
   IconBrandGithub,
@@ -25,8 +25,8 @@ export default function MainLayout(props: { component: JSX.Element }) {
         navbarOffsetBreakpoint='sm'
         asideOffsetBreakpoint='sm'
         footer={
-          <Footer height={50} p='sm'>
-            <Group sx={{ marginTop: 0 }} position='apart'>
+          <Footer height={50}>
+            <Group style={{ marginTop: 0 }} position='apart'>
               <div>
                 <Text className={'inline'} size={'sm'}>
                   Brought to you by

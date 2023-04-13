@@ -1,9 +1,9 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text } from '@mantine/core'
-import CustomVISXStreamgraph from '@/components/instant data animations/CustomVISXStreamgraph'
+import CustomVIstyleStreamgraph from '@/components/instant data animations/CustomVIstyleStreamgraph'
 import { useEffect, useRef, useState } from 'react'
-import { ConveyorBelt, Thwrapper } from '@/components'
+import { AnimationSelector, ConveyorBelt, FramerBar, Thwrapper, useSizeRef } from '@/components'
 
 type IndexPageModel = {
   providers: string[]
@@ -24,29 +24,28 @@ export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = (
 
 const defaultStyle = {
   height: 400,
-  backgroundColor: 'darkred',
   borderRadius: 10,
   marginBottom: 20
 }
 
+const defaultRedStyle = {
+  ...defaultStyle,
+  backgroundColor: 'darkred',
+}
+
 export default function Index({ model }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [containerWidth, setContainerWidth] = useState(0)
-  const containerRef = useRef<any>(null)
-  useEffect(() => {
-    setContainerWidth(
-      containerRef.current ? containerRef.current.offsetWidth : 0
-    )
-  }, [containerRef])
+  const sizeRef = useSizeRef()
   return <>
-    <Container ref={containerRef} sx={{ ...defaultStyle }}>
-      <Thwrapper component={<ConveyorBelt width={containerWidth} height={500} />} />
+    <Container ref={sizeRef.ref} style={{ height: 500 }}>
+      <AnimationSelector width={sizeRef.width} height={sizeRef.height} />
     </Container>
-    <Container sx={{ ...defaultStyle }}>
+    <br />
+    <Container style={{ ...defaultRedStyle }}>
       <Text>
         Provider data container
       </Text>
     </Container>
-    <Container sx={{ ...defaultStyle }}>
+    <Container style={{ ...defaultRedStyle }}>
       <Text>
         Provider chart container
       </Text>
