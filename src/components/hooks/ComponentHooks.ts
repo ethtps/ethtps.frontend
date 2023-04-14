@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, MutableRefObject } from "react"
 import { IComponentSize } from "../IComponentSize"
+import { useViewportSize } from "@mantine/hooks"
 
 export interface ISizeRef extends IComponentSize {
     ref: MutableRefObject<any>
@@ -29,4 +30,13 @@ export const useSizeRef = () => {
         width: containerWidth,
         height: containerHeight
     } as ISizeRef
+}
+
+export const useViewportRatio = () => {
+    const [ratio, setRatio] = useState(0)
+    const { height, width } = useViewportSize();
+    useEffect(() => {
+        setRatio(width / height)
+    }, [height, width])
+    return ratio
 }

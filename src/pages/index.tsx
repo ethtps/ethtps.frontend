@@ -1,9 +1,8 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import { Text } from '@mantine/core'
-import CustomVIstyleStreamgraph from '@/components/instant data animations/CustomVIstyleStreamgraph'
-import { useEffect, useRef, useState } from 'react'
+import { Text, Notification } from '@mantine/core'
 import { AnimationSelector, ConveyorBelt, FramerBar, Thwrapper, useSizeRef } from '@/components'
+import { getAPIKey } from '@/services/DependenciesIOC'
 
 type IndexPageModel = {
   providers: string[]
@@ -50,5 +49,10 @@ export default function Index({ model }: InferGetStaticPropsType<typeof getStati
         Provider chart container
       </Text>
     </Container>
+    <Notification title="Debug info">
+      <Text>
+        API key: {getAPIKey()}
+      </Text>
+    </Notification>
   </>
 }
