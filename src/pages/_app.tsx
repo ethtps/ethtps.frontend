@@ -5,6 +5,8 @@ import '../styles/globals.css'
 import { AppPropsWithLayout } from '@/components'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import MainLayout from './components/Layout.tsx/MainLayout'
+import { wrapper } from '@/data/src'
+import { Provider } from 'react-redux'
 
 type AppModel = {
   test: string
@@ -26,9 +28,12 @@ export const getStaticProps: GetStaticProps<{ appModel: AppModel }> = async (
 //{ appModel }: InferGetStaticPropsType<typeof getStaticProps>
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const { store, props } = wrapper.useWrappedStore({})
   return (
     <>
-      <MainLayout component={<Component {...pageProps} />} />
+      <Provider store={store}>
+        <MainLayout component={<Component {...pageProps} />} />
+      </Provider>
     </>
   )
 }

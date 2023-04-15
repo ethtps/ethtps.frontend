@@ -3,7 +3,7 @@ import { motion, transform, useMotionValue, useTransform } from "framer-motion";
 import { useCallback, useState } from "react";
 import { ProviderBar } from "./ProviderBar";
 import { Group } from "@mantine/core";
-import { defaultProviders } from "@/pages/components/default data";
+import { defaultProviders } from "@/data/src/models/default data";
 import { LoadingAnimation } from "./LoadingAnimation";
 
 enum States {
@@ -26,7 +26,7 @@ export function FramerHorizontalBar(props: IFramerHorizontalBarProps) {
             width: props.width,
             height: props.height,
             overflow: "hidden",
-            backgroundColor: "#9900ff"
+            backgroundColor: "#37367b"
         }}>
             <LoadingAnimation />
         </motion.div>

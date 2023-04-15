@@ -1,8 +1,10 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text, Notification } from '@mantine/core'
-import { AnimationSelector, ConveyorBelt, FramerBar, Thwrapper, useSizeRef } from '@/components'
+import { AllProvidersTable, AnimationSelector, ConveyorBelt, FramerBar, Thwrapper, useSizeRef } from '@/components'
 import { getAPIKey } from '@/services/DependenciesIOC'
+import { defaultProviders } from '../data/src/models/default data'
+import { useAppSelector } from '@/services'
 
 type IndexPageModel = {
   providers: string[]
@@ -34,6 +36,7 @@ const defaultRedStyle = {
 
 export default function Index({ model }: InferGetStaticPropsType<typeof getStaticProps>) {
   const sizeRef = useSizeRef()
+  const providerCount = useAppSelector(x => x.providers?.length)
   return <>
     <Container ref={sizeRef.ref} style={{ height: 500 }}>
       <AnimationSelector width={sizeRef.width} height={sizeRef.height} />
@@ -47,11 +50,15 @@ export default function Index({ model }: InferGetStaticPropsType<typeof getStati
     <Container style={{ ...defaultRedStyle }}>
       <Text>
         Provider chart container
+        <AllProvidersTable width={sizeRef.width ?? 0} />
       </Text>
     </Container>
     <Notification title="Debug info">
       <Text>
         API key: {getAPIKey()}
+      </Text>
+      <Text>
+        Providers: {providerCount === undefined ? "none" : providerCount}
       </Text>
     </Notification>
   </>

@@ -7,6 +7,7 @@ import { IMainPageModel } from '../interfaces/IMainPageModel'
 import { IPagesState } from '../IPagesState'
 import { WebsocketSubscriptionState } from '../../slices/WebsocketSubscriptionSlice'
 import { ProviderResponseModel } from '../../../../api-client/src/models/ProviderResponseModel'
+import { defaultColorDictionary, defaultNetworks, defaultProviderTypeColorDictionary, defaultProviders } from '../default data'
 
 export interface IApplicationState extends IDataLoadingModel {
 	websockets?: WebsocketSubscriptionState
@@ -39,5 +40,12 @@ export class ApplicationState implements IApplicationState {
 		public intervals?: Array<string>,
 		public networks?: Array<string>,
 		public providers?: ProviderResponseModel[]
-	) {}
+	) {
+		this.colorDictionaries ??= {
+			providerColorDictionary: defaultColorDictionary,
+			providerTypesColorDictionary: defaultProviderTypeColorDictionary
+		}
+		this.networks ??= defaultNetworks
+		this.providers ??= defaultProviders
+	}
 }
