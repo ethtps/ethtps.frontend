@@ -1,7 +1,7 @@
 import { LivePSPartial } from '@/components'
 import DataOverviewChart from '@/components/charts/historical-data/DataOverviewChart'
 import { AllProvidersTable } from '@/components/tables'
-import { ProviderResponseModel, useGetProvidersFromAppStore } from '@/data/src'
+import { ProviderResponseModel, useGetProvidersFromAppStore } from '@/data'
 import { useGetMaxDataFromAppStore } from '@/data/src/hooks/DataHooks'
 import { Grid, Group, Paper } from '@mantine/core'
 import { useState, useRef, useEffect } from 'react'

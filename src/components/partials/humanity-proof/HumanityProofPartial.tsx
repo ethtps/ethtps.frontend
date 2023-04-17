@@ -1,5 +1,5 @@
 'use client'
-import { createHandlerFromCallback } from '@/data/src'
+import { createHandlerFromCallback } from '@/data'
 import { api, getAPIKey, queryClient } from '@/services/DependenciesIOC'
 import { ApplicationDataService } from '@/services/flows'
 import {

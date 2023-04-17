@@ -4,7 +4,7 @@ import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
 import { conditionalRender } from '@/services'
 import { SeeMoreButton } from '@/components/buttons'
-import { IProviderTableModel } from '@/data/src'
+import { IProviderTableModel } from '@/data'
 import { Table } from '@mantine/core'
 
 export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {

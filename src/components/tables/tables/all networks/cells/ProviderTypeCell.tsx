@@ -4,7 +4,7 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import React from 'react'
-import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data/src'
+import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data'
 
 export function ProviderTypeCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderTypeColorDictionaryFromAppStore()
@@ -19,7 +19,7 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'ProviderType')
-            : () => {}
+            : () => { }
         }>
         <Text className={'boldcell'}>{config.provider?.type}</Text>
       </td>

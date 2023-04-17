@@ -10,7 +10,7 @@ import {
   useGetLiveDataFromAppStore,
   getModeData,
   dataTypeToString
-} from '@/data/src'
+} from '@/data'
 import { useAppSelector } from '@/services'
 import { useState, useEffect } from 'react'
 

@@ -5,7 +5,7 @@ import '../styles/globals.css'
 import { AppPropsWithLayout } from '@/components'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import MainLayout from './components/Layout.tsx/MainLayout'
-import { wrapper } from '@/data/src'
+import { wrapper } from '@/data'
 import { Provider } from 'react-redux'
 
 type AppModel = {

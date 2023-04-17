@@ -1,4 +1,5 @@
 const withTM = require('next-transpile-modules')([
+  'd3-scale'
 ])
 const config = {
   reactStrictMode: true,

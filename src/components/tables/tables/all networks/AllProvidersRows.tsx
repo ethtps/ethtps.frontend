@@ -11,7 +11,7 @@ import {
   extractData,
   getModeData,
   liveDataHooks
-} from '@/data/src'
+} from '@/data'
 import { SkeletonWithTooltip } from '../..'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {

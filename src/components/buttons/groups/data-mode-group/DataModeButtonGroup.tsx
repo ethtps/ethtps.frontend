@@ -1,7 +1,7 @@
 import React from 'react'
 import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
-import { useGetExperimentsFromAppStore, useHandler } from '@/data/src'
+import { useGetExperimentsFromAppStore, useHandler } from '@/data'
 import { DataType } from '@/api-client/src/models'
 import { conditionalRender } from '@/services'
 import { Box, Tooltip, Text } from '@mantine/core'

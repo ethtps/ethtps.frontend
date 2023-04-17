@@ -1,4 +1,4 @@
-import { IOptionalCallback } from '@/data/src'
+import { IOptionalCallback } from '@/data'
 import { FlowStep } from './FlowStep'
 import { Completable } from './Completable'
 

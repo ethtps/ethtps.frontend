@@ -6,7 +6,7 @@ import { Group, Text, Tooltip } from '@mantine/core'
 import { centered } from '../../Cells.Types'
 import React, { useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
-import { inline, useGetProviderColorDictionaryFromAppStore } from '@/data/src'
+import { inline, useGetProviderColorDictionaryFromAppStore } from '@/data'
 import { tableCellTypographyStandard } from './Typography.types'
 import Image from 'next/image'
 import {
@@ -36,7 +36,7 @@ export function NameCell(config: ICustomCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Name')
-            : () => {}
+            : () => { }
         }>
         <>
           <Tooltip withArrow label={<Text>{`Read more about ${name}`}</Text>}>

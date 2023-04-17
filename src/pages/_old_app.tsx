@@ -19,7 +19,7 @@ import { NextPage } from 'next'
 import { HeaderWithTabs } from '@/components/headers'
 import { QueryClientProvider } from 'react-query'
 import { conditionalRender, queryClient, useAppState } from '@/services'
-import { useGetProvidersFromAppStore, wrapper } from '@/data/src'
+import { useGetProvidersFromAppStore, wrapper } from '@/data'
 import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
 import { getAPIKey, setAPIKey } from '@/services/DependenciesIOC'
 import { useDispatch } from 'react-redux'
@@ -29,7 +29,7 @@ import {
   IconBrandGithub,
   IconBrandTwitter
 } from '@tabler/icons-react'
-import { binaryConditionalRender } from '@/services/Types'
+import { binaryConditionalRender } from '@/services'
 import { useAppSelector } from '../data/src/store'
 import Link from 'next/link'
 import { ErrorBoundary } from './components/ErrorBoundary'

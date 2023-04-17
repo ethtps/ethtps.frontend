@@ -6,7 +6,7 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
-import { DataPoint, numberFormat, liveDataHooks } from '@/data/src'
+import { DataPoint, numberFormat, liveDataHooks } from '@/data'
 import { useGetMaxDataForProviderFromAppStore } from '@/data/src/hooks/DataHooks'
 import { Tooltip } from '@mantine/core'
 import { Text } from '@mantine/core'
@@ -48,7 +48,7 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'MaxValue')
-            : () => {}
+            : () => { }
         }>
         <Tooltip withArrow label={tooltipTypography}>
           <Text

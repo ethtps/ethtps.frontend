@@ -1,4 +1,4 @@
-import { StringDictionary } from 'src/common-types/Dictionaries'
+import { StringDictionary } from '../'
 import { useAppSelector, AppState } from '../store'
 
 export function useGetProviderColorDictionaryFromAppStore() {
@@ -6,5 +6,5 @@ export function useGetProviderColorDictionaryFromAppStore() {
 }
 
 export function useGetProviderTypeColorDictionaryFromAppStore() {
-	return useAppSelector((state: AppState) => state.colors.providerTypesColorDictionary)as StringDictionary
+	return useAppSelector((state: AppState) => state.colors.providerTypesColorDictionary) as StringDictionary
 }

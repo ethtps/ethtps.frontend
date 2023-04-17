@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown"
-import { binaryConditionalRender, conditionalRender } from "@/services/Types";
+import { binaryConditionalRender, conditionalRender } from "@/services";
 import { Button, Container } from "@mantine/core";
 import { IconAlien, IconEdit } from "@tabler/icons-react";
 import { RichTextEditor, Link } from '@mantine/tiptap';

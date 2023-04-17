@@ -4,22 +4,6 @@ import {
 	DataResponseModelDictionary,
 	InstantDataResponseModel,
 } from './Dictionaries'
-import { toShortString_2 } from '../models/TimeIntervals'
-import { DataType } from '../../../api-client/src/models/DataType'
-import { DataPoint } from '../../../api-client/src/models/DataPoint'
-
-export function toShortString(type: DataType): string {
-	switch (type) {
-		case DataType.Tps:
-			return 'TPS'
-		case DataType.Gps:
-			return 'GPS'
-		case DataType.GasAdjustedTps:
-			return 'GTPS'
-		default:
-			return 'Unknown'
-	}
-}
 
 export function fromShortString(typeStr: string): DataType {
 	switch (typeStr.toUpperCase()) {
@@ -124,4 +108,8 @@ export const numberFormat = (value?: number) => {
 	if (!value) return 0
 	if (value > 1000) value = Math.round(value)
 	return (Math.round(value * 100) / 100).toLocaleString()
+}
+
+export const inline = {
+	display: "inline-block"
 }

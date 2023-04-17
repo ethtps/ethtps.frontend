@@ -1,8 +1,5 @@
-import {
-  FetchParams,
-  Middleware,
-  RequestContext
-} from '@/api-client/src/runtime'
+
+import { FetchParams, Middleware, RequestContext } from '@/api-client'
 import { getAPIKey } from '../DependenciesIOC'
 
 const _apiKeyHeaderName = 'X-API-Key'

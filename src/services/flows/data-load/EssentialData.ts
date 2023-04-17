@@ -1,5 +1,5 @@
-import { AppDispatch } from '@/data/src/store'
-import { ETHTPSApi } from '@/services/api/ETHTPSAPI'
+import { AppDispatch } from "@/data"
+import { ETHTPSApi } from "@/services"
 
 export type Loadee<T> = {
   loaded: boolean

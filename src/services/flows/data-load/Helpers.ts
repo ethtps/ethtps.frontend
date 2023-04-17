@@ -1,5 +1,5 @@
-import { ETHTPSApi } from "@/services/api/ETHTPSAPI"
-import { QueryClient } from "react-query"
+import { ETHTPSApi } from "@/services";
+import { QueryClient } from "react-query";
 
 export async function getAsync<T>(
     name: string,

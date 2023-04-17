@@ -20,7 +20,7 @@ import {
   colorHooks,
   handleException,
   Dataset
-} from '@/data/src'
+} from '@/data'
 // constants
 const NUM_LAYERS = 20
 export const BACKGROUND = '#ffdede'

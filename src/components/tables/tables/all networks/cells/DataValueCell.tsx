@@ -9,7 +9,7 @@ import { DataType } from '@/api-client/src/models'
 import React from 'react'
 import { SkeletonWithTooltip } from '@/components/skeletons/SkeletonWithTooltip'
 import { AnimatedTypography } from '@/components/text/AnimatedTypography'
-import { numberFormat, toShortString } from '@/data/src'
+import { numberFormat, toShortString } from '@/data'
 
 interface IDataValueCellConficuration extends ICustomCellConfiguration {
   value?: number
@@ -23,7 +23,7 @@ export function DataValueCell(config: IDataValueCellConficuration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'DataValue')
-            : () => {}
+            : () => { }
         }>
         {config.value === undefined ? (
           <SkeletonWithTooltip

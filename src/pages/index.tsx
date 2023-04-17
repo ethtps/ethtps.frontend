@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text, Notification } from '@mantine/core'
@@ -5,6 +6,7 @@ import { AllProvidersTable, AnimationSelector, ConveyorBelt, FramerBar, Thwrappe
 import { getAPIKey } from '@/services/DependenciesIOC'
 import { defaultProviders } from '../data/src/models/default data'
 import { useAppSelector } from '@/services'
+import TestVSIXAnimation from '@/components/instant data animations/visx-test/TestVSIXAnimation'
 
 type IndexPageModel = {
   providers: string[]
@@ -42,6 +44,8 @@ export default function Index({ model }: InferGetStaticPropsType<typeof getStati
       <AnimationSelector width={sizeRef.width} height={sizeRef.height} />
     </Container>
     <br />
+    <Container >
+    </Container>
     <Container style={{ ...defaultRedStyle }}>
       <Text>
         Provider data container
