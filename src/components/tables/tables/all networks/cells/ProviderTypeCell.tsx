@@ -19,7 +19,7 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'ProviderType')
-            : () => { }
+            : () => {}
         }>
         <Text className={'boldcell'}>{config.provider?.type}</Text>
       </td>

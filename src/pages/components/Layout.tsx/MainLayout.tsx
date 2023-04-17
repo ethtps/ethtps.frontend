@@ -9,13 +9,9 @@ import { GetStaticProps } from 'next'
 // eslint-disable-next-line import/no-internal-modules
 import Link from 'next/link'
 
-export const getStaticProps: GetStaticProps<{}> = async (
-  context
-
-) => {
+export const getStaticProps: GetStaticProps<{}> = async (context) => {
   return {
-    props: {
-    }
+    props: {}
   }
 }
 
@@ -49,8 +45,11 @@ export default function MainLayout(props: { component: JSX.Element }) {
                   <Link href={'https://ethtps.info?ref=v2_alpha'}>
                     <Text size={'sm'}>Old version</Text>
                   </Link>
-                  <Tooltip label={"First alpha version. Don't expect too much :)"}>
-                    <Text className={'unselectable'} size={'xs'}>v1.5.0a1</Text>
+                  <Tooltip
+                    label={"First alpha version. Don't expect too much :)"}>
+                    <Text className={'unselectable'} size={'xs'}>
+                      v1.5.0a1
+                    </Text>
                   </Tooltip>
                 </Group>
               </div>

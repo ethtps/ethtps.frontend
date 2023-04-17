@@ -1,1 +1,1 @@
-export * from './TestVSIXAnimation';
+export * from './TestVSIXAnimation'

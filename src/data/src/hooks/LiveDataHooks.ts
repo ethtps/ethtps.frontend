@@ -1,17 +1,29 @@
-
-import { AppState, InstantDataResponseModel, setIncludeSidechains, setLiveDataType, useAppDispatch, useAppSelector } from '..'
+import {
+	AppState,
+	InstantDataResponseModel,
+	setIncludeSidechains,
+	setLiveDataType,
+	useAppDispatch,
+	useAppSelector,
+} from '..'
 import { DataType, TimeInterval } from '../../../api-client'
 
 export function useGetLiveDataModeFromAppStore() {
-	return useAppSelector((state: AppState) => state.liveData.liveDataType) as DataType
+	return useAppSelector(
+		(state: AppState) => state.liveData.liveDataType
+	) as DataType
 }
 
 export function useGetLiveDataSmoothingFromAppStore() {
-	return useAppSelector((state: AppState) => state.liveData.liveDataSmoothing) as TimeInterval
+	return useAppSelector(
+		(state: AppState) => state.liveData.liveDataSmoothing
+	) as TimeInterval
 }
 
 export function useGetLiveDataFromAppStore() {
-	return useAppSelector((state: AppState) => state.liveData.data) as InstantDataResponseModel
+	return useAppSelector(
+		(state: AppState) => state.liveData.data
+	) as InstantDataResponseModel
 }
 
 export function useSetDataModeMutation(mode: DataType) {
@@ -23,7 +35,9 @@ export function useUpdateLiveData(updateRateMs: number) {
 }
 
 export function useGetSidechainsIncludedFromAppStore() {
-	return useAppSelector((state: AppState) => state.liveData.includeSidechains) as boolean
+	return useAppSelector(
+		(state: AppState) => state.liveData.includeSidechains
+	) as boolean
 }
 
 export function useSetSidechainsIncluded(value: boolean) {

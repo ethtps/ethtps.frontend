@@ -1,4 +1,4 @@
-import { DataPoint, DataResponseModel } from "../../../api-client"
+import { DataPoint, DataResponseModel } from '../../../api-client'
 
 export type GenericDictionary<T> = { [key: string]: T }
 export type DataPointDictionary = GenericDictionary<DataPoint>

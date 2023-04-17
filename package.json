@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start -p 3007",
     "start:dev": "next dev -p 3007",
-    "lint": "npx eslint src test",
-    "lint:fix": "npm run lint -- --fix",
-    "prettier": "npx prettier src test --check",
+    "lint": "npx eslint --",
+    "lint:fix": "npm run lint src/*.ts --fix",
+    "prettier": "npx prettier --check",
     "prettier:fix": "npm run prettier -- --write"
   },
   "dependencies": {

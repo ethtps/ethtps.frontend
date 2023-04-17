@@ -1,7 +1,7 @@
 export const defaultNetworks = [
-    "Goerli",
-    "Kovan",
-    "Mainnet",
-    "Rinkeby",
-    "Ropsten"
+	'Goerli',
+	'Kovan',
+	'Mainnet',
+	'Rinkeby',
+	'Ropsten',
 ]

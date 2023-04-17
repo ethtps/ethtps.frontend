@@ -113,5 +113,5 @@ export const numberFormat = (value?: number) => {
 }
 
 export const inline = {
-	display: "inline-block"
+	display: 'inline-block',
 }

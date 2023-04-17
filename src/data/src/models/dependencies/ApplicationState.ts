@@ -1,6 +1,18 @@
-import { ProviderResponseModel } from "../../../../api-client"
-import { defaultColorDictionary, defaultProviderTypeColorDictionary, defaultNetworks, defaultProviders } from "../default data"
-import { IColorDictionaries, IDataLoadingModel, IDataModeModel, ILiveDataModeModel, IMainPageModel, IMaxDataModel } from "../interfaces"
+import { ProviderResponseModel } from '../../../../api-client'
+import {
+	defaultColorDictionary,
+	defaultProviderTypeColorDictionary,
+	defaultNetworks,
+	defaultProviders,
+} from '../default data'
+import {
+	IColorDictionaries,
+	IDataLoadingModel,
+	IDataModeModel,
+	ILiveDataModeModel,
+	IMainPageModel,
+	IMaxDataModel,
+} from '../interfaces'
 
 export interface IApplicationState extends IDataLoadingModel {
 	colorDictionaries?: IColorDictionaries
@@ -34,7 +46,7 @@ export class ApplicationState implements IApplicationState {
 	) {
 		this.colorDictionaries ??= {
 			providerColorDictionary: defaultColorDictionary,
-			providerTypesColorDictionary: defaultProviderTypeColorDictionary
+			providerTypesColorDictionary: defaultProviderTypeColorDictionary,
 		}
 		this.networks ??= defaultNetworks
 		this.providers ??= defaultProviders

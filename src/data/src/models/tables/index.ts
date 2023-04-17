@@ -1,3 +1,3 @@
-export * from './ICellClickedEvent';
-export * from './IMaxRowsModel';
-export * from './IProviderTableModel';
+export * from './ICellClickedEvent'
+export * from './IMaxRowsModel'
+export * from './IProviderTableModel'

@@ -1,12 +1,24 @@
-import { DataType } from "@/api-client"
-import { AppDispatch, Handler, setExperiments, setIntervals, setMaxGPSData, setMaxGTPSData, setMaxTPSData, setNetworks, setProviderColorDictionary, setProviderTypeColorDictionary, setProviders } from "@/data"
-import { ETHTPSApi, getAPIKey, setAPIKey } from "@/services"
-import { QueryClient } from "react-query"
+import { DataType } from '@/api-client'
+import {
+  AppDispatch,
+  Handler,
+  setExperiments,
+  setIntervals,
+  setMaxGPSData,
+  setMaxGTPSData,
+  setMaxTPSData,
+  setNetworks,
+  setProviderColorDictionary,
+  setProviderTypeColorDictionary,
+  setProviders
+} from '@/data'
+import { ETHTPSApi, getAPIKey, setAPIKey } from '@/services'
+import { QueryClient } from 'react-query'
 
 let progressChangedHandler: Handler<number> | undefined
 
 export class ApplicationDataService {
-  private loaders = [() => { }]
+  private loaders = [() => {}]
   private loadedCount = 0
   constructor(
     private api: ETHTPSApi,
@@ -111,7 +123,5 @@ export class ApplicationDataService {
     this.loaders.forEach((x) => x())
   }
 
-  public async loadDataAsync() {
-
-  }
+  public async loadDataAsync() {}
 }

@@ -3,8 +3,7 @@ import { LocalStorageService } from './LocalStorageService'
 import { ETHTPSApi } from './api'
 
 var _api_key: string | undefined | null = ''
-export const apiURL =
-  'http://localhost:10202'
+export const apiURL = 'http://localhost:10202'
 
 export const storage: LocalStorageService = new LocalStorageService()
 export const api = new ETHTPSApi(
@@ -14,7 +13,7 @@ export const api = new ETHTPSApi(
 //export const websocketsService = new WebsocketsService()
 
 export function getAPIKey() {
-  return "rXRBBrUKkW3WAWLqAsO6lCVJUbOBM8Dntc9BIJRYo6dGwRpSkyGiSpX3OxDhLFKW"
+  return 'rXRBBrUKkW3WAWLqAsO6lCVJUbOBM8Dntc9BIJRYo6dGwRpSkyGiSpX3OxDhLFKW'
   if (_api_key === null || _api_key === undefined)
     tryLoadAPIKeyFromLocalStorage()
   return _api_key

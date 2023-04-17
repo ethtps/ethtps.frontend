@@ -1,5 +1,5 @@
-import { setApplicationDataLoaded, setStoreAPIKey } from "../slices"
-import { useAppSelector, AppState, useAppDispatch } from "../"
+import { setApplicationDataLoaded, setStoreAPIKey } from '../slices'
+import { useAppSelector, AppState, useAppDispatch } from '../'
 
 export const useGetApplicationDataLoadedFromAppStore = () => {
 	return useAppSelector(

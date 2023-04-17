@@ -1,2 +1,2 @@
-export * from './providers';
-export * from './tables';
+export * from './providers'
+export * from './tables'

@@ -1,2 +1,2 @@
-export * from './AuthenticationFlow';
-export * from './Types';
+export * from './AuthenticationFlow'
+export * from './Types'

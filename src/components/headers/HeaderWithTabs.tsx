@@ -89,7 +89,11 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
           style={{
             marginRight: 0
           }}>
-          <Group spacing={0} className={classes.links} position='center' my='xl'>
+          <Group
+            spacing={0}
+            className={classes.links}
+            position='center'
+            my='xl'>
             {items}
             {/*<ThemeToggle />*/}
           </Group>

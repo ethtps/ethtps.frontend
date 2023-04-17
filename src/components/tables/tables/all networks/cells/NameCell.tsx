@@ -1,15 +1,11 @@
 /* eslint-disable import/no-internal-modules */
-import {
-  ICustomCellConfiguration
-} from './ICustomCellConfiguration'
+import { ICustomCellConfiguration } from './ICustomCellConfiguration'
 import { Group, Text, Tooltip } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
 import { useGetProviderColorDictionaryFromAppStore } from '@/data'
 import Image from 'next/image'
-import {
-  IconCloudOff, IconTriangleOff
-} from '@tabler/icons-react'
+import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
 import Link from 'next/link'
 
 export function NameCell(config: ICustomCellConfiguration) {
@@ -31,7 +27,7 @@ export function NameCell(config: ICustomCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Name')
-            : () => { }
+            : () => {}
         }>
         <>
           <Tooltip withArrow label={<Text>{`Read more about ${name}`}</Text>}>

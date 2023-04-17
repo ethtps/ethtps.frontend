@@ -1,7 +1,18 @@
-import { ProviderResponseModel, TimeInterval, DataType } from "@/api-client"
-import { DataResponseModelDictionary, extractData, useAppSelector, useGetProvidersFromAppStore, useGetProviderColorDictionaryFromAppStore, useGetLiveDataFromAppStore, getModeData, dataTypeToString, useGetLiveDataModeFromAppStore, useGetLiveDataSmoothingFromAppStore, useGetSidechainsIncludedFromAppStore } from "@/data"
-import { useState, useEffect } from "react"
-
+import { ProviderResponseModel, TimeInterval, DataType } from '@/api-client'
+import {
+  DataResponseModelDictionary,
+  extractData,
+  useAppSelector,
+  useGetProvidersFromAppStore,
+  useGetProviderColorDictionaryFromAppStore,
+  useGetLiveDataFromAppStore,
+  getModeData,
+  dataTypeToString,
+  useGetLiveDataModeFromAppStore,
+  useGetLiveDataSmoothingFromAppStore,
+  useGetSidechainsIncludedFromAppStore
+} from '@/data'
+import { useState, useEffect } from 'react'
 
 export type InstantBarChartDataset = {
   label: string
@@ -60,8 +71,7 @@ export type LiveDataState = {
 
 export function useLiveDataState(): LiveDataState {
   const smoothing = useGetLiveDataSmoothingFromAppStore()
-  const sidechainsIncluded =
-    useGetSidechainsIncludedFromAppStore()
+  const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
   const mode = useGetLiveDataModeFromAppStore()
   return { smoothing, sidechainsIncluded, mode }
 }
@@ -85,8 +95,7 @@ export function useLiveData() {
   const providers: ProviderResponseModel[] = useGetProvidersFromAppStore()
   const smoothing = useGetLiveDataSmoothingFromAppStore()
   const colors = useGetProviderColorDictionaryFromAppStore()
-  const sidechainsIncluded =
-    useGetSidechainsIncludedFromAppStore()
+  const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
   const mode = useGetLiveDataModeFromAppStore()
   const liveData = useGetLiveDataFromAppStore()
   const [data, setData] = useState<DataResponseModelDictionary>()

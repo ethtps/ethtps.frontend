@@ -9,7 +9,7 @@ const packageJson = require('./package.json')
 
 const exps = [
 	{
-		input: 'src/index.ts',
+		input: '../index.ts',
 		output: [
 			{
 				file: packageJson.main,

@@ -1,1 +1,1 @@
-export * from './ProviderTable';
+export * from './ProviderTable'

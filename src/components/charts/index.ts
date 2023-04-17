@@ -1,1 +1,1 @@
-export * from './historical-data';
+export * from './historical-data'

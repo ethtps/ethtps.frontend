@@ -1,6 +1,6 @@
 /*import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { setReconnect } from 'src/models'
-import { AppState } from 'src/store'
+import { setReconnect } from '../models'
+import { AppState } from '../store'
 
 export interface WebsocketSubscriptionState {
 	isEstablishingConnection: boolean

@@ -1,8 +1,10 @@
 /* eslint-disable import/no-internal-modules */
+/*
 import '../styles/app.module.scss'
 import '../styles/cells.styles.scss'
 import '../styles/Home.module.css'
 import '../styles/globals.css'
+*/
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import {
   AppShell,
@@ -18,8 +20,17 @@ import { useWindowScroll, useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { HeaderWithTabs } from '@/components'
 import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
 import { setApplicationDataLoaded, useAppSelector, wrapper } from '@/data'
-import { getAPIKey, setAPIKey, queryClient, binaryConditionalRender } from '@/services'
-import { IconBrandGithub, IconBrandTwitter, IconBrandDiscord } from '@tabler/icons-react'
+import {
+  getAPIKey,
+  setAPIKey,
+  queryClient,
+  binaryConditionalRender
+} from '@/services'
+import {
+  IconBrandGithub,
+  IconBrandTwitter,
+  IconBrandDiscord
+} from '@tabler/icons-react'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import Link from 'next/link'

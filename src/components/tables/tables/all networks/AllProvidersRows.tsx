@@ -1,10 +1,21 @@
-import { SkeletonWithTooltip } from "@/components"
-import { IProviderTableModel, getModeData, extractData, useGetLiveDataFromAppStore, useGetLiveDataModeFromAppStore } from "@/data"
-import { range } from "d3-array"
-import React from "react"
-import { useEffect, useState } from "react"
-import { IndexCell, NameCell, DataValueCell, MaxValueCell, ProviderTypeCell } from "./cells"
-
+import { SkeletonWithTooltip } from '@/components'
+import {
+  IProviderTableModel,
+  getModeData,
+  extractData,
+  useGetLiveDataFromAppStore,
+  useGetLiveDataModeFromAppStore
+} from '@/data'
+import { range } from 'd3-array'
+import React from 'react'
+import { useEffect, useState } from 'react'
+import {
+  IndexCell,
+  NameCell,
+  DataValueCell,
+  MaxValueCell,
+  ProviderTypeCell
+} from './cells'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0

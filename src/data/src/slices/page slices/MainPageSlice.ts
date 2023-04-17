@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IMainPageModel } from '..'
+import { IMainPageModel } from '../../models'
 
 const initialState: IMainPageModel = {}
 

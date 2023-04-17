@@ -11,8 +11,18 @@ import { useState } from 'react'
 import { curveCardinal } from '@visx/curve'
 import moment from 'moment'
 import { LiveDataPoint, useLiveData, useLiveDataState } from './hooks'
-import { DataType, Dataset, DatedXYDataPoint, L2DataRequestModel, L2DataResponseModel } from '@/api-client'
-import { IDataGetter, handleException, useGetProviderColorDictionaryFromAppStore } from '@/data'
+import {
+  DataType,
+  Dataset,
+  DatedXYDataPoint,
+  L2DataRequestModel,
+  L2DataResponseModel
+} from '@/api-client'
+import {
+  IDataGetter,
+  handleException,
+  useGetProviderColorDictionaryFromAppStore
+} from '@/data'
 import { WebsocketStatusPartial } from '../stats'
 // constants
 const NUM_LAYERS = 20
@@ -210,8 +220,9 @@ export default function CustomVISXStreamgraph({
                       onMouseEnter={() => setHighlightedIndex(stack.index)}
                       onMouseLeave={() => setHighlightedIndex(-1)}
                       d={tweened.pathString}
-                      fill={`url(#${stack.index === highlightedIndex ? 'hovered-' : ''
-                        }circles)`}
+                      fill={`url(#${
+                        stack.index === highlightedIndex ? 'hovered-' : ''
+                      }circles)`}
                     />
                   </g>
                 )

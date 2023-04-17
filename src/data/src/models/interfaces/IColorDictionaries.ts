@@ -1,4 +1,4 @@
-import { StringDictionary } from "../../"
+import { StringDictionary } from '../../'
 
 export interface IColorDictionaries {
 	providerColorDictionary?: StringDictionary

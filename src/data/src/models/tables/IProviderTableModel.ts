@@ -1,4 +1,3 @@
-
 import { ProviderResponseModel } from '../../../../api-client'
 import { IMaxDataModel } from '../interfaces'
 import { ICellClickedEvent } from './ICellClickedEvent'

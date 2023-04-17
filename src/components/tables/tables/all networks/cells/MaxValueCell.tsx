@@ -8,7 +8,11 @@ import { tableCellTypographyStandard } from './Typography.types'
 import { Tooltip } from '@mantine/core'
 import { Text } from '@mantine/core'
 import { DataPoint } from '@/api-client'
-import { numberFormat, useGetLiveDataModeFromAppStore, useGetMaxDataForProviderFromAppStore } from '@/data'
+import {
+  numberFormat,
+  useGetLiveDataModeFromAppStore,
+  useGetMaxDataForProviderFromAppStore
+} from '@/data'
 
 function generateMaxHoverMessage(data?: DataPoint): string {
   if (
@@ -47,7 +51,7 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'MaxValue')
-            : () => { }
+            : () => {}
         }>
         <Tooltip withArrow label={tooltipTypography}>
           <Text

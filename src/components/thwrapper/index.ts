@@ -1,1 +1,1 @@
-export * from './Thwrapper';
+export * from './Thwrapper'

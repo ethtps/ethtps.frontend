@@ -12,12 +12,10 @@ export function IconButton(props: {
       disabled={!props.visible ?? false}
       style={{
         ...props.sx,
-        opacity: (props.visible ?? true) ? 1 : 0
+        opacity: props.visible ?? true ? 1 : 0
       }}
       onClick={props.onClick}>
-      <Tooltip label={props.text}>
-        {props.icon}
-      </Tooltip>
+      <Tooltip label={props.text}>{props.icon}</Tooltip>
     </ActionIcon>
   )
 }

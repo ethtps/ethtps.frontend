@@ -1,6 +1,4 @@
-import {
-  ICustomCellConfiguration
-} from './ICustomCellConfiguration'
+import { ICustomCellConfiguration } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
 import React from 'react'
 import { m_toShortString, numberFormat, toShortString } from '@/data'
@@ -19,7 +17,7 @@ export function DataValueCell(config: IDataValueCellConficuration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'DataValue')
-            : () => { }
+            : () => {}
         }>
         {config.value === undefined ? (
           <SkeletonWithTooltip

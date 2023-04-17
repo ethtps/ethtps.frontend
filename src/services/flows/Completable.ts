@@ -1,7 +1,7 @@
-import { IOptionalCallback } from "@/data"
+import { IOptionalCallback } from '@/data'
 
 export class Completable {
-  constructor(public onCompleted?: IOptionalCallback<boolean>) { }
+  constructor(public onCompleted?: IOptionalCallback<boolean>) {}
   private _completed: boolean = false
   public get completed(): boolean {
     return this._completed

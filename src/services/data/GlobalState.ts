@@ -1,3 +1,3 @@
-import { APIKeyApi } from "@/api-client";
+import { APIKeyApi } from '@/api-client'
 
 export const APIKeyAPI = new APIKeyApi()

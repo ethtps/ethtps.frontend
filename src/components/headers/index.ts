@@ -1,1 +1,1 @@
-export * from './HeaderWithTabs';
+export * from './HeaderWithTabs'

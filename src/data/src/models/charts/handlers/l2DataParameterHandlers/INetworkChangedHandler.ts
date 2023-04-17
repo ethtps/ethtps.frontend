@@ -1,4 +1,3 @@
-
 import { IHandler } from '../IHandler'
 
-export interface INetworkChangedHandler extends IHandler<string> { }
+export interface INetworkChangedHandler extends IHandler<string> {}

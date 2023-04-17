@@ -1,13 +1,13 @@
-import { TimeInterval, DataType } from "../../../api-client"
+import { TimeInterval, DataType } from '../../../api-client'
 
 export function m_toShortString(mode: DataType) {
 	switch (mode) {
 		case DataType.GasAdjustedTps:
-			return "GTPS"
+			return 'GTPS'
 		case DataType.Gps:
-			return "GPS"
+			return 'GPS'
 	}
-	return "TPS"
+	return 'TPS'
 }
 
 export function toShortString(interval: TimeInterval) {

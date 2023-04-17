@@ -1,12 +1,12 @@
-export * from './AnimationSelector';
-export * from './CustomVISXStreamgraph';
-export * from './LiveDataContainer';
-export * from './VISXLegend';
-export * from './VISXStreamgraph';
-export * from './conveyor belt';
-export * from './framer bar';
-export * from './generateData';
-export * from './hooks';
-export * from './types';
-export * from './useForceUpdate';
-export * from './visx-test';
+export * from './AnimationSelector'
+export * from './CustomVISXStreamgraph'
+export * from './LiveDataContainer'
+export * from './VISXLegend'
+export * from './VISXStreamgraph'
+export * from './conveyor belt'
+export * from './framer bar'
+export * from './generateData'
+export * from './hooks'
+export * from './types'
+export * from './useForceUpdate'
+export * from './visx-test'

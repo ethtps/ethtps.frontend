@@ -1,2 +1,2 @@
-export * from './AnimatedLinkButtonWithIcon';
-export * from './IAnimatedLinkButtonWithIconProperties';
+export * from './AnimatedLinkButtonWithIcon'
+export * from './IAnimatedLinkButtonWithIconProperties'

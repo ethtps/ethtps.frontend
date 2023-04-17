@@ -1,4 +1,4 @@
-import { ProviderModel } from "../../../../api-client";
+import { ProviderModel } from '../../../../api-client'
 
 export interface IObjectWithProvider {
 	provider?: ProviderModel

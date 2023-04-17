@@ -20,7 +20,7 @@ export function IndexCell(config: IIndexCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Index')
-            : () => { }
+            : () => {}
         }>
         <IconButton
           sx={{

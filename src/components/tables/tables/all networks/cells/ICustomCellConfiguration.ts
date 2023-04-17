@@ -1,4 +1,3 @@
-
 import { ProviderResponseModel } from '@/api-client'
 import { ICellClickedEvent } from './ICellClickedEvent'
 

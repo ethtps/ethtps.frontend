@@ -1,10 +1,10 @@
-"use client"
-import { useHandler } from "@/data";
+'use client'
+import { useHandler } from '@/data'
 import {
-    createSignalRContext, // SignalR
-    createWebSocketContext, // WebSocket
-    createSocketIoContext, // Socket.io
-} from "react-signalr";
+  createSignalRContext, // SignalR
+  createWebSocketContext, // WebSocket
+  createSocketIoContext // Socket.io
+} from 'react-signalr'
 /*
 const { useSignalREffect, Provider } = createSignalRContext()
 
