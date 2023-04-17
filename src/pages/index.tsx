@@ -2,11 +2,10 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text, Notification } from '@mantine/core'
-import { AllProvidersTable, AnimationSelector, ConveyorBelt, FramerBar, Thwrapper, useSizeRef } from '@/components'
-import { getAPIKey } from '@/services/DependenciesIOC'
-import { defaultProviders } from '../data/src/models/default data'
-import { useAppSelector } from '@/services'
-import TestVSIXAnimation from '@/components/instant data animations/visx-test/TestVSIXAnimation'
+import React from 'react'
+import { AllProvidersTable, AnimationSelector, useSizeRef } from '../components'
+import { useAppSelector } from '../data'
+import { getAPIKey } from '../services'
 
 type IndexPageModel = {
   providers: string[]

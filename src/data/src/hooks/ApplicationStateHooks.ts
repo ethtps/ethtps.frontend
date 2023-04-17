@@ -1,10 +1,5 @@
-import {
-	setApplicationDataLoaded,
-	setStoreAPIKey,
-} from '../slices/ApplicationStateSlice'
-import { websocketActions } from '../slices/WebsocketSubscriptionSlice'
-import { wsBaseURL } from '../models/services/DependenciesIOC'
-import { AppState, useAppDispatch, useAppSelector } from '../store';
+import { setApplicationDataLoaded, setStoreAPIKey } from "../slices"
+import { useAppSelector, AppState, useAppDispatch } from "../"
 
 export const useGetApplicationDataLoadedFromAppStore = () => {
 	return useAppSelector(
@@ -18,5 +13,5 @@ export const useMarkApplicationDataLoaded = () => {
 
 export const useSetStoreAPIKey = (apiKey?: string) => {
 	useAppDispatch(setStoreAPIKey(apiKey))
-	useAppDispatch(websocketActions.setWSURL(wsBaseURL + apiKey))
+	//useAppDispatch(websocketActions.setWSURL(wsBaseURL + apiKey))
 }

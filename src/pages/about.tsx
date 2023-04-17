@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ReactFileMarkdown from "./components/Markdown/ReactFileMarkdown";
 import { Container } from "@mantine/core";
+import { ReactFileMarkdown } from "./components";
 
 export default function About() {
     return (

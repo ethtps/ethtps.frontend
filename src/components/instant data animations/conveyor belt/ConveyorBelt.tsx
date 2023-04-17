@@ -1,7 +1,6 @@
 import { IComponentSize } from "../../IComponentSize";
-import { createRoot } from 'react-dom/client'
-import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useRef, useState } from 'react';
+import { useFrame } from '@react-three/fiber';
 
 interface IConveyorBeltProps extends IComponentSize {
 }

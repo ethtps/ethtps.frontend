@@ -1,14 +1,11 @@
 
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Direction, FramerBar, IComponentSize } from '..';
-import { Carousel } from "@mantine/carousel"
-import { createStyles, Paper, Text, Title, Button, useMantineTheme, rem, Group, Modal, Center } from '@mantine/core';
+import { FramerHorizontalBar, IComponentSize, IconButton, useViewportRatio } from '..';
+import { Carousel } from "@mantine/carousel";
+import { createStyles, Paper, Text, useMantineTheme, rem, Modal, Center } from '@mantine/core';
 import { useDisclosure, useHover, useMediaQuery } from '@mantine/hooks';
 import { conditionalRender } from '@/services';
-import { IconChevronLeft, IconChevronRight, IconLayoutSidebarRightExpand, IconMaximize } from '@tabler/icons-react';
-import { IconButton } from '../buttons/IconButton';
-import { useViewportRatio } from '../hooks/ComponentHooks';
+import { IconMaximize } from '@tabler/icons-react';
+
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -100,7 +97,7 @@ export function AnimationSelector(props: IAnimationSelectorProps) {
                             <Center mx="auto">
                                 <Text style={{ position: 'relative' }}>{"You shouldn't be seeing this"}</Text>
                             </Center>
-                            {conditionalRender(<FramerBar
+                            {conditionalRender(<FramerHorizontalBar
                                 width={props.width}
                                 height={props.height} />, !modalOpened)}
                         </Paper>
@@ -109,7 +106,7 @@ export function AnimationSelector(props: IAnimationSelectorProps) {
             </div>
         </>
     return <>
-        <FramerBar
+        <FramerHorizontalBar
             width={props.width}
             height={props.height} />
     </>

@@ -1,7 +1,7 @@
 'use client'
 import { createHandlerFromCallback } from '@/data'
-import { api, getAPIKey, queryClient } from '@/services/DependenciesIOC'
-import { ApplicationDataService } from '@/services/flows'
+import { api, getAPIKey, queryClient } from '@/services'
+import { ApplicationDataService } from '@/services'
 import {
   Box,
   LoadingOverlay,
@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux'
 import {
   setApplicationDataLoaded,
   setCompleteApplicationDataAvailableInLocalStorage
-} from '@/data/src/slices/ApplicationStateSlice'
+} from '@/data'
 import { sleep } from '@/services'
 
 const useStyles = createStyles((theme) => ({

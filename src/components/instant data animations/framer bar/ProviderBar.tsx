@@ -1,6 +1,5 @@
 import { IComponentSize } from "@/components";
-import { defaultColorDictionary } from "@/data/src/models/default data";
-import { Text } from "@mantine/core";
+import { defaultColorDictionary } from "@/data";
 import { motion } from "framer-motion";
 import { useCallback, useState } from "react";
 

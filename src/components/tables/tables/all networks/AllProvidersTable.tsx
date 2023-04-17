@@ -3,7 +3,7 @@ import { AllProvidersHeader } from './AllProvidersHeader'
 import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
 import { conditionalRender } from '@/services'
-import { SeeMoreButton } from '@/components/buttons'
+import { SeeMoreButton } from '@/components'
 import { IProviderTableModel } from '@/data'
 import { Table } from '@mantine/core'
 

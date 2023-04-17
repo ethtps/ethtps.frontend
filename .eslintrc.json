@@ -6,7 +6,8 @@
       {
         "allow": [
           "**/actions/*",
-          "source-map-support/*"
+          "source-map-support/*",
+          "**/node_modules/*"
         ]
       }
     ]

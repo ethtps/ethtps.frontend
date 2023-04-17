@@ -3,7 +3,6 @@ import { motion, transform, useMotionValue, useTransform } from "framer-motion";
 import { useCallback, useState } from "react";
 import { ProviderBar } from "./ProviderBar";
 import { Group } from "@mantine/core";
-import { defaultProviders } from "@/data/src/models/default data";
 import { LoadingAnimation } from "./LoadingAnimation";
 
 enum States {

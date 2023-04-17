@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { maybeStorage } from '../infra/LocalStorageHelper'
-import { ProviderResponseModel } from '../../../api-client/src/models/ProviderResponseModel'
+import { maybeStorage } from 'src/infra'
+import { ProviderResponseModel } from '../../../api-client'
 
 const initialState: ProviderResponseModel[] = JSON.parse(
 	maybeStorage?.getItem('providers') ?? '[]'

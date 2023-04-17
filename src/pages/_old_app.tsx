@@ -1,3 +1,4 @@
+/* eslint-disable import/no-internal-modules */
 import '../styles/app.module.scss'
 import '../styles/cells.styles.scss'
 import '../styles/Home.module.css'
@@ -14,24 +15,16 @@ import {
   Text
 } from '@mantine/core'
 import { useWindowScroll, useHotkeys, useLocalStorage } from '@mantine/hooks'
-import { AppContext, AppProps } from 'next/app'
-import { NextPage } from 'next'
-import { HeaderWithTabs } from '@/components/headers'
-import { QueryClientProvider } from 'react-query'
-import { conditionalRender, queryClient, useAppState } from '@/services'
-import { useGetProvidersFromAppStore, wrapper } from '@/data'
+import { HeaderWithTabs } from '@/components'
 import HumanityProofPartial from '@/components/partials/humanity-proof/HumanityProofPartial'
-import { getAPIKey, setAPIKey } from '@/services/DependenciesIOC'
-import { useDispatch } from 'react-redux'
-import { setApplicationDataLoaded } from '@/data/src/slices/ApplicationStateSlice'
-import {
-  IconBrandDiscord,
-  IconBrandGithub,
-  IconBrandTwitter
-} from '@tabler/icons-react'
-import { binaryConditionalRender } from '@/services'
-import { useAppSelector } from '../data/src/store'
+import { setApplicationDataLoaded, useAppSelector, wrapper } from '@/data'
+import { getAPIKey, setAPIKey, queryClient, binaryConditionalRender } from '@/services'
+import { IconBrandGithub, IconBrandTwitter, IconBrandDiscord } from '@tabler/icons-react'
+import { NextPage } from 'next'
+import { AppProps } from 'next/app'
 import Link from 'next/link'
+import { QueryClientProvider } from 'react-query'
+import { useDispatch } from 'react-redux'
 import { ErrorBoundary } from './components/ErrorBoundary'
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode

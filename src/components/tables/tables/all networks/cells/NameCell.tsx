@@ -1,19 +1,14 @@
+/* eslint-disable import/no-internal-modules */
 import {
-  ICustomCellConfiguration,
-  buildClassNames
+  ICustomCellConfiguration
 } from './ICustomCellConfiguration'
 import { Group, Text, Tooltip } from '@mantine/core'
-import { centered } from '../../Cells.Types'
 import React, { useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
-import { inline, useGetProviderColorDictionaryFromAppStore } from '@/data'
-import { tableCellTypographyStandard } from './Typography.types'
+import { useGetProviderColorDictionaryFromAppStore } from '@/data'
 import Image from 'next/image'
 import {
-  IconCloud,
-  IconCloudOff,
-  IconTriangle,
-  IconTriangleOff
+  IconCloudOff, IconTriangleOff
 } from '@tabler/icons-react'
 import Link from 'next/link'
 

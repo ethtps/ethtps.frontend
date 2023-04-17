@@ -1,15 +1,11 @@
-import styles from '../../../../../styles/app.module.scss'
 import {
-  ICustomCellConfiguration,
-  buildClassNames
+  ICustomCellConfiguration
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
-import { centered } from '../../Cells.Types'
-import { DataType } from '@/api-client/src/models'
 import React from 'react'
-import { SkeletonWithTooltip } from '@/components/skeletons/SkeletonWithTooltip'
-import { AnimatedTypography } from '@/components/text/AnimatedTypography'
-import { numberFormat, toShortString } from '@/data'
+import { m_toShortString, numberFormat, toShortString } from '@/data'
+import { AnimatedTypography, SkeletonWithTooltip } from '@/components'
+import { DataType } from '@/api-client'
 
 interface IDataValueCellConficuration extends ICustomCellConfiguration {
   value?: number
@@ -27,7 +23,7 @@ export function DataValueCell(config: IDataValueCellConficuration) {
         }>
         {config.value === undefined ? (
           <SkeletonWithTooltip
-            text={`Loading ${config.provider?.name} ${toShortString(
+            text={`Loading ${config.provider?.name} ${m_toShortString(
               config.dataType
             )}...`}
           />

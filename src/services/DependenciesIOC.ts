@@ -1,14 +1,14 @@
 import { QueryClient } from 'react-query'
 import { LocalStorageService } from './LocalStorageService'
-import { ETHTPSApi } from './api/ETHTPSAPI'
+import { ETHTPSApi } from './api'
 
 var _api_key: string | undefined | null = ''
-export const apiURL = 
-    'http://localhost:10202'
+export const apiURL =
+  'http://localhost:10202'
 
 export const storage: LocalStorageService = new LocalStorageService()
 export const api = new ETHTPSApi(
-  (process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT as string) ??apiURL
+  (process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT as string) ?? apiURL
 )
 
 //export const websocketsService = new WebsocketsService()

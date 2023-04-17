@@ -1,5 +1,5 @@
 import { Container } from "@mantine/core";
-import ReactFileMarkdown from "./components/Markdown/ReactFileMarkdown";
+import { ReactFileMarkdown } from "./components";
 
 export default function PrivacyPolicy() {
     return (

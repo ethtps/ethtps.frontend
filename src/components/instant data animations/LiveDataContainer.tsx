@@ -1,5 +1,5 @@
 "use client"
-import { useHandler } from "@/data/src";
+import { useHandler } from "@/data";
 import {
     createSignalRContext, // SignalR
     createWebSocketContext, // WebSocket

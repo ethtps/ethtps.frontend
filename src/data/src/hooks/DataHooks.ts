@@ -1,4 +1,4 @@
-import { AppState, DataPointDictionary, IMaxDataModel, useAppSelector } from "src"
+import { AppState, DataPointDictionary, IMaxDataModel, useAppSelector } from ".."
 import { DataPoint, DataType } from "../../../api-client"
 
 export function useGetMaxDataFromAppStore() {

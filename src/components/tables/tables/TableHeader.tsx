@@ -1,7 +1,6 @@
-import { centered } from './Cells.Types'
-import { tableHeaderCellTypography } from './all networks/cells/Typography.types'
 import React from 'react'
 import { Text } from '@mantine/core'
+import { tableHeaderCellTypography } from '.'
 interface ITableHeaderParams {
   text?: string[]
 }

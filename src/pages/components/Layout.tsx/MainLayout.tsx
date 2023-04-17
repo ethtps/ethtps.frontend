@@ -6,6 +6,7 @@ import {
   IconBrandDiscord
 } from '@tabler/icons-react'
 import { GetStaticProps } from 'next'
+// eslint-disable-next-line import/no-internal-modules
 import Link from 'next/link'
 
 export const getStaticProps: GetStaticProps<{}> = async (

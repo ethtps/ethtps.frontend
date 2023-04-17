@@ -1,5 +1,14 @@
-import { DataType } from '../../../api-client/src/models/DataType'
-import { TimeInterval } from '../../../api-client/src/models/TimeInterval'
+import { TimeInterval, DataType } from "../../../api-client"
+
+export function m_toShortString(mode: DataType) {
+	switch (mode) {
+		case DataType.GasAdjustedTps:
+			return "GTPS"
+		case DataType.Gps:
+			return "GPS"
+	}
+	return "TPS"
+}
 
 export function toShortString(interval: TimeInterval) {
 	switch (interval) {

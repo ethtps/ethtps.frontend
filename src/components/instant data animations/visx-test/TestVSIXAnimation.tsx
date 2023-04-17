@@ -1,11 +1,12 @@
-import React from 'react';
-import { AreaStack } from '@visx/shape';
-import { SeriesPoint } from '@visx/shape/lib/types';
-import { GradientOrangeRed } from '@visx/gradient';;
-import { scaleTime, scaleLinear } from '@visx/scale';
-import { timeParse } from 'd3-time-format';
-import { browserUsage } from '@visx/mock-data';
-import { BrowserUsage } from '@visx/mock-data/lib/mocks/browserUsage';
+import { browserUsage } from "@visx/mock-data";
+// eslint-disable-next-line import/no-internal-modules
+import { BrowserUsage } from "@visx/mock-data/lib/mocks/browserUsage";
+import { scaleTime, scaleLinear } from "@visx/scale";
+import { AreaStack } from "@visx/shape";
+// eslint-disable-next-line import/no-internal-modules
+import { SeriesPoint } from "@visx/shape/lib/types";
+import { timeParse } from "d3-time-format";
+
 
 type BrowserNames = keyof BrowserUsage;
 
@@ -25,7 +26,7 @@ export type StackedAreasProps = {
     margin?: { top: number; right: number; bottom: number; left: number };
 };
 
-export default function TestVSIXAnimation({
+export function TestVSIXAnimation({
     width,
     height,
     margin = { top: 0, right: 0, bottom: 0, left: 0 },
@@ -46,7 +47,6 @@ export default function TestVSIXAnimation({
 
     return width < 10 ? null : (
         <svg width={width} height={height}>
-            <GradientOrangeRed id="stacked-area-orangered" />
             <rect x={0} y={0} width={width} height={height} fill={background} rx={14} />
             <AreaStack
                 top={margin.top}

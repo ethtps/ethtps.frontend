@@ -1,3 +1,4 @@
+export * from './Extractors';
 export * from './IPagesState';
 export * from './TimeIntervals';
 export * from './charts';

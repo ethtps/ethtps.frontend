@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-	InstantDataResponseModel,
-	DataResponseModelDictionary,
-} from '../common-types/Dictionaries'
-import { ILiveDataModeModel } from '../models/interfaces/ILiveDataModeModel'
-import { maybeStorage } from '../infra/LocalStorageHelper'
-import { TimeInterval } from '../../../api-client/src/models/TimeInterval'
-import { DataType } from '../../../api-client/src/models/DataType'
+import { maybeStorage } from 'src/infra'
+import { TimeInterval, DataType } from '../../../api-client'
+import { ILiveDataModeModel } from 'src/models'
+import { InstantDataResponseModel, DataResponseModelDictionary } from 'src/common-types'
 
 const initialState: ILiveDataModeModel = {
 	liveDataSmoothing: TimeInterval.Instant,

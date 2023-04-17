@@ -1,19 +1,13 @@
 import { Middleware } from 'redux'
-import { WebsocketEvent, websocketActions } from './WebsocketSubscriptionSlice'
-import websocketSlice from './WebsocketSubscriptionSlice'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { setLiveData } from './LiveDataSlice'
-import { useAppSelector, AppState } from '../store'
+import { useAppSelector, AppState, useAppDispatch } from '../store'
 import { useState, useEffect } from 'react'
-import {
-	reconnect,
-	rws,
-	setReconnect,
-	setRWS,
-} from '../models/services/DependenciesIOC'
-import { InstantDataResponseModel } from '../common-types/Dictionaries'
+import { InstantDataResponseModel } from 'src/common-types'
+import { reconnect, setReconnect, setRWS, rws } from 'src/models'
 
 const websocketMiddleware: Middleware = (store) => (next) => (action) => {
+	/*
 	if (!websocketActions.connecting.match(action)) {
 		return next(action)
 	}
@@ -57,7 +51,7 @@ const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 				console.log('WS Error: ' + e)
 			}
 		})
-	}
+	}*/
 	next(action)
 }
 

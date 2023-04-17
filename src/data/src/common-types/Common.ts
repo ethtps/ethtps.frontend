@@ -4,6 +4,8 @@ import {
 	DataResponseModelDictionary,
 	InstantDataResponseModel,
 } from './Dictionaries'
+import { DataPoint, DataType } from '../../../api-client'
+import { m_toShortString, toShortString_2 } from '../'
 
 export function fromShortString(typeStr: string): DataType {
 	switch (typeStr.toUpperCase()) {
@@ -66,7 +68,7 @@ export class StringTimeValue {
 }
 
 export const appModeToUIFormat = (mode: DataType): string => {
-	switch (toShortString(mode).toUpperCase()) {
+	switch (m_toShortString(mode).toUpperCase()) {
 		case 'TPS':
 			return 'Transactions per second'
 		case 'GPS':

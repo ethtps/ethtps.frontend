@@ -4,7 +4,7 @@ import { MarkdownEditor } from "./MarkdownEditor";
 
 
 
-export default function ReactFileMarkdown(props: { fileName: string }) {
+export function ReactFileMarkdown(props: { fileName: string }) {
     const [markdown, setMarkdown] = useState("")
     useEffect(() => {
         async function fetchMarkdown() {

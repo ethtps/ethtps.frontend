@@ -1,4 +1,5 @@
-import { StringDictionary } from "@/data/src";
+import { StringDictionary } from "../../../../data";
+
 
 export const defaultColorDictionary = {
     "Ethereum": "#490092",

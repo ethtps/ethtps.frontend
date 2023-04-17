@@ -1,4 +1,5 @@
-import { DataType } from 'ethtps.api.client'
+
+import { DataType } from '../../../../../../api-client';
 import { IHandler } from '../IHandler'
 
-export interface IModeChangedHandler extends IHandler<DataType> {}
+export interface IModeChangedHandler extends IHandler<DataType> { }

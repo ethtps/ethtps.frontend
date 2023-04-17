@@ -1,4 +1,4 @@
-import { StringDictionary } from "@/data/src";
+import { StringDictionary } from "../../common-types";
 
 export const defaultProviderTypeColorDictionary = {
     "Mainnet": "#4a1173",

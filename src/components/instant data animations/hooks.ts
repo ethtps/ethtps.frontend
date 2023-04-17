@@ -1,18 +1,7 @@
-import { DataType } from '@/api-client/src/models'
-import {
-  DataResponseModelDictionary,
-  ProviderResponseModel,
-  extractData,
-  TimeInterval,
-  liveDataHooks,
-  useGetProvidersFromAppStore,
-  useGetProviderColorDictionaryFromAppStore,
-  useGetLiveDataFromAppStore,
-  getModeData,
-  dataTypeToString
-} from '@/data'
-import { useAppSelector } from '@/services'
-import { useState, useEffect } from 'react'
+import { ProviderResponseModel, TimeInterval, DataType } from "@/api-client"
+import { DataResponseModelDictionary, extractData, useAppSelector, useGetProvidersFromAppStore, useGetProviderColorDictionaryFromAppStore, useGetLiveDataFromAppStore, getModeData, dataTypeToString, useGetLiveDataModeFromAppStore, useGetLiveDataSmoothingFromAppStore, useGetSidechainsIncludedFromAppStore } from "@/data"
+import { useState, useEffect } from "react"
+
 
 export type InstantBarChartDataset = {
   label: string
@@ -70,10 +59,10 @@ export type LiveDataState = {
 }
 
 export function useLiveDataState(): LiveDataState {
-  const smoothing = liveDataHooks.useGetLiveDataSmoothingFromAppStore()
+  const smoothing = useGetLiveDataSmoothingFromAppStore()
   const sidechainsIncluded =
-    liveDataHooks.useGetSidechainsIncludedFromAppStore()
-  const mode = liveDataHooks.useGetLiveDataModeFromAppStore()
+    useGetSidechainsIncludedFromAppStore()
+  const mode = useGetLiveDataModeFromAppStore()
   return { smoothing, sidechainsIncluded, mode }
 }
 
@@ -94,11 +83,11 @@ export function useStreamchartData(interval: string) {
 
 export function useLiveData() {
   const providers: ProviderResponseModel[] = useGetProvidersFromAppStore()
-  const smoothing = liveDataHooks.useGetLiveDataSmoothingFromAppStore()
+  const smoothing = useGetLiveDataSmoothingFromAppStore()
   const colors = useGetProviderColorDictionaryFromAppStore()
   const sidechainsIncluded =
-    liveDataHooks.useGetSidechainsIncludedFromAppStore()
-  const mode = liveDataHooks.useGetLiveDataModeFromAppStore()
+    useGetSidechainsIncludedFromAppStore()
+  const mode = useGetLiveDataModeFromAppStore()
   const liveData = useGetLiveDataFromAppStore()
   const [data, setData] = useState<DataResponseModelDictionary>()
   const [processedData, setProcessedData] = useState<LiveData>()

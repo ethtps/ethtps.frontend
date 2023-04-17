@@ -1,4 +1,5 @@
-import { ProviderResponseModel } from '@/data'
+
+import { ProviderResponseModel } from '@/api-client'
 import { ICellClickedEvent } from './ICellClickedEvent'
 
 export const buildClassNames = (config: ICustomCellConfiguration) => {

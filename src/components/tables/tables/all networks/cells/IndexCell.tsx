@@ -4,7 +4,7 @@ import {
 } from './ICustomCellConfiguration'
 import React from 'react'
 import { conditionalRender } from '@/services'
-import { IconButton } from '@/components/buttons/IconButton'
+import { IconButton } from '@/components'
 import { IconArrowRight } from '@tabler/icons-react'
 
 interface IIndexCellConfiguration extends ICustomCellConfiguration {
@@ -20,7 +20,7 @@ export function IndexCell(config: IIndexCellConfiguration) {
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Index')
-            : () => {}
+            : () => { }
         }>
         <IconButton
           sx={{

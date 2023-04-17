@@ -1,4 +1,5 @@
-import { ProviderResponseModel } from "@/data/src";
+import { ProviderResponseModel } from "../../../../api-client";
+
 
 export const defaultProviders = [
     {

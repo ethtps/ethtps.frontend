@@ -1,12 +1,13 @@
+/* eslint-disable import/no-internal-modules */
 import '../styles/app.module.scss'
 import '../styles/cells.styles.scss'
 import '../styles/Home.module.css'
 import '../styles/globals.css'
 import { AppPropsWithLayout } from '@/components'
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import MainLayout from './components/Layout.tsx/MainLayout'
 import { wrapper } from '@/data'
+import { GetStaticProps } from 'next'
 import { Provider } from 'react-redux'
+import MainLayout from './components/Layout.tsx/MainLayout'
 
 type AppModel = {
   test: string

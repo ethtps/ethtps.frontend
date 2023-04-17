@@ -1,10 +1,8 @@
-import { LivePSPartial } from '@/components'
-import DataOverviewChart from '@/components/charts/historical-data/DataOverviewChart'
-import { AllProvidersTable } from '@/components/tables'
-import { ProviderResponseModel, useGetProvidersFromAppStore } from '@/data'
-import { useGetMaxDataFromAppStore } from '@/data/src/hooks/DataHooks'
-import { Grid, Group, Paper } from '@mantine/core'
-import { useState, useRef, useEffect } from 'react'
+
+import { AllProvidersTable, LivePSPartial, DataOverviewChart } from "@/components"
+import { useGetMaxDataFromAppStore, useGetProvidersFromAppStore } from "@/data"
+import { Grid, Paper } from "@mantine/core"
+import { useEffect, useRef, useState } from "react"
 
 export default function Home() {
   const providers = useGetProvidersFromAppStore()

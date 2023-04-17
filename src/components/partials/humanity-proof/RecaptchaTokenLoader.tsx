@@ -1,6 +1,6 @@
-import { IHandler } from '@/data/src/models/charts/handlers/IHandler'
-import { useHandler } from '@/data/src/models/charts/handlers/hooks/HandlerHooks'
-import { conditionalRender, useAppState } from '@/services'
+
+import { IHandler, useHandler, useAppState } from '@/data'
+import { conditionalRender } from '@/services'
 import React from 'react'
 import { createRef } from 'react'
 import { useState } from 'react'

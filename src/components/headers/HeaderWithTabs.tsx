@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-internal-modules
 import styles from '../../styles/app.module.scss'
 import { useState } from 'react'
 import {
@@ -11,6 +12,7 @@ import {
   ActionIcon
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+// eslint-disable-next-line import/no-internal-modules
 import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({

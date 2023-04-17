@@ -1,7 +1,6 @@
+import { DataPointDictionary } from "../../common-types"
+import { DataType, DataPoint } from "../../../../api-client"
 
-import { DataPoint } from '../../../../api-client/src/models/DataPoint'
-import { DataType } from '../../../../api-client/src/models/DataType'
-import { DataPointDictionary } from '../../common-types/Dictionaries'
 
 export interface IMaxDataModel {
 	maxTPSData?: DataPointDictionary
