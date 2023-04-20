@@ -6,7 +6,7 @@ import { AppState } from '../store'
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,
 	completeApplicationDataAvailableInLocalStorage: false,
-	apiKey: "",
+	apiKey: '',
 	hasProvenIsHuman: false,
 }
 

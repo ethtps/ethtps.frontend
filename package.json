@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start -p 3007",
     "start:dev": "next dev -p 3007",
-    "lint": "npx eslint --",
+    "lint": "npm eslint --",
     "lint:fix": "npm run lint src/*.ts --fix",
-    "prettier": "npx prettier --check",
-    "prettier:fix": "npm run prettier -- --write"
+    "prettier": "npx prettier --check src/",
+    "prettier:fix": "npx prettier src/ --write"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
