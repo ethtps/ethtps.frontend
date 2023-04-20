@@ -12,4 +12,4 @@ typical
 
 `npm run start:dev`
 
-Everything's still a mess - it will be improved at some point in the future  ¯\_(ツ)_\/¯
+Everything's still a mess - it will be improved at some point in the future  ¯\\_(ツ)_\/¯
