@@ -1,17 +1,16 @@
 import React from 'react'
 import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
-import { useGetExperimentsFromAppStore, useHandler } from '@/data/src'
-import { DataType } from '@/api-client/src/models'
+import { useGetExperimentsFromAppStore, useHandler } from '@/data'
 import { conditionalRender } from '@/services'
 import { Box, Tooltip, Text } from '@mantine/core'
 import { IconButton } from '../../IconButton'
-import { AppState, useAppSelector, useAppState } from '@/data/src/store'
 import {
   IconGasStation,
   IconNumber,
   IconRazorElectric
 } from '@tabler/icons-react'
+import { DataType } from '@/api-client'
 
 export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
   const mode = useHandler(model.modeHandle)

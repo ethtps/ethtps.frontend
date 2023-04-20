@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const  conditionalRender = (
+export const conditionalRender = (
   component: JSX.Element,
   renderIf?: boolean
 ) => {

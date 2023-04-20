@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "import/no-internal-modules": [
+      "error",
+      {
+        "allow": [
+          "**/actions/*",
+          "source-map-support/*",
+          "**/node_modules/*",
+          "pages/*"
+        ]
+      }
+    ]
+  }
 }

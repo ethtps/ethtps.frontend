@@ -1,9 +1,8 @@
-import { TimeInterval } from 'src'
 import {
-	InstantDataResponseModel,
 	DataResponseModelDictionary,
-} from '../../common-types/Dictionaries'
-import { DataType } from '../../../../api-client/src/models/DataType'
+	InstantDataResponseModel,
+} from '../../common-types'
+import { TimeInterval, DataType } from '../../../../api-client'
 
 export interface ILiveDataModeModel {
 	liveDataSmoothing: TimeInterval

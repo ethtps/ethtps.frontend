@@ -1,5 +1,5 @@
-import { DataType } from "@/api-client/src/models";
-import { IHandler } from "@/data/src";
+import { DataType } from '@/api-client'
+import { IHandler } from '@/data'
 
 export interface IDataModeButtonGroupConfiguration {
   modeHandle?: IHandler<DataType>

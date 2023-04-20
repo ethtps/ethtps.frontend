@@ -1,17 +1,24 @@
+'use client'
+import { useHandler } from '@/data'
 import {
-    createSignalRContext, // SignalR
-    createWebSocketContext, // WebSocket
-    createSocketIoContext, // Socket.io
-} from "react-signalr";
-
-const SignalRContext = createSignalRContext();
+  createSignalRContext, // SignalR
+  createWebSocketContext, // WebSocket
+  createSocketIoContext // Socket.io
+} from 'react-signalr'
+/*
+const { useSignalREffect, Provider } = createSignalRContext()
 
 export function LiveDataContainer(props: { component: JSX.Element }) {
+    useSignalREffect("ConnectionEstablished", (data) => {
+        console.log({ connectionEstablished: data })
+    }, [])
     return <>
-        <SignalRContext.Provider
+        <Provider
             url={process.env.WSAPI_DEV_ENDPOINT ?? "http://localhost:5136/api/v3/wsapi/live-data"}
+            connectEnabled={true}
+            withCredentials={false}
         >
             {props.component}
-        </SignalRContext.Provider>
+        </Provider>
     </>
-}
+}*/

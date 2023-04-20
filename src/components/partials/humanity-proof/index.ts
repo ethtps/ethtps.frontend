@@ -1,3 +1,2 @@
-import HumanityProofPartial from './HumanityProofPartial'
-
-export { HumanityProofPartial }
+export * from './HumanityProofPartial'
+export * from './RecaptchaTokenLoader'

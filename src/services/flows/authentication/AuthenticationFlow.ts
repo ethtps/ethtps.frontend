@@ -1,10 +1,10 @@
-import { Flow } from '../Flow'
+/*import { Flow } from '../Flow'
 import { IOptionalCallback } from '../../../data/src/models/charts/handlers/IOptionalCallback'
 import { FlowStep } from '../FlowStep'
 import { ComponentFlow } from '../ComponentFlow'
 import { FlowStepWithComponent } from '../FlowStepWithComponent'
-import { HumanityProofPartial } from '@/components/partials/humanity-proof'
-/*
+import { HumanityProofPartial } from '@/components/humanity-proof'
+
 export class AuthenticationFlow extends ComponentFlow {
   constructor(
     onStepChanged?: IOptionalCallback<number>,
@@ -24,3 +24,4 @@ export class AuthenticationFlow extends ComponentFlow {
   }
 }
 */
+export {}

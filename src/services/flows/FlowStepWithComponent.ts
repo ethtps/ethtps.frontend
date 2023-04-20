@@ -1,4 +1,4 @@
-import { IOptionalCallback } from '@/data/src'
+import { IOptionalCallback } from '@/data'
 import { Completable } from './Completable'
 import { FlowStep } from './FlowStep'
 export class FlowStepWithComponent extends Completable implements FlowStep {

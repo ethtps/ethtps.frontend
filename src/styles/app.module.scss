@@ -48,6 +48,7 @@
             0 -0.25em 0 #fefc4b;
     }
 }
+
 .trick {
     display: inline-block;
     text-decoration: underline dotted;
@@ -61,10 +62,17 @@
     content: 'Ethereum';
 }
 
-.inline{
+.inline {
     display: inline-block;
 }
 
-.signature{
+.signature {
     font-size: 10px;
-} 
+}
+
+$ethpal-1: #48cbd9;
+$ethpal-2: #79e7e7;
+$ethpal-3: #14044d;
+$ethpal-4: #716b94;
+$ethpal-5: #c6c5d4;
+$ethpal-6: #37367b;

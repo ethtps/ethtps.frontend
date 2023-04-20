@@ -4,7 +4,7 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import React from 'react'
-import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data/src'
+import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data'
 
 export function ProviderTypeCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderTypeColorDictionaryFromAppStore()

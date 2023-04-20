@@ -1,7 +1,7 @@
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export const wsBaseURL = 'ws://localhost:2000/LiveData?XAPIKey='
-export let rws: ReconnectingWebSocket = undefined
+export let rws: ReconnectingWebSocket
 export const setRWS = (ws: ReconnectingWebSocket) => {
 	rws = ws
 }

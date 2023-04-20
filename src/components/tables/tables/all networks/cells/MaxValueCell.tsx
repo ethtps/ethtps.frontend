@@ -1,15 +1,18 @@
 import moment from 'moment'
 import React from 'react'
-import { centered } from '../../Cells.Types'
 import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
-import { DataPoint, numberFormat, liveDataHooks } from '@/data/src'
-import { useGetMaxDataForProviderFromAppStore } from '@/data/src/hooks/DataHooks'
 import { Tooltip } from '@mantine/core'
 import { Text } from '@mantine/core'
+import { DataPoint } from '@/api-client'
+import {
+  numberFormat,
+  useGetLiveDataModeFromAppStore,
+  useGetMaxDataForProviderFromAppStore
+} from '@/data'
 
 function generateMaxHoverMessage(data?: DataPoint): string {
   if (
@@ -35,7 +38,7 @@ function generateMaxTypography(data?: DataPoint) {
 }
 
 export function MaxValueCell(config: ICustomCellConfiguration) {
-  const type = liveDataHooks.useGetLiveDataModeFromAppStore()
+  const type = useGetLiveDataModeFromAppStore()
   const maxData = useGetMaxDataForProviderFromAppStore(
     config.provider?.name as string,
     type

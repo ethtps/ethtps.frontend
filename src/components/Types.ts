@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+// eslint-disable-next-line import/no-internal-modules
 import { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 

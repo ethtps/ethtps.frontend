@@ -1,8 +1,8 @@
 import { IAnimatedLinkButtonWithIconProperties } from './IAnimatedLinkButtonWithIconProperties'
 import React from 'react'
-import { openNewTab } from '@/services'
 import { IconButton } from '../../IconButton'
 import { Tooltip, Text } from '@mantine/core'
+import { openNewTab } from '@/services'
 
 // No animation YET
 export function AnimatedLinkButtonWithIcon(
