@@ -6,24 +6,27 @@ import { scaleLinear } from '@visx/scale'
 import { transpose } from 'd3-array'
 import { animated, useSpring } from '@react-spring/web'
 
-import { WebsocketStatusPartial } from '../stats/WebsocketStatusPartial'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { curveCardinal } from '@visx/curve'
 import moment from 'moment'
 import { LiveDataPoint, useLiveData, useLiveDataState } from './hooks'
-import { DataType, DatedXYDataPoint } from '@/api-client/src/models'
 import {
+  DataType,
+  Dataset,
+  DatedXYDataPoint,
   L2DataRequestModel,
+  L2DataResponseModel
+} from '@/api-client'
+import {
   IDataGetter,
-  L2DataResponseModel,
-  colorHooks,
   handleException,
-  Dataset
-} from '@/data/src'
+  useGetProviderColorDictionaryFromAppStore
+} from '@/data'
+import { WebsocketStatusPartial } from '../stats'
 // constants
 const NUM_LAYERS = 20
-export const BACKGROUND = '#ffdede'
+const BACKGROUND = '#ffdede'
 
 // utils
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
@@ -46,7 +49,7 @@ type L2Request = {
   [K in keyof L2DataRequestModel]: L2DataRequestModel[K]
 } & { dataType: DataType }
 
-export type StreamGraphProps = {
+type StreamGraphProps = {
   width: number
   height: number
   animate?: boolean
@@ -72,7 +75,7 @@ export default function CustomVISXStreamgraph({
 
   const liveState = useLiveDataState()
   const [data, setData] = useState<L2DataResponseModel>()
-  const colors = colorHooks.useGetProviderColorDictionaryFromAppStore()
+  const colors = useGetProviderColorDictionaryFromAppStore()
   const [processedStreamchartData, setProcessedStreamchartData] =
     useState<StreamchartLayers>({
       providers: ['Mock until loaded'],

@@ -23,8 +23,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "npx tsc",
-		"lint": "npx eslint src test",
-		"lint:fix": "npm run lint -- --fix",
+		"lint": "npx eslint ",
+		"lint:fix": "npm run eslint -- --fix",
 		"prettier": "npx prettier src test --check",
 		"prettier:fix": "npm run prettier -- --write"
 	},

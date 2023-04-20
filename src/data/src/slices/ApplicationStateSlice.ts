@@ -1,14 +1,17 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IDataLoadingModel } from '../models/interfaces/IDataLoadingModel'
-import { maybeStorage } from '../infra/LocalStorageHelper'
-import { ApplicationState } from 'src'
+
+import { ApplicationState, IDataLoadingModel, maybeStorage } from '..'
 import { dataReducer } from './DataSlice'
 import { AppState } from '../store'
 
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,
-	completeApplicationDataAvailableInLocalStorage: JSON.parse(maybeStorage?.getItem('completeApplicationDataAvailableInLocalStorage')??"false"),
-	apiKey: maybeStorage?.getItem('XAPIKey'),
+	completeApplicationDataAvailableInLocalStorage: JSON.parse(
+		maybeStorage?.getItem(
+			'completeApplicationDataAvailableInLocalStorage'
+		) ?? 'false'
+	),
+	apiKey: maybeStorage?.getItem('XAPIKey') as string,
 	hasProvenIsHuman:
 		maybeStorage?.getItem('hasProvenIsHuman') === 'true' ?? false,
 }
@@ -32,8 +35,12 @@ export const applicationStateSlice = createSlice({
 		) {
 			if (action.payload === undefined) return state
 
-			maybeStorage?.setItem('completeApplicationDataAvailableInLocalStorage', JSON.stringify(action.payload))
-			state.completeApplicationDataAvailableInLocalStorage = action.payload
+			maybeStorage?.setItem(
+				'completeApplicationDataAvailableInLocalStorage',
+				JSON.stringify(action.payload)
+			)
+			state.completeApplicationDataAvailableInLocalStorage =
+				action.payload
 			return state
 		},
 		setStoreAPIKey(
@@ -47,7 +54,10 @@ export const applicationStateSlice = createSlice({
 	},
 })
 
-export const { setApplicationDataLoaded, setStoreAPIKey, setCompleteApplicationDataAvailableInLocalStorage } =
-	applicationStateSlice.actions
+export const {
+	setApplicationDataLoaded,
+	setStoreAPIKey,
+	setCompleteApplicationDataAvailableInLocalStorage,
+} = applicationStateSlice.actions
 export const applicationStateReducer = applicationStateSlice.reducer
 export const selectAppState = (state: AppState) => state.applicationState

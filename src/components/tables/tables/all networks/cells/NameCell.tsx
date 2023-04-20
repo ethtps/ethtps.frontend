@@ -1,20 +1,11 @@
-import {
-  ICustomCellConfiguration,
-  buildClassNames
-} from './ICustomCellConfiguration'
+/* eslint-disable import/no-internal-modules */
+import { ICustomCellConfiguration } from './ICustomCellConfiguration'
 import { Group, Text, Tooltip } from '@mantine/core'
-import { centered } from '../../Cells.Types'
 import React, { useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
-import { inline, useGetProviderColorDictionaryFromAppStore } from '@/data/src'
-import { tableCellTypographyStandard } from './Typography.types'
+import { useGetProviderColorDictionaryFromAppStore } from '@/data'
 import Image from 'next/image'
-import {
-  IconCloud,
-  IconCloudOff,
-  IconTriangle,
-  IconTriangleOff
-} from '@tabler/icons-react'
+import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
 import Link from 'next/link'
 
 export function NameCell(config: ICustomCellConfiguration) {

@@ -1,4 +1,5 @@
 import { createGetInitialProps } from '@mantine/next'
+// eslint-disable-next-line import/no-internal-modules
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 
 const getInitialProps = createGetInitialProps()

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { maybeStorage } from '../infra/LocalStorageHelper'
+import { maybeStorage } from '..'
 
 const initialState: number[] = JSON.parse(
 	maybeStorage?.getItem('experiments') ?? '[]'

@@ -44,8 +44,8 @@ function createHandler<THandler extends IHandler<TReturnValue>, TReturnValue>(
 
 export class Handler<TReturnValue> implements IOptionalCallback<TReturnValue> {
 	constructor(
-		public setter: (newValue?: TReturnValue) => void = (
-			newValue?: TReturnValue
+		public setter: (newValue: TReturnValue) => void = (
+			newValue: TReturnValue
 		) => {
 			this.value = newValue
 			if (this.callback != null) this.callback(newValue)

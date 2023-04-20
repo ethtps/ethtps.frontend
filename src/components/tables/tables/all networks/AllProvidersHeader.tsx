@@ -1,10 +1,14 @@
+import {
+  m_toShortString,
+  toShortString,
+  useGetLiveDataModeFromAppStore
+} from '@/data'
 import React from 'react'
 import { TableHeader } from '../TableHeader'
-import { liveDataHooks, toShortString } from '@/data/src'
 
 export function AllProvidersHeader(): JSX.Element {
-  const mode = liveDataHooks.useGetLiveDataModeFromAppStore()
-  const modeStr = toShortString(mode)
+  const mode = useGetLiveDataModeFromAppStore()
+  const modeStr = m_toShortString(mode)
   return (
     <React.Fragment>
       <TableHeader

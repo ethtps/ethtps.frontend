@@ -1,4 +1,3 @@
-import { useAppSelector } from '@/services'
 import { IconPlugConnected, IconPlugConnectedX } from '@tabler/icons-react'
 import React, { useEffect, useState } from 'react'
 import { Text } from '@mantine/core'
