@@ -2,7 +2,9 @@
 
 v2 version of the frontend (<1.5 really)
 
-[![CI](https://github.com/ethtps/ethtps.frontend/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ethtps/ethtps.frontend/actions/workflows/docker-image.yml)
+[![Node.js build](https://github.com/ethtps/ethtps.frontend/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/ethtps/ethtps.frontend/actions/workflows/node.js.yml)
+
+[![Prettier test](https://github.com/ethtps/ethtps.frontend/actions/workflows/node.js.lint.yml/badge.svg?branch=main)](https://github.com/ethtps/ethtps.frontend/actions/workflows/node.js.lint.yml)
 
 # Setup
 
