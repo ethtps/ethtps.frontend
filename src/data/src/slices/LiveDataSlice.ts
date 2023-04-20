@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { maybeStorage } from '../infra'
 import { TimeInterval, DataType } from '../../../api-client'
 import { ILiveDataModeModel } from '../models'
 import {
@@ -10,18 +9,10 @@ import {
 const initialState: ILiveDataModeModel = {
 	liveDataSmoothing: TimeInterval.Instant,
 	liveDataType: DataType.Tps,
-	includeSidechains: JSON.parse(
-		maybeStorage?.getItem('includeSidechains') ?? 'false'
-	),
-	oneMinuteTPSData: JSON.parse(
-		maybeStorage?.getItem('oneMinuteTPSData') ?? '{}'
-	),
-	oneMinuteGPSData: JSON.parse(
-		maybeStorage?.getItem('oneMinuteGPSData') ?? '{}'
-	),
-	oneMinuteGTPSData: JSON.parse(
-		maybeStorage?.getItem('oneMinuteGTPSData') ?? '{}'
-	),
+	includeSidechains: false,
+	oneMinuteTPSData: {},
+	oneMinuteGPSData: {},
+	oneMinuteGTPSData: {},
 	currentVisitors: 0,
 }
 
@@ -64,7 +55,7 @@ const liveDataSlice = createSlice({
 			state: ILiveDataModeModel,
 			action: PayloadAction<boolean | undefined>
 		) {
-			maybeStorage?.setItem(
+			localStorage?.setItem(
 				'includeSidechains',
 				JSON.stringify(action.payload)
 			)
@@ -77,21 +68,21 @@ const liveDataSlice = createSlice({
 		) {
 			switch (state.liveDataType) {
 				case DataType.Tps:
-					maybeStorage?.setItem(
+					localStorage?.setItem(
 						'oneMinuteTPSData',
 						JSON.stringify(action.payload)
 					)
 					state.oneMinuteTPSData = action.payload
 					break
 				case DataType.Gps:
-					maybeStorage?.setItem(
+					localStorage?.setItem(
 						'oneMinuteGPSData',
 						JSON.stringify(action.payload)
 					)
 					state.oneMinuteGPSData = action.payload
 					break
 				default:
-					maybeStorage?.setItem(
+					localStorage?.setItem(
 						'oneMinuteTPSData',
 						JSON.stringify(action.payload)
 					)

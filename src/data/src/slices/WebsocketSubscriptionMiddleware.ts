@@ -1,10 +1,4 @@
 import { Middleware } from 'redux'
-import ReconnectingWebSocket from 'reconnecting-websocket'
-import { setLiveData } from './LiveDataSlice'
-import { useAppSelector, AppState, useAppDispatch } from '../store'
-import { useState, useEffect } from 'react'
-import { InstantDataResponseModel } from '../common-types'
-import { reconnect, setReconnect, setRWS, rws } from '../models'
 
 const websocketMiddleware: Middleware = (store) => (next) => (action) => {
 	/*

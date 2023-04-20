@@ -1,9 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { maybeStorage } from '..'
 
-const initialState: Array<string> = JSON.parse(
-	maybeStorage?.getItem('networks') ?? '[]'
-)
+const initialState: Array<string> = []
 
 const networksSlice = createSlice({
 	name: 'networks',
@@ -14,7 +11,7 @@ const networksSlice = createSlice({
 			action: PayloadAction<string[] | undefined>
 		) {
 			if (action.payload !== undefined) {
-				maybeStorage?.setItem(
+				localStorage?.setItem(
 					'networks',
 					JSON.stringify(action.payload)
 				)
