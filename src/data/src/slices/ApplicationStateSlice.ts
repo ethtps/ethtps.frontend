@@ -1,16 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IDataLoadingModel } from '../models/interfaces/IDataLoadingModel'
-import { maybeStorage } from '../infra/LocalStorageHelper'
-import { ApplicationState } from 'src'
-import { dataReducer } from './DataSlice'
+
+import { IDataLoadingModel } from '..'
 import { AppState } from '../store'
 
 const initialState: IDataLoadingModel = {
 	applicationDataLoaded: false,
-	completeApplicationDataAvailableInLocalStorage: JSON.parse(maybeStorage?.getItem('completeApplicationDataAvailableInLocalStorage')??"false"),
-	apiKey: maybeStorage?.getItem('XAPIKey'),
-	hasProvenIsHuman:
-		maybeStorage?.getItem('hasProvenIsHuman') === 'true' ?? false,
+	completeApplicationDataAvailableInLocalStorage: false,
+	apiKey: "",
+	hasProvenIsHuman: false,
 }
 
 export const applicationStateSlice = createSlice({
@@ -32,22 +29,29 @@ export const applicationStateSlice = createSlice({
 		) {
 			if (action.payload === undefined) return state
 
-			maybeStorage?.setItem('completeApplicationDataAvailableInLocalStorage', JSON.stringify(action.payload))
-			state.completeApplicationDataAvailableInLocalStorage = action.payload
+			localStorage?.setItem(
+				'completeApplicationDataAvailableInLocalStorage',
+				JSON.stringify(action.payload)
+			)
+			state.completeApplicationDataAvailableInLocalStorage =
+				action.payload
 			return state
 		},
 		setStoreAPIKey(
 			state: IDataLoadingModel,
 			action: PayloadAction<string | undefined>
 		) {
-			maybeStorage?.setItem('XAPIKey', action.payload as string)
+			localStorage?.setItem('XAPIKey', action.payload as string)
 			state.apiKey = action.payload as string
 			return state
 		},
 	},
 })
 
-export const { setApplicationDataLoaded, setStoreAPIKey, setCompleteApplicationDataAvailableInLocalStorage } =
-	applicationStateSlice.actions
+export const {
+	setApplicationDataLoaded,
+	setStoreAPIKey,
+	setCompleteApplicationDataAvailableInLocalStorage,
+} = applicationStateSlice.actions
 export const applicationStateReducer = applicationStateSlice.reducer
 export const selectAppState = (state: AppState) => state.applicationState

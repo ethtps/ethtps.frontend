@@ -1,11 +1,10 @@
-import { useState } from 'react'
-import React from 'react'
-import { ISidechainToggleButtonConfiguration } from './ISidechainToggleButtonConfiguration'
-import { setIncludeSidechains } from '@/data/src/slices/LiveDataSlice'
+import { useAppDispatch, setIncludeSidechains } from '@/data'
 import { Tooltip, Text } from '@mantine/core'
-import { IconButton } from '../IconButton'
 import { IconLink, IconLinkOff } from '@tabler/icons-react'
-import { useAppDispatch } from '@/data/src/store'
+import React, { useState } from 'react'
+import { IconButton } from '../IconButton'
+import { ISidechainToggleButtonConfiguration } from './ISidechainToggleButtonConfiguration'
+
 export function SidechainToggleButton(
   config: ISidechainToggleButtonConfiguration
 ) {

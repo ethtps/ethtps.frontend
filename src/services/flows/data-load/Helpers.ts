@@ -1,19 +1,14 @@
-import { ETHTPSApi } from "@/services/api/ETHTPSAPI"
-import { QueryClient } from "react-query"
+import { ETHTPSApi } from '@/services'
+import { QueryClient } from 'react-query'
 
 export async function getAsync<T>(
-    name: string,
-    getter: (api: ETHTPSApi) => Promise<T>,
-    api: ETHTPSApi,
-    queryClient: QueryClient
+  name: string,
+  getter: (api: ETHTPSApi) => Promise<T>,
+  api: ETHTPSApi,
+  queryClient: QueryClient
 ) {
-    return await queryClient.fetchQuery(
-        name,
-        async () => await getter(api),
-        {
-            retry: true,
-            retryDelay: 2500
-        }
-    )
-
+  return await queryClient.fetchQuery(name, async () => await getter(api), {
+    retry: true,
+    retryDelay: 2500
+  })
 }

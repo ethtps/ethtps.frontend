@@ -1,5 +1,5 @@
 import React from 'react'
-import { CustomButtonGroup } from './groups/custom/CustomButtonGroup'
+import { CustomButtonGroup } from './groups'
 
 export function ModeButton(): JSX.Element {
   return (

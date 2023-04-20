@@ -1,4 +1,4 @@
-import { IOptionalCallback, createHandlerFromCallback } from '@/data/src'
+import { IOptionalCallback, createHandlerFromCallback } from '@/data'
 import { FlowStep } from './FlowStep'
 import { Completable } from './Completable'
 import { Flow } from './Flow'

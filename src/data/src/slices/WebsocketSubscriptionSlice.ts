@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { setReconnect } from '../models/services/DependenciesIOC'
+/*import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { setReconnect } from '../models'
+import { AppState } from '../store'
 
 export interface WebsocketSubscriptionState {
 	isEstablishingConnection: boolean
@@ -56,3 +57,4 @@ export enum WebsocketEvent {
 export const websocketActions = websocketSlice.actions
 export const websocketReducer = websocketSlice.reducer
 export default websocketSlice
+*/

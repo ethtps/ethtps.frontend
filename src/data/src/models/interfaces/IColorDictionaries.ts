@@ -1,4 +1,4 @@
-import { StringDictionary } from '../../common-types/Dictionaries'
+import { StringDictionary } from '../../'
 
 export interface IColorDictionaries {
 	providerColorDictionary?: StringDictionary

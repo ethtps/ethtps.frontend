@@ -1,4 +1,4 @@
-//import { api } from '@/services/DependenciesIOC'
+//import { api } from '@/services'
 
 export function generateStaticParams() {
   console.log('Calling GET slugs')

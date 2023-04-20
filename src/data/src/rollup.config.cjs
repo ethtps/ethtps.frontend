@@ -7,9 +7,9 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
 const packageJson = require('./package.json')
 
-export default [
+const exps = [
 	{
-		input: 'src/index.ts',
+		input: '../index.ts',
 		output: [
 			{
 				file: packageJson.main,
@@ -37,3 +37,5 @@ export default [
 		plugins: [dts()],
 	},
 ]
+
+export default exps

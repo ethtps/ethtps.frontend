@@ -1,4 +1,4 @@
-import { IOptionalCallback } from '@/data/src'
+import { IOptionalCallback } from '@/data'
 
 export class Completable {
   constructor(public onCompleted?: IOptionalCallback<boolean>) {}

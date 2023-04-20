@@ -1,10 +1,14 @@
 'use client'
+import { APIKeyMiddleware } from './APIKeyMiddleware'
+import { getAPIKey, tryLoadAPIKeyFromLocalStorage } from '../DependenciesIOC'
 import {
   APIKeyApi,
   ApiV3ChartDataGetStackedChartDataGetRequest,
   ApiV3ChartDataGetStreamchartDataGetRequest,
   ApiV3L2DataGetPostRequest,
   ChartDataApi,
+  Configuration,
+  DataType,
   ExperimentApi,
   ExternalWebsitesApi,
   GPSApi,
@@ -12,20 +16,15 @@ import {
   GeneralApi,
   L2DataApi,
   MarkdownPagesApi,
-  TPSApi
-} from '@/api-client/src/apis'
-import { Configuration } from '@/api-client/src/runtime'
+  TPSApi,
+  TimeInterval
+} from '@/api-client'
 import {
-  ProviderResponseModel,
-  TimeInterval,
   DataResponseModelDictionary,
   DataPointDictionary,
   StringDictionary
-} from '@/data/src'
-import { APIKeyMiddleware } from './APIKeyMiddleware'
-import { getAPIKey, tryLoadAPIKeyFromLocalStorage } from '../DependenciesIOC'
-import { DataType } from '@/api-client/src/models'
-import { mainnet } from '../data/Constants'
+} from '@/data'
+import { mainnet } from '../data'
 
 export class ETHTPSApi {
   public generalApi: GeneralApi = new GeneralApi()
@@ -49,8 +48,7 @@ export class ETHTPSApi {
       if (supposedlyAKey) {
         this.apiKey = supposedlyAKey //Definitely a key
       }
-    }
-    else{
+    } else {
       this.apiKey = apiKey
     }
     this.apiKeyAPI = new APIKeyApi(

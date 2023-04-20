@@ -1,4 +1,4 @@
-import { AppPropsWithLayout, HeaderWithTabs } from '@/components'
+import { HeaderWithTabs } from '@/components'
 import { AppShell, Footer, Group, Text, Tooltip } from '@mantine/core'
 import {
   IconBrandGithub,
@@ -6,15 +6,12 @@ import {
   IconBrandDiscord
 } from '@tabler/icons-react'
 import { GetStaticProps } from 'next'
+// eslint-disable-next-line import/no-internal-modules
 import Link from 'next/link'
 
-export const getStaticProps: GetStaticProps<{}> = async (
-  context
-
-) => {
+export const getStaticProps: GetStaticProps<{}> = async (context) => {
   return {
-    props: {
-    }
+    props: {}
   }
 }
 
@@ -25,8 +22,8 @@ export default function MainLayout(props: { component: JSX.Element }) {
         navbarOffsetBreakpoint='sm'
         asideOffsetBreakpoint='sm'
         footer={
-          <Footer height={50} p='sm'>
-            <Group sx={{ marginTop: 0 }} position='apart'>
+          <Footer height={50}>
+            <Group style={{ marginTop: 0 }} position='apart'>
               <div>
                 <Text className={'inline'} size={'sm'}>
                   Brought to you by
@@ -48,8 +45,11 @@ export default function MainLayout(props: { component: JSX.Element }) {
                   <Link href={'https://ethtps.info?ref=v2_alpha'}>
                     <Text size={'sm'}>Old version</Text>
                   </Link>
-                  <Tooltip label={"First alpha version. Don't expect too much :)"}>
-                    <Text className={'unselectable'} size={'xs'}>v1.5.0a1</Text>
+                  <Tooltip
+                    label={"First alpha version. Don't expect too much :)"}>
+                    <Text className={'unselectable'} size={'xs'}>
+                      v1.5.0a1
+                    </Text>
                   </Tooltip>
                 </Group>
               </div>

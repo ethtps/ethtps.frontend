@@ -1,5 +1,3 @@
-/* tslint:disable */
-/* eslint-disable */
 export * from './APIKeyResponseModel'
 export * from './AllDataModel'
 export * from './AllDataModelAllTPSData'

@@ -1,17 +1,17 @@
-import { DataType } from '@/api-client/src/models'
+import { ProviderResponseModel, TimeInterval, DataType } from '@/api-client'
 import {
   DataResponseModelDictionary,
-  ProviderResponseModel,
   extractData,
-  TimeInterval,
-  liveDataHooks,
+  useAppSelector,
   useGetProvidersFromAppStore,
   useGetProviderColorDictionaryFromAppStore,
   useGetLiveDataFromAppStore,
   getModeData,
-  dataTypeToString
-} from '@/data/src'
-import { useAppSelector } from '@/services'
+  dataTypeToString,
+  useGetLiveDataModeFromAppStore,
+  useGetLiveDataSmoothingFromAppStore,
+  useGetSidechainsIncludedFromAppStore
+} from '@/data'
 import { useState, useEffect } from 'react'
 
 export type InstantBarChartDataset = {
@@ -70,10 +70,9 @@ export type LiveDataState = {
 }
 
 export function useLiveDataState(): LiveDataState {
-  const smoothing = liveDataHooks.useGetLiveDataSmoothingFromAppStore()
-  const sidechainsIncluded =
-    liveDataHooks.useGetSidechainsIncludedFromAppStore()
-  const mode = liveDataHooks.useGetLiveDataModeFromAppStore()
+  const smoothing = useGetLiveDataSmoothingFromAppStore()
+  const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
+  const mode = useGetLiveDataModeFromAppStore()
   return { smoothing, sidechainsIncluded, mode }
 }
 
@@ -94,11 +93,10 @@ export function useStreamchartData(interval: string) {
 
 export function useLiveData() {
   const providers: ProviderResponseModel[] = useGetProvidersFromAppStore()
-  const smoothing = liveDataHooks.useGetLiveDataSmoothingFromAppStore()
+  const smoothing = useGetLiveDataSmoothingFromAppStore()
   const colors = useGetProviderColorDictionaryFromAppStore()
-  const sidechainsIncluded =
-    liveDataHooks.useGetSidechainsIncludedFromAppStore()
-  const mode = liveDataHooks.useGetLiveDataModeFromAppStore()
+  const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
+  const mode = useGetLiveDataModeFromAppStore()
   const liveData = useGetLiveDataFromAppStore()
   const [data, setData] = useState<DataResponseModelDictionary>()
   const [processedData, setProcessedData] = useState<LiveData>()
