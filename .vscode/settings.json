@@ -38,5 +38,8 @@
   ],
   "exportall.config.folderListener": [
     "/src/components/partials/humanity-proof"
-  ]
+  ],
+  "github.copilot-labs.showBrushesLenses": true,
+  "github.copilot-labs.showTestGenerationLenses": true,
+  "github.copilot-labs.advanced": {}
 }
