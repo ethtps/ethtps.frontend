@@ -1,2 +1,2 @@
-export * from './HumanityProofPartial';
-export * from './RecaptchaTokenLoader';
+export * from './HumanityProofPartial'
+export * from './RecaptchaTokenLoader'

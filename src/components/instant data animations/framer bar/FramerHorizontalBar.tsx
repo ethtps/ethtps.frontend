@@ -17,7 +17,7 @@ export enum Direction {
   vertical
 }
 
-export interface IFramerHorizontalBarProps extends IComponentSize { }
+export interface IFramerHorizontalBarProps extends IComponentSize {}
 export function FramerHorizontalBar(props: IFramerHorizontalBarProps) {
   return (
     <>
