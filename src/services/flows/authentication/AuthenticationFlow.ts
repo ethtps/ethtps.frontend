@@ -1,8 +1,5 @@
-import { IOptionalCallback } from '../../../data/src/models/charts/handlers/IOptionalCallback'
-import { FlowStep } from '../FlowStep'
-import { ComponentFlow } from '../ComponentFlow'
-import { FlowStepWithComponent } from '../FlowStepWithComponent'
-import { HumanityProofPartial } from '@/components/humanity-proof'
+import { IOptionalCallback } from "@/data"
+import { ComponentFlow, FlowStepWithComponent } from ".."
 
 export class AuthenticationFlow extends ComponentFlow {
   constructor(
@@ -12,9 +9,7 @@ export class AuthenticationFlow extends ComponentFlow {
   ) {
     super(
       [
-        new FlowStepWithComponent(() => {
-          return true
-        }, (<></>:JSX.Element)
+        {} as FlowStepWithComponent
       ],
       onStepChanged,
       onCompleted,
@@ -23,4 +18,4 @@ export class AuthenticationFlow extends ComponentFlow {
   }
 }
 
-export {}
+export { }
