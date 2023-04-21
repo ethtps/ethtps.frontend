@@ -20,7 +20,7 @@ export function SeeMoreButton(events: ISeeMoreButtonProps) {
   }
   const getIcon = () => (expand ? <IconArrowDown /> : <IconArrowUp />)
   return (
-    <React.Fragment>
+    <>
       <Button
         disabled={!events.enabled}
         variant='text'
@@ -30,6 +30,6 @@ export function SeeMoreButton(events: ISeeMoreButtonProps) {
         onClick={() => onClick()}>
         See {expand ? 'more' : 'less'}
       </Button>
-    </React.Fragment>
+    </>
   )
 }

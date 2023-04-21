@@ -16,11 +16,11 @@ export function AnimatedLinkButtonWithIcon(
     }
   }
   return (
-    <React.Fragment>
+    <>
       <Tooltip withArrow label={<Text>{props.text}</Text>}>
         <IconButton onClick={handleClick} icon={props.image}></IconButton>
       </Tooltip>
       {props.showText ? <Text>{props.text}</Text> : <></>}
-    </React.Fragment>
+    </>
   )
 }

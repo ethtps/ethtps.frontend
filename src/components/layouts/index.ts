@@ -1,1 +1,1 @@
-export * from './IAppLayout'
+export * from './IAppLayout';

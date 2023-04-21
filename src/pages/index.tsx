@@ -2,23 +2,42 @@
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text, Notification } from '@mantine/core'
-import { AllProvidersTable, AnimationSelector, useSizeRef } from '@/components'
-import { getAPIKey } from '@/services'
+import { getAPIKey, queryClient } from '@/services'
 import MyResponsiveStream from './components/live data/nivo streamchart/MyResponsiveStream'
-import { ProviderTable } from '@/components'
 import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
+import { ProviderResponseModel } from '@/api-client'
+import { AllProvidersTable, ProviderTable, useSizeRef } from '@/components'
 
 type IndexPageModel = {
-  providers: string[]
+  providers: ProviderResponseModel[]
 }
 
-export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = (
+export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = async (
   context
 ) => {
+  let response: Response | undefined
+  let providers: ProviderResponseModel[] | undefined
+
+  let retryCount = 0
+  do {
+    try {
+      response = await queryClient.fetchQuery('providers', async () => await fetch(`http://localhost:10202/api/v2/Providers?XAPIKey=${getAPIKey()}`))
+      providers = JSON.parse(await response?.text() ?? "[]")
+    }
+    catch {
+      retryCount++
+    }
+  }
+  while (response?.status !== 200 && providers?.length === 0 && retryCount < 5)
+
+  if (!providers || providers?.length === 0) {
+    throw new Error("Couldn't load providers")
+  }
+
   return {
     props: {
       model: {
-        providers: ['Ethereum']
+        providers: providers
       } as IndexPageModel
     },
     revalidate: 5
@@ -38,10 +57,7 @@ export default function Index({
       </Container>
       <br />
       <Container style={{ ...defaultStyle }}>
-        <AllProvidersTable width={sizeRef.width} />
-      </Container>
-      <Container style={{ ...defaultStyle }}>
-        <Text>Provider chart container</Text>
+        <ProviderTable providers={model.providers} />
       </Container>
       <Notification title='Debug info'>
         <Text>API key: {getAPIKey()}</Text>

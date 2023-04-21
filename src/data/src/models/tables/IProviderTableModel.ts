@@ -4,7 +4,7 @@ import { ICellClickedEvent } from './ICellClickedEvent'
 import { IMaxRowsModel } from './IMaxRowsModel'
 
 export interface IProviderTableModel extends ICellClickedEvent, IMaxRowsModel {
-	providerData?: ProviderResponseModel[]
+	providerData?: ProviderResponseModel[] | null
 	maxData?: IMaxDataModel
 	width?: number
 	selectedProvider?: string

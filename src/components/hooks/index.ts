@@ -1,1 +1,1 @@
-export * from './ComponentHooks'
+export * from './ComponentHooks';

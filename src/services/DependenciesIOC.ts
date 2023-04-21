@@ -41,4 +41,18 @@ export function tryLoadAPIKeyFromLocalStorage() {
 export const websocketServiceURL =
   'ws://localhost:2000/LiveData?XAPIKEY=' + getAPIKey()
 
-export const queryClient = new QueryClient()
+const defaultQueryConfig = {
+  refetchOnWindowFocus: false,
+  retry: true,
+  retryDelay: 2500,
+  staleTime: 1000 * 60 * 5,
+  queryKey: 'providers',
+}
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      ...defaultQueryConfig
+    }
+  }
+})

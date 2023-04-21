@@ -5,10 +5,10 @@ import { IconEye } from '@tabler/icons-react'
 
 export function CurrentViewersIcon() {
   return (
-    <React.Fragment>
+    <>
       <Tooltip withArrow label={<Text>Nobody&aposs here</Text>}>
         <IconButton icon={<IconEye />}></IconButton>
       </Tooltip>
-    </React.Fragment>
+    </>
   )
 }

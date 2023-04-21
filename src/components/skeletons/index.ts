@@ -1,2 +1,2 @@
-export * from './ISkeletonWithTooltipConfiguration'
-export * from './SkeletonWithTooltip'
+export * from './ISkeletonWithTooltipConfiguration';
+export * from './SkeletonWithTooltip';

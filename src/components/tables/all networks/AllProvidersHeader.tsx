@@ -10,10 +10,10 @@ export function AllProvidersHeader(): JSX.Element {
   const mode = useGetLiveDataModeFromAppStore()
   const modeStr = m_toShortString(mode)
   return (
-    <React.Fragment>
+    <>
       <TableHeader
         text={['#', 'Name', modeStr, `Max recorded ${modeStr}`, 'Type']}
       />
-    </React.Fragment>
+    </>
   )
 }

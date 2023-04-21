@@ -45,26 +45,28 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
   )
   const tooltipTypography = generateMaxTypography(maxData)
   return (
-    <React.Fragment>
+    <>
       <td
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'MaxValue')
-            : () => {}
+            : () => { }
         }>
         <Tooltip withArrow label={tooltipTypography}>
-          <Text
-            className={'boldcell'}
-            {...tableCellTypographyStandard}
-            sx={{
-              textDecoration:
-                tooltipTypography !== undefined ? 'underline' : undefined
-            }}>
-            {numberFormat(maxData?.value).toString()}
-          </Text>
+          <>
+            <Text
+              className={'boldcell'}
+              {...tableCellTypographyStandard}
+              sx={{
+                textDecoration:
+                  tooltipTypography !== undefined ? 'underline' : undefined
+              }}>
+              {numberFormat(maxData?.value).toString()}
+            </Text>
+          </>
         </Tooltip>
       </td>
-    </React.Fragment>
+    </>
   )
 }

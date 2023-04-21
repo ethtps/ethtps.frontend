@@ -4,10 +4,10 @@ import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
 import { conditionalRender } from '@/services'
 import { SeeMoreButton } from '@/components'
-import { IProviderTableModel } from '@/data'
 import { Table } from '@mantine/core'
+import { IProviderTableModel } from '@/data'
 
-export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
+export default function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
   const oldShowRowCountValue = tableData.maxRowsBeforeShowingExpand as number
   const [showRowCount, setShowRowCount] = useState(
     tableData?.maxRowsBeforeShowingExpand as number
@@ -18,8 +18,9 @@ export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
   const onSeeLess = () => {
     setShowRowCount(oldShowRowCountValue)
   }
+  console.log('tableData', tableData)
   return (
-    <React.Fragment>
+    <>
       <Table
         aria-label='collapsible table'
         w={tableData.width}
@@ -44,6 +45,6 @@ export function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
         />,
         showRowCount > 0
       )}
-    </React.Fragment>
+    </>
   )
 }

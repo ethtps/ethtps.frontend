@@ -1,1 +1,1 @@
-export * from './MaximizeableContainer'
+export * from './MaximizeableContainer';

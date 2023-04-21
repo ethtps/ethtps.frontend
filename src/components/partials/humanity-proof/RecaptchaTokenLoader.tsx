@@ -32,7 +32,7 @@ export function RecaptchaTokenLoader(props: {
   }
   return (
     //We use recaptcha only for getting an API key, if the user comes back later we don't let google know that
-    <React.Fragment>
+    <>
       {conditionalRender(
         <GoogleReCaptchaProvider
           reCaptchaKey={'6Le_XTUkAAAAAJKXCh8Cvq6UFvokPtjfTLCp1JAP'}>
@@ -49,6 +49,6 @@ export function RecaptchaTokenLoader(props: {
         </GoogleReCaptchaProvider>,
         !ready
       )}
-    </React.Fragment>
+    </>
   )
 }

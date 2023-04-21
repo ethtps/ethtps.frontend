@@ -1,2 +1,2 @@
-export * from './CustomButtonGroup'
-export * from './ICustomButtonGroupParameters'
+export * from './CustomButtonGroup';
+export * from './ICustomButtonGroupParameters';

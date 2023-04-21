@@ -14,25 +14,27 @@ export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
   }
   return (
     <>
-      <React.Fragment>
+      <>
         {conditionalRender(
           <Tooltip
             withArrow
             position={'bottom-start'}
-            label={<Text>{message}</Text>}>
-            <Box sx={{ width: '90%' }}>
-              <Skeleton
-                className={'w-hundred'}
-                width={100}
-                height={20}
-                variant={
-                  config.rectangular ? 'rectangular' : undefined
-                }></Skeleton>
-            </Box>
+            label={<><Text>{message}</Text></>}>
+            <>
+              <Box sx={{ width: '90%' }}>
+                <Skeleton
+                  className={'w-hundred'}
+                  width={100}
+                  height={20}
+                  variant={
+                    config.rectangular ? 'rectangular' : undefined
+                  }></Skeleton>
+              </Box>
+            </>
           </Tooltip>,
           !delay
         )}
-      </React.Fragment>
+      </>
     </>
   )
 }

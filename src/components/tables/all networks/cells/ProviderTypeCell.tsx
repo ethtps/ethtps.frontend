@@ -12,17 +12,17 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
   const color: string =
     colorDictionary !== undefined ? colorDictionary[name] : 'primary'
   return (
-    <React.Fragment>
+    <>
       <td
         {...buildClassNames(config)}
         style={{ color: color }}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'ProviderType')
-            : () => {}
+            : () => { }
         }>
         <Text className={'boldcell'}>{config.provider?.type}</Text>
       </td>
-    </React.Fragment>
+    </>
   )
 }

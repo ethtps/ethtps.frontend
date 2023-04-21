@@ -12,12 +12,12 @@ interface IDataValueCellConficuration extends ICustomCellConfiguration {
 
 export function DataValueCell(config: IDataValueCellConficuration) {
   return (
-    <React.Fragment>
+    <>
       <td
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'DataValue')
-            : () => {}
+            : () => { }
         }>
         {config.value === undefined ? (
           <SkeletonWithTooltip
@@ -34,6 +34,6 @@ export function DataValueCell(config: IDataValueCellConficuration) {
           />
         )}
       </td>
-    </React.Fragment>
+    </>
   )
 }

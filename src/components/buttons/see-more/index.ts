@@ -1,2 +1,2 @@
-export * from './ISeeMoreButtonProps'
-export * from './SeeMoreButton'
+export * from './ISeeMoreButtonProps';
+export * from './SeeMoreButton';

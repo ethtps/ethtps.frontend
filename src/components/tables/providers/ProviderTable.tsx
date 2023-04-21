@@ -2,15 +2,22 @@ import { ProviderResponseModel } from '@/api-client';
 import { Table } from '@mantine/core'
 import { useState } from 'react';
 
+type ExtraColumns = Partial<{
+  currentValue: number,
+  maxRecorded: number
+}>
+
+type ExtendedProviderResponseModel = ProviderResponseModel & ExtraColumns;
+
 type SortState = {
-  column: keyof ProviderResponseModel | null;
+  column: keyof ExtendedProviderResponseModel | null;
   ascending: boolean;
 };
 
 const arrowUp = <span>&#9650;</span>;
 const arrowDown = <span>&#9660;</span>;
 
-const getArrowForColumn = (column: keyof ProviderResponseModel, sortState: SortState) => {
+const getArrowForColumn = (column: keyof ExtendedProviderResponseModel, sortState: SortState) => {
   if (sortState.column === column) {
     return sortState.ascending ? arrowUp : arrowDown;
   } else {
@@ -24,13 +31,13 @@ interface IProviderTableProps {
 
 export function ProviderTable(props: IProviderTableProps) {
 
-  const [data, setData] = useState<ProviderResponseModel[]>(props.providers);
+  const [data, setData] = useState<(ExtendedProviderResponseModel)[]>(props.providers);
   const [sortState, setSortState] = useState<SortState>({
     column: null,
     ascending: true,
   });
 
-  const handleSort = (columnName: keyof ProviderResponseModel) => {
+  const handleSort = (columnName: keyof ExtendedProviderResponseModel) => {
     setData(data.slice().sort((a, b) => {
       const valueA = a[columnName];
       const valueB = b[columnName];
@@ -51,7 +58,7 @@ export function ProviderTable(props: IProviderTableProps) {
     })
   };
 
-  const arrowForColumn = (column: keyof ProviderResponseModel) => getArrowForColumn(column, sortState)
+  const arrowForColumn = (column: keyof ExtendedProviderResponseModel) => getArrowForColumn(column, sortState)
 
   return (
     <Table horizontalSpacing='sm' verticalSpacing='md'>
@@ -63,11 +70,11 @@ export function ProviderTable(props: IProviderTableProps) {
           <th onClick={() => handleSort('name')}>
             Name {arrowForColumn('name')}
           </th>
-          <th onClick={() => handleSort('color')}>
-            Color {arrowForColumn('color')}
+          <th onClick={() => handleSort('currentValue')}>
+            Current {arrowForColumn('currentValue')}
           </th>
-          <th onClick={() => handleSort('theoreticalMaxTPS')}>
-            Theoretical Max TPS {arrowForColumn('theoreticalMaxTPS')}
+          <th onClick={() => handleSort('maxRecorded')}>
+            Max recorded {arrowForColumn('maxRecorded')}
           </th>
           <th onClick={() => handleSort('type')}>
             Type {arrowForColumn('type')}
@@ -82,8 +89,8 @@ export function ProviderTable(props: IProviderTableProps) {
           <tr key={provider.name}>
             <td>{i + 1}</td>
             <td>{provider.name}</td>
-            <td>{provider.color}</td>
-            <td>{provider.theoreticalMaxTPS}</td>
+            <td>{provider.currentValue ?? 0}</td>
+            <td>{provider.maxRecorded ?? 0}</td>
             <td>{provider.type}</td>
             <td>{provider.isGeneralPurpose ? 'Yes' : 'No'}</td>
           </tr>

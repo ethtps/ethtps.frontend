@@ -11,7 +11,7 @@ interface IAnimatedTypographyConfiguration {
 
 export function AnimatedTypography(config: IAnimatedTypographyConfiguration) {
   return (
-    <React.Fragment>
+    <>
       <Text
         {...config.standard}
         sx={{ fontSize: '1rem', fontWeight: 'bold' }}
@@ -20,6 +20,6 @@ export function AnimatedTypography(config: IAnimatedTypographyConfiguration) {
         textAlign={config.centerText ? 'center' : undefined}>
         {config.child}
       </Text>
-    </React.Fragment>
+    </>
   )
 }

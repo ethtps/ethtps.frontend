@@ -14,13 +14,13 @@ interface IIndexCellConfiguration extends ICustomCellConfiguration {
 
 export function IndexCell(config: IIndexCellConfiguration) {
   return (
-    <React.Fragment>
+    <>
       <td
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Index')
-            : () => {}
+            : () => { }
         }>
         <IconButton
           sx={{
@@ -37,6 +37,6 @@ export function IndexCell(config: IIndexCellConfiguration) {
           }
         />
       </td>
-    </React.Fragment>
+    </>
   )
 }

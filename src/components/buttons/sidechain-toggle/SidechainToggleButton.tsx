@@ -18,7 +18,7 @@ export function SidechainToggleButton(
     setOn(!on)
   }
   return (
-    <React.Fragment>
+    <>
       <Tooltip
         withArrow
         label={
@@ -33,6 +33,6 @@ export function SidechainToggleButton(
             on ? <IconLink color='primary' /> : <IconLinkOff />
           }></IconButton>
       </Tooltip>
-    </React.Fragment>
+    </>
   )
 }

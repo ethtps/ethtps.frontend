@@ -18,7 +18,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
     proposedMode == mode?.value ? { color: 'primary' } : undefined
   const experimentsAppStoreValue = useGetExperimentsFromAppStore()
   return (
-    <React.Fragment>
+    <>
       <Box sx={{ float: 'right' }}>
         {conditionalRender(
           <CurrentViewersIcon />,
@@ -57,6 +57,6 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           />
         </Tooltip>
       </Box>
-    </React.Fragment>
+    </>
   )
 }

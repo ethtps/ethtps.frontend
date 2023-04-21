@@ -1,3 +1,4 @@
+/* eslint-disable import/no-internal-modules */
 import { SkeletonWithTooltip } from '@/components'
 import {
   IProviderTableModel,
@@ -9,13 +10,11 @@ import {
 import { range } from 'd3-array'
 import React from 'react'
 import { useEffect, useState } from 'react'
-import {
-  IndexCell,
-  NameCell,
-  DataValueCell,
-  MaxValueCell,
-  ProviderTypeCell
-} from './cells'
+import { DataValueCell } from './cells/DataValueCell'
+import { IndexCell } from './cells/IndexCell'
+import { MaxValueCell } from './cells/MaxValueCell'
+import { NameCell } from './cells/NameCell'
+import { ProviderTypeCell } from './cells/ProviderTypeCell'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
@@ -26,7 +25,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
     setData(getModeData(liveData ?? {}, mode))
   }, [mode, liveData])
   return (
-    <React.Fragment>
+    <>
       {hasData ? (
         <>
           {model.providerData
@@ -62,15 +61,10 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
         range(0, 2 + 1).map((y: number) => {
           return (
             <tr key={y}>
-              {range(0, 5).map((x: number) => (
-                <td key={x}>
-                  <SkeletonWithTooltip randomDelay rectangular={false} />
-                </td>
-              ))}
             </tr>
           )
         })
       )}
-    </React.Fragment>
+    </>
   )
 }
