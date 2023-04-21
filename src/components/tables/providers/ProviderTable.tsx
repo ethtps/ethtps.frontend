@@ -1,4 +1,5 @@
 import { ProviderResponseModel } from '@/api-client';
+import { darkenColorIfNecessary } from '@/components';
 import { Table, Image } from '@mantine/core'
 import { useState } from 'react';
 
@@ -84,7 +85,11 @@ export function ProviderTable(props: IProviderTableProps) {
       </thead>
       <tbody>
         {data.map((provider, i) => (
-          <tr key={provider.name} className={i % 2 === 0 ? "even-row" : "odd-row"}>
+          <tr
+            key={provider.name}
+            className={i % 2 === 0 ? "even-row" : "odd-row"}
+            style={{ color: darkenColorIfNecessary(provider.color ?? "black") }}
+          >
             <td>{i + 1}</td>
             <td className="name-cell">
               <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
@@ -97,46 +102,6 @@ export function ProviderTable(props: IProviderTableProps) {
           </tr>
         ))}
       </tbody>
-      <style jsx>{`
-  .my-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  th,
-  td {
-    padding: 0.5rem;
-    text-align: left;
-  }
-
-  th {
-    font-weight: bold;
-    background-color: #f5f5f5;
-  }
-
-  .even-row {
-    background-color: #f9f9f9;
-  }
-
-  .odd-row:hover,
-  .even-row:hover {
-    background-color: #e6f7ff;
-  }
-
-  .sortable {
-    cursor: pointer;
-  }
-
-  .name-cell {
-    display: flex;
-    align-items: center;
-  }
-
-  .name-text {
-    margin-left: 8px;
-  }
-`}</style>
     </Table>
-
   )
 }

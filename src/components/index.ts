@@ -13,3 +13,4 @@ export * from './tables';
 export * from './text';
 export * from './thwrapper';
 export * from './Types';
+export * from './Utils';
