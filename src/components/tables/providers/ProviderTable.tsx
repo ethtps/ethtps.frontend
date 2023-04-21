@@ -91,7 +91,7 @@ export function ProviderTable(props: IProviderTableProps) {
             style={{ color: darkenColorIfNecessary(provider.color ?? "black") }}
           >
             <td>{i + 1}</td>
-            <td className="name-cell">
+            <td className="name-cell" style={{ fontWeight: 'bold' }}>
               <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
               <span className="name-text">{provider.name}</span>
             </td>
