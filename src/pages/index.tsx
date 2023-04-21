@@ -59,9 +59,6 @@ export default function Index({
       <Container style={{ ...defaultStyle }}>
         <ProviderTable providers={model.providers} />
       </Container>
-      <Notification title='Debug info'>
-        <Text>API key: {getAPIKey()}</Text>
-      </Notification>
     </>
   )
 }

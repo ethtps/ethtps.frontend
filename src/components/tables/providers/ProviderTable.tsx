@@ -1,5 +1,5 @@
 import { ProviderResponseModel } from '@/api-client';
-import { Table } from '@mantine/core'
+import { Table, Image } from '@mantine/core'
 import { useState } from 'react';
 
 type ExtraColumns = Partial<{
@@ -88,7 +88,10 @@ export function ProviderTable(props: IProviderTableProps) {
         {data.map((provider, i) => (
           <tr key={provider.name}>
             <td>{i + 1}</td>
-            <td>{provider.name}</td>
+            <td style={{ display: 'flex', alignItems: 'center' }}>
+              <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
+              <span style={{ marginLeft: 8 }}>{provider.name}</span>
+            </td>
             <td>{provider.currentValue ?? 0}</td>
             <td>{provider.maxRecorded ?? 0}</td>
             <td>{provider.type}</td>

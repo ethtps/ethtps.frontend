@@ -18,7 +18,6 @@ export default function AllProvidersTable(tableData: IProviderTableModel): JSX.E
   const onSeeLess = () => {
     setShowRowCount(oldShowRowCountValue)
   }
-  console.log('tableData', tableData)
   return (
     <>
       <Table
@@ -43,6 +42,7 @@ export default function AllProvidersTable(tableData: IProviderTableModel): JSX.E
           onSeeMore={onSeeMore}
           onSeeLess={onSeeLess}
         />,
+
         showRowCount > 0
       )}
     </>

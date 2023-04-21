@@ -1,5 +1,4 @@
 /* eslint-disable import/no-internal-modules */
-import { SkeletonWithTooltip } from '@/components'
 import {
   IProviderTableModel,
   getModeData,
@@ -36,35 +35,45 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                 model.maxRowsBeforeShowingExpand as number
               )
             )
-            ?.map((x, i) => (
-              <tr key={i}>
-                <IndexCell clickCallback={model.clickCallback} index={i + 1} />
-                <NameCell clickCallback={model.clickCallback} provider={x} />
-                <DataValueCell
-                  clickCallback={model.clickCallback}
-                  provider={x}
-                  dataType={mode}
-                  value={extractData(data, x.name)}
-                />
-                <MaxValueCell
-                  clickCallback={model.clickCallback}
-                  provider={x}
-                />
-                <ProviderTypeCell
-                  clickCallback={model.clickCallback}
-                  provider={x}
-                />
-              </tr>
-            ))}
+            ?.map((x, i) => {
+              console.log("AllProvidersRows", x, i)
+              return (
+                <tr key={i}>
+                  <IndexCell clickCallback={model.clickCallback} index={i + 1} />
+                  <NameCell clickCallback={model.clickCallback} provider={x} />
+                  <DataValueCell
+                    clickCallback={model.clickCallback}
+                    provider={x}
+                    dataType={mode}
+                    value={extractData(data, x.name)}
+                  />
+                  <MaxValueCell
+                    clickCallback={model.clickCallback}
+                    provider={x}
+                  />
+                  <ProviderTypeCell
+                    clickCallback={model.clickCallback}
+                    provider={x}
+                  />
+                </tr>
+              )
+            })}
         </>
       ) : (
-        range(0, 2 + 1).map((y: number) => {
-          return (
-            <tr key={y}>
-            </tr>
-          )
-        })
+        renderNoDataRows()
       )}
+    </>
+  )
+}
+function renderNoDataRows(): JSX.Element {
+  return (
+    <>
+      {range(0, 2 + 1).map((y: number) => {
+        return (
+          <tr key={y}>
+          </tr>
+        )
+      })}
     </>
   )
 }
