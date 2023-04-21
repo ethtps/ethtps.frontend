@@ -61,44 +61,82 @@ export function ProviderTable(props: IProviderTableProps) {
   const arrowForColumn = (column: keyof ExtendedProviderResponseModel) => getArrowForColumn(column, sortState)
 
   return (
-    <Table horizontalSpacing='sm' verticalSpacing='md'>
+    <Table className="my-table" horizontalSpacing="sm" verticalSpacing="md">
       <thead>
         <tr>
-          <th >
-            #
+          <th>#</th>
+          <th onClick={() => handleSort("name")} className="sortable">
+            Name {arrowForColumn("name")}
           </th>
-          <th onClick={() => handleSort('name')}>
-            Name {arrowForColumn('name')}
+          <th onClick={() => handleSort("currentValue")} className="sortable">
+            Current {arrowForColumn("currentValue")}
           </th>
-          <th onClick={() => handleSort('currentValue')}>
-            Current {arrowForColumn('currentValue')}
+          <th onClick={() => handleSort("maxRecorded")} className="sortable">
+            Max recorded {arrowForColumn("maxRecorded")}
           </th>
-          <th onClick={() => handleSort('maxRecorded')}>
-            Max recorded {arrowForColumn('maxRecorded')}
+          <th onClick={() => handleSort("type")} className="sortable">
+            Type {arrowForColumn("type")}
           </th>
-          <th onClick={() => handleSort('type')}>
-            Type {arrowForColumn('type')}
-          </th>
-          <th onClick={() => handleSort('isGeneralPurpose')}>
-            General Purpose {arrowForColumn('isGeneralPurpose')}
+          <th onClick={() => handleSort("isGeneralPurpose")} className="sortable">
+            General Purpose {arrowForColumn("isGeneralPurpose")}
           </th>
         </tr>
       </thead>
       <tbody>
         {data.map((provider, i) => (
-          <tr key={provider.name}>
+          <tr key={provider.name} className={i % 2 === 0 ? "even-row" : "odd-row"}>
             <td>{i + 1}</td>
-            <td style={{ display: 'flex', alignItems: 'center' }}>
+            <td className="name-cell">
               <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
-              <span style={{ marginLeft: 8 }}>{provider.name}</span>
+              <span className="name-text">{provider.name}</span>
             </td>
             <td>{provider.currentValue ?? 0}</td>
             <td>{provider.maxRecorded ?? 0}</td>
             <td>{provider.type}</td>
-            <td>{provider.isGeneralPurpose ? 'Yes' : 'No'}</td>
+            <td>{provider.isGeneralPurpose ? "Yes" : "No"}</td>
           </tr>
         ))}
       </tbody>
+      <style jsx>{`
+  .my-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  th {
+    font-weight: bold;
+    background-color: #f5f5f5;
+  }
+
+  .even-row {
+    background-color: #f9f9f9;
+  }
+
+  .odd-row:hover,
+  .even-row:hover {
+    background-color: #e6f7ff;
+  }
+
+  .sortable {
+    cursor: pointer;
+  }
+
+  .name-cell {
+    display: flex;
+    align-items: center;
+  }
+
+  .name-text {
+    margin-left: 8px;
+  }
+`}</style>
     </Table>
+
   )
 }
