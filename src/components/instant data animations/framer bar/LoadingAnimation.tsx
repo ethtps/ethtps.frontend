@@ -3,6 +3,7 @@ import { Center } from '@mantine/core'
 import { motion } from 'framer-motion'
 import { StyledLoadingBox } from './styles'
 
+
 export function LoadingAnimation(props: IComponentSize) {
   return (
     <>

@@ -1,1 +1,1 @@
-export * from './ConveyorBelt'
+export * from './ConveyorBelt';

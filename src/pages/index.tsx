@@ -1,8 +1,12 @@
+/* eslint-disable import/no-internal-modules */
 import { Container } from '@mantine/core'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text, Notification } from '@mantine/core'
-import { AnimationSelector, useSizeRef } from '@/components'
+import { AllProvidersTable, AnimationSelector, useSizeRef } from '@/components'
 import { getAPIKey } from '@/services'
+import MyResponsiveStream from './components/live data/nivo streamchart/MyResponsiveStream'
+import { ProviderTable } from '@/components'
+import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
 
 type IndexPageModel = {
   providers: string[]
@@ -21,16 +25,7 @@ export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = (
   }
 }
 
-const defaultStyle = {
-  height: 400,
-  borderRadius: 10,
-  marginBottom: 20
-}
 
-const defaultRedStyle = {
-  ...defaultStyle,
-  backgroundColor: 'darkred'
-}
 
 export default function Index({
   model
@@ -39,13 +34,13 @@ export default function Index({
   return (
     <>
       <Container ref={sizeRef.ref} style={{ height: 500 }}>
-        <AnimationSelector width={sizeRef.width} height={sizeRef.height} />
+        <MyResponsiveStream width={sizeRef.width} height={sizeRef.height} />
       </Container>
       <br />
-      <Container style={{ ...defaultRedStyle }}>
-        <Text>Provider data container</Text>
+      <Container style={{ ...defaultStyle }}>
+        <AllProvidersTable width={sizeRef.width} />
       </Container>
-      <Container style={{ ...defaultRedStyle }}>
+      <Container style={{ ...defaultStyle }}>
         <Text>Provider chart container</Text>
       </Container>
       <Notification title='Debug info'>

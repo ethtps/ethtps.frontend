@@ -2,7 +2,8 @@ const withTM = require('next-transpile-modules')([
 ])
 const config = {
   reactStrictMode: true,
-  experimental: { esmExternals: true }
+  experimental: { esmExternals: true },
+  distDir: 'build'
 }
 
 module.exports = {
@@ -28,6 +29,7 @@ module.exports = {
         use: ['@svgr/webpack'],
       },
     )
+
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i

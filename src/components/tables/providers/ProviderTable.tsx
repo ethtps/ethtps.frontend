@@ -1,24 +1,94 @@
+import { ProviderResponseModel } from '@/api-client';
 import { Table } from '@mantine/core'
-const elements = [
-  { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-  { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-  { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-  { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-  { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' }
-]
-const rows = elements.map((element) => (
-  <tr key={element.name}>
-    <td>{element.position}</td>
-    <td>{element.name}</td>
-    <td>{element.symbol}</td>
-    <td>{element.mass}</td>
-  </tr>
-))
+import { useState } from 'react';
 
-export function ProviderTable() {
+type SortState = {
+  column: keyof ProviderResponseModel | null;
+  ascending: boolean;
+};
+
+const arrowUp = <span>&#9650;</span>;
+const arrowDown = <span>&#9660;</span>;
+
+const getArrowForColumn = (column: keyof ProviderResponseModel, sortState: SortState) => {
+  if (sortState.column === column) {
+    return sortState.ascending ? arrowUp : arrowDown;
+  } else {
+    return null;
+  }
+};
+
+interface IProviderTableProps {
+  providers: ProviderResponseModel[];
+}
+
+export function ProviderTable(props: IProviderTableProps) {
+
+  const [data, setData] = useState<ProviderResponseModel[]>(props.providers);
+  const [sortState, setSortState] = useState<SortState>({
+    column: null,
+    ascending: true,
+  });
+
+  const handleSort = (columnName: keyof ProviderResponseModel) => {
+    setData(data.slice().sort((a, b) => {
+      const valueA = a[columnName];
+      const valueB = b[columnName];
+      if (valueA === valueB) {
+        return 0;
+      }
+      if (valueA == null) {
+        return 1;
+      }
+      if (valueB == null) {
+        return -1;
+      }
+      return valueA > valueB ? 1 : -1;
+    }));
+    setSortState({
+      column: columnName,
+      ascending: !sortState.ascending,
+    })
+  };
+
+  const arrowForColumn = (column: keyof ProviderResponseModel) => getArrowForColumn(column, sortState)
+
   return (
     <Table horizontalSpacing='sm' verticalSpacing='md'>
-      <tbody>{rows}</tbody>
+      <thead>
+        <tr>
+          <th >
+            #
+          </th>
+          <th onClick={() => handleSort('name')}>
+            Name {arrowForColumn('name')}
+          </th>
+          <th onClick={() => handleSort('color')}>
+            Color {arrowForColumn('color')}
+          </th>
+          <th onClick={() => handleSort('theoreticalMaxTPS')}>
+            Theoretical Max TPS {arrowForColumn('theoreticalMaxTPS')}
+          </th>
+          <th onClick={() => handleSort('type')}>
+            Type {arrowForColumn('type')}
+          </th>
+          <th onClick={() => handleSort('isGeneralPurpose')}>
+            General Purpose {arrowForColumn('isGeneralPurpose')}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((provider, i) => (
+          <tr key={provider.name}>
+            <td>{i + 1}</td>
+            <td>{provider.name}</td>
+            <td>{provider.color}</td>
+            <td>{provider.theoreticalMaxTPS}</td>
+            <td>{provider.type}</td>
+            <td>{provider.isGeneralPurpose ? 'Yes' : 'No'}</td>
+          </tr>
+        ))}
+      </tbody>
     </Table>
   )
 }

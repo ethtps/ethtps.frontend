@@ -57,7 +57,7 @@ const tabs = [
   }
 ]
 
-interface IAnimationSelectorProps extends IComponentSize {}
+interface IAnimationSelectorProps extends IComponentSize { }
 
 const data = [
   {
