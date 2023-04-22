@@ -15,8 +15,8 @@ type SortState = {
   ascending: boolean;
 };
 
-const arrowUp = <span>&#9650;</span>;
-const arrowDown = <span>&#9660;</span>;
+const arrowUp = <span>&#9660;</span>;
+const arrowDown = <span>&#9650;</span>;
 
 const getArrowForColumn = (column: keyof ExtendedProviderResponseModel, sortState: SortState) => {
   if (sortState.column === column) {
@@ -35,7 +35,7 @@ export function ProviderTable(props: IProviderTableProps) {
   const [data, setData] = useState<(ExtendedProviderResponseModel)[]>(props.providers);
   const [sortState, setSortState] = useState<SortState>({
     column: null,
-    ascending: true,
+    ascending: false,
   });
 
   const handleSort = (columnName: keyof ExtendedProviderResponseModel) => {
@@ -51,7 +51,11 @@ export function ProviderTable(props: IProviderTableProps) {
       if (valueB == null) {
         return -1;
       }
-      return valueA > valueB ? 1 : -1;
+      if (sortState.ascending) {
+        return valueA < valueB ? -1 : 1;
+      } else {
+        return valueA < valueB ? 1 : -1;
+      }
     }));
     setSortState({
       column: columnName,
