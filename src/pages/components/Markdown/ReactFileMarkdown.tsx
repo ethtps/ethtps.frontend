@@ -1,20 +1,31 @@
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import MarkdownEditor from './MarkdownEditor'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
-export default function ReactFileMarkdown(props: { fileName: string }) {
-  const [markdown, setMarkdown] = useState('')
-  useEffect(() => {
-    async function fetchMarkdown() {
-      const response = await fetch(`/markdown/${props.fileName}`)
-      const text = await response.text()
-      setMarkdown(text)
-    }
-    fetchMarkdown()
-  }, [props.fileName])
+type MarkdownPageModel = {
+  markdown?: string | null,
+  fileName?: string | null
+}
+
+export const getStaticProps: GetStaticProps<{ model: MarkdownPageModel }> = async (
+  context
+) => {
+  const markdown = await fetch(`/markdown/${context.params?.fileName}`)
+  return {
+    props: {
+      model: {
+        markdown: await markdown.text()
+      } as MarkdownPageModel
+    },
+    revalidate: 60
+  }
+}
+
+export default function ReactFileMarkdown(props: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
-      <MarkdownEditor markdown={markdown} />
+      <MarkdownEditor markdown={props?.model?.markdown ?? "Error loading page"} />
     </>
   )
 }
