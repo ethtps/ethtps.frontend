@@ -1,19 +1,12 @@
+/* eslint-disable import/no-internal-modules */
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { useSizeRef } from "@/components"
-import { SocialButtons } from "@/components"
-import ProviderListSidebar from "@/components/partials/sidebars/ProviderListSidebar"
+import { ProviderListSidebar, SocialButtons } from "@/components"
 import { loadProvidersAsync } from "@/data"
-import { conditionalRender, queryClient } from "@/services"
-import { AppShell, Navbar, Header, ScrollArea, Text, Button, Group, ThemeIcon, Container, Image, Box, Paper } from "@mantine/core"
-import { IconDatabase } from "@tabler/icons-react"
-import { range } from "d3-array"
-import { color, motion } from "framer-motion"
+import { queryClient } from "@/services"
+import { Text, Group, Container, Image, Box, Paper } from "@mantine/core"
 import { InferGetStaticPropsType } from "next"
-// eslint-disable-next-line import/no-internal-modules
-import Link from "next/link"
-import { useEffect, useState } from "react"
 
 interface IProviderPageParams {
   currentProvider?: string,

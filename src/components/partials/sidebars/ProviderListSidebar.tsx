@@ -1,6 +1,6 @@
 import { ProviderResponseModel } from "@/api-client"
 import { conditionalRender } from "@/services"
-import { Navbar, ScrollArea, ThemeIcon, Text, Group, Badge, Box } from "@mantine/core"
+import { Navbar, ScrollArea, ThemeIcon, Text, Group, Badge, Box, Image } from "@mantine/core"
 import { IconDatabase } from "@tabler/icons-react"
 // eslint-disable-next-line import/no-internal-modules
 import Link from "next/link"
@@ -46,7 +46,12 @@ export default function ProviderListSidebar({ currentProvider, allProviders }: I
                                 <Link href={`/providers/${x.name}`}>
                                     <Group>
                                         <ThemeIcon variant="light">
-                                            <IconDatabase size="1rem" />
+                                            <Image
+                                                alt={`${x.name} icon`}
+                                                src={`/provider-icons/${x.name}.png`}
+                                                width={'20px'}
+                                                height={'20px'}
+                                            />
                                         </ThemeIcon>
                                         <Text size="sm" style={{ overflow: "hidden" }}>{x.name}</Text>
                                     </Group>
