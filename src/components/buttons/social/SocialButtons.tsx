@@ -22,15 +22,15 @@ export function SocialButtons() {
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
                     visible
-                    text='Share on Mastodon'
-                    icon={< IconBrandMastodon />}
+                    text='Share on Reddit'
+                    icon={< IconBrandReddit />}
                 />
             </Link>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
                     visible
-                    text='Share on Reddit'
-                    icon={< IconBrandReddit />}
+                    text='Share on Mastodon'
+                    icon={< IconBrandMastodon />}
                 />
             </Link>
             <Link href="https://twitter.com/mantinedev" target="_blank">

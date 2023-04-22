@@ -35,7 +35,7 @@ const hiddenSize = 750
 export default function ProviderPage({ currentProvider, allProviders }: InferGetStaticPropsType<typeof getStaticProps>) {
 
   return <>
-    <Container style={{ width: "90%" }}>
+    <Container style={{ width: "90%", minWidth: '600px' }}>
       {conditionalRender(<ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />, allProviders !== undefined && allProviders?.length > 0)}
       <Container>
         <Paper sx={{
