@@ -1,14 +1,17 @@
-import { Paper, Text } from "@mantine/core";
+import { MyResponsiveLine, NonSSRWrapper, useSizeRef } from "@/components";
+import { Paper, Text, Title } from "@mantine/core";
 
 interface IProviderChartSectionProps {
 }
 
 export default function ProviderChartSection(props: IProviderChartSectionProps) {
+    const size = useSizeRef()
     return <>
-        <Paper sx={{ padding: '1rem' }}>
-            <Text>
-                Chart
-            </Text>
+        <Paper ref={size.ref}>
+            <Title order={3}>Historical chart</Title>
+            <NonSSRWrapper>
+                <MyResponsiveLine />
+            </NonSSRWrapper>
         </Paper>
     </>
 }

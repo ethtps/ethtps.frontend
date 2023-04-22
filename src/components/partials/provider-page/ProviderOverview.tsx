@@ -1,7 +1,9 @@
 import { ProviderResponseModel } from "@/api-client";
 import { ProviderChartSection, SocialButtons } from "@/components";
-import { Badge, Group, Text, Box, Image, Tabs } from "@mantine/core";
-import { IconChartRadar, IconTextCaption, IconChartBar } from "@tabler/icons-react";
+import { binaryConditionalRender, conditionalRender } from "@/services";
+import { Badge, Group, Text, Box, Image, Tabs, Transition, Affix, Button, rem, Title, Skeleton } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
+import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp } from "@tabler/icons-react";
 
 const iconSize = 65
 
@@ -9,6 +11,7 @@ export function ProviderOverview(props: {
     provider: ProviderResponseModel | undefined
 }) {
     const provider = props.provider
+    const [scroll, scrollTo] = useWindowScroll();
     return (
         <>
             <Group
@@ -20,15 +23,15 @@ export function ProviderOverview(props: {
                     padding: "1rem",
                 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                    <Image
+                    {binaryConditionalRender(<Image
                         alt={`${provider?.name} icon`}
                         src={`/provider-icons/${provider?.name}.png`}
                         width={iconSize}
-                        height={iconSize}
-                    />
+                        height={iconSize} />,
+                        <Skeleton width={iconSize} height={iconSize} />, provider !== undefined)}
                     <Box>
                         <Box>
-                            <Text
+                            <Title order={4}
                                 className="inline"
                                 variant="heading"
                                 sx={{
@@ -40,8 +43,9 @@ export function ProviderOverview(props: {
                                 }}
                             >
                                 {provider?.name}
-                            </Text>
-                            <Text
+                            </Title>
+                            <Title
+                                order={5}
                                 variant="subheading"
                                 color="gray"
                                 sx={{
@@ -51,7 +55,7 @@ export function ProviderOverview(props: {
                                 }}
                             >
                                 0 TPS
-                            </Text>
+                            </Title>
                         </Box>
                         <Badge
                             size={'sm'}
@@ -92,6 +96,19 @@ export function ProviderOverview(props: {
                     </Tabs.Panel>
                 </Tabs>
             </Box>
+            <Affix position={{ bottom: rem(20), right: rem(20) }}>
+                <Transition transition="slide-up" mounted={scroll.y > 0}>
+                    {(transitionStyles) => (
+                        <Button
+                            leftIcon={<IconArrowUp size="1rem" />}
+                            style={transitionStyles}
+                            onClick={() => scrollTo({ y: 0 })}
+                        >
+                            Scroll to top
+                        </Button>
+                    )}
+                </Transition>
+            </Affix>
         </>
     )
 }
