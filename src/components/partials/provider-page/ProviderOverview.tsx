@@ -3,7 +3,7 @@ import { ProviderChartSection, SocialButtons } from "@/components";
 import { binaryConditionalRender, conditionalRender } from "@/services";
 import { Badge, Group, Text, Box, Image, Tabs, Transition, Affix, Button, rem, Title, Skeleton } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp } from "@tabler/icons-react";
+import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGitCompare, IconGeometry } from "@tabler/icons-react";
 
 const iconSize = 65
 
@@ -81,6 +81,7 @@ export function ProviderOverview(props: {
                         <Tabs.Tab value="overview" icon={<IconChartBar size="1rem" />}>Overview</Tabs.Tab>
                         <Tabs.Tab value="details" icon={<IconTextCaption size="1rem" />}>Details</Tabs.Tab>
                         <Tabs.Tab value="analysis" icon={<IconChartRadar size="1rem" />}>Analysis</Tabs.Tab>
+                        <Tabs.Tab value="comparison" icon={<IconGeometry size="1rem" />}>Compare</Tabs.Tab>
                     </Tabs.List>
 
                     <Tabs.Panel value="overview" pt="md">
@@ -93,6 +94,10 @@ export function ProviderOverview(props: {
 
                     <Tabs.Panel value="analysis" pt="xs">
                         Analysis tab content
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="comparison" pt="xs">
+                        Comparison tab content
                     </Tabs.Panel>
                 </Tabs>
             </Box>

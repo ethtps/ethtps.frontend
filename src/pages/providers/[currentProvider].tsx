@@ -2,7 +2,7 @@
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { ProviderListSidebar, ProviderOverview, SocialButtons } from "@/components"
+import { ProviderListSidebar, ProviderOverview, SocialButtons, useAutoHideSidebar } from "@/components"
 import { loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
 import { Text, Group, Container, Image, Box, Paper } from "@mantine/core"
@@ -13,10 +13,19 @@ interface IProviderPageParams {
   allProviders?: ProviderResponseModel[]
 }
 
+type Path = {
+  params: {
+    currentProvider: string
+  }
+}
+
+const generatePath = (provider?: ProviderResponseModel): Path => { return { params: { currentProvider: provider?.name ?? "" } } }
+
 export async function getStaticPaths() {
-  console.log('Calling GET slugs')
+  const providers = await loadProvidersAsync(queryClient)
+  const paths = providers?.filter(x => x && x.name)?.map(generatePath)
   return {
-    paths: [{ params: { currentProvider: 'Ethereum' } }, { params: { currentProvider: 'Arbitrum One' } }],
+    paths: paths,
     fallback: true, // can also be true or 'blocking'
   }
 }
@@ -33,10 +42,18 @@ export async function getStaticProps(context: any) {
 const hiddenSize = 750
 
 export default function ProviderPage({ currentProvider, allProviders }: InferGetStaticPropsType<typeof getStaticProps>) {
-
+  const hideSidebar = useAutoHideSidebar()
   return <>
-    <Container style={{ width: "90%", minWidth: '600px' }}>
-      {conditionalRender(<ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />, allProviders !== undefined && allProviders?.length > 0)}
+    <Container
+      size={'xl'}
+      fluid={hideSidebar}
+      style={{
+        ...(hideSidebar ? {
+          paddingLeft: 0,
+          paddingRight: 0,
+        } : {})
+      }}>
+      {conditionalRender(<ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />, !hideSidebar && allProviders !== undefined && allProviders?.length > 0)}
       <Container>
         <Paper sx={{
           borderRadius: "20px",

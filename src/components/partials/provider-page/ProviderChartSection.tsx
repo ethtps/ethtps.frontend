@@ -8,8 +8,14 @@ export default function ProviderChartSection(props: IProviderChartSectionProps) 
     const size = useSizeRef()
     return <>
         <Paper ref={size.ref}>
-            <Title order={3}>Historical chart</Title>
-            <MyResponsiveLine />
+            <Paper>
+                <Title order={3}>Historical chart</Title>
+                <MyResponsiveLine />
+            </Paper>
+            <Paper>
+                <Title order={3}>Cumulative [mode] chart</Title>
+                <MyResponsiveLine />
+            </Paper>
         </Paper>
     </>
 }

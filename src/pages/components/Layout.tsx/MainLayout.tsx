@@ -19,8 +19,12 @@ export default function MainLayout(props: { component: JSX.Element }) {
   return (
     <>
       <AppShell
-        navbarOffsetBreakpoint='sm'
-        asideOffsetBreakpoint='sm'
+        navbarOffsetBreakpoint='md'
+        asideOffsetBreakpoint='md'
+        sx={{
+          paddingLeft: 0,
+          paddingRight: 0,
+        }}
         footer={
           <Footer height={50}>
             <Group style={{ marginTop: 0 }} position='apart'>
