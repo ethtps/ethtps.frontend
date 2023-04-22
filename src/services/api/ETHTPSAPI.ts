@@ -1,6 +1,5 @@
 'use client'
 import { APIKeyMiddleware } from './APIKeyMiddleware'
-import { getAPIKey, tryLoadAPIKeyFromLocalStorage } from '../DependenciesIOC'
 import {
   APIKeyApi,
   ApiV3ChartDataGetStackedChartDataGetRequest,
@@ -40,17 +39,9 @@ export class ETHTPSApi {
   public apiKeyAPI: APIKeyApi
   public apiKey?: string
 
-  constructor(apiURL: string, apiKey?: string) {
+  constructor(apiURL: string, apiKey: string) {
     this._apiURL = apiURL
-    if (!apiKey) {
-      tryLoadAPIKeyFromLocalStorage()
-      let supposedlyAKey = getAPIKey()
-      if (supposedlyAKey) {
-        this.apiKey = supposedlyAKey //Definitely a key
-      }
-    } else {
-      this.apiKey = apiKey
-    }
+    this.apiKey = apiKey
     this.apiKeyAPI = new APIKeyApi(
       new Configuration({
         basePath: this._apiURL

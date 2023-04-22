@@ -1,1 +1,1 @@
-export * from './ExceptionHandler'
+export * from './ExceptionHandler';

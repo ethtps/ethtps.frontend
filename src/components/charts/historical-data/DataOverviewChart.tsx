@@ -14,7 +14,3 @@ export async function getStaticProps(ctx: any) {
   const json = await res.json()
   return { props: { stars: json.stargazers_count } as Test }
 }
-
-export const config = {
-  runtime: 'experimental-edge'
-}

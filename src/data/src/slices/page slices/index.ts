@@ -1,1 +1,1 @@
-export * from './MainPageSlice'
+export * from './MainPageSlice';

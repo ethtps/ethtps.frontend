@@ -1,2 +1,2 @@
-export * from './Common'
-export * from './Dictionaries'
+export * from './Common';
+export * from './Dictionaries';

@@ -1,2 +1,2 @@
-export * from './ApplicationState'
-export * from './IGlobalDependencies'
+export * from './ApplicationState';
+export * from './IGlobalDependencies';

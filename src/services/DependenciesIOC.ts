@@ -12,34 +12,6 @@ export const api = new ETHTPSApi(
 
 //export const websocketsService = new WebsocketsService()
 
-export function getAPIKey() {
-  return 'rXRBBrUKkW3WAWLqAsO6lCVJUbOBM8Dntc9BIJRYo6dGwRpSkyGiSpX3OxDhLFKW'
-  if (_api_key === null || _api_key === undefined)
-    tryLoadAPIKeyFromLocalStorage()
-  return _api_key
-}
-
-export function setAPIKey(value: string) {
-  try {
-    localStorage.setItem('XAPIKey', value)
-    console.log(`Got new API key: ${value}`)
-  } catch {
-    console.log('Local storage disabled')
-  } finally {
-    _api_key = value
-  }
-}
-
-export function tryLoadAPIKeyFromLocalStorage() {
-  try {
-    _api_key = localStorage.getItem('XAPIKey')
-  } catch {
-    console.log('Local storage disabled')
-  }
-}
-
-export const websocketServiceURL =
-  'ws://localhost:2000/LiveData?XAPIKEY=' + getAPIKey()
 
 const defaultQueryConfig = {
   refetchOnWindowFocus: false,

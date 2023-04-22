@@ -2,7 +2,6 @@ const withTM = require('next-transpile-modules')([
 ])
 const config = {
   reactStrictMode: true,
-  experimental: { esmExternals: true },
   distDir: 'build'
 }
 

@@ -1,1 +1,1 @@
-export * from './DependenciesIOC'
+export * from './DependenciesIOC';
