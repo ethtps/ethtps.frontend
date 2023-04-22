@@ -13,7 +13,7 @@ const loadProvidersAsync = async (queryClient: QueryClient) => {
         do {
             try {
                 // Try to fetch the providers
-                response = await queryClient.fetchQuery('providers', async () => await fetch(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`), {
+                response = await queryClient.fetchQuery('providers', async () => await fetch(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`), {
                     retry: true,
                     cacheTime: 1000 * 60,
                     retryDelay: 1000 //It's only us that are hitting the backend, no need to worry about overloading it (famous last words)
