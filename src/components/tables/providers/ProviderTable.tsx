@@ -1,6 +1,7 @@
 import { ProviderResponseModel } from '@/api-client';
 import { darkenColorIfNecessary } from '@/components';
-import { Table, Image } from '@mantine/core'
+import { Text, Table, Image, Group, Tooltip } from '@mantine/core'
+import Link from 'next/link';
 import { useState } from 'react';
 
 type ExtraColumns = Partial<{
@@ -96,8 +97,16 @@ export function ProviderTable(props: IProviderTableProps) {
           >
             <td>{i + 1}</td>
             <td className="name-cell" style={{ fontWeight: 'bold' }}>
-              <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
-              <span className="name-text">{provider.name}</span>
+              <Link href={`/providers/${provider.name}`}>
+                <Group spacing={'xs'}>
+                  <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
+                  <span className="name-text">
+                    <Tooltip label={`Click to read more about ${provider.name}`} sx={{ fontWeight: 'normal' }}>
+                      <Text >{provider.name}</Text>
+                    </Tooltip>
+                  </span>
+                </Group>
+              </Link>
             </td>
             <td>{provider.currentValue ?? 0}</td>
             <td>{provider.maxRecorded ?? 0}</td>

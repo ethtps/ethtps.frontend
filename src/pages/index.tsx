@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = async (
       retryCount++
     }
   }
-  while (!providers && providers?.length === 0)
+  while (!providers && (providers ?? []).length === 0)
 
   if (!providers || providers?.length === 0) {
     throw new Error("Couldn't load providers")
