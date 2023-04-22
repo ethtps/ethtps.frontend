@@ -15,22 +15,12 @@ interface IProviderListSidebarProps {
 
 export default function ProviderListSidebar({ currentProvider, allProviders }: IProviderListSidebarProps) {
     const [hideSidebar, setHideSidebar] = useState(false)
-    const [providers, setProviders] = useState(allProviders)
     const [filteredProviders, setFilteredProviders] = useState(allProviders)
-    const fetchQuery = useCallback(async () => {
-        const result = await queryClient.fetchQuery('allProviders', async () => await api.getProvidersAsync())
-        setProviders(result)
-    }, [])
-    useEffect(() => {
-        if (!providers || providers.length === 0) {
-            fetchQuery()
-        }
-    }, [providers, fetchQuery])
     const hideSidechainsChanged = (e: any) => {
         if (e.target.checked) {
-            setFilteredProviders(providers?.filter(x => x.type !== 'Sidechain'))
+            setFilteredProviders(allProviders?.filter(x => x.type !== 'Sidechain'))
         } else {
-            setFilteredProviders(providers)
+            setFilteredProviders(allProviders)
         }
     }
     return <>

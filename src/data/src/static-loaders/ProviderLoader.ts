@@ -1,6 +1,7 @@
+/* eslint-disable import/no-internal-modules */
 import { QueryClient } from "react-query"
 import { ProviderResponseModel } from "../../../api-client"
-
+import fallbackProviders from './default-data/providers.json'
 let providers: ProviderResponseModel[] | undefined
 
 const loadProvidersAsync = async (queryClient: QueryClient) => {
@@ -27,7 +28,7 @@ const loadProvidersAsync = async (queryClient: QueryClient) => {
 
     // If the providers are empty, throw an error
     if (!providers || providers?.length === 0) {
-        throw new Error("Couldn't load providers")
+        providers = fallbackProviders
     }
 
     // Return the providers

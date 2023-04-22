@@ -1,11 +1,13 @@
+import { ProviderResponseModel } from "@/api-client";
 import { SocialButtons } from "@/components";
-import { Group, Text, Box, Image } from "@mantine/core";
+import { Badge, Group, Text, Box, Image } from "@mantine/core";
 
-const iconSize = 50
+const iconSize = 65
 
-export function ProviderOverview({ currentProvider }: {
-    currentProvider?: string
+export function ProviderOverview(props: {
+    provider: ProviderResponseModel | undefined
 }) {
+    const provider = props.provider
     return (
         <>
             <Group
@@ -18,8 +20,8 @@ export function ProviderOverview({ currentProvider }: {
                 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                     <Image
-                        alt={`${currentProvider} icon`}
-                        src={`/provider-icons/${currentProvider}.png`}
+                        alt={`${provider?.name} icon`}
+                        src={`/provider-icons/${provider?.name}.png`}
                         width={iconSize}
                         height={iconSize}
                     />
@@ -34,8 +36,9 @@ export function ProviderOverview({ currentProvider }: {
                                 cursor: "default",
                             }}
                         >
-                            {currentProvider}
+                            {provider?.name}
                         </Text>
+                        <Badge>{provider?.type}</Badge>
                         <Text
                             variant="subheading"
                             color="gray"

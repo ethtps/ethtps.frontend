@@ -4,7 +4,7 @@
 import { ProviderResponseModel } from "@/api-client"
 import { ProviderListSidebar, ProviderOverview, SocialButtons } from "@/components"
 import { loadProvidersAsync } from "@/data"
-import { queryClient } from "@/services"
+import { conditionalRender, queryClient } from "@/services"
 import { Text, Group, Container, Image, Box, Paper } from "@mantine/core"
 import { InferGetStaticPropsType } from "next"
 
@@ -36,14 +36,14 @@ export default function ProviderPage({ currentProvider, allProviders }: InferGet
 
   return <>
     <Container style={{ width: "90%" }}>
-      <ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />
+      {conditionalRender(<ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />, allProviders !== undefined && allProviders?.length > 0)}
       <Container>
         <Paper sx={{
           borderRadius: "20px",
           width: "100%",
           minHeight: "90vh",
         }}>
-          <ProviderOverview currentProvider={currentProvider} />
+          <ProviderOverview provider={allProviders?.find(x => x.name === currentProvider as string)} />
         </Paper>
       </Container>
     </Container >
