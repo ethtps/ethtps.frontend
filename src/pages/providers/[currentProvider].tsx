@@ -3,6 +3,7 @@
 import { ProviderResponseModel } from "@/api-client"
 import { useSizeRef } from "@/components"
 import { SocialButtons } from "@/components"
+import ProviderListSidebar from "@/components/partials/sidebars/ProviderListSidebar"
 import { loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
 import { AppShell, Navbar, Header, ScrollArea, Text, Button, Group, ThemeIcon, Container, Image, Box, Paper } from "@mantine/core"
@@ -36,42 +37,14 @@ export async function getStaticProps(context: any) {
   }
 }
 
-const sidebarWidth = 200
 const iconSize = 50
 const hiddenSize = 750
 
 export default function ProviderPage({ currentProvider, allProviders }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [hideSidebar, setHideSidebar] = useState(false)
+
   return <>
     <Container style={{ width: "90%" }}>
-      {conditionalRender(<Navbar p="xs" width={{ base: sidebarWidth }}>
-        <Navbar.Section mt="xs">{/* Header with logo */}</Navbar.Section>
-
-        <Navbar.Section hidden={hideSidebar} grow component={ScrollArea} mx="-xs" px="xs">
-          <Group dir="row">
-            {allProviders?.map((x, i) =>
-              <div key={x.name}
-                style={{
-                  backgroundColor: currentProvider === x.name ? "#f8f8f8" : undefined,
-                }}
-                className="grayOnHover">
-                <Group dir="col" sx={{
-                  width: sidebarWidth
-                }} >
-                  <Link href={`/providers/${x.name}`}>
-                    <Group>
-                      <ThemeIcon variant="light">
-                        <IconDatabase size="1rem" />
-                      </ThemeIcon>
-                      <Text size="sm" style={{ overflow: "hidden" }}>{x.name}</Text>
-                    </Group>
-                  </Link>
-                </Group>
-              </div>
-            )}
-          </Group>
-        </Navbar.Section>
-      </Navbar >, !hideSidebar)}
+      <ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />
       <Container>
         <Paper sx={{
           borderRadius: "20px",
