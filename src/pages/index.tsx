@@ -7,6 +7,7 @@ import MyResponsiveStream from './components/live data/nivo streamchart/MyRespon
 import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
 import { ProviderResponseModel } from '@/api-client'
 import { AllProvidersTable, ProviderTable, useSizeRef } from '@/components'
+import { useState } from 'react'
 
 type IndexPageModel = {
   providers: ProviderResponseModel[]
@@ -50,6 +51,12 @@ export default function Index({
   model
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const sizeRef = useSizeRef()
+  const [openIndex, setOpenIndex] = useState(-1);
+
+  const handleMenuToggle = (index: number) => {
+    setOpenIndex(openIndex === index ? -1 : index);
+  };
+
   return (
     <>
       <Container ref={sizeRef.ref} style={{ height: 500 }}>
