@@ -1298,6 +1298,13 @@
     "@mantine/utils" "6.0.6"
     react-dropzone "14.2.3"
 
+"@mantine/ds@^6.0.8":
+  version "6.0.8"
+  resolved "https://registry.yarnpkg.com/@mantine/ds/-/ds-6.0.8.tgz#536067f2f2a447bf1b06b698f8712fd0cc246ff1"
+  integrity sha512-ullhzbmPbKg9yY6kr243fCRQyumhH825z8AxejaoRvFpSS8JGfis1FnaMU8JF5r+wjAmLzebzCGHWpoGg7qxqQ==
+  dependencies:
+    "@mantine/utils" "6.0.8"
+
 "@mantine/form@^6.0.5":
   version "6.0.6"
   resolved "https://registry.yarnpkg.com/@mantine/form/-/form-6.0.6.tgz#82e4e71ae6d4810eded8faecea9531bb24e210bf"
@@ -1396,6 +1403,11 @@
   version "6.0.7"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.7.tgz#fcbc9c809c33bd9c96fd12d7ca63d0c19550bafd"
   integrity sha512-XMm66GNn9hXnc9s/twXzL9iqhzM8HLVOyuKDo4WUn/ZM6NEJYJJVcTTlSIXOPq9AWo8bI76vbAHkIry1aEbgmg==
+
+"@mantine/utils@6.0.8":
+  version "6.0.8"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.8.tgz#3e77f7ae7ab6c06555a619e137fc62942d95c109"
+  integrity sha512-G7omM5XjnGzXLiFU/r2yOJrixDFnY2pUkqD38cV9e/Qa6KFEErp4mNb+rhkSHafCnvfwBiNcdryZwEhJTtuC+Q==
 
 "@microsoft/signalr@^6.0.2":
   version "6.0.16"
