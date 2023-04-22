@@ -1,10 +1,10 @@
 import { ProviderResponseModel } from "@/api-client"
-import { conditionalRender } from "@/services"
-import { Navbar, ScrollArea, ThemeIcon, Text, Group, Badge, Box, Image, Checkbox } from "@mantine/core"
-import { IconDatabase } from "@tabler/icons-react"
+import { api, conditionalRender, queryClient } from "@/services"
+import { Navbar, ScrollArea, ThemeIcon, Text, Group, Badge, Box, Image, Checkbox, Notification, Loader, Skeleton, Tooltip } from "@mantine/core"
+import { IconDatabase, IconX } from "@tabler/icons-react"
 // eslint-disable-next-line import/no-internal-modules
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 const sidebarWidth = 200
 
@@ -15,14 +15,22 @@ interface IProviderListSidebarProps {
 
 export default function ProviderListSidebar({ currentProvider, allProviders }: IProviderListSidebarProps) {
     const [hideSidebar, setHideSidebar] = useState(false)
+    const [providers, setProviders] = useState(allProviders)
     const [filteredProviders, setFilteredProviders] = useState(allProviders)
-    const [hideSidechains, setHideSidechains] = useState(false)
+    const fetchQuery = useCallback(async () => {
+        const result = await queryClient.fetchQuery('allProviders', async () => await api.getProvidersAsync())
+        setProviders(result)
+    }, [])
+    useEffect(() => {
+        if (!providers || providers.length === 0) {
+            fetchQuery()
+        }
+    }, [providers, fetchQuery])
     const hideSidechainsChanged = (e: any) => {
-        setHideSidechains(e.target.checked)
         if (e.target.checked) {
-            setFilteredProviders(allProviders?.filter(x => x.type !== 'Sidechain'))
+            setFilteredProviders(providers?.filter(x => x.type !== 'Sidechain'))
         } else {
-            setFilteredProviders(allProviders)
+            setFilteredProviders(providers)
         }
     }
     return <>
@@ -72,6 +80,11 @@ export default function ProviderListSidebar({ currentProvider, allProviders }: I
                             </Group>
                         </div>
                     )}
+                    {conditionalRender(<>
+                        <Skeleton height={8} radius="xl" style={{ marginBottom: '1rem' }} />
+                        <Skeleton height={8} radius="xl" style={{ marginBottom: '1rem' }} />
+                        <Skeleton height={8} radius="xl" style={{ marginBottom: '1rem' }} />
+                    </>, !filteredProviders || filteredProviders?.length === 0)}
                 </Group>
             </Navbar.Section>
             <Navbar.Section>
