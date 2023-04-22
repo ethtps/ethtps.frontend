@@ -1,3 +1,4 @@
+/*
 import { Canvas } from '@react-three/fiber'
 
 export function Thwrapper(props: { component: JSX.Element }) {
@@ -12,3 +13,5 @@ export function Thwrapper(props: { component: JSX.Element }) {
     </>
   )
 }
+*/
+export { }

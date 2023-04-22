@@ -9,9 +9,7 @@ export default function ProviderChartSection(props: IProviderChartSectionProps) 
     return <>
         <Paper ref={size.ref}>
             <Title order={3}>Historical chart</Title>
-            <NonSSRWrapper>
-                <MyResponsiveLine />
-            </NonSSRWrapper>
+            <MyResponsiveLine />
         </Paper>
     </>
 }
