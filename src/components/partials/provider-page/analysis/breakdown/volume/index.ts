@@ -1,1 +1,1 @@
-export * from './VolumeTab';
+export * from './PeriodTab';

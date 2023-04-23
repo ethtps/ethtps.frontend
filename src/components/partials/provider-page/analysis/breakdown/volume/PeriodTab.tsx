@@ -1,10 +1,10 @@
 import { ProviderResponseModel } from "@/api-client"
 
-interface IVolumeTabProps {
+interface IPeriodTabProps {
     provider: ProviderResponseModel
 }
 
-export function VolumeTab(props: Partial<IVolumeTabProps>) {
+export function PeriodTab(props: Partial<IPeriodTabProps>) {
     return <>
     </>
 }

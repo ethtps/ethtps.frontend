@@ -11,6 +11,7 @@ interface ITransactionTypeTabProps {
 export function TransactionTypeTab(props: Partial<ITransactionTypeTabProps>) {
     return <>
         <Title sx={{ marginLeft: '1rem' }} order={3}>Average TPS by day </Title>
-        <YearlyHeatmap {...props} />
+        <YearlyHeatmap provider={props.provider} year={2022} focused={false} />
+        <YearlyHeatmap {...props} year={2023} focused={true} />
     </>
 }
