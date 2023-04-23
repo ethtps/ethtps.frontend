@@ -1,9 +1,7 @@
 import { ProviderResponseModel } from "@/api-client"
-import { Tabs, Title, Text, SegmentedControl, Box } from "@mantine/core"
-import { BreakdownTab, CompareTab, DetailsTab, ProviderChartSection, StatusTab, TransactionTypeTab, VolumeTab, YearlyHeatmap } from '..'
-import { IconChartBar, IconTextCaption, IconChartRadar, IconGeometry, IconDatabase, IconHammer } from "@tabler/icons-react"
-import { AnalysisTabStrings, DefaultStrings } from "../descriptions"
-import { setQueryParams } from "@/components"
+import { Tabs, Text, Box } from "@mantine/core"
+import { BreakdownTab } from '..'
+import { IconHammer } from "@tabler/icons-react"
 import { useState } from "react"
 
 interface IAnalysisTabProps {

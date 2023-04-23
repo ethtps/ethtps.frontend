@@ -86,10 +86,10 @@ export function YearlyHeatmap({
 
     const getCalendar = useCallback((year: number) => {
         if (interactive) {
-            return <ResponsiveCalendar {...propGenerator(year)} />
+            return <ResponsiveCalendar {...(propGenerator(year) as CalendarSvgProps)} />
         }
         else {
-            return <ResponsiveCalendarCanvas {...propGenerator(year)} />
+            return <ResponsiveCalendarCanvas {...(propGenerator(year) as CalendarCanvasProps)} />
         }
     }, [interactive, propGenerator])
 

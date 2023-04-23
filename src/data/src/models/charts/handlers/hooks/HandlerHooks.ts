@@ -29,7 +29,7 @@ function createHandler<THandler extends IHandler<TReturnValue>, TReturnValue>(
 	handler?: THandler
 ): Handler<TReturnValue> {
 	if (handler == null) {
-		return new Handler<TReturnValue>((newValue?: TReturnValue) => {})
+		return new Handler<TReturnValue>((newValue?: TReturnValue) => { })
 	}
 
 	const [value, setValue] = React.useState<TReturnValue | undefined>(
@@ -51,7 +51,7 @@ export class Handler<TReturnValue> implements IOptionalCallback<TReturnValue> {
 			if (this.callback != null) this.callback(newValue)
 		},
 		public value?: TReturnValue | undefined
-	) {}
+	) { }
 
 	private convertToIHandler(): IHandler<TReturnValue> {
 		return {
