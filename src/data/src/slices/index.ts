@@ -7,5 +7,5 @@ export * from './LiveDataSlice';
 export * from './NetworksSlice';
 export * from './page slices';
 export * from './ProvidersSlice';
-export {default as websocketMiddleware} from './WebsocketSubscriptionMiddleware';
-export * from './WebsocketSubscriptionSlice';
+export { default as websocketMiddleware } from './WebsocketSubscriptionMiddleware';
+//export * from './WebsocketSubscriptionSlice';

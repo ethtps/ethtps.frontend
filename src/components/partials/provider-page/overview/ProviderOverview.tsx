@@ -116,15 +116,15 @@ export function ProviderOverview(props: {
                     </Tabs.Panel>
                 </Tabs>
             </Box>
-            <Affix position={{ bottom: rem(20), right: rem(20) }}>
-                <Transition transition="slide-up" mounted={scroll.y > 0}>
+            <Affix position={{ bottom: rem(60), right: rem(20) }}>
+                <Transition transition="slide-up" mounted={scroll.y > 100}>
                     {(transitionStyles) => (
                         <Button
                             leftIcon={<IconArrowUp size="1rem" />}
                             style={transitionStyles}
                             onClick={() => scrollTo({ y: 0 })}
                         >
-                            Scroll to top
+                            Back up
                         </Button>
                     )}
                 </Transition>

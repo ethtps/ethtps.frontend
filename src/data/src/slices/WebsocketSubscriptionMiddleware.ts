@@ -1,6 +1,7 @@
+import { AppStore } from '..'
 import { Middleware } from 'redux'
 
-const websocketMiddleware: Middleware = (store) => (next) => (action) => {
+const websocketMiddleware: Middleware = (store: AppStore) => (next: any) => (action: any) => {
 	/*
 	if (!websocketActions.connecting.match(action)) {
 		return next(action)

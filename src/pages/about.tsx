@@ -7,7 +7,7 @@ export default function About() {
   return (
     <>
       <Container>
-        <ReactFileMarkdown fileName='About.md' />
+        <ReactFileMarkdown model={{ fileName: "About.md" }} />
       </Container>
     </>
   )

@@ -8,10 +8,11 @@ import { useViewportRatio } from '@/components'
 import { useCallback, useEffect, useState } from 'react'
 import { getDate } from 'date-fns'
 import { CalendarProps } from 'react-date-range'
+
 interface IYearlyHeatmapProps {
     provider: ProviderResponseModel
     year: number,
-    focused?: boolean
+    interactive?: boolean
 }
 
 const baseHeight = 200
@@ -71,26 +72,26 @@ const generateCanvasProps = (ratio: number, year: number, data: HeatmapDataPoint
 export function YearlyHeatmap({
     provider,
     year,
-    focused
+    interactive
 }: Partial<IYearlyHeatmapProps>) {
     const ratio = useViewportRatio()
     const propGenerator = useCallback((year: number) => {
-        if (focused) {
+        if (interactive) {
             return generateResponsiveProps(ratio, year, dummyHeatmapData)
         }
         else {
             return generateCanvasProps(ratio, year, dummyHeatmapData)
         }
-    }, [ratio, focused])
+    }, [ratio, interactive])
 
     const getCalendar = useCallback((year: number) => {
-        if (focused) {
+        if (interactive) {
             return <ResponsiveCalendar {...propGenerator(year)} />
         }
         else {
             return <ResponsiveCalendarCanvas {...propGenerator(year)} />
         }
-    }, [focused, propGenerator])
+    }, [interactive, propGenerator])
 
     useEffect(() => {
     }, [year])

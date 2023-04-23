@@ -12,13 +12,13 @@ import {
   setProviderTypeColorDictionary,
   setProviders
 } from '@/data'
-import { ETHTPSApi, getAPIKey, setAPIKey } from '@/services'
+import { ETHTPSApi, } from '@/services'
 import { QueryClient } from 'react-query'
 
 let progressChangedHandler: Handler<number> | undefined
 
 export class ApplicationDataService {
-  private loaders = [() => {}]
+  private loaders = [() => { }]
   private loadedCount = 0
   constructor(
     private api: ETHTPSApi,
@@ -110,18 +110,19 @@ export class ApplicationDataService {
   }
 
   public async loadDataIntoReduxStoreAsync(dispatch: AppDispatch) {
+    /*
     if ((getAPIKey()?.length ?? 0) === 0) {
       const key = await this.api.getNewAPIKey('nokey')
       if (key.failureReason) {
         throw new Error(key.failureReason)
       }
-      setAPIKey(key.key?.toString() ?? '')
+      //setAPIKey(key.key?.toString() ?? '')
       this.api.resetConfig()
-    }
+    }*/
     this.loadedCount = 1
     this.setLoadees(dispatch, this.api)
     this.loaders.forEach((x) => x())
   }
 
-  public async loadDataAsync() {}
+  public async loadDataAsync() { }
 }
