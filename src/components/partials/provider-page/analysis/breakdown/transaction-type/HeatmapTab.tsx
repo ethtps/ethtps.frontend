@@ -72,7 +72,7 @@ export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
                     interactive={true} />
             </Paper>
         </>
-    }, [props.provider, year, modelOpened, ratio])
+    }, [props.provider, year])
 
     return <>
         <Modal
