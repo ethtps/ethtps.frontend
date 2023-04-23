@@ -9,11 +9,14 @@ export function GoogleButton(props: ButtonProps) {
 }
 
 
-export function SocialButtons() {
+export function SocialButtons(props: {
+    bottom?: boolean
+}) {
     return (
         <Group sx={{ padding: 15 }}>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
+                    bottom={props.bottom}
                     visible
                     text='Tweet'
                     icon={< IconBrandTwitter />}
@@ -21,6 +24,7 @@ export function SocialButtons() {
             </Link>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
+                    bottom={props.bottom}
                     visible
                     text='Share on Reddit'
                     icon={< IconBrandReddit />}
@@ -28,6 +32,7 @@ export function SocialButtons() {
             </Link>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
+                    bottom={props.bottom}
                     visible
                     text='Share on Mastodon'
                     icon={< IconBrandMastodon />}
@@ -35,6 +40,7 @@ export function SocialButtons() {
             </Link>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
+                    bottom={props.bottom}
                     visible
                     text='Share on Facebook'
                     icon={<IconBrandFacebook />} />

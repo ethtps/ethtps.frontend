@@ -9,6 +9,7 @@ export function IconButton(props: {
   href?: string
   target?: string
   visible?: boolean
+  bottom?: boolean
 }) {
   return (
     <ActionIcon
