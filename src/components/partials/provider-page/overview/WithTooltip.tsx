@@ -1,7 +1,7 @@
 // install (please make sure versions match peerDependencies)
 // yarn add @nivo/core @nivo/line
 import { ResponsiveLine } from '@nivo/line'
-import { multiLine } from '..'
+import { multiLine } from '../..'
 import { Box } from '@mantine/core'
 import { DataModeButtonGroup, ModeButton } from '@/components'
 

@@ -1,10 +1,10 @@
 import { MyResponsiveLine, NonSSRWrapper, useSizeRef } from "@/components";
 import { Paper, Text, Title } from "@mantine/core";
 
-interface IProviderChartSectionProps {
+export interface IProviderChartSectionProps {
 }
 
-export default function ProviderChartSection(props: IProviderChartSectionProps) {
+export function ProviderChartSection(props: IProviderChartSectionProps) {
     const size = useSizeRef()
     return <>
         <Paper ref={size.ref}>
@@ -13,7 +13,7 @@ export default function ProviderChartSection(props: IProviderChartSectionProps) 
                 <MyResponsiveLine />
             </Paper>
             <Paper>
-                <Title order={3}>Cumulative [mode] chart</Title>
+                <Title order={3}>Comparison by transaction type</Title>
                 <MyResponsiveLine />
             </Paper>
         </Paper>

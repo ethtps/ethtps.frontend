@@ -1,11 +1,11 @@
 import { ProviderResponseModel } from "@/api-client";
-import { IQueryParams, ProviderChartSection, SocialButtons, setQueryParams } from "@/components";
-import { binaryConditionalRender, conditionalRender } from "@/services";
+import { AnalysisTab, CompareTab, DetailsTab, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components";
+import { binaryConditionalRender } from "@/services";
 import { Badge, Group, Text, Box, Image, Tabs, Transition, Affix, Button, rem, Title, Skeleton, NavLink } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGitCompare, IconGeometry, IconDatabase, IconFingerprint, IconGauge, IconArrowLeft } from "@tabler/icons-react";
-// eslint-disable-next-line import/no-internal-modules
+import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGeometry, IconDatabase, IconFingerprint, IconGauge } from "@tabler/icons-react";
 import { useRouter } from "next/router";
+// eslint-disable-next-line import/no-internal-modules
 import { useEffect, useState } from "react";
 
 const iconSize = 65
@@ -14,6 +14,7 @@ export function ProviderOverview(props: {
     provider: ProviderResponseModel | undefined
 }) {
     const provider = props.provider
+    const router = useRouter()
     const [currentTab, setCurrentTab] = useState<string | undefined>()
     useEffect(() => {
         if (currentTab) {
@@ -85,7 +86,7 @@ export function ProviderOverview(props: {
                 </Box>
             </Group>
             <Box sx={{ padding: '1rem' }}>
-                <Tabs defaultValue="overview" onTabChange={(v) => setCurrentTab(v?.toString())}>
+                <Tabs defaultValue="analysis" onTabChange={(v) => setCurrentTab(v?.toString())}>
                     <Tabs.List>
                         <Tabs.Tab value="overview" icon={<IconChartBar size={"1" + (currentTab === "overview" ? ".3" : "") + "rem"} />}><Text>Overview</Text></Tabs.Tab>
                         <Tabs.Tab value="details" icon={<IconTextCaption size={"1" + (currentTab === "details" ? ".3" : "") + "rem"} />}><Text>Details</Text></Tabs.Tab>
@@ -99,45 +100,19 @@ export function ProviderOverview(props: {
                     </Tabs.Panel>
 
                     <Tabs.Panel value="details" pt="md">
-                        Details tab content
+                        <DetailsTab provider={provider} />
                     </Tabs.Panel>
 
                     <Tabs.Panel value="analysis" pt="md">
-                        Analysis tab content
+                        <AnalysisTab provider={provider} />
                     </Tabs.Panel>
 
                     <Tabs.Panel value="comparison" pt="md">
-                        Comparison tab content
+                        <CompareTab provider={provider} />
                     </Tabs.Panel>
 
                     <Tabs.Panel value="status" pt="xs">
-                        Status and data tab content
-                        <Box w={240}>
-                            <NavLink
-                                label="First parent link"
-                                icon={<IconGauge size="1rem" stroke={1.5} />}
-                                childrenOffset={28}
-                            >
-                                <NavLink label="First child link" />
-                                <NavLink label="Second child link" />
-                                <NavLink label="Nested parent link" childrenOffset={28}>
-                                    <NavLink label="First child link" />
-                                    <NavLink label="Second child link" />
-                                    <NavLink label="Third child link" />
-                                </NavLink>
-                            </NavLink>
-
-                            <NavLink
-                                label="Second parent link"
-                                icon={<IconFingerprint size="1rem" stroke={1.5} />}
-                                childrenOffset={28}
-                                defaultOpened
-                            >
-                                <NavLink label="First child link" />
-                                <NavLink label="Second child link" />
-                                <NavLink label="Third child link" />
-                            </NavLink>
-                        </Box>
+                        <StatusTab provider={provider} />
                     </Tabs.Panel>
                 </Tabs>
             </Box>

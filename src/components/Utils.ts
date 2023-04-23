@@ -27,7 +27,9 @@ function darkenColorIfNecessary(color: string) {
 }
 
 interface IQueryParams {
-    tab: string
+    tab: string,
+    section: string,
+    subsection: string,
 }
 
 const setQueryParams = (params: Partial<IQueryParams>) => {
