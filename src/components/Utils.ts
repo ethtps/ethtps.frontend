@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router';
+import queryString from 'query-string'
+
 function isColorTooLight(color: string) {
     // Return true if the color is too light, false otherwise
     // The threshold can be adjusted as needed
@@ -23,4 +26,18 @@ function darkenColorIfNecessary(color: string) {
     return color;
 }
 
-export { darkenColorIfNecessary }
+interface IQueryParams {
+    tab: string
+}
+
+const setQueryParams = (params: Partial<IQueryParams>) => {
+    if (typeof window === "undefined") return
+    const currentSearch = window.location.search;
+    const parsedSearch = queryString.parse(currentSearch);
+    const newSearch = queryString.stringify({ ...parsedSearch, ...params });
+    const newUrl = `${window.location.origin}${window.location.pathname}?${newSearch}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+}
+
+export { darkenColorIfNecessary, setQueryParams }
+export type { IQueryParams }

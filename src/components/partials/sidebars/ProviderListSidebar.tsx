@@ -1,8 +1,8 @@
 import { ProviderResponseModel } from "@/api-client"
 import { api, binaryConditionalRender, conditionalRender, queryClient } from "@/services"
-import { Navbar, ScrollArea, ThemeIcon, Text, Group, Badge, Box, Image, Checkbox, Notification, Loader, Skeleton, Tooltip, Button } from "@mantine/core"
+import { Navbar, ScrollArea, ThemeIcon, Text, Group, Badge, Box, Image, Checkbox, Notification, Loader, Skeleton, Tooltip, Button, NavLink } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
-import { IconDatabase, IconX } from "@tabler/icons-react"
+import { IconDatabase, IconGauge, IconX } from "@tabler/icons-react"
 // eslint-disable-next-line import/no-internal-modules
 import Link from "next/link"
 import { useEffect, useState, useCallback } from "react"
@@ -49,27 +49,20 @@ export default function ProviderListSidebar({ currentProvider, allProviders }: I
                                 style={{
                                     backgroundColor: currentProvider === x.name ? "#f8f8f8" : undefined,
                                     fontWeight: currentProvider === x.name ? "bold" : undefined,
-                                }}
-                                className="grayOnHover">
-                                <Group dir="col" sx={{
-                                    width: sidebarWidth
-                                }} >
-                                    <Link href={`/providers/${x.name}`}>
-                                        <Group sx={{
-                                            height: "2rem",
-                                        }}>
-                                            <ThemeIcon variant="light">
-                                                <Image
-                                                    alt={`${x.name} icon`}
-                                                    src={`/provider-icons/${x.name}.png`}
-                                                    width={'20px'}
-                                                    height={'20px'}
-                                                />
-                                            </ThemeIcon>
-                                            <Text size="sm" style={{ overflow: "hidden" }}>{x.name}</Text>
-                                        </Group>
-                                    </Link>
-                                </Group>
+                                }}>
+                                <NavLink
+                                    active={currentProvider === x.name}
+                                    sx={{ width: sidebarWidth }}
+                                    component={Link}
+                                    href={`/providers/${x.name}`}
+                                    label={x.name}
+                                    icon={<Image
+                                        alt={`${x.name} icon`}
+                                        src={`/provider-icons/${x.name}.png`}
+                                        width={'20px'}
+                                        height={'20px'}
+                                    />}
+                                ></NavLink>
                             </div>
                         )}
                         {conditionalRender(<>
@@ -83,6 +76,6 @@ export default function ProviderListSidebar({ currentProvider, allProviders }: I
                     <Checkbox onChange={hideSidechainsChanged} size="sm" className={'unselectable'} label={'Hide sidechains'} />
                 </Navbar.Section>
             </Navbar>
-        </Box>
+        </Box >
     </>
 }

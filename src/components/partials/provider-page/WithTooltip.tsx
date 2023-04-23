@@ -3,6 +3,7 @@
 import { ResponsiveLine } from '@nivo/line'
 import { multiLine } from '..'
 import { Box } from '@mantine/core'
+import { DataModeButtonGroup, ModeButton } from '@/components'
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
