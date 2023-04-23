@@ -1,4 +1,4 @@
-import { MyResponsiveLine, NonSSRWrapper, useSizeRef } from "@/components";
+import { MyResponsiveLine, useSizeRef } from "@/components";
 import { Paper, Text, Title } from "@mantine/core";
 
 export interface IProviderChartSectionProps {

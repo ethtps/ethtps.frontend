@@ -1,36 +1,30 @@
 // eslint-disable-next-line import/no-internal-modules
 import styles from '../../../../../../styles/app.module.scss'
 import { ProviderResponseModel } from "@/api-client"
-import { Heatmap } from "../../"
-import { Text, Group, Modal, Paper, Space, Title, Container, Center } from "@mantine/core"
-import { ChartActions, SocialButtons, useSizeRef, useViewportRatio } from "@/components"
-import { range, useDisclosure } from "@mantine/hooks"
-import { createHandlerFromCallback, useHandler } from "@/data"
+import { Heatmap } from "../.."
+import { Text, Group, Modal, Paper, Space, Title, Center, Select } from "@mantine/core"
+import { ChartActions, SocialButtons, useViewportRatio } from "@/components"
+import { useDisclosure } from "@mantine/hooks"
 import { useCallback, useState } from "react"
-import { LogLevel } from "react-signalr"
 
-interface ITransactionTypeTabProps {
+interface IHeatmapTabProps {
     provider: ProviderResponseModel
 }
 
 enum Breakdowns {
-    tps = "Transactions per second", gps = "Gas per second", gtps = "Gas-adjusted transactions per second"
+    tps = "transactions per second", gps = "gas per second", gtps = "gas-adjusted transactions per second"
 }
 
 enum BreakdownPeriods {
-    year = "Year", month = "Month", day = "Day", hourOfDay = "Hour of day", dayOfWeek = "Day of week"
+    year = "year", month = "month", day = "day", hourOfDay = "hour of day", dayOfWeek = "day of week"
 }
 
-const availableYears = [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
-const availableMonths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-const availableDays = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 const plusYearsShown = 1
 const minusYearsShown = 1
 
-export function TransactionTypeTab(props: Partial<ITransactionTypeTabProps>) {
+export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
     const [modelOpened, { open, close }] = useDisclosure(false);
     const ratio = useViewportRatio()
-    const maximize = createHandlerFromCallback(() => open())
     const [year, setYear] = useState<number>((new Date()).getFullYear())
     const [breakdown, setBreakdown] = useState<Breakdowns>(Breakdowns.tps)
     const [breakdownPeriod, setBreakdownPeriod] = useState<BreakdownPeriods>(BreakdownPeriods.year)
@@ -48,7 +42,6 @@ export function TransactionTypeTab(props: Partial<ITransactionTypeTabProps>) {
             </Paper>
         </>
     }, [props.provider, year])
-    const modalSize = useSizeRef()
     return <>
         <Modal
             fullScreen={ratio < 1.5}
@@ -62,8 +55,30 @@ export function TransactionTypeTab(props: Partial<ITransactionTypeTabProps>) {
             <Center>
                 {getHeatmap()}
             </Center>
-        </Modal >
-        <Title sx={{ marginLeft: '1rem' }} order={3}>Average TPS by day </Title>
+        </Modal>
+        <Group>
+            <Text className={'inline'} sx={{
+                marginRight: '0.1rem',
+                marginLeft: '0.1rem'
+            }}>Average</Text>
+            <Select
+                className={'inline'}
+                defaultValue={Breakdowns.tps}
+                data={Object.values(Breakdowns).map(x => {
+                    return { label: x, value: x }
+                })}
+            />
+            <Text className={'inline'} sx={{
+                marginRight: '0.1rem',
+                marginLeft: '0.1rem'
+            }}>grouped by</Text>
+            <Select className={'inline'}
+                defaultValue={BreakdownPeriods.year}
+                data={Object.values(BreakdownPeriods).map(x => {
+                    return { label: x, value: x }
+                })}
+            />
+        </Group>
         <div>
             <ChartActions
                 showDownload

@@ -1,1 +1,1 @@
-export * from './TransactionTypeTab';
+export * from './HeatmapTab';
