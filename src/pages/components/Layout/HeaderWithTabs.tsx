@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-internal-modules
-import styles from '../../styles/app.module.scss'
-import { useState } from 'react'
+import styles from '../../../styles/app.module.scss'
+import { useCallback, useState } from 'react'
 import {
   createStyles,
   Header,
@@ -65,19 +65,25 @@ const useStyles = createStyles((theme) => ({
 
 interface HeaderSimpleProps {
   links: { link: string; label: string; icon: JSX.Element }[]
+  burgerToggled: () => void
+  open: boolean
 }
 
-export function HeaderWithTabs({ links }: HeaderSimpleProps) {
-  const [opened, { toggle }] = useDisclosure(false)
+export default function HeaderWithTabs({
+  links,
+  burgerToggled,
+  open
+}: HeaderSimpleProps) {
   const [active, setActive] = useState(links[0].link)
   const { classes, cx } = useStyles()
-  const items = links.map((link) => (
+
+  const items = useCallback(() => links.map((link) => (
     <ActionIcon size={'xl'} key={link.link}>
       <Tooltip label={link.label} withArrow position={'bottom'}>
         <a href={link.link}>{link.icon}</a>
       </Tooltip>
     </ActionIcon>
-  ))
+  )), [links])
 
   return (
     <Header height={60} mb={120}>
@@ -94,13 +100,13 @@ export function HeaderWithTabs({ links }: HeaderSimpleProps) {
             className={classes.links}
             position='center'
             my='xl'>
-            {items}
+            {items()}
             {/*<ThemeToggle />*/}
           </Group>
         </Container>
         <Burger
-          opened={true}
-          onClick={toggle}
+          opened={open}
+          onClick={burgerToggled}
           className={classes.burger}
           size='sm'
         />

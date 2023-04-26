@@ -7,7 +7,7 @@ import { AppPropsWithLayout } from '@/components'
 import { wrapper } from '@/data'
 import { GetStaticProps } from 'next'
 import { Provider } from 'react-redux'
-import MainLayout from './components/Layout.tsx/MainLayout'
+import MainLayout from './components/Layout/MainLayout'
 
 type AppModel = {
   test: string

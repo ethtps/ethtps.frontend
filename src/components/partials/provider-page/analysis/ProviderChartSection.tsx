@@ -13,6 +13,10 @@ export function ProviderChartSection(props: IProviderChartSectionProps) {
                 <MyResponsiveLine />
             </Paper>
             <Paper>
+                <Title order={3}>Gas per transaction</Title>
+                <MyResponsiveLine />
+            </Paper>
+            <Paper>
                 <Title order={3}>Comparison by transaction type</Title>
                 <MyResponsiveLine />
             </Paper>

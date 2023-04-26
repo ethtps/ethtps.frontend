@@ -38,7 +38,8 @@
     "**/*.tsx",
     "src/pages/components/ErrorBoundary.jsx",
     "src/pages/providers/[slug]/page.js",
-    "next.config.js"
+    "next.config.js",
+    "src/pages/components/Layout"
   ],
   "exclude": [
     "node_modules",

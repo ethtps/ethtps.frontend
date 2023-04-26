@@ -14,7 +14,7 @@ export function MyResponsiveLine() {
     return <>
         <Box w={'100%'} h={500}>
             <ResponsiveLine
-                data={multiLine}
+                data={multiLine.slice(10)}
                 margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
                 xScale={{ type: 'point' }}
                 yScale={{

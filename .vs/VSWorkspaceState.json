@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\partials",
+    "\\src\\components\\partials\\provider-page",
+    "\\src\\components\\partials\\provider-page\\overview",
+    "\\src\\pages",
+    "\\src\\pages\\components",
+    "\\src\\pages\\components\\Layout.tsx",
+    "\\src\\pages\\components\\live data",
+    "\\src\\pages\\providers"
+  ],
+  "SelectedNode": "\\src\\pages\\providers\\[currentProvider].tsx",
+  "PreviewInSolutionExplorer": false
+}

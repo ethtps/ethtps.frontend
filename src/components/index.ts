@@ -1,12 +1,11 @@
 export * from './buttons';
 export * from './charts';
 export * from './containers';
-export * from './headers';
 export * from './hooks';
 export * from './IComponentSize';
 export * from './instant data animations';
 export * from './layouts';
-export {default as dynamic} from './NonSSRWrapper';
+export { default as dynamic } from './NonSSRWrapper';
 export * from './partials';
 export * from './skeletons';
 export * from './stats';

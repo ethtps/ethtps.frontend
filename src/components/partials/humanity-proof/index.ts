@@ -1,3 +1,2 @@
-export {default as HumanityProofPartial} from './HumanityProofPartial';
-export * from './loaders';
+export { default as HumanityProofPartial } from './HumanityProofPartial';
 export * from './RecaptchaTokenLoader';
