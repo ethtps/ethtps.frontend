@@ -5,7 +5,17 @@
         "theoreticalMaxTPS": 1428,
         "type": "Mainnet",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Ethereum",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "lastSuccessfulRunTime": "2023-04-25T04:14:38.917",
+            "numberOfSuccesses": 6,
+            "numberOfFailures": 6,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Arbitrum One",
@@ -13,7 +23,16 @@
         "theoreticalMaxTPS": 40000,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Arbitrum One",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Optimism",
@@ -21,7 +40,16 @@
         "theoreticalMaxTPS": 20000,
         "type": "ZK rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Optimism",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Polygon",
@@ -29,7 +57,16 @@
         "theoreticalMaxTPS": 7200,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Polygon",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "XDAI",
@@ -37,7 +74,16 @@
         "theoreticalMaxTPS": 7000,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "XDAI",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "ZKSwap",
@@ -45,7 +91,16 @@
         "theoreticalMaxTPS": 10000,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "ZKSwap",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "ZKSync",
@@ -53,7 +108,16 @@
         "theoreticalMaxTPS": 20000,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "ZKSync",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "AVAX C-chain",
@@ -61,7 +125,16 @@
         "theoreticalMaxTPS": 380,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "AVAX C-chain",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Boba Network",
@@ -69,7 +142,16 @@
         "theoreticalMaxTPS": 20000,
         "type": "Mainnet",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Boba Network",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Loopring",
@@ -77,7 +159,16 @@
         "theoreticalMaxTPS": 2050,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Loopring",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Aztec",
@@ -85,7 +176,16 @@
         "theoreticalMaxTPS": 300,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Aztec",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Immutable X",
@@ -93,7 +193,16 @@
         "theoreticalMaxTPS": 9000,
         "type": "Sidechain",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Immutable X",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Metis",
@@ -101,7 +210,16 @@
         "theoreticalMaxTPS": 20000,
         "type": "Mainnet",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Metis",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Ronin",
@@ -109,7 +227,16 @@
         "theoreticalMaxTPS": 220,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Ronin",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Starknet",
@@ -117,7 +244,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Starknet",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Nahmii 2.0",
@@ -125,7 +261,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Validium",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Nahmii 2.0",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "OMG Network",
@@ -133,7 +278,16 @@
         "theoreticalMaxTPS": 0,
         "type": "State pools",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "OMG Network",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Gluon",
@@ -149,7 +303,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Mainnet",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Habitat",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Fuel",
@@ -181,7 +344,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Sorare",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "DeversiFi",
@@ -189,7 +361,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "DeversiFi",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Gazelle",
@@ -205,7 +386,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "zkTube",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Cartesi",
@@ -245,7 +435,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Fantom",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "ZKSpace",
@@ -253,7 +452,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "ZKSpace",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Polygon Hermez",
@@ -261,7 +469,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Polygon Hermez",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Aurora",
@@ -269,7 +486,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Aurora",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "NEAR",
@@ -277,7 +503,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "NEAR",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Celo",
@@ -285,7 +520,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Celo",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Palm",
@@ -293,7 +537,16 @@
         "theoreticalMaxTPS": 0,
         "type": "Application-specific rollup",
         "isGeneralPurpose": false,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Palm",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     },
     {
         "name": "Arbitrum Nova",
@@ -301,6 +554,15 @@
         "theoreticalMaxTPS": 0,
         "type": "Optimistic rollup",
         "isGeneralPurpose": true,
-        "isSubchainOf": "Ethereum"
+        "isSubchainOf": "Ethereum",
+        "status": {
+            "updater": "Arbitrum Nova",
+            "status": "Idle",
+            "updaterType": "BlockInfo",
+            "numberOfSuccesses": 0,
+            "numberOfFailures": 0,
+            "isUnreliable": false,
+            "isProbablyDown": true
+        }
     }
 ]

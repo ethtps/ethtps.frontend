@@ -4,13 +4,16 @@ import '../styles/cells.styles.scss'
 import '../styles/Home.module.css'
 import '../styles/globals.css'
 import { AppPropsWithLayout } from '@/components'
-import { wrapper } from '@/data'
+import { loadProvidersAsync, wrapper } from '@/data'
 import { GetStaticProps } from 'next'
 import { Provider } from 'react-redux'
 import MainLayout from './components/Layout/MainLayout'
+import { queryClient } from '@/services'
+import { ProviderResponseModel } from '@/api-client'
 
 type AppModel = {
-  test: string
+  test: string,
+  allProviders?: ProviderResponseModel[]
 }
 
 export const getStaticProps: GetStaticProps<{ appModel: AppModel }> = async (
@@ -19,7 +22,6 @@ export const getStaticProps: GetStaticProps<{ appModel: AppModel }> = async (
   return {
     props: {
       appModel: {
-        test: 'a'
       } as AppModel
     },
     revalidate: 5

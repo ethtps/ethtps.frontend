@@ -17,7 +17,7 @@ const loadProvidersAsync = async (queryClient: QueryClient) => {
                 response = await queryClient.fetchQuery('providers', async () => await fetch(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`), {
                     retry: true,
                     cacheTime: 1000 * 60,
-                    retryDelay: 1000 //It's only us that are hitting the backend, no need to worry about overloading it (famous last words)
+                    retryDelay: 200 //It's only us that are hitting the backend, no need to worry about overloading it (famous last words)
                 })
                 providers = JSON.parse(await response?.text() ?? "[]")
             }

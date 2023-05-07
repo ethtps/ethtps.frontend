@@ -4,6 +4,7 @@ import { binaryConditionalRender } from "@/services";
 import { Badge, Group, Text, Box, Image, Tabs, Transition, Affix, Button, rem, Title, Skeleton, NavLink } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGeometry, IconDatabase, IconFingerprint, IconGauge } from "@tabler/icons-react";
+// eslint-disable-next-line import/no-internal-modules
 import { useRouter } from "next/router";
 // eslint-disable-next-line import/no-internal-modules
 import { useEffect, useState } from "react";

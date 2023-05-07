@@ -2,7 +2,7 @@
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { ProviderListSidebar, ProviderOverview, SocialButtons, useAutoHideSidebar } from "@/components"
+import { ProviderOverview, SocialButtons, useAutoHideSidebar } from "@/components"
 import { loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
 import { Text, Group, Container, Image, Box, Paper } from "@mantine/core"
@@ -53,7 +53,6 @@ export default function ProviderPage({ currentProvider, allProviders }: InferGet
           paddingRight: 0,
         } : {})
       }}>
-      {conditionalRender(<ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />, !hideSidebar && allProviders !== undefined && allProviders?.length > 0)}
       <Container>
         <Paper sx={{
           borderRadius: "20px",

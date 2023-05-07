@@ -105,6 +105,7 @@ export default function HeaderWithTabs({
           </Group>
         </Container>
         <Burger
+          hidden={false}
           opened={open}
           onClick={burgerToggled}
           className={classes.burger}

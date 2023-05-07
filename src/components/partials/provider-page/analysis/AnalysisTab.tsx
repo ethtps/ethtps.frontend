@@ -1,8 +1,10 @@
+/* eslint-disable import/no-internal-modules */
 import { ProviderResponseModel } from "@/api-client"
 import { Tabs, Text, Box } from "@mantine/core"
 import { BreakdownTab } from '..'
 import { IconHammer } from "@tabler/icons-react"
 import { useState } from "react"
+import DataLoader from "@/pages/components/DataLoader"
 
 interface IAnalysisTabProps {
     provider: ProviderResponseModel
@@ -11,11 +13,9 @@ interface IAnalysisTabProps {
 
 export function AnalysisTab(props: Partial<IAnalysisTabProps>) {
     const [tab, setTab] = useState<string | undefined>(props.selectedTab)
-
     return <>
         <Box sx={{ marginLeft: '1rem' }}>
             <Tabs
-
                 defaultValue="breakdown">
                 <Tabs.List>
                     <Tabs.Tab value="breakdown" icon={<IconHammer size={'1.1rem'} />}><Text>Breakdown</Text></Tabs.Tab>

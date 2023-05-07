@@ -1,32 +1,26 @@
-import { AppShell, Footer, Group, Text, Tooltip } from '@mantine/core'
+import { AppShell } from '@mantine/core'
 import {
   IconBrandGithub,
   IconBrandTwitter,
   IconBrandDiscord
 } from '@tabler/icons-react'
-import { GetStaticProps } from 'next'
 // eslint-disable-next-line import/no-internal-modules
-import Link from 'next/link'
 import CustomFooter from './CustomFooter'
 import HeaderWithTabs from './HeaderWithTabs'
 import CustomNavbar from './CustomNavbar'
-import { createHandlerFromCallback, useHandler } from '@/data'
-import { useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
+import { ProviderResponseModel } from '@/api-client'
+import DataLoader from '../DataLoader'
 
-export const getStaticProps: GetStaticProps<{}> = async (context) => {
-  return {
-    props: {}
-  }
-}
-
-export default function MainLayout(props: { component: JSX.Element }) {
+export default function MainLayout(props: Partial<{
+  component: JSX.Element,
+  allProviders: ProviderResponseModel[]
+}>) {
   const [opened, { toggle }] = useDisclosure(false)
   return (
     <>
+      <DataLoader />
       <AppShell
-        navbarOffsetBreakpoint='md'
-        asideOffsetBreakpoint='md'
         sx={{
           paddingLeft: 0,
           paddingRight: 0,
@@ -55,7 +49,7 @@ export default function MainLayout(props: { component: JSX.Element }) {
           />
         }
         navbar={
-          <CustomNavbar opened={opened} />
+          <CustomNavbar opened={opened} allProviders={props.allProviders} />
         }
         footer={
           <CustomFooter />
