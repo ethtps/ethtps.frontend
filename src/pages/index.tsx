@@ -6,7 +6,7 @@ import { queryClient } from '@/services'
 import MyResponsiveStream from './components/live data/nivo streamchart/MyResponsiveStream'
 import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
 import { ProviderResponseModel } from '@/api-client'
-import { AllProvidersTable, ProviderTable, useSizeRef } from '@/components'
+import { AllProvidersTable, LivePSPartial, ProviderTable, useSizeRef } from '@/components'
 import { useState } from 'react'
 import { loadProvidersAsync, setProviders, useAppDispatch, useAppSelector } from '@/data'
 
@@ -33,15 +33,15 @@ export default function Index({
   model
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const sizeRef = useSizeRef()
-  const [openIndex, setOpenIndex] = useState(-1);
+  const [openIndex, setOpenIndex] = useState(-1)
 
   const handleMenuToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? -1 : index);
-  };
+    setOpenIndex(openIndex === index ? -1 : index)
+  }
   return (
     <>
-      <Container ref={sizeRef.ref} style={{ height: 500 }}>
-        <MyResponsiveStream width={sizeRef.width} height={sizeRef.height} />
+      <Container ref={sizeRef.ref}>
+        <LivePSPartial width={sizeRef.width ?? 3000} />
       </Container>
       <br />
       <Container style={{ ...defaultStyle }}>
