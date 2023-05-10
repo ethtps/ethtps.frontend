@@ -6,9 +6,10 @@ import { queryClient } from '@/services'
 import MyResponsiveStream from './components/live data/nivo streamchart/MyResponsiveStream'
 import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
 import { ProviderResponseModel } from '@/api-client'
-import { AllProvidersTable, LivePSPartial, ProviderTable, useSizeRef } from '@/components'
-import { useState } from 'react'
+import { AllProvidersTable, LiveDataContainer, LivePSPartial, ProviderTable, useSizeRef } from '@/components'
+import { useCallback, useState } from 'react'
 import { loadProvidersAsync, setProviders, useAppDispatch, useAppSelector } from '@/data'
+import { Dictionary } from '@reduxjs/toolkit'
 
 type IndexPageModel = {
   providers: ProviderResponseModel[]
@@ -38,10 +39,21 @@ export default function Index({
   const handleMenuToggle = (index: number) => {
     setOpenIndex(openIndex === index ? -1 : index)
   }
+  const [currentValue, setCurrentValue] = useState(0)
+  const dataReceived = (data: Dictionary<number>) => {
+
+  }
   return (
     <>
       <Container ref={sizeRef.ref}>
-        <LivePSPartial width={sizeRef.width ?? 3000} />
+        <LiveDataContainer
+          onTotalChanged={setCurrentValue}
+          onDataReceived={dataReceived}
+          component={<LivePSPartial
+            value={currentValue}
+            width={sizeRef.width ?? 3000}
+          />}
+        />
       </Container>
       <br />
       <Container style={{ ...defaultStyle }}>

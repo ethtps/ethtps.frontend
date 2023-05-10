@@ -1,11 +1,10 @@
 import { Text } from '@mantine/core'
 import { useState } from 'react'
 
-export function LivePSPartial(props: { width: number }) {
-  const [tps, setTPS] = useState(0)
+export function LivePSPartial(props: { width: number, value: number }) {
   return (
     <>
-      <Text>{tps} TPS</Text>
+      <Text>{props.value} TPS</Text>
     </>
   )
 }

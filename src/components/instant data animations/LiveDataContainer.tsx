@@ -1,16 +1,33 @@
 'use client'
 import { useHandler } from '@/data'
+import { Dictionary } from '@reduxjs/toolkit'
 import {
-  createSignalRContext, // SignalR
-  createWebSocketContext, // WebSocket
-  createSocketIoContext // Socket.io
+    createSignalRContext, // SignalR
+    createWebSocketContext, // WebSocket
+    createSocketIoContext // Socket.io
 } from 'react-signalr'
-/*
+
 const { useSignalREffect, Provider } = createSignalRContext()
 
-export function LiveDataContainer(props: { component: JSX.Element }) {
+export interface LiveDataContainerProps {
+    component: JSX.Element
+    onDataReceived?: (data: Dictionary<number>) => void
+    onTotalChanged?: (total: number) => void
+}
+
+export function LiveDataContainer(props: LiveDataContainerProps) {
     useSignalREffect("ConnectionEstablished", (data) => {
-        console.log({ connectionEstablished: data })
+
+    }, [])
+    useSignalREffect("DataReceived", (data) => {
+        if (props.onDataReceived) {
+            props.onDataReceived(data)
+        }
+    }, [])
+    useSignalREffect("TotalChanged", (data) => {
+        if (props.onTotalChanged) {
+            props.onTotalChanged(data)
+        }
     }, [])
     return <>
         <Provider
@@ -21,4 +38,4 @@ export function LiveDataContainer(props: { component: JSX.Element }) {
             {props.component}
         </Provider>
     </>
-}*/
+}
