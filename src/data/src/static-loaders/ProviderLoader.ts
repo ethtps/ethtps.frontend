@@ -19,12 +19,12 @@ const loadProvidersAsync = async (queryClient: QueryClient) => {
                     cacheTime: 1000 * 60,
                     retryDelay: 200 //It's only us that are hitting the backend, no need to worry about overloading it (famous last words)
                 })
-                providers = JSON.parse(await response?.text() ?? "[]")
+                providers = JSON.parse(await response?.text() ?? JSON.stringify(fallbackProviders))
             }
             catch {
             }
         }
-        while (providers === undefined && providers?.length === 0 && ++retryCount <= 10)
+        while (!providers && providers?.length === 0 && ++retryCount <= 10)
 
     // If the providers are empty, throw an error
     if (!providers || providers?.length === 0) {

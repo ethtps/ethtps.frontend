@@ -37,7 +37,7 @@ const StackItem: React.FC<StackItemProps> = ({
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
-                opacity: hovered ? 1 : 0.3,
+                opacity: hovered ? 1 : 0.1,
                 transition: 'opacity 0.5s ease'
             }}
         >

@@ -4,7 +4,7 @@ import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
 import { conditionalRender } from '@/services'
 import { SeeMoreButton } from '@/components'
-import { Table } from '@chakra-ui/react'
+import { Heading, Table, TableCaption, Tbody, Thead, Tr } from '@chakra-ui/react'
 import { IProviderTableModel } from '@/data'
 
 export default function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
@@ -22,19 +22,21 @@ export default function AllProvidersTable(tableData: IProviderTableModel): JSX.E
     <>
       <Table
         aria-label='collapsible table'
-        w={tableData.width}
-        cellSpacing={'md'}>
-        <thead>
-          <tr>
+        w={'container.lg'}>
+        <TableCaption placement={'top'}>
+          L2s + sidechains
+        </TableCaption>
+        <Thead>
+          <Tr placeContent={'center'}>
             <AllProvidersHeader />
-          </tr>
-        </thead>
-        <tbody>
+          </Tr>
+        </Thead>
+        <Tbody>
           <AllProvidersRows
             {...tableData}
             maxRowsBeforeShowingExpand={showRowCount}
           />
-        </tbody>
+        </Tbody>
       </Table>
       {conditionalRender(
         <SeeMoreButton

@@ -5,7 +5,7 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
-import { Tooltip } from '@chakra-ui/react'
+import { Td, Tooltip } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
 import { DataPoint } from '@/api-client'
 import {
@@ -46,13 +46,13 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
   const tooltipTypography = generateMaxTypography(maxData)
   return (
     <>
-      <td
+      <Td
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'MaxValue')
             : () => { }
-        }>
+        } >
         <Tooltip hasArrow label={tooltipTypography}>
           <>
             <Text
@@ -66,7 +66,7 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
             </Text>
           </>
         </Tooltip>
-      </td>
+      </Td>
     </>
   )
 }

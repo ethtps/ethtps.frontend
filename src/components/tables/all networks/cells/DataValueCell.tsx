@@ -4,6 +4,7 @@ import React from 'react'
 import { m_toShortString, numberFormat, toShortString } from '@/data'
 import { AnimatedTypography, SkeletonWithTooltip } from '@/components'
 import { DataType } from '@/api-client'
+import { Td } from '@chakra-ui/react'
 
 interface IDataValueCellConficuration extends ICustomCellConfiguration {
   value?: number
@@ -13,12 +14,13 @@ interface IDataValueCellConficuration extends ICustomCellConfiguration {
 export function DataValueCell(config: IDataValueCellConficuration) {
   return (
     <>
-      <td
+      <Td
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'DataValue')
             : () => { }
-        }>
+        }
+        >
         {config.value === undefined ? (
           <SkeletonWithTooltip
             text={`Loading ${config.provider?.name} ${m_toShortString(
@@ -33,7 +35,7 @@ export function DataValueCell(config: IDataValueCellConficuration) {
             durationMs={1000}
           />
         )}
-      </td>
+      </Td>
     </>
   )
 }

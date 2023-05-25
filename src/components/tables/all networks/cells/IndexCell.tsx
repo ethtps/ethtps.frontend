@@ -6,6 +6,7 @@ import React from 'react'
 import { conditionalRender } from '@/services'
 import { IconButton } from '@/components'
 import { IconArrowRight } from '@tabler/icons-react'
+import { Td } from '@chakra-ui/react'
 
 interface IIndexCellConfiguration extends ICustomCellConfiguration {
   index: number
@@ -15,13 +16,13 @@ interface IIndexCellConfiguration extends ICustomCellConfiguration {
 export function IndexCell(config: IIndexCellConfiguration) {
   return (
     <>
-      <td
+      <Td
         {...buildClassNames(config)}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Index')
             : () => { }
-        }>
+        } >
         <IconButton
           sx={{
             fontSize: '1rem',
@@ -36,7 +37,7 @@ export function IndexCell(config: IIndexCellConfiguration) {
             </>
           }
         />
-      </td>
+      </Td>
     </>
   )
 }

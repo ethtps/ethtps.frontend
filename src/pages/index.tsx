@@ -1,5 +1,5 @@
 /* eslint-disable import/no-internal-modules */
-import { Box, Button, Container, Progress } from '@chakra-ui/react'
+import { Box, Button, Center, Container, Progress, Stack } from '@chakra-ui/react'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text } from '@chakra-ui/react'
 import { queryClient } from '@/services'
@@ -55,10 +55,11 @@ export default function Index({
         />
       </Box>
       <br />
-      <Container width={'90%'}>
-        <Text fontSize={'2xl'}>Providers</Text>
-        <AllProvidersTable />
-      </Container>
+      <Center>
+        <Stack boxSize={'container.xl'}>
+          <AllProvidersTable maxRowsBeforeShowingExpand={20} providerData={model.providers} />
+        </Stack>
+      </Center>
     </>
   )
 }

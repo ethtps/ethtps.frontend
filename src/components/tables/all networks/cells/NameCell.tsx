@@ -1,12 +1,12 @@
 /* eslint-disable import/no-internal-modules */
 import { ICustomCellConfiguration } from './ICustomCellConfiguration'
-import { Stack, Text, Tooltip } from '@chakra-ui/react'
+import { HStack, Link, Stack, Td, Text, Tooltip } from '@chakra-ui/react'
 import React, { forwardRef, useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
 import { useGetProviderColorDictionaryFromAppStore } from '@/data'
 import Image from 'next/image'
 import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
-import Link from 'next/link'
+import { Link as NextLink } from '@chakra-ui/next-js'
 
 export function NameCell(config: ICustomCellConfiguration) {
   const colorDictionary = useGetProviderColorDictionaryFromAppStore()
@@ -23,17 +23,18 @@ export function NameCell(config: ICustomCellConfiguration) {
   const noDataProvider = config.provider?.status === undefined
   return (
     <>
-      <td
+      <Td
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Name')
             : () => { }
-        }>
+        }
+      >
         <>
           <Tooltip hasArrow label={<><Text>{`Read more about ${name}`}</Text></>}>
             <>
-              <Stack align={'center'}>
-                <Stack>
+              <HStack align={'center'}>
+                <HStack >
                   <Image
                     alt={`${config.provider?.name} icon`}
                     src={`/provider-icons/${config.provider?.name}.png`}
@@ -41,15 +42,16 @@ export function NameCell(config: ICustomCellConfiguration) {
                     width={30}
                     height={30}
                     style={{ marginRight: '15px' }}></Image>
-                  <Text color={color} className={'boldcell'}>
-                    <Link
-                      href={`/providers/${config.provider?.name
-                        ?.replace(' ', '-')
-                        .toLowerCase()}`}>
-                      {config.provider?.name}
-                    </Link>
-                  </Text>
-                </Stack>
+                  <Link
+                    as={NextLink}
+                    color={'red'}
+                    className={'boldcell'}
+                    href={`/providers/${config.provider?.name
+                      ?.replace(' ', '-')
+                      .toLowerCase()}`}>
+                    {config.provider?.name}
+                  </Link>
+                </HStack>
                 {conditionalRender(
                   <>
                     <Tooltip
@@ -89,11 +91,11 @@ export function NameCell(config: ICustomCellConfiguration) {
                   </>,
                   noDataProvider
                 )}
-              </Stack>
+              </HStack>
             </>
           </Tooltip>
         </>
-      </td>
+      </Td>
     </>
   )
 }

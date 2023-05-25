@@ -14,6 +14,7 @@ import { IndexCell } from './cells/IndexCell'
 import { MaxValueCell } from './cells/MaxValueCell'
 import { NameCell } from './cells/NameCell'
 import { ProviderTypeCell } from './cells/ProviderTypeCell'
+import { Tr } from '@chakra-ui/react'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
@@ -38,7 +39,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
             ?.map((x, i) => {
               console.log("AllProvidersRows", x, i)
               return (
-                <tr key={i}>
+                <Tr key={i} placeContent={'center'}>
                   <IndexCell clickCallback={model.clickCallback} index={i + 1} />
                   <NameCell clickCallback={model.clickCallback} provider={x} />
                   <DataValueCell
@@ -55,7 +56,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                     clickCallback={model.clickCallback}
                     provider={x}
                   />
-                </tr>
+                </Tr>
               )
             })}
         </>

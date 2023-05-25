@@ -9,14 +9,14 @@ import { animated, useSpring } from '@react-spring/web'
 import { BACKGROUND, BUMPS_PER_LAYER, Patterns, SAMPLES_PER_LAYER, StreamStack, colorScale, getY0, getY1, keys, useForceUpdate, xScale, yScale } from './'
 import { generateData } from './'
 import { StreamGraphProps } from '..'
-import { Progress } from '@chakra-ui/react'
+import { Progress, useColorMode, useTheme } from '@chakra-ui/react'
 import { RandomDataGenerator } from '@/services'
 
 export const VISXStreamChart: FC<StreamGraphProps> = ({ width, height, animate = true }) => {
     const forceUpdate = useForceUpdate()
     const handlePress = () => forceUpdate()
     const [connected, setConnected] = useState(false)
-
+    const { colorMode } = useColorMode()
     if (width < 10) return null
 
     xScale.range([0, width])
@@ -62,7 +62,7 @@ export const VISXStreamChart: FC<StreamGraphProps> = ({ width, height, animate =
             <svg width={width} height={height}>
                 <Patterns />
                 <g onClick={handlePress} onTouchStart={handlePress}>
-                    <rect x={0} y={0} width={width} height={height} fill={BACKGROUND} rx={14} />
+                    <rect x={0} y={0} width={width} height={height} fill={colorMode === 'light' ? BACKGROUND.LIGHT : BACKGROUND.DARK} rx={14} />
                     <Stack<number[], number>
                         data={layers}
                         keys={keys}

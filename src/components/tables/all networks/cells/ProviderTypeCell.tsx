@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { Td, Text } from '@chakra-ui/react'
 import {
   ICustomCellConfiguration,
   buildClassNames
@@ -13,16 +13,16 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
     colorDictionary !== undefined ? colorDictionary[name] : 'primary'
   return (
     <>
-      <td
+      <Td
         {...buildClassNames(config)}
-        style={{ color: color }}
+        textColor={color}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'ProviderType')
             : () => { }
-        }>
+        } >
         <Text className={'boldcell'}>{config.provider?.type}</Text>
-      </td>
+      </Td>
     </>
   )
 }
