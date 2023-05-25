@@ -1,7 +1,7 @@
 import { IAnimatedLinkButtonWithIconProperties } from './IAnimatedLinkButtonWithIconProperties'
 import React from 'react'
 import { IconButton } from '../../IconButton'
-import { Tooltip, Text } from '@mantine/core'
+import { Tooltip, Text } from '@chakra-ui/react'
 import { openNewTab } from '@/services'
 
 // No animation YET
@@ -17,7 +17,7 @@ export function AnimatedLinkButtonWithIcon(
   }
   return (
     <>
-      <Tooltip withArrow label={<Text>{props.text}</Text>}>
+      <Tooltip hasArrow label={<Text>{props.text}</Text>}>
         <IconButton onClick={handleClick} icon={props.image}></IconButton>
       </Tooltip>
       {props.showText ? <Text>{props.text}</Text> : <></>}

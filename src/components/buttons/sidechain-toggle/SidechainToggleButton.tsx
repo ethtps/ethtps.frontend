@@ -1,5 +1,5 @@
 import { useAppDispatch, setIncludeSidechains } from '@/data'
-import { Tooltip, Text } from '@mantine/core'
+import { Tooltip, Text } from '@chakra-ui/react'
 import { IconLink, IconLinkOff } from '@tabler/icons-react'
 import React, { useState } from 'react'
 import { IconButton } from '../IconButton'
@@ -20,7 +20,7 @@ export function SidechainToggleButton(
   return (
     <>
       <Tooltip
-        withArrow
+        hasArrow
         label={
           <Text>
             Sidechains are {on ? 'included' : 'excluded'}. Click to

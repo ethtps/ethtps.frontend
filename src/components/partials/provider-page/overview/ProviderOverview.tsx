@@ -1,13 +1,13 @@
-import { ProviderResponseModel } from "@/api-client";
-import { AnalysisTab, CompareTab, DetailsTab, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components";
-import { binaryConditionalRender } from "@/services";
-import { Badge, Group, Text, Box, Image, Tabs, Transition, Affix, Button, rem, Title, Skeleton, NavLink } from "@mantine/core";
-import { useWindowScroll } from "@mantine/hooks";
-import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGeometry, IconDatabase, IconFingerprint, IconGauge } from "@tabler/icons-react";
+import { ProviderResponseModel } from "@/api-client"
+import { AnalysisTab, CompareTab, DetailsTab, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
+import { binaryConditionalRender } from "@/services"
+import { Badge, Stack, Text, Box, Image, Tabs, Skeleton, TabList, TabPanel, Tab } from "@chakra-ui/react"
+import { useWindowScroll } from "@mantine/hooks"
+import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGeometry, IconDatabase, IconFingerprint, IconGauge } from "@tabler/icons-react"
 // eslint-disable-next-line import/no-internal-modules
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 // eslint-disable-next-line import/no-internal-modules
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 const iconSize = 65
 
@@ -22,14 +22,12 @@ export function ProviderOverview(props: {
             setQueryParams({ tab: currentTab })
         }
     }, [currentTab])
-    const [scroll, scrollTo] = useWindowScroll();
+    const [scroll, scrollTo] = useWindowScroll()
     return (
         <>
-            <Group
+            <Stack
                 dir="col"
-                position="apart"
                 align={'self-end'}
-                grow
                 sx={{
                     padding: "1rem",
                 }}>
@@ -42,7 +40,7 @@ export function ProviderOverview(props: {
                         <Skeleton width={iconSize} height={iconSize} />, provider !== undefined)}
                     <Box>
                         <Box>
-                            <Title order={4}
+                            <Text order={4}
                                 className="inline"
                                 variant="heading"
                                 sx={{
@@ -54,8 +52,8 @@ export function ProviderOverview(props: {
                                 }}
                             >
                                 {provider?.name}
-                            </Title>
-                            <Title
+                            </Text>
+                            <Text
                                 order={5}
                                 variant="subheading"
                                 color="gray"
@@ -66,7 +64,7 @@ export function ProviderOverview(props: {
                                 }}
                             >
                                 0 TPS
-                            </Title>
+                            </Text>
                         </Box>
                         <Badge
                             size={'sm'}
@@ -85,51 +83,38 @@ export function ProviderOverview(props: {
                 }}>
                     <SocialButtons />
                 </Box>
-            </Group>
+            </Stack>
             <Box sx={{ padding: '1rem' }}>
-                <Tabs defaultValue="analysis" onTabChange={(v) => setCurrentTab(v?.toString())}>
-                    <Tabs.List>
-                        <Tabs.Tab value="overview" icon={<IconChartBar size={"1" + (currentTab === "overview" ? ".3" : "") + "rem"} />}><Text>Overview</Text></Tabs.Tab>
-                        <Tabs.Tab value="details" icon={<IconTextCaption size={"1" + (currentTab === "details" ? ".3" : "") + "rem"} />}><Text>Details</Text></Tabs.Tab>
-                        <Tabs.Tab value="analysis" icon={<IconChartRadar size={"1" + (currentTab === "analysis" ? ".3" : "") + "rem"} />}><Text>Analysis</Text></Tabs.Tab>
-                        <Tabs.Tab value="comparison" icon={<IconGeometry size={"1" + (currentTab === "comparison" ? ".3" : "") + "rem"} />}><Text>Compare</Text></Tabs.Tab>
-                        <Tabs.Tab value="status" icon={<IconDatabase size={"1" + (currentTab === "status" ? ".3" : "") + "rem"} />}><Text>Status and data</Text></Tabs.Tab>
-                    </Tabs.List>
+                <Tabs defaultValue="analysis" onChange={(v) => setCurrentTab(v?.toString())}>
+                    <TabList>
+                        <Tab><Text>Overview</Text></Tab>
+                        <Tab><Text>Details</Text></Tab>
+                        <Tab><Text>Analysis</Text></Tab>
+                        <Tab><Text>Compare</Text></Tab>
+                        <Tab><Text>Status and data</Text></Tab>
+                    </TabList>
 
-                    <Tabs.Panel value="overview" pt="md">
+                    <TabPanel pt="md">
                         <ProviderChartSection />
-                    </Tabs.Panel>
+                    </TabPanel>
 
-                    <Tabs.Panel value="details" pt="md">
+                    <TabPanel pt="md">
                         <DetailsTab provider={provider} />
-                    </Tabs.Panel>
+                    </TabPanel>
 
-                    <Tabs.Panel value="analysis" pt="md">
+                    <TabPanel pt="md">
                         <AnalysisTab provider={provider} />
-                    </Tabs.Panel>
+                    </TabPanel>
 
-                    <Tabs.Panel value="comparison" pt="md">
+                    <TabPanel pt="md">
                         <CompareTab provider={provider} />
-                    </Tabs.Panel>
+                    </TabPanel>
 
-                    <Tabs.Panel value="status" pt="xs">
+                    <TabPanel pt="xs">
                         <StatusTab provider={provider} />
-                    </Tabs.Panel>
+                    </TabPanel>
                 </Tabs>
-            </Box>
-            <Affix position={{ bottom: rem(60), right: rem(20) }}>
-                <Transition transition="slide-up" mounted={scroll.y > 100}>
-                    {(transitionStyles) => (
-                        <Button
-                            leftIcon={<IconArrowUp size="1rem" />}
-                            style={transitionStyles}
-                            onClick={() => scrollTo({ y: 0 })}
-                        >
-                            Back up
-                        </Button>
-                    )}
-                </Transition>
-            </Affix>
+            </Box >
         </>
     )
 }

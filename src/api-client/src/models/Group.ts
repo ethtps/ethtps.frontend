@@ -52,10 +52,10 @@ export interface Group {
   readonly apikeyGroups?: Array<ApikeyGroup> | null
   /**
    *
-   * @type {Array<GroupRole>}
+   * @type {Array<StackRole>}
    * @memberof Group
    */
-  readonly groupRoles?: Array<GroupRole> | null
+  readonly groupRoles?: Array<StackRole> | null
 }
 
 /**
@@ -84,13 +84,13 @@ export function GroupFromJSONTyped(
     apikeyGroups: !exists(json, 'apikeyGroups')
       ? undefined
       : json['apikeyGroups'] === null
-      ? null
-      : (json['apikeyGroups'] as Array<any>).map(ApikeyGroupFromJSON),
+        ? null
+        : (json['apikeyGroups'] as Array<any>).map(ApikeyGroupFromJSON),
     groupRoles: !exists(json, 'groupRoles')
       ? undefined
       : json['groupRoles'] === null
-      ? null
-      : (json['groupRoles'] as Array<any>).map(GroupRoleFromJSON)
+        ? null
+        : (json['groupRoles'] as Array<any>).map(GroupRoleFromJSON)
   }
 }
 

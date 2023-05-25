@@ -1,6 +1,6 @@
 /* eslint-disable import/no-internal-modules */
 import React from 'react'
-import { Text } from '@mantine/core'
+import { Text } from '@chakra-ui/react'
 import { tableHeaderCellTypography } from './all networks/cells/Typography.types'
 interface ITableHeaderParams {
   text?: string[]

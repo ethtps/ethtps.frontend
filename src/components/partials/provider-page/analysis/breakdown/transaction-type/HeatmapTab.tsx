@@ -2,11 +2,11 @@
 import styles from '../../../../../../styles/app.module.scss'
 import { ProviderResponseModel } from "@/api-client"
 import { Heatmap } from "../.."
-import { Image, Text, Group, Modal, Paper, Space, Title, Center, Select } from "@mantine/core"
 import { ChartActions, SocialButtons, useViewportRatio } from "@/components"
 import { useDisclosure } from "@mantine/hooks"
 import { useCallback, useState } from "react"
 import { conditionalRender } from '@/services'
+import { Text, Select, Stack, Center, Modal } from '@chakra-ui/react'
 
 interface IHeatmapTabProps {
     provider: ProviderResponseModel
@@ -24,7 +24,7 @@ const plusYearsShown = 1
 const minusYearsShown = 1
 
 export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
-    const [modelOpened, { open, close }] = useDisclosure(false);
+    const [modelOpened, { open, close }] = useDisclosure(false)
     const ratio = useViewportRatio()
     const [year, setYear] = useState<number>((new Date()).getFullYear())
     const [breakdown, setBreakdown] = useState<Breakdowns>(Breakdowns.tps)
@@ -32,11 +32,11 @@ export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
 
     const getHeatmap = useCallback(() => {
         return <>
-            <Paper sx={{
+            <Stack sx={{
                 padding: '1rem',
             }}>
                 <Center>
-                    <Group sx={{
+                    <Stack sx={{
                         marginLeft: '2rem'
                     }}>
                         <Text className={'inline'} sx={{
@@ -44,45 +44,39 @@ export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
                             marginLeft: '0.1rem'
                         }}>Average {props.provider?.name}</Text>
                         <Select
-                            onChange={(e) => setBreakdown(e as Breakdowns)}
+                            onChange={(e) => setBreakdown(e as unknown as Breakdowns)}
                             className={'inline'}
-                            defaultValue={Breakdowns.tps}
-                            data={Object.values(Breakdowns).map(x => {
-                                return { label: x, value: x }
-                            })}
-                        />
+                            defaultValue={Breakdowns.tps}>
+                            {Object.values(Breakdowns)}
+                        </Select>
                         <Text className={'inline'} sx={{
                             marginRight: '0.1rem',
                             marginLeft: '0.1rem'
                         }}>grouped by</Text>
                         <Select className={'inline'}
                             width={'auto'}
-                            onChange={(e) => setBreakdownPeriod(e as BreakdownPeriods)}
+                            onChange={(e) => setBreakdownPeriod(e as unknown as BreakdownPeriods)}
                             defaultValue={BreakdownPeriods.year}
-                            data={Object.values(BreakdownPeriods).map(x => {
-                                return { label: x, value: x }
-                            })}
-                        />
-                    </Group>
+                        >
+                            {Object.values(BreakdownPeriods)}
+                        </Select>
+                    </Stack>
                 </Center>
                 <Heatmap
                     from={`${year - minusYearsShown}-01-01`}
                     to={`${year + plusYearsShown}-12-31`}
                     provider={props.provider}
                     interactive={true} />
-            </Paper>
+            </Stack>
         </>
     }, [props.provider, year])
 
     return <>
         <Modal
-            fullScreen={ratio < 1}
-            opened={modelOpened} size="calc(100vw - 1rem)" onClose={close} title={
-                <Text style={{ verticalAlign: "middle" }} className={styles.logoish}>ETHTPS.info</Text>
-            } centered >
-            <Group position='center'>
+            isOpen={modelOpened} size="calc(100vw - 1rem)" onClose={close}  >
+            <Stack >
                 <SocialButtons />
-            </Group>
+            </Stack>
             <Center>
                 {getHeatmap()}
             </Center>
@@ -94,7 +88,6 @@ export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
                 showMaximize
                 onMaximize={() => open()} />
         </div>
-        <Space h="xl" />
         {getHeatmap()}
     </>
 }

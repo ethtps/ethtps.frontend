@@ -6,8 +6,8 @@ export function Thwrapper(props: { component: JSX.Element }) {
     <>
       <Canvas>
         <ambientLight intensity={0.5} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-        <pointLight position={[-10, -10, -10]} />
+        <spotLight placement={[10, 10, 10]} angle={0.15} penumbra={1} />
+        <pointLight placement={[-10, -10, -10]} />
         {props.component}
       </Canvas>
     </>

@@ -1,6 +1,6 @@
 import { IconPlugConnected, IconPlugConnectedX } from '@tabler/icons-react'
 import React, { useEffect, useState } from 'react'
-import { Text } from '@mantine/core'
+import { Text } from '@chakra-ui/react'
 export function WebsocketStatusPartial() {
   const [connected, setConnected] = useState(false)
   const status = false //useAppSelector((state) => state.websockets.isConnected)

@@ -1,5 +1,5 @@
 'use client'
-import { Container, Group, Paper } from '@mantine/core'
+import { Container, Stack } from '@chakra-ui/react'
 // eslint-disable-next-line import/no-internal-modules
 import ReactFileMarkdown from './components/Markdown/ReactFileMarkdown'
 import ReactMarkdown from 'react-markdown'
@@ -25,13 +25,13 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Container>
-        <Paper withBorder sx={{
+        <Stack sx={{
           padding: '3rem',
           margin: '1rem',
           height: '90%',
         }}>
           <ReactMarkdown>{markdown}</ReactMarkdown>
-        </Paper>
+        </Stack>
       </Container>
     </>
   )

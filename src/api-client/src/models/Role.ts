@@ -46,10 +46,10 @@ export interface Role {
   name?: string | null
   /**
    *
-   * @type {Array<GroupRole>}
+   * @type {Array<StackRole>}
    * @memberof Role
    */
-  readonly groupRoles?: Array<GroupRole> | null
+  readonly groupRoles?: Array<StackRole> | null
   /**
    *
    * @type {Array<PermissionsForRole>}
@@ -84,13 +84,13 @@ export function RoleFromJSONTyped(
     groupRoles: !exists(json, 'groupRoles')
       ? undefined
       : json['groupRoles'] === null
-      ? null
-      : (json['groupRoles'] as Array<any>).map(GroupRoleFromJSON),
+        ? null
+        : (json['groupRoles'] as Array<any>).map(GroupRoleFromJSON),
     permissionsForRoles: !exists(json, 'permissionsForRoles')
       ? undefined
       : json['permissionsForRoles'] === null
-      ? null
-      : (json['permissionsForRoles'] as Array<any>).map(
+        ? null
+        : (json['permissionsForRoles'] as Array<any>).map(
           PermissionsForRoleFromJSON
         )
   }

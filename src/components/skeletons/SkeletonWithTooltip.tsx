@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ISkeletonWithTooltipConfiguration } from './ISkeletonWithTooltipConfiguration'
 import React from 'react'
 import { conditionalRender } from '@/services'
-import { Box, Skeleton, Tooltip, Text } from '@mantine/core'
+import { Box, Skeleton, Tooltip, Text } from '@chakra-ui/react'
 
 export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
   const message = config.text ?? 'Loading...'
@@ -17,8 +17,8 @@ export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
       <>
         {conditionalRender(
           <Tooltip
-            withArrow
-            position={'bottom-start'}
+            hasArrow
+            placement={'bottom-start'}
             label={<><Text>{message}</Text></>}>
             <>
               <Box sx={{ width: '90%' }}>

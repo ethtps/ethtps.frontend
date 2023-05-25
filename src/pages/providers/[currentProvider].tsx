@@ -5,7 +5,7 @@ import { ProviderResponseModel } from "@/api-client"
 import { ProviderOverview, SocialButtons, useAutoHideSidebar } from "@/components"
 import { loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
-import { Text, Group, Container, Image, Box, Paper } from "@mantine/core"
+import { Text, Container, Image, Box, Stack } from "@chakra-ui/react"
 import { InferGetStaticPropsType } from "next"
 
 interface IProviderPageParams {
@@ -46,7 +46,6 @@ export default function ProviderPage({ currentProvider, allProviders }: InferGet
   return <>
     <Container
       size={'xl'}
-      fluid={hideSidebar}
       style={{
         ...(hideSidebar ? {
           paddingLeft: 0,
@@ -54,13 +53,13 @@ export default function ProviderPage({ currentProvider, allProviders }: InferGet
         } : {})
       }}>
       <Container>
-        <Paper sx={{
+        <Stack sx={{
           borderRadius: "20px",
           width: "100%",
           minHeight: "90vh",
         }}>
           <ProviderOverview provider={allProviders?.find(x => x.name === currentProvider as string)} />
-        </Paper>
+        </Stack>
       </Container>
     </Container >
   </>

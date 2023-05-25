@@ -1,4 +1,4 @@
-import { AppShell } from '@mantine/core'
+'use client'
 import {
   IconBrandGithub,
   IconBrandTwitter,
@@ -11,6 +11,10 @@ import CustomNavbar from './CustomNavbar'
 import { useDisclosure } from '@mantine/hooks'
 import { ProviderResponseModel } from '@/api-client'
 import DataLoader from '../DataLoader'
+import { Stack } from '@chakra-ui/react'
+import { CacheProvider } from '@chakra-ui/next-js'
+import { ChakraProvider } from '@chakra-ui/react'
+import { Navbar } from './'
 
 export default function MainLayout(props: Partial<{
   component: JSX.Element,
@@ -19,43 +23,8 @@ export default function MainLayout(props: Partial<{
   const [opened, { toggle }] = useDisclosure(false)
   return (
     <>
-      <DataLoader />
-      <AppShell
-        sx={{
-          paddingLeft: 0,
-          paddingRight: 0,
-        }}
-        header={
-          <HeaderWithTabs
-            open={opened}
-            burgerToggled={toggle}
-            links={[
-              {
-                link: 'https://github.com/orgs/ethtps/repositories',
-                label: 'GitHub',
-                icon: <IconBrandGithub size={'1.2rem'} />
-              },
-              {
-                link: 'https://twitter.com/ethtps',
-                label: 'Follow us on Twitter',
-                icon: <IconBrandTwitter size={'1.2rem'} />
-              },
-              {
-                link: 'https://discord.gg/jWPcsTzpCT',
-                label: 'Join our Discord channel',
-                icon: <IconBrandDiscord size={'1.2rem'} />
-              }
-            ]}
-          />
-        }
-        navbar={
-          <CustomNavbar opened={opened} allProviders={props.allProviders} />
-        }
-        footer={
-          <CustomFooter />
-        }>
-        {props.component}
-      </AppShell>
+      <Navbar />
+      {props.component}
     </>
   )
 }

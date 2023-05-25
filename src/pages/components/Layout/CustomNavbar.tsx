@@ -1,7 +1,7 @@
 import { ProviderResponseModel } from "@/api-client"
 import { loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
-import { Image, Checkbox, Badge, Group, NavLink, Navbar, Skeleton, Text, ScrollArea } from "@mantine/core"
+import { Image, Checkbox, Badge } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
 import Link from "next/link"
 import { useState } from "react"
@@ -26,18 +26,19 @@ export default function CustomNavbar({
         }
     }
     return <></>
-    return <>
-        <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-            <Navbar.Section mt="xs">
-            </Navbar.Section>
-            <Navbar.Section component={ScrollArea} mx="-xs" px="xs">
-            </Navbar.Section>
-            <Navbar.Section>
-            </Navbar.Section>
-        </Navbar>
-    </>
 }
     /*
+return <>
+<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+    <Navbar.Section mt="xs">
+    </Navbar.Section>
+    <Navbar.Section component={ScrollArea} mx="-xs" px="xs">
+    </Navbar.Section>
+    <Navbar.Section>
+    </Navbar.Section>
+</Navbar>
+</>
+}
 return <>
 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
 <Navbar.Section mt="xs">
@@ -56,7 +57,7 @@ Rollups
 </>
 </Navbar.Section>
 <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
-<Group dir="row">
+<Stack dir="row">
 {filteredProviders?.map((x, i) =>
 <div key={x.name}
 style={{
@@ -80,11 +81,12 @@ height={'20px'}
 {conditionalRender(<>
 <Skeleton height={8} radius="xl" style={{ marginBottom: '1rem' }} />
 </>, !filteredProviders || filteredProviders?.length === 0)}
-</Group>
+</Stack>
 </Navbar.Section>
 <Navbar.Section>
 <Checkbox onChange={hideSidechainsChanged} size="sm" className={'unselectable'} label={'Hide sidechains'} />
 </Navbar.Section>
 </Navbar>
 </>
-}*/
+}
+*/

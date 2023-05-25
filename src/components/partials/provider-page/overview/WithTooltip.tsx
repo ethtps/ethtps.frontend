@@ -2,7 +2,7 @@
 // yarn add @nivo/core @nivo/line
 import { ResponsiveLine } from '@nivo/line'
 import { multiLine } from '../..'
-import { Box } from '@mantine/core'
+import { Box } from '@chakra-ui/react'
 import { DataModeButtonGroup, ModeButton } from '@/components'
 
 // make sure parent container have a defined height when using

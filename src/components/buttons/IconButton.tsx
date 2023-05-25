@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Tooltip } from '@mantine/core'
+import { Tooltip, Button } from '@chakra-ui/react'
 import { MouseEventHandler } from 'react'
 
 export function IconButton(props: {
@@ -12,14 +12,14 @@ export function IconButton(props: {
   bottom?: boolean
 }) {
   return (
-    <ActionIcon
+    <Button
       disabled={!props.visible ?? false}
       style={{
         ...props.sx,
         opacity: props.visible ?? true ? 1 : 0
       }}
       onClick={props.onClick}>
-      <Tooltip arrowPosition={'center'} withArrow label={props.text}>{props.icon}</Tooltip>
-    </ActionIcon>
+      <Tooltip hasArrow label={props.text}>{props.icon}</Tooltip>
+    </Button>
   )
 }

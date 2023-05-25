@@ -1,8 +1,5 @@
 import { IComponentSize } from '@/components'
-import { motion, transform, useMotionValue, useTransform } from 'framer-motion'
-import { useCallback, useState } from 'react'
-import { ProviderBar } from './ProviderBar'
-import { Group } from '@mantine/core'
+import { motion } from 'framer-motion'
 import { LoadingAnimation } from './LoadingAnimation'
 
 enum States {
@@ -16,7 +13,7 @@ export enum Direction {
   horizontal,
   vertical
 }
-export interface IFramerHorizontalBarProps extends IComponentSize {}
+export interface IFramerHorizontalBarProps extends IComponentSize { }
 
 export function FramerHorizontalBar(props: IFramerHorizontalBarProps) {
   return (

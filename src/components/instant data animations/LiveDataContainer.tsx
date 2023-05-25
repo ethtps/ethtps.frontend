@@ -16,15 +16,18 @@ export interface LiveDataContainerProps {
 }
 
 export function LiveDataContainer(props: LiveDataContainerProps) {
+    console.log("Rendering LiveDataContainer")
     useSignalREffect("ConnectionEstablished", (data) => {
-
+        console.log("ConnectionEstablished")
     }, [])
     useSignalREffect("DataReceived", (data) => {
+        console.log("DataReceived")
         if (props.onDataReceived) {
             props.onDataReceived(data)
         }
     }, [])
     useSignalREffect("TotalChanged", (data) => {
+        console.log("TotalChanged")
         if (props.onTotalChanged) {
             props.onTotalChanged(data)
         }

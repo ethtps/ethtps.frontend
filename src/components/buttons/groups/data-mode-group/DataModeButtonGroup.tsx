@@ -3,7 +3,7 @@ import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
 import { useGetExperimentsFromAppStore, useHandler } from '@/data'
 import { conditionalRender } from '@/services'
-import { Box, Tooltip, Text } from '@mantine/core'
+import { Box, Tooltip, Text } from '@chakra-ui/react'
 import { IconButton } from '../../IconButton'
 import {
   IconGasStation,
@@ -25,8 +25,8 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           experimentsAppStoreValue?.includes(5) && false
         )}
         <Tooltip
-          withArrow
-          position={'top'}
+          hasArrow
+          placement={'top'}
           {...getColorComparedTo(DataType.Tps)}
           label={<Text>Transactions per second</Text>}>
           <IconButton
@@ -36,8 +36,8 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
         </Tooltip>
 
         <Tooltip
-          withArrow
-          position={'top'}
+          hasArrow
+          placement={'top'}
           {...getColorComparedTo(DataType.Gps)}
           label={<Text>Gas per second</Text>}>
           <IconButton
@@ -47,8 +47,8 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
         </Tooltip>
 
         <Tooltip
-          withArrow
-          position={'top'}
+          hasArrow
+          placement={'top'}
           {...getColorComparedTo(DataType.GasAdjustedTps)}
           label={<Text>Gas-adjusted transactions per second</Text>}>
           <IconButton

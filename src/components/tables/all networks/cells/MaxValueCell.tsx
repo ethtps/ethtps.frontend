@@ -5,8 +5,8 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
-import { Tooltip } from '@mantine/core'
-import { Text } from '@mantine/core'
+import { Tooltip } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { DataPoint } from '@/api-client'
 import {
   numberFormat,
@@ -53,7 +53,7 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
             ? config.clickCallback(config.provider, 'MaxValue')
             : () => { }
         }>
-        <Tooltip withArrow label={tooltipTypography}>
+        <Tooltip hasArrow label={tooltipTypography}>
           <>
             <Text
               className={'boldcell'}

@@ -1,11 +1,11 @@
-import { Button, ButtonProps, Group } from '@mantine/core';
-import { IconBrandDiscord, IconBrandFacebook, IconBrandGithub, IconBrandGoogle, IconBrandMastodon, IconBrandReddit, IconBrandTwitter } from '@tabler/icons-react';
-import { IconButton } from '../IconButton';
+import { Button, ButtonProps, Stack } from '@chakra-ui/react'
+import { IconBrandDiscord, IconBrandFacebook, IconBrandGithub, IconBrandGoogle, IconBrandMastodon, IconBrandReddit, IconBrandTwitter } from '@tabler/icons-react'
+import { IconButton } from '../IconButton'
 // eslint-disable-next-line import/no-internal-modules
-import Link from 'next/link';
+import Link from 'next/link'
 
 export function GoogleButton(props: ButtonProps) {
-    return <Button leftIcon={<IconBrandGoogle />} variant="default" color="gray" {...props} />;
+    return <Button leftIcon={<IconBrandGoogle />} variant="default" color="gray" {...props} />
 }
 
 
@@ -13,7 +13,7 @@ export function SocialButtons(props: {
     bottom?: boolean
 }) {
     return (
-        <Group sx={{ padding: 15 }}>
+        <Stack sx={{ padding: 15 }}>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
                     bottom={props.bottom}
@@ -45,6 +45,6 @@ export function SocialButtons(props: {
                     text='Share on Facebook'
                     icon={<IconBrandFacebook />} />
             </Link>
-        </Group>
-    );
+        </Stack>
+    )
 }

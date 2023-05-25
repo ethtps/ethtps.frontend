@@ -1,7 +1,7 @@
 /* eslint-disable import/no-internal-modules */
-import { Container } from '@mantine/core'
+import { Container } from '@chakra-ui/react'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import { Text, Notification } from '@mantine/core'
+import { Text } from '@chakra-ui/react'
 import { queryClient } from '@/services'
 import MyResponsiveStream from './components/live data/nivo streamchart/MyResponsiveStream'
 import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
@@ -56,7 +56,7 @@ export default function Index({
         />
       </Container>
       <br />
-      <Container style={{ ...defaultStyle }}>
+      <Container width={'90%'}>
         <ProviderTable providers={model.providers} />
       </Container>
     </>

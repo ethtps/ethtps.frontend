@@ -15,3 +15,11 @@ typical
 `npm run start:dev`
 
 Everything's still a mess - it will be improved at some point in the future  ¯\\_(ツ)_\/¯
+
+# Notes
+
+- If the page never loads while opening the development environment locally, it is because Next can't access the backend in order to statically generate the pages. To fix this, you can either:
+  
+  - Run the backend locally
+  
+  - Point the frontend to `https://api.ethtps.info`

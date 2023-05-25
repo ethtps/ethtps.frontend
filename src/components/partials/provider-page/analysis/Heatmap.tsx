@@ -3,7 +3,7 @@
 import { ProviderResponseModel } from '@/api-client'
 import { CalendarCanvasProps, CalendarLegendProps, CalendarSvgProps, DateOrString, ResponsiveCalendar, ResponsiveCalendarCanvas } from '@nivo/calendar'
 import { dummyHeatmapData } from '..'
-import { Box, ScrollArea } from '@mantine/core'
+import { Box } from '@chakra-ui/react'
 import { useViewportRatio } from '@/components'
 import { useCallback, useEffect, useState } from 'react'
 import { getDate } from 'date-fns'
@@ -75,10 +75,10 @@ const generateCanvasProps = (ratio: number, from: DateOrString, to: DateOrString
 const currentYear = new Date().getFullYear()
 
 function getYearsBetween(from?: string, to?: string) {
-    if (!from || !to) return 1;
-    const fromYear = parseInt(from.slice(0, 4));
-    const toYear = parseInt(to.slice(0, 4));
-    return toYear - fromYear;
+    if (!from || !to) return 1
+    const fromYear = parseInt(from.slice(0, 4))
+    const toYear = parseInt(to.slice(0, 4))
+    return toYear - fromYear
 }
 
 export function Heatmap({
@@ -108,14 +108,12 @@ export function Heatmap({
     const numberOfYears = getYearsBetween(from?.toString(), to?.toString())
     const size = baseSize * numberOfYears + yearSpacing * (numberOfYears - 0)
     return <>
-        <ScrollArea pos={{
-
-        }}>
+        < >
             <Box
                 h={ratio > 1 ? size : '100vh'}
                 w={Math.max(size, 800)}>
                 {getCalendar()}
             </Box>
-        </ScrollArea>
+        </>
     </>
 }

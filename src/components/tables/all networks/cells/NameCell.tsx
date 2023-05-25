@@ -1,6 +1,6 @@
 /* eslint-disable import/no-internal-modules */
 import { ICustomCellConfiguration } from './ICustomCellConfiguration'
-import { Group, Text, Tooltip } from '@mantine/core'
+import { Stack, Text, Tooltip } from '@chakra-ui/react'
 import React, { forwardRef, useEffect, useState } from 'react'
 import { conditionalRender } from '@/services'
 import { useGetProviderColorDictionaryFromAppStore } from '@/data'
@@ -30,10 +30,10 @@ export function NameCell(config: ICustomCellConfiguration) {
             : () => { }
         }>
         <>
-          <Tooltip withArrow label={<><Text>{`Read more about ${name}`}</Text></>}>
+          <Tooltip hasArrow label={<><Text>{`Read more about ${name}`}</Text></>}>
             <>
-              <Group align={'center'}>
-                <Group>
+              <Stack align={'center'}>
+                <Stack>
                   <Image
                     alt={`${config.provider?.name} icon`}
                     src={`/provider-icons/${config.provider?.name}.png`}
@@ -49,12 +49,12 @@ export function NameCell(config: ICustomCellConfiguration) {
                       {config.provider?.name}
                     </Link>
                   </Text>
-                </Group>
+                </Stack>
                 {conditionalRender(
                   <>
                     <Tooltip
-                      withArrow
-                      position={'bottom'}
+                      hasArrow
+                      placement={'bottom'}
                       label={
                         <>
                           <Text>
@@ -73,8 +73,8 @@ export function NameCell(config: ICustomCellConfiguration) {
                 {conditionalRender(
                   <>
                     <Tooltip
-                      withArrow
-                      position={'bottom'}
+                      hasArrow
+                      placement={'bottom'}
                       label={
                         <>
                           <Text>
@@ -89,7 +89,7 @@ export function NameCell(config: ICustomCellConfiguration) {
                   </>,
                   noDataProvider
                 )}
-              </Group>
+              </Stack>
             </>
           </Tooltip>
         </>

@@ -1,5 +1,5 @@
-import { MyResponsiveLine, useSizeRef } from "@/components";
-import { Paper, Text, Title } from "@mantine/core";
+import { MyResponsiveLine, useSizeRef } from "@/components"
+import { Stack, Text } from "@chakra-ui/react"
 
 export interface IProviderChartSectionProps {
 }
@@ -7,19 +7,19 @@ export interface IProviderChartSectionProps {
 export function ProviderChartSection(props: IProviderChartSectionProps) {
     const size = useSizeRef()
     return <>
-        <Paper ref={size.ref}>
-            <Paper>
-                <Title order={3}>Historical chart</Title>
+        <Stack ref={size.ref}>
+            <Stack>
+                <Text order={3}>Historical chart</Text>
                 <MyResponsiveLine />
-            </Paper>
-            <Paper>
-                <Title order={3}>Gas per transaction</Title>
+            </Stack>
+            <Stack>
+                <Text order={3}>Gas per transaction</Text>
                 <MyResponsiveLine />
-            </Paper>
-            <Paper>
-                <Title order={3}>Comparison by transaction type</Title>
+            </Stack>
+            <Stack>
+                <Text order={3}>Comparison by transaction type</Text>
                 <MyResponsiveLine />
-            </Paper>
-        </Paper>
+            </Stack>
+        </Stack>
     </>
 }

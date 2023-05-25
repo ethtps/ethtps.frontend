@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ISeeMoreButtonProps } from './ISeeMoreButtonProps'
 import React from 'react'
-import { Button } from '@mantine/core'
+import { Button } from '@chakra-ui/react'
 import { IconArrowDown, IconArrowUp } from '@tabler/icons-react'
 
 export function SeeMoreButton(events: ISeeMoreButtonProps) {

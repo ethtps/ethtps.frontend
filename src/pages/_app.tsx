@@ -10,6 +10,8 @@ import { Provider } from 'react-redux'
 import MainLayout from './components/Layout/MainLayout'
 import { queryClient } from '@/services'
 import { ProviderResponseModel } from '@/api-client'
+import { ChakraProvider } from '@chakra-ui/react'
+import { CacheProvider } from '@chakra-ui/next-js'
 
 type AppModel = {
   test: string,
@@ -35,7 +37,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <Provider store={store}>
-        <MainLayout component={<Component {...pageProps} />} />
+        <CacheProvider>
+          <ChakraProvider>
+            <MainLayout component={<Component {...pageProps} />} />
+          </ChakraProvider>
+        </CacheProvider>
       </Provider>
     </>
   )

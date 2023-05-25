@@ -1,73 +1,74 @@
-import { ProviderResponseModel } from '@/api-client';
-import { darkenColorIfNecessary } from '@/components';
-import { Text, Table, Image, Group, Tooltip } from '@mantine/core'
-import Link from 'next/link';
-import { useState } from 'react';
+import { ProviderResponseModel } from '@/api-client'
+import { darkenColorIfNecessary } from '@/components'
+import { Text, Table, Image, Stack, Tooltip } from '@chakra-ui/react'
+// eslint-disable-next-line import/no-internal-modules
+import Link from 'next/link'
+import { useState } from 'react'
 
 type ExtraColumns = Partial<{
   currentValue: number,
   maxRecorded: number
 }>
 
-type ExtendedProviderResponseModel = ProviderResponseModel & ExtraColumns;
+type ExtendedProviderResponseModel = ProviderResponseModel & ExtraColumns
 
 type SortState = {
-  column: keyof ExtendedProviderResponseModel | null;
-  ascending: boolean;
-};
+  column: keyof ExtendedProviderResponseModel | null
+  ascending: boolean
+}
 
-const arrowUp = <span>&#9660;</span>;
-const arrowDown = <span>&#9650;</span>;
+const arrowUp = <span>&#9660;</span>
+const arrowDown = <span>&#9650;</span>
 
 const getArrowForColumn = (column: keyof ExtendedProviderResponseModel, sortState: SortState) => {
   if (sortState.column === column) {
-    return sortState.ascending ? arrowUp : arrowDown;
+    return sortState.ascending ? arrowUp : arrowDown
   } else {
-    return null;
+    return null
   }
-};
+}
 
 interface IProviderTableProps {
-  providers: ProviderResponseModel[];
+  providers: ProviderResponseModel[]
 }
 
 export function ProviderTable(props: IProviderTableProps) {
 
-  const [data, setData] = useState<(ExtendedProviderResponseModel)[]>(props.providers);
+  const [data, setData] = useState<(ExtendedProviderResponseModel)[]>(props.providers)
   const [sortState, setSortState] = useState<SortState>({
     column: null,
     ascending: false,
-  });
+  })
 
   const handleSort = (columnName: keyof ExtendedProviderResponseModel) => {
     setData(data.slice().sort((a, b) => {
-      const valueA = a[columnName];
-      const valueB = b[columnName];
+      const valueA = a[columnName]
+      const valueB = b[columnName]
       if (valueA === valueB) {
-        return 0;
+        return 0
       }
       if (valueA == null) {
-        return 1;
+        return 1
       }
       if (valueB == null) {
-        return -1;
+        return -1
       }
       if (sortState.ascending) {
-        return valueA < valueB ? -1 : 1;
+        return valueA < valueB ? -1 : 1
       } else {
-        return valueA < valueB ? 1 : -1;
+        return valueA < valueB ? 1 : -1
       }
-    }));
+    }))
     setSortState({
       column: columnName,
       ascending: !sortState.ascending,
     })
-  };
+  }
 
   const arrowForColumn = (column: keyof ExtendedProviderResponseModel) => getArrowForColumn(column, sortState)
 
   return (
-    <Table className="my-table" horizontalSpacing="sm" verticalSpacing="md">
+    <Table className="my-table" cellSpacing="sm">
       <thead>
         <tr>
           <th>#</th>
@@ -98,14 +99,14 @@ export function ProviderTable(props: IProviderTableProps) {
             <td>{i + 1}</td>
             <td className="name-cell" style={{ fontWeight: 'bold' }}>
               <Link href={`/providers/${provider.name}`}>
-                <Group spacing={'xs'}>
+                <Stack spacing={'xs'}>
                   <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
                   <span className="name-text">
                     <Tooltip label={`Click to read more about ${provider.name}`} sx={{ fontWeight: 'normal' }}>
                       <Text >{provider.name}</Text>
                     </Tooltip>
                   </span>
-                </Group>
+                </Stack>
               </Link>
             </td>
             <td>{provider.currentValue ?? 0}</td>

@@ -1,11 +1,11 @@
-import { Group, Tooltip, Text, Footer } from "@mantine/core";
+import { Stack, Tooltip, Text } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
-import Link from "next/link";
+import Link from "next/link"
 
 export default function CustomFooter() {
     return <>
-        <Footer height={50}>
-            <Group style={{ padding: '1rem' }} position='apart'>
+        <footer >
+            <Stack style={{ padding: '1rem' }} placeContent='apart'>
                 <div>
                     <Text className={'inline'} size={'sm'}>
                         Brought to you by
@@ -17,7 +17,7 @@ export default function CustomFooter() {
                     </Text>
                 </div>
                 <div style={{ float: 'right' }}>
-                    <Group>
+                    <Stack>
                         <Link href={'/about'}>
                             <Text size={'sm'}>About</Text>
                         </Link>
@@ -36,9 +36,9 @@ export default function CustomFooter() {
                                 v1.5.0a1 ❤︎
                             </Text>
                         </Tooltip>
-                    </Group>
+                    </Stack>
                 </div>
-            </Group>
-        </Footer>
+            </Stack>
+        </footer>
     </>
 }

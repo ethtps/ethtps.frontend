@@ -1,6 +1,5 @@
 import { ProviderResponseModel } from "@/api-client"
 import { conditionalRender } from "@/services"
-import { Paper, SegmentedControl } from "@mantine/core"
 import { useState } from "react"
 import { PeriodTab } from "./volume"
 import { HeatmapTab } from ".."

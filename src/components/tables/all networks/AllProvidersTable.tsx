@@ -4,7 +4,7 @@ import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
 import { conditionalRender } from '@/services'
 import { SeeMoreButton } from '@/components'
-import { Table } from '@mantine/core'
+import { Table } from '@chakra-ui/react'
 import { IProviderTableModel } from '@/data'
 
 export default function AllProvidersTable(tableData: IProviderTableModel): JSX.Element {
@@ -23,7 +23,7 @@ export default function AllProvidersTable(tableData: IProviderTableModel): JSX.E
       <Table
         aria-label='collapsible table'
         w={tableData.width}
-        verticalSpacing={'md'}>
+        cellSpacing={'md'}>
         <thead>
           <tr>
             <AllProvidersHeader />

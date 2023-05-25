@@ -1,4 +1,4 @@
-import { Text } from '@mantine/core'
+import { Text } from '@chakra-ui/react'
 import { useState } from 'react'
 
 export function LivePSPartial(props: { width: number, value: number }) {
