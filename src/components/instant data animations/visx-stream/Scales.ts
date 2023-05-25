@@ -1,7 +1,7 @@
 import { scaleLinear, scaleOrdinal } from '@visx/scale'
 
 export const NUM_LAYERS = 20
-export const SAMPLES_PER_LAYER = 200
+export const SAMPLES_PER_LAYER = 12
 export const BUMPS_PER_LAYER = 10
 export const BACKGROUND = '#ffdede'
 
