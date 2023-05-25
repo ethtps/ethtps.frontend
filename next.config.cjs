@@ -1,8 +1,12 @@
 const withTM = require('next-transpile-modules')([
+  '@visx/scale'
 ])
 const config = {
   reactStrictMode: true,
-  distDir: 'build'
+  distDir: 'build',
+  optimization: {
+    minimize: false
+  }
 }
 
 module.exports = {

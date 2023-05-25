@@ -1,2 +1,2 @@
-export * from './loaders'
-export * from './RecaptchaTokenLoader'
+export * from './loaders';
+export * from './RecaptchaTokenLoader';

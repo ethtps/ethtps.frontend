@@ -1,16 +1,17 @@
 /* eslint-disable import/no-internal-modules */
-import { Container } from '@chakra-ui/react'
+import { Box, Button, Container, Progress } from '@chakra-ui/react'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Text } from '@chakra-ui/react'
 import { queryClient } from '@/services'
 import MyResponsiveStream from './components/live data/nivo streamchart/MyResponsiveStream'
 import { defaultStyle, defaultRedStyle } from './components/StaticStyles'
 import { ProviderResponseModel } from '@/api-client'
-import { AllProvidersTable, LiveDataContainer, LivePSPartial, ProviderTable, useSizeRef } from '@/components'
-import { useCallback, useState } from 'react'
+import { AllProvidersTable, LiveDataContainer, LivePSPartial, ProviderTable } from '@/components'
+import { useCallback, useRef, useState } from 'react'
 import { loadProvidersAsync, setProviders, useAppDispatch, useAppSelector } from '@/data'
 import { Dictionary } from '@reduxjs/toolkit'
 import { CustomFooter } from './components/Layout'
+import { useSize } from "@chakra-ui/react-use-size"
 
 type IndexPageModel = {
   providers: ProviderResponseModel[]
@@ -34,7 +35,8 @@ export const getStaticProps: GetStaticProps<{ model: IndexPageModel }> = async (
 export default function Index({
   model
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const sizeRef = useSizeRef()
+  const containerRef = useRef<any>(null)
+  const sizeRef = useSize(containerRef)
   const [openIndex, setOpenIndex] = useState(-1)
 
   const handleMenuToggle = (index: number) => {
@@ -46,16 +48,16 @@ export default function Index({
   }
   return (
     <>
-      <Container ref={sizeRef.ref}>
+      <Box w={'100%'} ref={containerRef}>
         <LiveDataContainer
           onTotalChanged={setCurrentValue}
           onDataReceived={dataReceived}
           component={<LivePSPartial
             value={currentValue}
-            width={sizeRef.width ?? 3000}
+            width={Math.max(sizeRef?.width ?? 500, 750)}
           />}
         />
-      </Container>
+      </Box>
       <br />
       <Container width={'90%'}>
       </Container>

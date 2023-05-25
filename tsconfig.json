@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
     "allowJs": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
@@ -17,7 +12,6 @@
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "preserveConstEnums": true,
@@ -30,7 +24,13 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "resolveJsonModule": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -38,7 +38,7 @@
     "**/*.tsx",
     "src/pages/components/ErrorBoundary.jsx",
     "src/pages/providers/[slug]/page.js",
-    "next.config.js",
+    "next.config.cjs",
     "src/pages/components/Layout"
   ],
   "exclude": [
