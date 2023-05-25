@@ -49,17 +49,15 @@ export default function Index({
   return (
     <>
       <Box w={'100%'} ref={containerRef}>
-        <LiveDataContainer
-          onTotalChanged={setCurrentValue}
-          onDataReceived={dataReceived}
-          component={<LivePSPartial
-            value={currentValue}
-            width={Math.max(sizeRef?.width ?? 500, 750)}
-          />}
+        <LivePSPartial
+          value={currentValue}
+          width={Math.max(sizeRef?.width ?? 500, 750)}
         />
       </Box>
       <br />
       <Container width={'90%'}>
+        <Text fontSize={'2xl'}>Providers</Text>
+        <AllProvidersTable />
       </Container>
     </>
   )

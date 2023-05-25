@@ -4,8 +4,8 @@ const withTM = require('next-transpile-modules')([
 const config = {
   reactStrictMode: true,
   distDir: 'build',
-  optimization: {
-    minimize: false
+  compiler: {
+    styledComponents: true
   }
 }
 
