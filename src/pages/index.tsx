@@ -10,6 +10,7 @@ import { AllProvidersTable, LiveDataContainer, LivePSPartial, ProviderTable, use
 import { useCallback, useState } from 'react'
 import { loadProvidersAsync, setProviders, useAppDispatch, useAppSelector } from '@/data'
 import { Dictionary } from '@reduxjs/toolkit'
+import { CustomFooter } from './components/Layout'
 
 type IndexPageModel = {
   providers: ProviderResponseModel[]
@@ -57,8 +58,9 @@ export default function Index({
       </Container>
       <br />
       <Container width={'90%'}>
-        <ProviderTable providers={model.providers} />
       </Container>
     </>
   )
 }
+
+//<ProviderTable providers={model.providers} />

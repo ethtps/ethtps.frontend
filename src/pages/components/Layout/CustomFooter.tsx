@@ -1,6 +1,5 @@
-import { Stack, Tooltip, Text } from "@chakra-ui/react"
+import { Stack, Tooltip, Text, Link } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
-import Link from "next/link"
 
 export default function CustomFooter() {
     return <>
