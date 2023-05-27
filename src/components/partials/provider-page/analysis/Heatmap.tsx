@@ -4,10 +4,7 @@ import { ProviderResponseModel } from '@/api-client'
 import { CalendarCanvasProps, CalendarLegendProps, CalendarSvgProps, DateOrString, ResponsiveCalendar, ResponsiveCalendarCanvas } from '@nivo/calendar'
 import { dummyHeatmapData } from '..'
 import { Box } from '@chakra-ui/react'
-import { useViewportRatio } from '@/components'
 import { useCallback, useEffect, useState } from 'react'
-import { getDate } from 'date-fns'
-import { CalendarProps } from 'react-date-range'
 
 interface IHeatmapProps {
     provider: ProviderResponseModel
@@ -87,7 +84,7 @@ export function Heatmap({
     from,
     to
 }: Partial<IHeatmapProps>) {
-    const ratio = useViewportRatio()
+    const ratio = 16 / 9
     const propGenerator = useCallback((from: DateOrString, to: DateOrString) => {
         if (interactive) {
             return generateResponsiveProps(ratio, from, to, dummyHeatmapData)

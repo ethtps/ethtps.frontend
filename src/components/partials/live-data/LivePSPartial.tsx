@@ -2,13 +2,11 @@
 import { VISXStreamChart } from '@/components/'
 import { NonSSRWrapper } from '@/components'
 import { Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 export function LivePSPartial(props: { width: number, value: number }) {
   return (
     <>
-      <NonSSRWrapper>
-      </NonSSRWrapper>
       <VISXStreamChart width={props.width} height={500} />
     </>
   )

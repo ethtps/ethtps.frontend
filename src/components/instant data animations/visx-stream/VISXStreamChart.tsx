@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+
 'use client'
 
 import React, { FC, useEffect, useRef, useState } from 'react'
@@ -17,7 +17,6 @@ export const VISXStreamChart: FC<StreamGraphProps> = ({ width, height, animate =
     const handlePress = () => forceUpdate()
     const [connected, setConnected] = useState(false)
     const { colorMode } = useColorMode()
-    if (width < 10) return null
 
     xScale.range([0, width])
     yScale.range([height, 0])

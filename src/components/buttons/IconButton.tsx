@@ -10,16 +10,19 @@ export function IconButton(props: {
   target?: string
   visible?: boolean
   bottom?: boolean
+  size?: string
 }) {
   return (
     <Button
+      size={props.size}
       disabled={!props.visible ?? false}
+      leftIcon={props.icon}
+      iconSpacing={'auto'}
       style={{
         ...props.sx,
         opacity: props.visible ?? true ? 1 : 0
       }}
       onClick={props.onClick}>
-      <Tooltip hasArrow label={props.text}>{props.icon}</Tooltip>
     </Button>
   )
 }

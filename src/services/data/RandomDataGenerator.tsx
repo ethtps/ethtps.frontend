@@ -37,8 +37,6 @@ export class RandomDataGenerator {
                 }
 
                 onDataGenerated(data)
-
-                simulateConnectionTime()
             }, Math.random() * 5000)
         }
 

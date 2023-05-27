@@ -37,7 +37,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
               )
             )
             ?.map((x, i) => {
-              console.log("AllProvidersRows", x, i)
+              //console.log("AllProvidersRows", x, i)
               return (
                 <Tr key={i} placeContent={'center'}>
                   <IndexCell clickCallback={model.clickCallback} index={i + 1} />

@@ -7,8 +7,8 @@ export const conditionalRender = (
   return renderIf
     ? component
     : React.createElement('div', {
-        className: 'placeholder'
-      })
+      className: 'placeholder'
+    })
 }
 
 export const binaryConditionalRender = (
@@ -35,9 +35,9 @@ export type IconType = (props: IconTypeProps) => JSX.Element
 
 export type DropdownOptionWithIcon<T> =
   | {
-      value: T
-      icon?: IconType
-    }
+    value: T
+    icon?: IconType
+  }
   | undefined
 
 export function createDropdownOptionWithIcon<T>(
@@ -48,4 +48,9 @@ export function createDropdownOptionWithIcon<T>(
     value,
     icon
   }
+}
+
+export function capitalizeFirstLetter(str?: string | null) {
+  if (!str) return undefined
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

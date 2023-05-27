@@ -1,9 +1,7 @@
 import { ProviderResponseModel } from "@/api-client"
 import { AnalysisTab, CompareTab, DetailsTab, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
 import { binaryConditionalRender } from "@/services"
-import { Badge, Stack, Text, Box, Image, Tabs, Skeleton, TabList, TabPanel, Tab } from "@chakra-ui/react"
-import { useWindowScroll } from "@mantine/hooks"
-import { IconChartRadar, IconTextCaption, IconChartBar, IconArrowUp, IconGeometry, IconDatabase, IconFingerprint, IconGauge } from "@tabler/icons-react"
+import { Badge, Text, Box, Image, Tabs, Skeleton, TabList, TabPanel, Tab, TabPanels, SimpleGrid, Heading, Highlight } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
 import { useRouter } from "next/router"
 // eslint-disable-next-line import/no-internal-modules
@@ -22,12 +20,10 @@ export function ProviderOverview(props: {
             setQueryParams({ tab: currentTab })
         }
     }, [currentTab])
-    const [scroll, scrollTo] = useWindowScroll()
     return (
         <>
-            <Stack
-                dir="col"
-                align={'self-end'}
+            <SimpleGrid
+                columns={2}
                 sx={{
                     padding: "1rem",
                 }}>
@@ -40,23 +36,18 @@ export function ProviderOverview(props: {
                         <Skeleton width={iconSize} height={iconSize} />, provider !== undefined)}
                     <Box>
                         <Box>
-                            <Text order={4}
+                            <Heading size={'md'}
                                 className="inline"
                                 variant="heading"
                                 sx={{
-                                    fontSize: "3xl",
-                                    fontWeight: "bold",
-                                    textTransform: "uppercase",
-                                    letterSpacing: "wider",
                                     cursor: "default",
                                 }}
                             >
                                 {provider?.name}
-                            </Text>
+                            </Heading>
                             <Text
                                 order={5}
                                 variant="subheading"
-                                color="gray"
                                 sx={{
                                     fontSize: "md",
                                     fontWeight: "bold",
@@ -66,53 +57,58 @@ export function ProviderOverview(props: {
                                 0 TPS
                             </Text>
                         </Box>
-                        <Badge
-                            size={'sm'}
-                            color={'gray'}
-                            className={'unselectable inline'}
-                            sx={{ marginLeft: 0 }} // to add some space between the Text and the Badge
-                        >
-                            {provider?.type}
-                        </Badge>
+                        <Text fontSize={'0.85rem'} style={{
+                            cursor: "default",
+                            marginTop: "0.425rem",
+                        }}>
+                            <Highlight
+                                query={props?.provider?.type ?? 'Unknown'}
+                                styles={{ px: '2', py: '1', rounded: 'full', bg: 'red.100' }}
+                            >
+                                {props?.provider?.type ?? 'Unknown'}
+                            </Highlight>
+                        </Text>
                     </Box>
                 </Box>
-                <Box sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    transform: "translateY(-1rem)",
-                }}>
+                <SimpleGrid
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        transform: "translateY(-1rem)",
+                    }}>
                     <SocialButtons />
-                </Box>
-            </Stack>
+                </SimpleGrid>
+            </SimpleGrid>
             <Box sx={{ padding: '1rem' }}>
                 <Tabs defaultValue="analysis" onChange={(v) => setCurrentTab(v?.toString())}>
                     <TabList>
-                        <Tab><Text>Overview</Text></Tab>
-                        <Tab><Text>Details</Text></Tab>
-                        <Tab><Text>Analysis</Text></Tab>
-                        <Tab><Text>Compare</Text></Tab>
-                        <Tab><Text>Status and data</Text></Tab>
+                        <Tab>Overview</Tab>
+                        <Tab>Details</Tab>
+                        <Tab>Analysis</Tab>
+                        <Tab>Compare</Tab>
+                        <Tab>Status and data</Tab>
                     </TabList>
+                    <TabPanels>
+                        <TabPanel pt="md">
+                            <ProviderChartSection provider={provider?.name ?? undefined} />
+                        </TabPanel>
 
-                    <TabPanel pt="md">
-                        <ProviderChartSection />
-                    </TabPanel>
+                        <TabPanel pt="md">
+                            <DetailsTab provider={provider} />
+                        </TabPanel>
 
-                    <TabPanel pt="md">
-                        <DetailsTab provider={provider} />
-                    </TabPanel>
+                        <TabPanel pt="md">
+                            <AnalysisTab provider={provider} />
+                        </TabPanel>
 
-                    <TabPanel pt="md">
-                        <AnalysisTab provider={provider} />
-                    </TabPanel>
+                        <TabPanel pt="md">
+                            <CompareTab provider={provider} />
+                        </TabPanel>
 
-                    <TabPanel pt="md">
-                        <CompareTab provider={provider} />
-                    </TabPanel>
-
-                    <TabPanel pt="xs">
-                        <StatusTab provider={provider} />
-                    </TabPanel>
+                        <TabPanel pt="xs">
+                            <StatusTab provider={provider} />
+                        </TabPanel>
+                    </TabPanels>
                 </Tabs>
             </Box >
         </>

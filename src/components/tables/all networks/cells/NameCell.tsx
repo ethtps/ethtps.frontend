@@ -47,8 +47,7 @@ export function NameCell(config: ICustomCellConfiguration) {
                     color={'red'}
                     className={'boldcell'}
                     href={`/providers/${config.provider?.name
-                      ?.replace(' ', '-')
-                      .toLowerCase()}`}>
+                      ?.replace(' ', '%20')}`}>
                     {config.provider?.name}
                   </Link>
                 </HStack>

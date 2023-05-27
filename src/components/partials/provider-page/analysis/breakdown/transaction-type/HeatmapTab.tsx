@@ -1,11 +1,9 @@
 // eslint-disable-next-line import/no-internal-modules
-import styles from '../../../../../../styles/app.module.scss'
 import { ProviderResponseModel } from "@/api-client"
 import { Heatmap } from "../.."
-import { ChartActions, SocialButtons, useViewportRatio } from "@/components"
+import { ChartActions, SocialButtons } from "@/components"
 import { useDisclosure } from "@mantine/hooks"
 import { useCallback, useState } from "react"
-import { conditionalRender } from '@/services'
 import { Text, Select, Stack, Center, Modal } from '@chakra-ui/react'
 
 interface IHeatmapTabProps {
@@ -25,7 +23,6 @@ const minusYearsShown = 1
 
 export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
     const [modelOpened, { open, close }] = useDisclosure(false)
-    const ratio = useViewportRatio()
     const [year, setYear] = useState<number>((new Date()).getFullYear())
     const [breakdown, setBreakdown] = useState<Breakdowns>(Breakdowns.tps)
     const [breakdownPeriod, setBreakdownPeriod] = useState<BreakdownPeriods>(BreakdownPeriods.year)

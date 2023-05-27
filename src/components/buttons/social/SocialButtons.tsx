@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Stack } from '@chakra-ui/react'
+import { Button, ButtonProps, HStack, Stack } from '@chakra-ui/react'
 import { IconBrandDiscord, IconBrandFacebook, IconBrandGithub, IconBrandGoogle, IconBrandMastodon, IconBrandReddit, IconBrandTwitter } from '@tabler/icons-react'
 import { IconButton } from '../IconButton'
 // eslint-disable-next-line import/no-internal-modules
@@ -13,19 +13,20 @@ export function SocialButtons(props: {
     bottom?: boolean
 }) {
     return (
-        <Stack sx={{ padding: 15 }}>
+        <HStack sx={{ padding: 15 }}>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
                     bottom={props.bottom}
                     visible
                     text='Tweet'
+                    size={'40px'}
                     icon={< IconBrandTwitter />}
                 />
             </Link>
             <Link href="https://twitter.com/mantinedev" target="_blank">
                 <IconButton
+                    size={'40px'}
                     bottom={props.bottom}
-                    visible
                     text='Share on Reddit'
                     icon={< IconBrandReddit />}
                 />
@@ -34,6 +35,7 @@ export function SocialButtons(props: {
                 <IconButton
                     bottom={props.bottom}
                     visible
+                    size={'40px'}
                     text='Share on Mastodon'
                     icon={< IconBrandMastodon />}
                 />
@@ -42,9 +44,10 @@ export function SocialButtons(props: {
                 <IconButton
                     bottom={props.bottom}
                     visible
+                    size={'40px'}
                     text='Share on Facebook'
                     icon={<IconBrandFacebook />} />
             </Link>
-        </Stack>
+        </HStack>
     )
 }

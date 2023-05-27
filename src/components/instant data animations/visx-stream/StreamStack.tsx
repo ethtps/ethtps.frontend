@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { animated, useSpring } from '@react-spring/web'
 import { colorScale, patternScale } from './Scales'
 
+
 type StackItemProps = {
     stack: any,
     path: any,

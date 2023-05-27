@@ -2,11 +2,13 @@
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { ProviderOverview, SocialButtons, useAutoHideSidebar } from "@/components"
-import { loadProvidersAsync } from "@/data"
+import { ProviderListSidebar, ProviderOverview, SidebarWithHeader, SocialButtons, StatusIndicator, useAutoHideSidebar } from "@/components"
+import { groupBy, loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
-import { Text, Container, Image, Box, Stack } from "@chakra-ui/react"
+import { Text, Container, Image, Box, Stack, HStack, Flex, Spacer, Button, Link, VStack, Wrap, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Heading, List, ListItem, useDisclosure, useTheme } from "@chakra-ui/react"
 import { InferGetStaticPropsType } from "next"
+import { ReactElement, useState } from "react"
+import { useRouter } from "next/router"
 
 interface IProviderPageParams {
   currentProvider?: string,
@@ -43,24 +45,19 @@ const hiddenSize = 750
 
 export default function ProviderPage({ currentProvider, allProviders }: InferGetStaticPropsType<typeof getStaticProps>) {
   const hideSidebar = useAutoHideSidebar()
+  const grouped = groupBy(allProviders, x => x?.type ?? "none")
+  const [buttons, setButtons] = useState<ReactElement[]>()
+
   return <>
-    <Container
-      size={'xl'}
-      style={{
-        ...(hideSidebar ? {
-          paddingLeft: 0,
-          paddingRight: 0,
-        } : {})
-      }}>
-      <Container>
-        <Stack sx={{
-          borderRadius: "20px",
-          width: "100%",
-          minHeight: "90vh",
-        }}>
-          <ProviderOverview provider={allProviders?.find(x => x.name === currentProvider as string)} />
-        </Stack>
-      </Container>
-    </Container >
+    <Wrap alignItems={'flex-start'} flexDirection={'row'} flexGrow={'initial'} flexWrap={'wrap'} >
+      <Box flex={1}>
+        <ProviderListSidebar allProviders={allProviders} />
+      </Box>
+      <Box flex={2}>
+        <ProviderOverview provider={allProviders?.find(x => x.name === currentProvider as string)} />
+      </Box>
+      <Spacer />
+    </Wrap>
   </>
 }
+
