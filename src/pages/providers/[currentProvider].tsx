@@ -2,12 +2,12 @@
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { ProviderListSidebar, ProviderOverview, SidebarWithHeader, SocialButtons, StatusIndicator, useAutoHideSidebar } from "@/components"
+import { ProviderListSidebar, ProviderOverview, SidebarWithHeader, SocialButtons, StatusIndicator } from "@/components"
 import { groupBy, loadProvidersAsync } from "@/data"
 import { conditionalRender, queryClient } from "@/services"
-import { Text, Container, Image, Box, Stack, HStack, Flex, Spacer, Button, Link, VStack, Wrap, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Heading, List, ListItem, useDisclosure, useTheme } from "@chakra-ui/react"
+import { Text, Container, Image, Box, Stack, HStack, Flex, Spacer, Button, Link, VStack, Wrap, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Heading, List, ListItem, useDisclosure, useTheme, useDimensions } from "@chakra-ui/react"
 import { InferGetStaticPropsType } from "next"
-import { ReactElement, useState } from "react"
+import { ReactElement, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
 
 interface IProviderPageParams {
@@ -44,14 +44,17 @@ export async function getStaticProps(context: any) {
 const hiddenSize = 750
 
 export default function ProviderPage({ currentProvider, allProviders }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const hideSidebar = useAutoHideSidebar()
+  const containerRef = useRef<any>(null)
+  const dimensions = useDimensions(containerRef, true)
+  const [collapsed, setCollapsed] = useState<boolean>()
+  useEffect(() => {
+    setCollapsed((dimensions?.borderBox.width ?? 0) < 500)
+  }, [dimensions?.borderBox.width])
   const grouped = groupBy(allProviders, x => x?.type ?? "none")
-  const [buttons, setButtons] = useState<ReactElement[]>()
-
   return <>
-    <Wrap alignItems={'flex-start'} flexDirection={'row'} flexGrow={'initial'} flexWrap={'wrap'} >
-      <Box flex={1}>
-        <ProviderListSidebar allProviders={allProviders} />
+    <Wrap ref={containerRef} alignItems={'flex-start'} flexDirection={'row'} flexGrow={'initial'} flexWrap={'wrap'} >
+      <Box flex={1} >
+        <ProviderListSidebar currentProvider={currentProvider} collapsed={(dimensions?.borderBox.width ?? 0) < 500} allProviders={allProviders} />
       </Box>
       <Box flex={2}>
         <ProviderOverview provider={allProviders?.find(x => x.name === currentProvider as string)} />
