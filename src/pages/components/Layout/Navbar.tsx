@@ -51,8 +51,7 @@ export default function WithSubnavigation() {
                 px={{ base: 4 }}
                 borderBottom={1}
                 borderStyle={'solid'}
-                borderColor={useColorModeValue('gray.200', 'gray.900')}
-                align={'center'}>
+                borderColor={useColorModeValue('gray.200', 'gray.900')}>
                 <Flex
                     flex={{ base: 1, md: 'auto' }}
                     ml={{ base: -2 }}
@@ -66,24 +65,21 @@ export default function WithSubnavigation() {
                         aria-label={'Toggle Navigation'}
                     />
                 </Flex>
-                <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-                    <Link href="/">
-                        <Text className={styles.logoish}>ETHTPS.info</Text>
-                    </Link>
-
-
-                    <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                        <DesktopNav />
-                    </Flex>
-                </Flex>
-
+                <Link href="/">
+                    <Text className={styles.logoish}>ETHTPS.info</Text>
+                </Link>
                 <Stack
                     flex={{ base: 1, md: 0 }}
-                    justify={'flex-end'}
+                    justify={'flex-start'}
                     direction={'row'}
                     spacing={6}>
 
 
+                    <Flex flex={{ base: 1 }} justify={{ base: 'flex-start', md: 'start' }}>
+                        <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+                            <DesktopNav />
+                        </Flex>
+                    </Flex>
                     <Button onClick={toggleColorMode}>
                         {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                     </Button>

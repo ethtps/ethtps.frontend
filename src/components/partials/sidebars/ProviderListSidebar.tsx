@@ -1,12 +1,13 @@
 import { ProviderResponseModel } from "@/api-client"
 import { groupBy } from "@/data"
-import { Image, Box, Button, Link, Heading, useTheme, HStack, Flex, Spacer, useBreakpointValue } from "@chakra-ui/react"
+import { Image, Box, Button, Link, Heading, useTheme, HStack, Flex, Spacer, useBreakpointValue, useBoolean } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import { Link as NextLink } from "@chakra-ui/next-js"
 import { useState } from "react"
 import { Sidebar, SidebarVariant } from ".."
 // eslint-disable-next-line import/no-internal-modules
-import { FiChevronDown } from "react-icons/fi"
+import { FiChevronDown, FiChevronUp } from "react-icons/fi"
+import { useToggle } from "@mantine/hooks"
 
 interface SidePanelProps {
     allProviders?: ProviderResponseModel[]
@@ -15,6 +16,7 @@ interface SidePanelProps {
 
 export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, currentProvider }) => {
     const { colors } = useTheme()
+    const [showMore, setMore] = useBoolean()
     const groupedProviders = groupBy(allProviders, (provider) => provider.type ?? "")
     const currentProviderIndex = allProviders?.findIndex(provider => provider.name === currentProvider) ?? 0
     const [isSidebarOpen, setSidebarOpen] = useState(false)
@@ -53,11 +55,9 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
                         />
                         {prevProvider.name}
                     </Button>
-                    <Spacer />
-                    <Button variant={'ghost'} as={NextLink} href={`/providers/${nextProvider.name}`} leftIcon={<FiChevronDown />}>
-                        More
+                    <Button onClick={() => setMore.toggle()} variant={'ghost'} leftIcon={showMore ? <FiChevronUp /> : <FiChevronDown />}>
+                        {showMore ? 'Less' : 'More'}
                     </Button>
-                    <Spacer />
                     <Button flex={3} variant={'ghost'} as={NextLink} href={`/providers/${nextProvider.name}`} rightIcon={<ChevronRightIcon />} >
                         <Image alt={`${nextProvider.name}-image`} src={`/provider-icons/${nextProvider.name}.png`} sx={{
                             width: "1.5rem",
