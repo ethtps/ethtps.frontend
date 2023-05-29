@@ -1,2 +1,1 @@
-export * from './historical-data';
-export * from './instant-data';
+export * from './historical-data'

@@ -2,13 +2,12 @@
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { ProviderListSidebar, ProviderOverview, SidebarWithHeader, SocialButtons, StatusIndicator } from "@/components"
-import { groupBy, loadProvidersAsync } from "@/data"
-import { conditionalRender, queryClient } from "@/services"
-import { Text, Container, Image, Box, Stack, HStack, Flex, Spacer, Button, Link, VStack, Wrap, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Heading, List, ListItem, useDisclosure, useTheme, useDimensions, WrapItem } from "@chakra-ui/react"
-import { InferGetStaticPropsType } from "next"
-import { ReactElement, useEffect, useRef, useState } from "react"
-import { useRouter } from "next/router"
+import { ProviderListSidebar, ProviderOverview } from "@/components"
+import { generatePath } from "@/data"
+import { getAsync, queryClient } from "@/services"
+import { getProviders } from "@/services/DataLoader"
+import { Container, Box, Flex, Spacer } from "@chakra-ui/react"
+import { GetServerSideProps, InferGetStaticPropsType } from "next"
 
 interface IProviderPageParams {
   currentProvider?: string,
@@ -21,35 +20,34 @@ type Path = {
   }
 }
 
-const generatePath = (provider?: ProviderResponseModel): Path => { return { params: { currentProvider: provider?.name ?? "" } } }
+
 
 export async function getStaticPaths() {
-  const providers = await loadProvidersAsync(queryClient)
-  const paths = providers?.filter(x => x && x.name)?.map(generatePath)
+  const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
+  const paths = providers.parsedBody?.filter(x => x && x.name)?.map(generatePath)
   return {
     paths: paths,
     fallback: true, // can also be true or 'blocking'
   }
 }
-
-export async function getStaticProps(context: any) {
+export const getStaticProps: GetServerSideProps = async (context) => {
+  const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
   return {
     props: {
-      currentProvider: context.params.currentProvider as string,
-      allProviders: await loadProvidersAsync(queryClient)
+      currentProvider: context.params?.currentProvider as string,
+      allProviders: providers.parsedBody
     } as IProviderPageParams
   }
 }
-
 const hiddenSize = 750
 
-export default function ProviderPage({ currentProvider, allProviders }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function ProviderPage({ currentProvider, allProviders }: IProviderPageParams) {
   return <>
     <Flex
       alignItems={'flex-start'}
       flexDirection={'row'}
       flexGrow={'initial'}
-      flexWrap={'wrap'} >
+      flexWrap={'wrap'}>
       <Box>
         <ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />
       </Box>

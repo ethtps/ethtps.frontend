@@ -1,9 +1,5 @@
 import { ProviderResponseModel } from "@/api-client"
-import { loadProvidersAsync } from "@/data"
-import { conditionalRender, queryClient } from "@/services"
-import { Image, Checkbox, Badge } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
-import Link from "next/link"
 import { useState } from "react"
 
 interface ICustomNavbarProps {
@@ -27,15 +23,15 @@ export default function CustomNavbar({
     }
     return <></>
 }
-    /*
+/*
 return <>
 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-    <Navbar.Section mt="xs">
-    </Navbar.Section>
-    <Navbar.Section component={ScrollArea} mx="-xs" px="xs">
-    </Navbar.Section>
-    <Navbar.Section>
-    </Navbar.Section>
+<Navbar.Section mt="xs">
+</Navbar.Section>
+<Navbar.Section component={ScrollArea} mx="-xs" px="xs">
+</Navbar.Section>
+<Navbar.Section>
+</Navbar.Section>
 </Navbar>
 </>
 }

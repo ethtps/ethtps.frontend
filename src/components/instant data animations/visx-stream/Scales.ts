@@ -1,4 +1,5 @@
 import { scaleLinear, scaleOrdinal } from '@visx/scale'
+import { range } from '../types'
 
 export const NUM_LAYERS = 20
 export const SAMPLES_PER_LAYER = 12
@@ -7,8 +8,6 @@ export const BACKGROUND = {
     LIGHT: '#ffdede',
     DARK: '#3c6999'
 }
-
-export const range = (n: number) => Array.from(new Array(n), (_, i) => i)
 export const keys = range(NUM_LAYERS)
 
 type Datum = number[]

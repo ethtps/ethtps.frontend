@@ -15,18 +15,13 @@ import {
     PopoverTrigger,
     PopoverContent,
     useColorModeValue,
-    useBreakpointValue,
     useDisclosure,
     Center,
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
-    Tooltip,
     useColorMode,
     HStack,
     Spacer,
+    VStack,
+    ColorMode,
 } from '@chakra-ui/react'
 import {
     HamburgerIcon,
@@ -36,9 +31,14 @@ import {
     MoonIcon,
     SunIcon,
 } from '@chakra-ui/icons'
-import { IconBrandTwitter, IconBrandDiscord, IconBrandGithub, IconMenu } from '@tabler/icons-react'
+import { ThreeLinks } from './ThreeLinks'
+import { ProviderResponseModel } from '@/api-client'
 
-export default function WithSubnavigation() {
+export interface INavbarProps {
+    allProviders?: any[]
+}
+
+export default function Navbar({ allProviders }: INavbarProps) {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
     return (
@@ -68,41 +68,39 @@ export default function WithSubnavigation() {
                 <Link href="/">
                     <Text className={styles.logoish}>ETHTPS.info</Text>
                 </Link>
-                <Stack
+                <HStack
                     flex={{ base: 1, md: 0 }}
                     justify={'flex-start'}
                     direction={'row'}
                     spacing={6}>
-
-
                     <Flex flex={{ base: 1 }} justify={{ base: 'flex-start', md: 'start' }}>
                         <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                            <DesktopNav />
+                            {DesktopNav(allProviders, colorMode)}
+                            <ThreeLinks />
                         </Flex>
                     </Flex>
                     <Button onClick={toggleColorMode}>
                         {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                     </Button>
-                </Stack>
+                </HStack>
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
-                <MobileNav />
+                {MobileNav(allProviders, colorMode)}
             </Collapse>
         </Box>
     )
 }
 
-const DesktopNav = () => {
+const DesktopNav = (allProviders?: ProviderResponseModel[], colorMode?: ColorMode) => {
     const linkColor = useColorModeValue('gray.600', 'gray.200')
     const linkHoverColor = useColorModeValue('gray.800', 'white')
     const popoverContentBgColor = useColorModeValue('white', 'gray.800')
-    const { colorMode, toggleColorMode } = useColorMode()
 
     return (
         <Flex>
             <Stack direction={'row'} spacing={4}>
-                {NAV_ITEMS.map((navItem) => (
+                {NAV_ITEMS(allProviders).map((navItem) => (
                     <Box key={navItem.label}>
                         <Popover trigger={'hover'} placement={'bottom-start'}>
                             <PopoverTrigger>
@@ -140,79 +138,85 @@ const DesktopNav = () => {
                 ))}
             </Stack>
             <Spacer />
-            <Flex alignItems={'center'}>
-                <Stack direction={'row'} spacing={7} alignItems={'center'}>
-                    <Stack direction={'row'} spacing={7} alignItems={'center'}>
-                        <Link href={'https://twitter.com/ethtps'}>
-                            <Tooltip label="Follow us on Twitter" aria-label="twitter-button">
-                                <IconBrandTwitter />
-                            </Tooltip>
-                        </Link>
-                        <Link href={'https://discord.gg/jWPcsTzpCT'}>
-                            <Tooltip label="Join our Discord channel" aria-label="discord-button">
-                                <IconBrandDiscord />
-                            </Tooltip>
-                        </Link>
-                        <Link href={'https://github.com/orgs/ethtps/repositories'}>
-                            <Tooltip label="GitHub repo" aria-label="twitter-button">
-                                <IconBrandGithub />
-                            </Tooltip>
-                        </Link>
-                    </Stack>
-                </Stack>
-            </Flex>
         </Flex>
     )
 }
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+const DesktopSubNav = ({ label, href, subLabel, children, colorMode }: NavItem & {
+    colorMode?: ColorMode
+}) => {
     return (
-        <Link
-            href={href}
-            role={'group'}
-            display={'block'}
-            p={2}
-            rounded={'md'}
-            _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
-            <Stack direction={'row'} align={'center'}>
-                <Box>
-                    <Text
-                        transition={'all .3s ease'}
-                        _groupHover={{ color: 'pink.400' }}
-                        fontWeight={500}>
-                        {label}
-                    </Text>
-                    <Text fontSize={'sm'}>{subLabel}</Text>
-                </Box>
-                <Flex
-                    transition={'all .3s ease'}
-                    transform={'translateX(-10px)'}
-                    opacity={0}
-                    _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-                    justify={'flex-end'}
-                    align={'center'}
-                    flex={1}>
-                    <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
-                </Flex>
-            </Stack>
-        </Link>
+        <Popover trigger="hover" placement="right-start">
+            <PopoverTrigger>
+                <Link
+                    href={href}
+                    role={'group'}
+                    display={'block'}
+                    p={2}
+                    rounded={'md'}
+                    _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
+                    <Stack direction={'row'} align={'center'}>
+                        <Box>
+                            <Text
+                                transition={'all .3s ease'}
+                                _groupHover={{ color: 'pink.400' }}
+                                fontWeight={500}>
+                                {label}
+                            </Text>
+                            <Text fontSize={'sm'}>{subLabel}</Text>
+                        </Box>
+                        <Flex
+                            transition={'all .3s ease'}
+                            transform={'translateX(-10px)'}
+                            opacity={0}
+                            _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
+                            justify={'flex-end'}
+                            align={'center'}
+                            flex={1}>
+                            <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
+                        </Flex>
+                    </Stack>
+                </Link>
+            </PopoverTrigger>
+            {children && (
+                <PopoverContent
+                    border={0}
+                    boxShadow={'xl'}
+                    bg={colorMode === 'light' ? 'white' : 'gray.800'}
+                    p={4}
+                    rounded={'md'}
+                    maxW={'sm'}
+                    w={'max-content'}>
+                    <Stack>
+                        {children.map((child, index) => (
+                            <DesktopSubNav colorMode={colorMode} key={index} {...child} />
+                        ))}
+                    </Stack>
+                </PopoverContent>
+            )}
+        </Popover>
     )
 }
 
-const MobileNav = () => {
+const MobileNav = (allProviders?: ProviderResponseModel[], colorMode?: ColorMode) => {
     return (
-        <Stack
-            bg={useColorModeValue('white', 'gray.800')}
+        <VStack
+            bg={useColorModeValue('gray.50', 'gray.800')}
             p={4}
             display={{ md: 'none' }}>
-            {NAV_ITEMS.map((navItem) => (
-                <MobileNavItem key={navItem.label} {...navItem} />
+            {NAV_ITEMS(allProviders).map((navItem) => (
+                <MobileNavItem colorMode={colorMode} key={navItem.label} {...navItem} />
             ))}
-        </Stack>
+            <Center>
+                <ThreeLinks colorMode={colorMode} />
+            </Center>
+        </VStack>
     )
 }
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
+const MobileNavItem = ({ label, children, href, colorMode }: NavItem & {
+    colorMode?: ColorMode
+}) => {
     const { isOpen, onToggle } = useDisclosure()
 
     return (
@@ -269,19 +273,24 @@ interface NavItem {
     href?: string
 }
 
-const NAV_ITEMS: Array<NavItem> = [
+const NAV_ITEMS = (allProviders?: ProviderResponseModel[]): Array<NavItem> => [
     {
         label: 'Networks',
         children: [
             {
                 label: 'All networks',
-                subLabel: 'Trending Design to inspire you',
-                href: '#',
+                subLabel: 'Ethereum L2s, sidechains, and more',
+                href: '/networks',
+                children: allProviders?.map((provider) => ({
+                    label: provider.name ?? "",
+                    subLabel: "",
+                    href: `/networks/${provider.name}`,
+                })),
             },
             {
-                label: 'New & Noteworthy',
-                subLabel: 'Up-and-coming Designers',
-                href: '#',
+                label: 'How Ethereum scales',
+                subLabel: 'Current Ethereum model and the future of Ethereum scaling',
+                href: '/how-ethereum-scales',
             },
         ],
     },
