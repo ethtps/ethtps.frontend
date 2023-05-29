@@ -1,2 +1,2 @@
-export * from './Helpers'
-export * from './LinksHelper'
+export * from './Helpers';
+export * from './LinksHelper';

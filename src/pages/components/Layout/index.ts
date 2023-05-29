@@ -1,6 +1,11 @@
 export {default as CustomFooter} from './CustomFooter';
 export {default as CustomNavbar} from './CustomNavbar';
+export * from './DesktopNav';
+export * from './DesktopSubNav';
 export {default as HeaderWithTabs} from './HeaderWithTabs';
 export {default as MainLayout} from './MainLayout';
-export {default as WithSubnavigation} from './Navbar';
+export * from './MobileNav';
+export * from './MobileNavItem';
+export * from './Navbar';
 export * from './ThreeLinks';
+export * from './Types';
