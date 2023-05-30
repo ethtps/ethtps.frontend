@@ -1,6 +1,6 @@
 import { ProviderResponseModel } from "@/api-client"
 import { groupBy } from "@/data"
-import { Image, Box, Button, Link, Heading, useTheme, HStack, Flex, Spacer, useBreakpointValue, useBoolean } from "@chakra-ui/react"
+import { Image, Box, Button, Link, Heading, useTheme, HStack, Text, Flex, Spacer, useBreakpointValue, useBoolean } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import { Link as NextLink } from "@chakra-ui/next-js"
 import { useState } from "react"
@@ -8,29 +8,21 @@ import { Sidebar, SidebarVariant } from ".."
 // eslint-disable-next-line import/no-internal-modules
 import { FiChevronDown, FiChevronUp } from "react-icons/fi"
 import { useToggle } from "@mantine/hooks"
+import { useColors } from "@/services"
 
 interface SidePanelProps {
     allProviders?: ProviderResponseModel[]
     currentProvider?: string
+    variant: SidebarVariant
 }
 
-export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, currentProvider }) => {
-    const { colors } = useTheme()
+export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, currentProvider, variant = SidebarVariant.DRAWER }) => {
+    const colors = useColors()
     const [showMore, setMore] = useBoolean()
     const groupedProviders = groupBy(allProviders, (provider) => provider.type ?? "")
     const currentProviderIndex = allProviders?.findIndex(provider => provider.name === currentProvider) ?? 0
     const [isSidebarOpen, setSidebarOpen] = useState(false)
-    const variants = useBreakpointValue(
-        {
-            base: {
-                navigation: SidebarVariant.DRAWER,
-                navigationButton: true
-            },
-            md: {
-                navigation: SidebarVariant.SIDEBAR,
-                navigationButton: false
-            }
-        })
+
 
     const toggleSidebar = () => setSidebarOpen(!isSidebarOpen)
 
@@ -41,32 +33,45 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
 
     return <>
         <Sidebar
-            variant={variants?.navigation ?? SidebarVariant.DRAWER}
+            variant={variant}
             isOpen={isSidebarOpen}
             onClose={toggleSidebar}
             drawerContent={<>
-                <Flex backgroundColor={'whiteAlpha.100'} alignItems='center' gap={'2'} >
-                    <Button variant={'ghost'} as={NextLink} href={`/providers/${prevProvider.name}`} leftIcon={<ChevronLeftIcon />} >
-                        <Image alt={`${prevProvider.name}-image`} src={`/provider-icons/${prevProvider.name}.png`} sx={{
-                            width: "1.5rem",
-                            height: "1.5rem",
-                            marginRight: "0.5rem"
-                        }}
-                        />
-                        {prevProvider.name}
-                    </Button>
-                    <Button onClick={() => setMore.toggle()} variant={'ghost'} leftIcon={showMore ? <FiChevronUp /> : <FiChevronDown />}>
-                        {showMore ? 'Less' : 'More'}
-                    </Button>
-                    <Button flex={3} variant={'ghost'} as={NextLink} href={`/providers/${nextProvider.name}`} rightIcon={<ChevronRightIcon />} >
-                        <Image alt={`${nextProvider.name}-image`} src={`/provider-icons/${nextProvider.name}.png`} sx={{
-                            width: "1.5rem",
-                            height: "1.5rem",
-                            marginRight: "0.5rem"
-                        }}
-                        />
-                        {nextProvider.name}
-                    </Button>
+                <Flex backgroundColor={colors.backgroundLight} >
+                    <Box>
+                        <Button variant={'ghost'} as={NextLink} href={`/providers/${prevProvider.name}`} leftIcon={<ChevronLeftIcon color={colors.text} />} >
+                            <Image alt={`${prevProvider.name}-image`} src={`/provider-icons/${prevProvider.name}.png`} sx={{
+                                width: "1.5rem",
+                                height: "1.5rem",
+                                marginRight: "0.5rem"
+                            }}
+                            />
+
+                            <Text color={colors.text}>
+                                {prevProvider.name}
+                            </Text>
+                        </Button>
+                    </Box>
+                    <Spacer />
+                    <Box>
+                        <Button onClick={() => setMore.toggle()} variant={'ghost'} leftIcon={showMore ? <FiChevronUp /> : <FiChevronDown color={colors.text} />}>
+                            {showMore ? 'Less' : 'More'}
+                        </Button>
+                    </Box>
+                    <Spacer />
+                    <Box>
+                        <Button flex={3} variant={'ghost'} as={NextLink} href={`/providers/${nextProvider.name}`} rightIcon={<ChevronRightIcon color={colors.text} />} >
+                            <Image alt={`${nextProvider.name}-image`} src={`/provider-icons/${nextProvider.name}.png`} sx={{
+                                width: "1.5rem",
+                                height: "1.5rem",
+                                marginRight: "0.5rem"
+                            }}
+                            />
+                            <Text color={colors.text}>
+                                {nextProvider.name}
+                            </Text>
+                        </Button>
+                    </Box>
                 </Flex>
             </>}
             sidebarContent={<>

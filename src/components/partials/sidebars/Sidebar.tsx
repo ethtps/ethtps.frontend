@@ -1,5 +1,6 @@
 import { Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Box } from "@chakra-ui/react"
 import { SidebarVariant } from ".."
+import { useColors } from "@/services"
 
 interface Props {
     onClose: () => void
@@ -16,9 +17,11 @@ export const Sidebar = ({
     sidebarContent,
     drawerContent
 }: Props) => {
+    const colors = useColors()
     return variant === SidebarVariant.SIDEBAR ? (
         <Box
-            position="fixed"
+            bgColor={colors.backgroundLight}
+            position='fixed'
             left={0}
             p={5}
             w="250px"

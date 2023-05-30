@@ -5,6 +5,7 @@ export interface Theme {
     secondary: string
     tertiary: string
     background: string
+    backgroundLight: string,
     text: string
     muted: string
     highlight: string
@@ -18,6 +19,7 @@ const lightTheme: Theme = {
     secondary: '#ACBCFF',
     tertiary: '#AEE2FF',
     background: '#FFFFFF',
+    backgroundLight: "#FFFFFF",
     text: '#000000',
     muted: '#E6FFFD',
     highlight: '#D0F5BE',
@@ -31,6 +33,7 @@ const darkTheme: Theme = {
     secondary: '#ACBCFF',
     tertiary: '#AEE2FF',
     background: 'gray.900',
+    backgroundLight: "gray.800",
     text: 'white',
     muted: '#E6FFFD',
     highlight: '#D0F5BE',

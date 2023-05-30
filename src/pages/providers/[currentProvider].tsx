@@ -2,10 +2,10 @@
 //import { api } from '@/services'
 
 import { ProviderResponseModel } from "@/api-client"
-import { ProviderListSidebar, ProviderOverview } from "@/components"
+import { ProviderListSidebar, ProviderOverview, SidebarVariant } from "@/components"
 import { generatePath } from "@/data"
-import { getAsync, queryClient } from "@/services"
-import { Container, Box, Flex, Spacer } from "@chakra-ui/react"
+import { conditionalRender, getAsync, queryClient } from "@/services"
+import { Container, Box, Flex, Spacer, useBreakpointValue } from "@chakra-ui/react"
 import { GetServerSideProps, InferGetStaticPropsType } from "next"
 
 interface IProviderPageParams {
@@ -41,19 +41,32 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 const hiddenSize = 750
 
 export default function ProviderPage({ currentProvider, allProviders }: IProviderPageParams) {
+  const variants = useBreakpointValue(
+    {
+      base: {
+        navigation: SidebarVariant.DRAWER,
+        navigationButton: true
+      },
+      xl: {
+        navigation: SidebarVariant.SIDEBAR,
+        navigationButton: false
+      }
+    })
   return <>
     <Flex
       alignItems={'flex-start'}
       flexDirection={'row'}
       flexGrow={'initial'}
       flexWrap={'wrap'}>
-      <Box>
-        <ProviderListSidebar currentProvider={currentProvider} allProviders={allProviders} />
+      <Box w={variants?.navigation === SidebarVariant.SIDEBAR ? 'xl' : '100%'}>
+        <ProviderListSidebar variant={variants?.navigation ?? SidebarVariant.DRAWER} currentProvider={currentProvider} allProviders={allProviders} />
       </Box>
-      <Spacer />
-      <Container>
+      <Box sx={{
+        marginLeft: variants?.navigation === SidebarVariant.SIDEBAR ? '350px' : '0px',
+        marginRight: variants?.navigation === SidebarVariant.SIDEBAR ? '50px' : '0px'
+      }} w={'container.xl'} overflow={'scroll'}>
         <ProviderOverview provider={allProviders?.find(x => x.name === currentProvider as string)} />
-      </Container>
+      </Box>
       <Spacer />
     </Flex>
   </>
