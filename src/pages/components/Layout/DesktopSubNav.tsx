@@ -2,10 +2,10 @@ import { ChevronRightIcon } from "@chakra-ui/icons"
 import { ColorMode, Popover, PopoverTrigger, useColorModeValue, Stack, Flex, Icon, PopoverContent, Box, Text } from "@chakra-ui/react"
 import { NavItem } from "./Types"
 import { Link } from "@chakra-ui/react"
+import { useColors } from "@/services"
 
-export const DesktopSubNav = ({ label, href, subLabel, children, colorMode }: NavItem & {
-    colorMode?: ColorMode
-}) => {
+export const DesktopSubNav = ({ label, href, subLabel, children }: NavItem) => {
+    const colors = useColors()
     return (
         <Popover trigger="hover" placement="right-start">
             <PopoverTrigger>
@@ -15,16 +15,17 @@ export const DesktopSubNav = ({ label, href, subLabel, children, colorMode }: Na
                     display={'block'}
                     p={2}
                     rounded={'md'}
-                    _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
+                    _hover={{ bg: colors.gray1 }}>
                     <Stack direction={'row'} align={'center'}>
                         <Box>
                             <Text
+                                color={colors.text}
                                 transition={'all .3s ease'}
-                                _groupHover={{ color: 'pink.400' }}
+
                                 fontWeight={500}>
                                 {label}
                             </Text>
-                            <Text fontSize={'sm'}>{subLabel}</Text>
+                            <Text color={colors.text} fontSize={'sm'}>{subLabel}</Text>
                         </Box>
                         <Flex
                             transition={'all .3s ease'}
@@ -43,14 +44,14 @@ export const DesktopSubNav = ({ label, href, subLabel, children, colorMode }: Na
                 <PopoverContent
                     border={0}
                     boxShadow={'xl'}
-                    bg={colorMode === 'light' ? 'white' : 'pink.50'}
+                    bg={colors.background}
                     p={4}
                     rounded={'md'}
                     maxW={'sm'}
                     w={'max-content'}>
                     <Stack>
                         {children.map((child, index) => (
-                            <DesktopSubNav colorMode={colorMode} key={index} {...child} />
+                            <DesktopSubNav key={index} {...child} />
                         ))}
                     </Stack>
                 </PopoverContent>

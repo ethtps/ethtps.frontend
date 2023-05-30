@@ -1,4 +1,3 @@
-'use client'
 // eslint-disable-next-line import/no-internal-modules
 import styles from '../../../styles/app.module.scss'
 import {
@@ -24,7 +23,9 @@ import {
 import { ThreeLinks } from './ThreeLinks'
 import { DesktopNav } from './DesktopNav'
 import { MobileNav } from './MobileNav'
-import { useColors } from '@/services'
+import { getAsync, useColors } from '@/services'
+import { GetServerSideProps } from 'next'
+import { ProviderResponseModel } from '@/api-client'
 
 export interface INavbarProps {
     allProviders?: any[]
@@ -34,6 +35,7 @@ export default function Navbar({ allProviders }: INavbarProps) {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
     const colors = useColors()
+    console.log(allProviders?.length)
     return (
         <Box>
             <Flex
@@ -47,13 +49,9 @@ export default function Navbar({ allProviders }: INavbarProps) {
                 borderColor={colors.background}
                 bgColor={colors.background}
             >
-                <Box>
-                    <Box className='inline'>
-                        <Link href="/">
-                            <Text className={styles.logoish}>ETHTPS.info</Text>
-                        </Link>
-                    </Box>
-                </Box>
+                <Link href="/">
+                    <Text className={styles.logoish}>ETHTPS.info</Text>
+                </Link>
                 <Spacer />
                 <Box>
                     <HStack
@@ -68,10 +66,7 @@ export default function Navbar({ allProviders }: INavbarProps) {
                                     {DesktopNav(allProviders)}
                                 </Box>
                                 <Spacer />
-                                <Spacer />
-                                <Box>
-                                    <ThreeLinks />
-                                </Box>
+                                <ThreeLinks />
                             </Flex>
                         </Flex>
                         <Button onClick={toggleColorMode}>

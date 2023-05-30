@@ -10,8 +10,12 @@ export function GoogleButton(props: ButtonProps) {
 
 
 export function SocialButtons(props: {
-    bottom?: boolean
+    bottom?: boolean,
+    color?: string
 }) {
+    const sx = {
+        color: props.color
+    }
     return (
         <HStack sx={{ padding: 15 }}>
             <Link href="https://twitter.com/mantinedev" target="_blank">
@@ -20,6 +24,7 @@ export function SocialButtons(props: {
                     visible
                     text='Tweet'
                     size={'40px'}
+                    sx={{ ...sx }}
                     icon={< IconBrandTwitter />}
                 />
             </Link>
@@ -28,6 +33,7 @@ export function SocialButtons(props: {
                     size={'40px'}
                     bottom={props.bottom}
                     text='Share on Reddit'
+                    sx={{ ...sx }}
                     icon={< IconBrandReddit />}
                 />
             </Link>
@@ -37,6 +43,7 @@ export function SocialButtons(props: {
                     visible
                     size={'40px'}
                     text='Share on Mastodon'
+                    sx={{ ...sx }}
                     icon={< IconBrandMastodon />}
                 />
             </Link>
@@ -46,6 +53,7 @@ export function SocialButtons(props: {
                     visible
                     size={'40px'}
                     text='Share on Facebook'
+                    sx={{ ...sx }}
                     icon={<IconBrandFacebook />} />
             </Link>
         </HStack>

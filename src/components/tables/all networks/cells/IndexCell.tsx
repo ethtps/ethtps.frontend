@@ -3,7 +3,7 @@ import {
   buildClassNames
 } from './ICustomCellConfiguration'
 import React from 'react'
-import { conditionalRender } from '@/services'
+import { conditionalRender, useColors } from '@/services'
 import { IconButton } from '@/components'
 import { IconArrowRight } from '@tabler/icons-react'
 import { Td } from '@chakra-ui/react'
@@ -14,10 +14,11 @@ interface IIndexCellConfiguration extends ICustomCellConfiguration {
 }
 
 export function IndexCell(config: IIndexCellConfiguration) {
+  const colors = useColors()
   return (
     <>
       <Td
-        {...buildClassNames(config)}
+        color={colors.text}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Index')

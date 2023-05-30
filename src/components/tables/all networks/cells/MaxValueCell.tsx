@@ -13,6 +13,7 @@ import {
   useGetLiveDataModeFromAppStore,
   useGetMaxDataForProviderFromAppStore
 } from '@/data'
+import { useColors } from '@/services'
 
 function generateMaxHoverMessage(data?: DataPoint): string {
   if (
@@ -44,27 +45,29 @@ export function MaxValueCell(config: ICustomCellConfiguration) {
     type
   )
   const tooltipTypography = generateMaxTypography(maxData)
+  const colors = useColors()
   return (
     <>
       <Td
         {...buildClassNames(config)}
+        textColor={colors.text}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'MaxValue')
             : () => { }
         } >
         <Tooltip hasArrow label={tooltipTypography}>
-          <>
-            <Text
-              className={'boldcell'}
-              {...tableCellTypographyStandard}
-              sx={{
-                textDecoration:
-                  tooltipTypography !== undefined ? 'underline' : undefined
-              }}>
-              {numberFormat(maxData?.value).toString()}
-            </Text>
-          </>
+
+          <Text
+            className={'boldcell'}
+            {...tableCellTypographyStandard}
+            sx={{
+              textDecoration:
+                tooltipTypography !== undefined ? 'underline' : undefined
+            }}>
+            {numberFormat(maxData?.value).toString()}
+          </Text>
+
         </Tooltip>
       </Td>
     </>

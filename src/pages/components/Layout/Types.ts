@@ -9,7 +9,7 @@ export interface NavItem {
 
 export const NAV_ITEMS = (allProviders?: ProviderResponseModel[]): Array<NavItem> => [
     {
-        label: 'Networks',
+        label: 'Rollups',
         children: [
             {
                 label: 'All networks',
@@ -27,10 +27,6 @@ export const NAV_ITEMS = (allProviders?: ProviderResponseModel[]): Array<NavItem
                 href: '/how-ethereum-scales',
             },
         ],
-    },
-    {
-        label: 'API',
-        href: '/api',
     },
     {
         label: 'About',

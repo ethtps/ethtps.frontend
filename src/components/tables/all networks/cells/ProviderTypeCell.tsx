@@ -5,17 +5,14 @@ import {
 } from './ICustomCellConfiguration'
 import React from 'react'
 import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data'
+import { useColors } from '@/services'
 
 export function ProviderTypeCell(config: ICustomCellConfiguration) {
-  const colorDictionary = useGetProviderTypeColorDictionaryFromAppStore()
-  const name = config.provider?.type ?? ''
-  const color: string =
-    colorDictionary !== undefined ? colorDictionary[name] : 'primary'
+  const colors = useColors()
   return (
     <>
       <Td
-        {...buildClassNames(config)}
-        textColor={color}
+        textColor={colors.text}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'ProviderType')

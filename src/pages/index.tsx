@@ -1,27 +1,27 @@
 /* eslint-disable import/no-internal-modules */
-import { Alert, AlertIcon, Box, Center, Stack } from '@chakra-ui/react'
-import { ProviderResponseModel } from '@/api-client'
+import { Box, Center, Stack } from '@chakra-ui/react'
 import { AllProvidersTable, LivePSPartial } from '@/components'
-import { useRef, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
-import { getAsync } from '@/services'
+import Loading from './components/Loading'
 import { GetServerSideProps } from 'next'
+import { ProviderResponseModel } from '@/api-client'
+import { getAsync } from '@/services'
 
-
-interface IIndexPageModel {
-  providers?: ProviderResponseModel[]
+interface IIndexPageProps {
+  providerData?: ProviderResponseModel[]
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
   const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
   return {
     props: {
-      providers: providers.parsedBody
-    } as IIndexPageModel
+      providerData: providers.parsedBody
+    } as ProviderResponseModel
   }
 }
 
-export default function Index(props: IIndexPageModel) {
+export default function Index({ providerData }: IIndexPageProps) {
   const containerRef = useRef<any>(null)
   const sizeRef = useSize(containerRef)
   const [currentValue, setCurrentValue] = useState(0)
@@ -36,14 +36,7 @@ export default function Index(props: IIndexPageModel) {
       <br />
       <Center>
         <Stack boxSize={'container.xl'}>
-          {props.providers && props.providers.length > 0 ? (
-            <AllProvidersTable maxRowsBeforeShowingExpand={25} providerData={props.providers} />
-          ) : (
-            <Alert status='error'>
-              <AlertIcon />
-              Error loading data. Try refreshing the page.
-            </Alert>
-          )}
+          <AllProvidersTable providerData={providerData} maxRowsBeforeShowingExpand={25} />
         </Stack>
       </Center>
     </>

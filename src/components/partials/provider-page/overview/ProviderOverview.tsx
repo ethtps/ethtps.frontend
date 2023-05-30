@@ -1,6 +1,6 @@
 import { ProviderResponseModel } from "@/api-client"
 import { AnalysisTab, CompareTab, DetailsTab, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
-import { binaryConditionalRender } from "@/services"
+import { binaryConditionalRender, useColors } from "@/services"
 import { Badge, Text, Box, Image, Tabs, Skeleton, TabList, TabPanel, Tab, TabPanels, SimpleGrid, Heading, Highlight } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
 import { useRouter } from "next/router"
@@ -20,6 +20,7 @@ export function ProviderOverview(props: {
             setQueryParams({ tab: currentTab })
         }
     }, [currentTab])
+    const colors = useColors()
     return (
         <>
             <Box>
@@ -77,7 +78,7 @@ export function ProviderOverview(props: {
                             justifyContent: "flex-end",
                             transform: "translateY(-1rem)",
                         }}>
-                        <SocialButtons />
+                        <SocialButtons color={colors.text} />
                     </SimpleGrid>
                 </SimpleGrid>
                 <Box sx={{ padding: '1rem' }}>

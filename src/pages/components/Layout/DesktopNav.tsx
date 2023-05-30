@@ -1,43 +1,40 @@
 import { ProviderResponseModel } from "@/api-client"
-import { ColorMode, useColorModeValue, Flex, Stack, Popover, PopoverTrigger, PopoverContent, Spacer, Box } from "@chakra-ui/react"
+import { ColorMode, Text, Flex, Stack, Popover, PopoverTrigger, PopoverContent, Spacer, Box } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/layout"
 import { DesktopSubNav } from "./DesktopSubNav"
 import { NAV_ITEMS } from "./Types"
+import { useColors } from "@/services"
 
-export const DesktopNav = (allProviders?: ProviderResponseModel[], colorMode?: ColorMode) => {
-    const linkColor = useColorModeValue('white', 'pink.50')
-    const linkHoverColor = useColorModeValue('gray.800', 'white')
-    const popoverContentBgColor = useColorModeValue('white', 'gray.800')
-
+export const DesktopNav = (allProviders?: ProviderResponseModel[]) => {
+    const colors = useColors()
     return (
         <Flex>
             <Stack direction={'row'} spacing={4}>
                 {NAV_ITEMS(allProviders).map((navItem) => (
                     <Box key={navItem.label}>
-                        <Popover trigger={'hover'} placement={'bottom-start'}>
+                        <Popover trigger={'hover'} placement={'auto'}>
                             <PopoverTrigger>
                                 <Link
                                     p={2}
                                     href={navItem.href ?? '#'}
                                     fontSize={'sm'}
                                     fontWeight={500}
-                                    color={linkColor}
+                                    color={colors.text}
                                     _hover={{
                                         textDecoration: 'none',
-                                        color: linkHoverColor,
+                                        color: colors.primary,
                                     }}>
-                                    {navItem.label}
+                                    <Text color={colors.text}>{navItem.label}</Text>
                                 </Link>
                             </PopoverTrigger>
-
                             {navItem.children && (
                                 <PopoverContent
                                     border={0}
                                     boxShadow={'xl'}
-                                    bg={popoverContentBgColor}
+                                    bg={colors.background}
                                     p={4}
                                     rounded={'xl'}
-                                    minW={'sm'}>
+                                    minW={'md'}>
                                     <Stack>
                                         {navItem.children.map((child) => (
                                             <DesktopSubNav key={child.label} {...child} />

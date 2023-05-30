@@ -5,7 +5,6 @@ import { ProviderResponseModel } from "@/api-client"
 import { ProviderListSidebar, ProviderOverview } from "@/components"
 import { generatePath } from "@/data"
 import { getAsync, queryClient } from "@/services"
-import { getProviders } from "@/services/DataLoader"
 import { Container, Box, Flex, Spacer } from "@chakra-ui/react"
 import { GetServerSideProps, InferGetStaticPropsType } from "next"
 
