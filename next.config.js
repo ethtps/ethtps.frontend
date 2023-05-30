@@ -1,16 +1,28 @@
+const withMDX = require('@next/mdx')({
+  // ...
+  extension: /\.mdx?$/,
+  options: {
+    providerImportSource: '@mdx-js/react',
+  },
+})
 const withTM = require('next-transpile-modules')([
   '@visx/scale'
 ])
+
+/** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
   distDir: 'build',
   compiler: {
     styledComponents: true
-  }
+  },
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
 }
 
-module.exports = {
-  ...withTM(config),
+module.exports = withTM(withMDX({
+  experimental: {
+    appDir: true,
+  },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
@@ -39,4 +51,4 @@ module.exports = {
 
     return config
   }
-}
+}))

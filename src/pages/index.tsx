@@ -35,7 +35,7 @@ export default function Index({ providerData }: IIndexPageProps) {
       </Box>
       <br />
       <Center>
-        <Stack boxSize={'container.xl'}>
+        <Stack overflow={'scroll'} boxSize={'container.xl'}>
           <AllProvidersTable providerData={providerData} maxRowsBeforeShowingExpand={25} />
         </Stack>
       </Center>

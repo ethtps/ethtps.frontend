@@ -46,7 +46,7 @@ export const DesktopNav = (allProviders?: ProviderResponseModel[]) => {
                     </Box>
                 ))}
             </Stack>
-            <Spacer />
+            <div style={{ width: '2rem' }} />
         </Flex>
     )
 }

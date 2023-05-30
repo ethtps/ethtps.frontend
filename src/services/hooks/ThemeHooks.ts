@@ -23,7 +23,7 @@ const lightTheme: Theme = {
     highlight: '#D0F5BE',
     gray: 'gray.900',
     gray1: 'gray.50',
-    gray2: 'gray.800'
+    gray2: 'gray.100'
 }
 
 const darkTheme: Theme = {

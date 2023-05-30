@@ -9,18 +9,22 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { Provider as ReduxProvider } from 'react-redux'
 import { wrapper } from '@/data'
+import { MDXProvider } from '@mdx-js/react'
+import { components } from './markdown'
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore({})
   return (
     <>
-      <ReduxProvider store={store}>
-        <CacheProvider>
-          <ChakraProvider>
-            <MainLayout component={<Component {...pageProps} />} />
-          </ChakraProvider>
-        </CacheProvider>
-      </ReduxProvider>
+      <MDXProvider >
+        <ReduxProvider store={store}>
+          <CacheProvider>
+            <ChakraProvider>
+              <MainLayout component={<Component {...pageProps} />} />
+            </ChakraProvider>
+          </CacheProvider>
+        </ReduxProvider>
+      </MDXProvider>
     </>
   )
 }

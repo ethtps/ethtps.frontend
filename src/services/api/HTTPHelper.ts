@@ -11,6 +11,11 @@ async function httpAsync<T>(
     return response
 }
 
+export async function getStringAsync(request: RequestInfo): Promise<string> {
+    const response: HttpResponse<string> = await fetch(request)
+    return response.text()
+}
+
 export async function getAsync<T>(
     path: string,
     args: RequestInit = { method: "get" }

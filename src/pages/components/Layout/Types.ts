@@ -29,6 +29,10 @@ export const NAV_ITEMS = (allProviders?: ProviderResponseModel[]): Array<NavItem
         ],
     },
     {
+        label: 'Status',
+        href: '/status',
+    },
+    {
         label: 'About',
         href: '/about',
     },
