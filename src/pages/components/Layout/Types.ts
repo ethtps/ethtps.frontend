@@ -14,11 +14,11 @@ export const NAV_ITEMS = (allProviders?: ProviderResponseModel[]): Array<NavItem
             {
                 label: 'All networks',
                 subLabel: 'Ethereum L2s, sidechains, and more',
-                href: '/networks',
+                href: '/providers/Ethereum',
                 children: allProviders?.map((provider) => ({
                     label: provider.name ?? "",
                     subLabel: "",
-                    href: `/networks/${provider.name}`,
+                    href: `/networks/${provider.name}?expanded=true`,
                 })),
             },
             {

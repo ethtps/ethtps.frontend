@@ -28,6 +28,8 @@ export default function AllProvidersStatusTable({
             <Table
                 aria-label='collapsible table'
                 w={'100%'}
+                minW={'600px'}
+                overflow={'scroll'}
                 variant={'unstyled'}>
                 <Thead >
                     <Tr placeContent={'center'}>
@@ -38,14 +40,6 @@ export default function AllProvidersStatusTable({
                     <AllProvidersStatusRows providerData={providerData} maxRowsBeforeShowingExpand={maxRowsBeforeShowingExpand} />
                 </Tbody>
             </Table>
-            {conditionalRender(
-                <SeeMoreButton
-                    enabled={(providerData?.length as number) > 0}
-                    onSeeMore={onSeeMore}
-                    onSeeLess={onSeeLess}
-                />,
-
-                showRowCount > 0)}
             {conditionalRender(
                 <Alert status='error'>
                     <AlertIcon />

@@ -3,11 +3,12 @@ import { AllProvidersHeader } from './AllProvidersHeader'
 import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
 import { conditionalRender, getAsync, useColors } from '@/services'
-import { SeeMoreButton } from '@/components'
-import { Alert, AlertIcon, Heading, Link, Table, TableCaption, Tbody, Thead, Tr, Text } from '@chakra-ui/react'
+import { DataIssueDialog, SeeMoreButton } from '@/components'
+import { Alert, AlertIcon, Heading, Link, Table, TableCaption, Tbody, Thead, Tr, Text, HStack, Box, Flex, Spacer, Button, Stack, SimpleGrid, Tooltip } from '@chakra-ui/react'
 import { IProviderTableModel } from '@/data'
 import { GetServerSideProps } from 'next'
 import { ProviderResponseModel } from '@/api-client'
+import { IconExclamationCircle } from '@tabler/icons-react'
 
 export default function AllProvidersTable({
   providerData,
@@ -24,6 +25,7 @@ export default function AllProvidersTable({
     setShowRowCount(oldShowRowCountValue)
   }
   const colors = useColors()
+  const [issueOpen, setIssueOpen] = React.useState(false)
   return (
     <>
       <Table
@@ -31,7 +33,20 @@ export default function AllProvidersTable({
         w={'container.lg'}
         variant={'unstyled'}>
         <TableCaption placement={'top'}>
-          L2s + sidechains
+          <SimpleGrid columns={3}>
+            <Spacer />
+            <Box>
+              <Text color={colors.text} fontSize={'sm'}>
+                L2s + sidechains
+              </Text>
+            </Box>
+            <Box>
+              <Tooltip hasArrow label={'Something\'s wrong?'} placement={'top'}>
+                <Button onClick={() => setIssueOpen(true)} leftIcon={<IconExclamationCircle />} variant={'ghost'} size={'sm'} colorScheme={'blue'} />
+              </Tooltip>
+              <DataIssueDialog isOpen={issueOpen} onClose={() => setIssueOpen(false)} />
+            </Box>
+          </SimpleGrid>
         </TableCaption>
         <Thead >
           <Tr placeContent={'center'}>

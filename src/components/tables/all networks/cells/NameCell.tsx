@@ -9,6 +9,7 @@ import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
 import { Link as NextLink } from '@chakra-ui/next-js'
 
 export interface INameCellProps extends ICustomCellConfiguration {
+
 }
 
 
@@ -28,69 +29,70 @@ export function NameCell(config: INameCellProps) {
             : () => { }
         }
       >
-        <Tooltip hasArrow label={<><Text color={colors.text}>{`Read more about ${name}`}</Text></>}>
-          <>
-            <HStack align={'center'}>
-              <HStack >
-                <Image
-                  alt={`${config.provider?.name} icon`}
-                  src={`/provider-icons/${config.provider?.name}.png`}
-                  className={'inline'}
-                  width={30}
-                  height={30}
-                  style={{ marginRight: '15px' }}></Image>
-                <Link
-                  as={NextLink}
-                  color={'red'}
-                  className={'boldcell'}
-                  href={`/providers/${config.provider?.name
-                    ?.replace(' ', '%20')}`}>
-                  <Text color={colors.text}>
-                    {config.provider?.name}
-                  </Text>
-                </Link>
-              </HStack>
-              {conditionalRender(
-                <>
-                  <Tooltip
-                    hasArrow
-                    placement={'bottom'}
-                    label={
-                      <>
-                        <Text color={colors.text}>
-                          There are issues getting data for{' '}
-                          {config.provider?.name}
-                        </Text>
-                      </>
-                    }>
-                    <>
-                      <IconCloudOff className='inline small centered-vertically' />
-                    </>
-                  </Tooltip>
-                </>,
-                hasIssues && !noDataProvider
-              )}
-              {conditionalRender(
-                <>
-                  <Tooltip
-                    hasArrow
-                    placement={'bottom'}
-                    label={
-                      <>
-                        <Text>
-                          There is no data provider for {config.provider?.name} :/
-                        </Text>
-                      </>
-                    }>
-                    <>
-                      <IconTriangleOff className='spaced-horizontally' />
-                    </>
-                  </Tooltip>
-                </>,
-                noDataProvider
-              )}
+        <Tooltip hasArrow
+          bgColor={colors.gray1}
+          placement={'auto'}
+          label={<Text color={colors.text}>{`Read more about ${name}`}</Text>}>
+          <HStack align={'center'}>
+            <HStack >
+              <Image
+                alt={`${config.provider?.name} icon`}
+                src={`/provider-icons/${config.provider?.name}.png`}
+                className={'inline'}
+                width={30}
+                height={30}
+                style={{ marginRight: '15px' }}></Image>
+              <Link
+                as={NextLink}
+                color={'red'}
+                className={'boldcell'}
+                href={`/providers/${config.provider?.name
+                  ?.replace(' ', '%20')}`}>
+                <Text color={colors.text}>
+                  {config.provider?.name}
+                </Text>
+              </Link>
             </HStack>
-          </>
+            {conditionalRender(
+              <>
+                <Tooltip
+                  hasArrow
+                  placement={'bottom'}
+                  label={
+                    <>
+                      <Text color={colors.text}>
+                        There are issues getting data for{' '}
+                        {config.provider?.name}
+                      </Text>
+                    </>
+                  }>
+                  <>
+                    <IconCloudOff className='inline small centered-vertically' />
+                  </>
+                </Tooltip>
+              </>,
+              hasIssues && !noDataProvider
+            )}
+            {conditionalRender(
+              <>
+                <Tooltip
+                  hasArrow
+                  placement={'bottom'}
+                  label={
+                    <>
+                      <Text>
+                        There is no data provider for {config.provider?.name} :/
+                      </Text>
+                    </>
+                  }>
+                  <>
+                    <IconTriangleOff className='spaced-horizontally' />
+                  </>
+                </Tooltip>
+              </>,
+              noDataProvider
+            )}
+          </HStack>
         </Tooltip>
       </Td>
     </>

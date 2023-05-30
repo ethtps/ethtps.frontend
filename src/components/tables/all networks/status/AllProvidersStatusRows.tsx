@@ -37,7 +37,7 @@ export default function AllProvidersStatusRows(model: IProviderTableModel): JSX.
                 <Tr key={i} placeContent={'center'}>
                   <IndexCell clickCallback={model.clickCallback} index={i + 1} />
                   <NameCell clickCallback={model.clickCallback} provider={x} />
-                  <UpdaterStatusCell status={x.status} />
+                  <UpdaterStatusCell status={x.status} provider={x} />
                 </Tr>
               )
             })}
