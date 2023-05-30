@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-internal-modules
 import * as mdx from 'mdx/types'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'

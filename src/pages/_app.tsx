@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore({})
   return (
     <>
-      <MDXProvider >
+      <MDXProvider components={components}>
         <ReduxProvider store={store}>
           <CacheProvider>
             <ChakraProvider>

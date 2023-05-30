@@ -1,6 +1,6 @@
 /* eslint-disable import/no-internal-modules */
-import { Box, Center, Stack } from '@chakra-ui/react'
-import { AllProvidersTable, LivePSPartial } from '@/components'
+import { Box, Center, Container, Stack } from '@chakra-ui/react'
+import { AllProvidersTable, LivePSPartial, SimpleLiveDataStat } from '@/components'
 import { Suspense, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
 import Loading from './components/Loading'
@@ -27,11 +27,16 @@ export default function Index({ providerData }: IIndexPageProps) {
   const [currentValue, setCurrentValue] = useState(0)
   return (
     <>
+      <Container>
+        <SimpleLiveDataStat />
+      </Container>
       <Box w={'100%'} ref={containerRef}>
-        <LivePSPartial
-          value={currentValue}
-          width={Math.max(sizeRef?.width ?? 500, 750)}
-        />
+        <Center>
+          <LivePSPartial
+            value={currentValue}
+            width={Math.max((sizeRef?.width ?? 0) * 0.95 ?? 500, 750)}
+          />
+        </Center>
       </Box>
       <br />
       <Center>
