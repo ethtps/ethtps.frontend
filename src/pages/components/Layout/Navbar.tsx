@@ -36,16 +36,18 @@ export default function Navbar({ allProviders }: INavbarProps) {
     const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
     const colors = useColors()
     return (
-        <Box>
+        <Box >
             <Flex
+                pos={'static'}
                 color={colors.text}
                 minH={'60px'}
                 py={{ base: 2 }}
                 px={{ base: 4 }}
                 borderBottom={1}
                 borderStyle={'solid'}
-                borderColor={colors.backgroundLight}
-                bgColor={colors.backgroundLight}
+                borderColor={colors.background}
+                bgColor={colors.background}
+                w={'100%'}
             >
                 <Link href="/">
                     <Text className={styles.logoish}>ETHTPS.info</Text>

@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next'
 import Navbar from './Navbar'
 import { ProviderResponseModel } from '@/api-client'
 import { getAsync } from '@/services'
+import { Box } from '@chakra-ui/react'
 
 
 export const getStaticProps: GetServerSideProps = async (context) => {
@@ -21,7 +22,9 @@ export default function MainLayout(props: Partial<{
   return (
     <>
       <Navbar allProviders={props.providerData} />
-      {props.component}
+      <Box >
+        {props.component}
+      </Box>
     </>
   )
 }

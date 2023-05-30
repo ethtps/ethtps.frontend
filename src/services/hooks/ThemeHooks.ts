@@ -2,6 +2,7 @@ import { useColorMode } from '@chakra-ui/react'
 
 export interface Theme {
     primary: string
+    primaryContrast: string
     secondary: string
     tertiary: string
     background: string
@@ -16,6 +17,7 @@ export interface Theme {
 
 const lightTheme: Theme = {
     primary: '#B799FF',
+    primaryContrast: '#000000',
     secondary: '#ACBCFF',
     tertiary: '#AEE2FF',
     background: '#FFFFFF',
@@ -30,6 +32,7 @@ const lightTheme: Theme = {
 
 const darkTheme: Theme = {
     primary: '#B799FF',
+    primaryContrast: '#000000',
     secondary: '#ACBCFF',
     tertiary: '#AEE2FF',
     background: 'gray.900',

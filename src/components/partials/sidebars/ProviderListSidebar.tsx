@@ -1,6 +1,6 @@
 import { ProviderResponseModel } from "@/api-client"
 import { groupBy } from "@/data"
-import { Image, Box, Button, Link, Heading, useTheme, HStack, Text, Flex, Spacer, useBreakpointValue, useBoolean } from "@chakra-ui/react"
+import { Image, Box, Button, Link, Heading, useTheme, HStack, Text, Flex, Spacer, useBreakpointValue, useBoolean, SimpleGrid, Tag, Center, GridItem } from "@chakra-ui/react"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import { Link as NextLink } from "@chakra-ui/next-js"
 import { useState } from "react"
@@ -8,7 +8,45 @@ import { Sidebar, SidebarVariant } from ".."
 // eslint-disable-next-line import/no-internal-modules
 import { FiChevronDown, FiChevronUp } from "react-icons/fi"
 import { useToggle } from "@mantine/hooks"
-import { useColors } from "@/services"
+import { Theme, useColors } from "@/services"
+import { motion } from "framer-motion"
+
+const createProviderButton = (provider: ProviderResponseModel, colors: Theme, hasLeftIcon: boolean = false, hasRightIcon: boolean = false, width?: string, pad?: boolean) => <Button
+    flex={3}
+    variant={'ghost'}
+    as={NextLink}
+    href={`/providers/${provider.name}`}
+    width={width}
+    paddingLeft={pad ? "5px" : undefined}
+    paddingRight={pad ? "5px" : undefined}
+    justifyContent={'flex-start'}
+    rightIcon={hasRightIcon ? <ChevronRightIcon color={colors.text} /> : undefined}
+    leftIcon={hasLeftIcon ? <ChevronLeftIcon color={colors.text} /> : undefined} >
+    <Image alt={`${provider.name}-image`} src={`/provider-icons/${provider.name}.png`} sx={{
+        width: "1.5rem",
+        height: "1.5rem",
+        marginRight: "0.5rem"
+    }}
+    />
+    <Text color={colors.text}>
+        {provider.name}
+    </Text>
+</Button>
+
+const createTypeTag = (type: string, colors: Theme) => <>
+    <Tag
+        fontWeight={'bold'}
+        fontSize={'15px'}
+        color={colors.text}
+        bgColor={colors.background}
+        sx={{
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem"
+        }}
+        textAlign={'center'}>
+        {addSEnding(type)}
+    </Tag>
+</>
 
 interface SidePanelProps {
     allProviders?: ProviderResponseModel[]
@@ -39,68 +77,53 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
             drawerContent={<>
                 <Flex backgroundColor={colors.backgroundLight} >
                     <Box>
-                        <Button variant={'ghost'} as={NextLink} href={`/providers/${prevProvider.name}`} leftIcon={<ChevronLeftIcon color={colors.text} />} >
-                            <Image alt={`${prevProvider.name}-image`} src={`/provider-icons/${prevProvider.name}.png`} sx={{
-                                width: "1.5rem",
-                                height: "1.5rem",
-                                marginRight: "0.5rem"
-                            }}
-                            />
-
-                            <Text color={colors.text}>
-                                {prevProvider.name}
-                            </Text>
-                        </Button>
+                        {createProviderButton(prevProvider, colors, true, false)}
                     </Box>
                     <Spacer />
-                    <Box>
+                    <Box sx={{
+                        overflow: 'hidden',
+                    }}>
                         <Button onClick={() => setMore.toggle()} variant={'ghost'} leftIcon={showMore ? <FiChevronUp /> : <FiChevronDown color={colors.text} />}>
                             {showMore ? 'Less' : 'More'}
                         </Button>
                     </Box>
                     <Spacer />
                     <Box>
-                        <Button flex={3} variant={'ghost'} as={NextLink} href={`/providers/${nextProvider.name}`} rightIcon={<ChevronRightIcon color={colors.text} />} >
-                            <Image alt={`${nextProvider.name}-image`} src={`/provider-icons/${nextProvider.name}.png`} sx={{
-                                width: "1.5rem",
-                                height: "1.5rem",
-                                marginRight: "0.5rem"
-                            }}
-                            />
-                            <Text color={colors.text}>
-                                {nextProvider.name}
-                            </Text>
-                        </Button>
+                        {createProviderButton(nextProvider, colors, false, true)}
                     </Box>
                 </Flex>
+                <Box
+                    maxH={'50vh'}
+                    overflow={showMore ? 'scroll' : 'hidden'}
+                    sx={{ scrollbarWidth: showMore ? '5px' : 0 }}>
+                    <motion.div initial={{
+                        height: '0px'
+                    }}
+                        animate={{
+                            height: showMore ? 'auto' : '0px'
+                        }}
+                        transition={{
+                            type: 'tween',
+                        }}>
+
+                        <SimpleGrid columns={[2, 1]} spacing={10}>
+                            {Object.entries(groupedProviders).map(([type, providers]) => (<GridItem key={type}>
+                                {createTypeTag(type, colors)}
+                                {providers.map(x => createProviderButton(x, colors, false, false, "100%", false))}
+                            </GridItem>))}
+                        </SimpleGrid>
+                    </motion.div>
+                </Box>
             </>}
             sidebarContent={<>
                 <Box overflowY="auto" maxHeight="100vh">
                     {Object.entries(groupedProviders).map(([type, providers]) => (
                         <Box key={type}>
-                            <Heading sx={{ marginLeft: '1rem', cursor: 'default' }} className={'unselectable'} size="sm" mb={2} mt={2} color={colors.gray[500]}>{addSEnding(type)}</Heading>
-                            {providers.map((provider) => (
-                                <Link as={NextLink} href={`/providers/${provider.name}`} key={provider.name}>
-                                    <Button
-                                        variant="ghost"
-                                        paddingLeft={'5px'}
-                                        paddingRight={'5px'}
-                                        width={'95%'}
-                                        justifyContent="flex-start"
-                                        leftIcon={<Image alt={`${provider.name}-image`} src={`/provider-icons/${provider.name}.png`} sx={{
-                                            width: "1.5rem",
-                                            height: "1.5rem",
-                                        }}
-                                        />}
-                                        textAlign="left"
-                                        mb={2}
-                                        backgroundColor={currentProvider === provider.name ? 'pink.100' : undefined}
-                                        colorScheme={currentProvider === provider.name ? 'blackAlpha.100' : undefined}
-                                    >
-                                        {provider.name}
-                                    </Button>
-                                </Link>
-                            ))}
+                            {createTypeTag(type, colors)}
+                            {providers.map((provider) => <Box
+                                key={provider.name}>
+                                {createProviderButton(provider, colors, false, true, "100%", true)}
+                            </Box>)}
                         </Box>
                     ))}
                 </Box >
