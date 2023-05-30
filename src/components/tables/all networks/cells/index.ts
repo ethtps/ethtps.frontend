@@ -7,3 +7,4 @@ export * from './NameCell';
 export * from './ProviderTypeCell';
 export * from './Tooltip.types';
 export * from './Typography.types';
+export * from './UpdaterStatusCell';

@@ -6,15 +6,10 @@ import {
   useGetLiveDataFromAppStore,
   useGetLiveDataModeFromAppStore
 } from '@/data'
-import { range } from 'd3-array'
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { DataValueCell } from './cells/DataValueCell'
-import { IndexCell } from './cells/IndexCell'
-import { MaxValueCell } from './cells/MaxValueCell'
-import { NameCell } from './cells/NameCell'
-import { ProviderTypeCell } from './cells/ProviderTypeCell'
 import { Tr } from '@chakra-ui/react'
+import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, range } from '@/components'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
@@ -69,7 +64,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
 function renderNoDataRows(): JSX.Element {
   return (
     <>
-      {range(0, 2 + 1).map((y: number) => {
+      {range(3).map((y: number) => {
         return (
           <tr key={y}>
           </tr>

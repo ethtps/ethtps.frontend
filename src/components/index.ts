@@ -1,16 +1,17 @@
-export * from './buttons'
-export * from './charts'
-export * from './containers'
-export * from './IComponentSize'
-export * from './indicators'
-export * from './instant data animations'
-export * from './layouts'
-export { default as dynamic } from './NonSSRWrapper'
-export * from './partials'
-export * from './skeletons'
-export * from './stats'
-export * from './tables'
-export * from './text'
-export * from './thwrapper'
-export * from './Types'
-export * from './Utils'
+export * from './buttons';
+export * from './charts';
+export * from './containers';
+export * from './dialogs';
+export * from './IComponentSize';
+export * from './indicators';
+export * from './instant data animations';
+export * from './layouts';
+export {default as dynamic} from './NonSSRWrapper';
+export * from './partials';
+export * from './skeletons';
+export * from './stats';
+export * from './tables';
+export * from './text';
+export * from './thwrapper';
+export * from './Types';
+export * from './Utils';

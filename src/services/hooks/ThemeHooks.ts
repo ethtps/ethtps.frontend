@@ -8,6 +8,7 @@ export interface Theme {
     background: string
     backgroundLight: string,
     text: string
+    textContrast: string
     muted: string
     highlight: string
     gray: string
@@ -23,6 +24,7 @@ const lightTheme: Theme = {
     background: '#FFFFFF',
     backgroundLight: "#FFFFFF",
     text: '#000000',
+    textContrast: 'gray.900',
     muted: '#E6FFFD',
     highlight: '#D0F5BE',
     gray: 'gray.900',
@@ -38,6 +40,7 @@ const darkTheme: Theme = {
     background: 'gray.900',
     backgroundLight: "gray.800",
     text: 'white',
+    textContrast: '#B799FF',
     muted: '#E6FFFD',
     highlight: '#D0F5BE',
     gray: 'gray.900',

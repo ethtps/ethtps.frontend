@@ -1,7 +1,7 @@
 import { Stat, StatArrow, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react"
-import { LiveData } from "."
+import { LiveDataDelta } from "."
 
-export function SimpleStat(props: { data: LiveData }) {
+export function SimpleStat(props: { data: LiveDataDelta }) {
     let deltaType: 'increase' | 'decrease' | undefined = undefined
     if (props.data.delta.type !== 'none') {
         if (props.data.delta.type === 'increase') {

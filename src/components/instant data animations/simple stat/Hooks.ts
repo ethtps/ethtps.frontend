@@ -11,14 +11,14 @@ export type DataDelta = {
     value: number
 }
 
-export type LiveData = {
+export type LiveDataDelta = {
     value: number
     delta: DataDelta
     type: string
 }
 
-export const useLiveData = () => {
-    const [tps, setTPS] = useState<LiveData>({
+export const useLiveDataWithDelta = () => {
+    const [tps, setTPS] = useState<LiveDataDelta>({
         value: 0,
         delta: {
             type: DeltaType.increase,
@@ -26,7 +26,7 @@ export const useLiveData = () => {
         },
         type: 'tps'
     })
-    const [gps, setGPS] = useState<LiveData>({
+    const [gps, setGPS] = useState<LiveDataDelta>({
         value: 0,
         delta: {
             type: DeltaType.none,
@@ -34,7 +34,7 @@ export const useLiveData = () => {
         },
         type: 'gps'
     })
-    const [gtps, setGTPS] = useState<LiveData>({
+    const [gtps, setGTPS] = useState<LiveDataDelta>({
         value: 0,
         delta: {
             type: DeltaType.decrease,

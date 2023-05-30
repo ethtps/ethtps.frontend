@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-internal-modules
 import { ProviderResponseModel } from "@/api-client"
-import { Heatmap } from "../.."
 import { ChartActions, SocialButtons } from "@/components"
 import { useDisclosure } from "@mantine/hooks"
 import { useCallback, useState } from "react"
@@ -59,14 +58,9 @@ export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
                         </Select>
                     </Stack>
                 </Center>
-                <Heatmap
-                    from={`${year - minusYearsShown}-01-01`}
-                    to={`${year + plusYearsShown}-12-31`}
-                    provider={props.provider}
-                    interactive={true} />
             </Stack>
         </>
-    }, [props.provider, year])
+    }, [props.provider])
 
     return <>
         <Modal

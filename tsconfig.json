@@ -38,8 +38,9 @@
     "**/*.tsx",
     "src/pages/components/ErrorBoundary.jsx",
     "src/pages/providers/[slug]/page.js",
-    "next.config.cjs",
-    "src/pages/components/Layout"
+    "next.config.mjs",
+    "src/pages/components/Layout",
+    "src/components/partials/provider-page/overview/WithTooltip.jsx"
   ],
   "exclude": [
     "node_modules",

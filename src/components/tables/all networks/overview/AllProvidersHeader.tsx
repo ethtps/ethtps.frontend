@@ -4,7 +4,7 @@ import {
   useGetLiveDataModeFromAppStore
 } from '@/data'
 import React from 'react'
-import { TableHeader } from '../TableHeader'
+import { TableHeader } from '../../TableHeader'
 
 export function AllProvidersHeader(): JSX.Element {
   const mode = useGetLiveDataModeFromAppStore()

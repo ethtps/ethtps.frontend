@@ -10,15 +10,15 @@ export function ProviderChartSection(props: IProviderChartSectionProps) {
         <Stack>
             <Stack>
                 <Text order={3}>Historical chart</Text>
-                <MyResponsiveLine />
+                <MyResponsiveLine width={500} height={300} />
             </Stack>
             <Stack>
                 <Text order={3}>Gas per transaction</Text>
-                <MyResponsiveLine />
+                <MyResponsiveLine width={500} height={300} />
             </Stack>
             <Stack>
                 <Text order={3}>Comparison by transaction type</Text>
-                <MyResponsiveLine />
+                <MyResponsiveLine width={500} height={300} />
             </Stack>
         </Stack>
     </>

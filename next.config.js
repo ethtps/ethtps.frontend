@@ -6,12 +6,12 @@ const withMDX = require('@next/mdx')({
   },
 })
 const withTM = require('next-transpile-modules')([
-  '@visx/scale'
+  // '@visx/scale'
 ])
 
 /** @type {import('next').NextConfig} */
 const config = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   distDir: 'build',
   compiler: {
     styledComponents: true

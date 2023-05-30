@@ -8,7 +8,11 @@ import Image from 'next/image'
 import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
 import { Link as NextLink } from '@chakra-ui/next-js'
 
-export function NameCell(config: ICustomCellConfiguration) {
+export interface INameCellProps extends ICustomCellConfiguration {
+}
+
+
+export function NameCell(config: INameCellProps) {
   const name = config.provider?.name ?? ''
   const colors = useColors()
   const hasIssues =
