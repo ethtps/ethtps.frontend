@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react'
 import React from 'react'
 
 interface IAnimatedTypographyConfiguration {
-  child: JSX.Element | string
+  child: JSX.Element | string | number
   animationClassName: string
   durationMs: number
   standard?: any
@@ -14,7 +14,6 @@ export function AnimatedTypography(config: IAnimatedTypographyConfiguration) {
     <>
       <Text
         {...config.standard}
-        sx={{ fontSize: '1rem', fontWeight: 'bold' }}
         className={config.animationClassName}
         key={config.child.toString()}
         textAlign={config.centerText ? 'center' : undefined}>

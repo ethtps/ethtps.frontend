@@ -1,42 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { DataType } from '../../../api-client'
-import { DataPointDictionary, IMaxDataModel } from '..'
+import { DataPointDictionary, IMaxDataModel, getMaxDataFor } from '..'
 
 const initialState: IMaxDataModel = {
 	maxTPSData: {},
 	maxGPSData: {},
-	maxGTPSData: {},
-	getMaxDataFor(provider, type) {
-		switch (type) {
-			case DataType.Tps:
-				if (
-					this.maxTPSData !== undefined &&
-					Object.keys(this.maxGPSData as DataPointDictionary).some(
-						(x) => x === provider
-					)
-				)
-					return this.maxTPSData[provider]
-				else break
-			case DataType.Gps:
-				if (
-					this.maxGPSData !== undefined &&
-					Object.keys(this.maxGPSData as DataPointDictionary).some(
-						(x) => x === provider
-					)
-				)
-					return this.maxGPSData[provider]
-				else break
-			case DataType.GasAdjustedTps:
-				if (
-					this.maxGTPSData !== undefined &&
-					Object.keys(this.maxGTPSData as DataPointDictionary).some(
-						(x) => x === provider
-					)
-				)
-					return this.maxGTPSData[provider]
-				else break
-		}
-	},
+	maxGTPSData: {}
 }
 
 function modifyMaxDataState(

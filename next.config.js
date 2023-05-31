@@ -22,6 +22,14 @@ const config = {
 module.exports = withTM(withMDX({
   experimental: {
     appDir: true,
+    swcPlugins: [
+      [
+        'next-superjson-plugin',
+        {
+          excluded: [],
+        },
+      ],
+    ],
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports

@@ -17,6 +17,17 @@ export type LiveDataDelta = {
     type: string
 }
 
+export const diff = (old: LiveDataDelta, newValue: number): LiveDataDelta => {
+    return {
+        value: newValue,
+        delta: {
+            type: old.value < newValue ? DeltaType.increase : DeltaType.decrease,
+            value: Math.abs(old.value - newValue),
+        },
+        type: old.type
+    }
+}
+
 export const useLiveDataWithDelta = () => {
     const [tps, setTPS] = useState<LiveDataDelta>({
         value: 0,
@@ -43,8 +54,15 @@ export const useLiveDataWithDelta = () => {
         type: 'gtps'
     })
     return {
-        tps: tps,
-        gps: gps,
-        gtps: gtps
+        data: {
+            tps: tps,
+            gps: gps,
+            gtps: gtps
+        },
+        setTPS: (value: number) => setTPS(prevState => diff(prevState, value)),
+        setGPS: (value: number) => {
+            setGPS(prevState => diff(prevState, value))
+            setGTPS(prevState => diff(prevState, value / 21000))
+        },
     }
 }

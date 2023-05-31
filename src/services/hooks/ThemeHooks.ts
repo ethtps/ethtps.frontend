@@ -14,6 +14,7 @@ export interface Theme {
     gray: string
     gray1: string
     gray2: string
+    topBarGradient: string
 }
 
 const lightTheme: Theme = {
@@ -29,7 +30,8 @@ const lightTheme: Theme = {
     highlight: '#D0F5BE',
     gray: 'gray.900',
     gray1: 'gray.50',
-    gray2: 'gray.100'
+    gray2: 'gray.100',
+    topBarGradient: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(87,99,111,1) 35%, rgba(59,47,80,1) 100%)'
 }
 
 const darkTheme: Theme = {
@@ -45,7 +47,8 @@ const darkTheme: Theme = {
     highlight: '#D0F5BE',
     gray: 'gray.900',
     gray1: 'gray.800',
-    gray2: 'gray.800'
+    gray2: 'gray.800',
+    topBarGradient: 'linear-gradient(0deg, #15141A 0%, #000706 50%, #15141A 100%)'
 }
 
 

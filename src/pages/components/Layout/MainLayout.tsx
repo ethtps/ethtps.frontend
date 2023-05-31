@@ -22,7 +22,7 @@ export default function MainLayout(props: Partial<{
   return (
     <>
       <Navbar allProviders={props.providerData} />
-      <Box >
+      <Box>
         {props.component}
       </Box>
     </>

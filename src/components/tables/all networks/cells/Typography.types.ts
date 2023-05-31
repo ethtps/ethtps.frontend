@@ -4,5 +4,4 @@ export const tableCellTypographyStandard = {
 
 export const tableHeaderCellTypography = {
   fontWeight: 'bold',
-  fontSize: '1.1rem'
 }

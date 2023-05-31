@@ -5,23 +5,28 @@ import { Suspense, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
 import Loading from './components/Loading'
 import { GetServerSideProps } from 'next'
-import { ProviderResponseModel } from '@/api-client'
-import { getAsync } from '@/services'
+import { DataType, ProviderResponseModel } from '@/api-client'
+import { api, getAsync } from '@/services'
+import { DataPointDictionary, IMaxDataModel, setMaxTPSData, useAppDispatch } from '@/data'
 
 interface IIndexPageProps {
   providerData?: ProviderResponseModel[]
+  maxData?: IMaxDataModel
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
-  const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
   return {
     props: {
-      providerData: providers.parsedBody
-    } as ProviderResponseModel
+      providerData: await api.getProvidersAsync(),
+      maxData: {
+        maxGTPSData: await api.getMax(DataType.Tps),
+        maxGPSData: await api.getMax(DataType.Gps),
+      }
+    } as IIndexPageProps
   }
 }
 
-export default function Index({ providerData }: IIndexPageProps) {
+export default function Index({ providerData, maxData }: IIndexPageProps) {
   const containerRef = useRef<any>(null)
   const sizeRef = useSize(containerRef)
   const [currentValue, setCurrentValue] = useState(0)
@@ -41,7 +46,7 @@ export default function Index({ providerData }: IIndexPageProps) {
       <br />
       <Center>
         <Stack overflow={'scroll'} boxSize={'container.xl'}>
-          <AllProvidersTable providerData={providerData} maxRowsBeforeShowingExpand={25} />
+          <AllProvidersTable maxData={maxData} providerData={providerData} maxRowsBeforeShowingExpand={25} />
         </Stack>
       </Center>
     </>

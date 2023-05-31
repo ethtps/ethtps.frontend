@@ -1,4 +1,3 @@
-'use client'
 import { APIKeyMiddleware } from './APIKeyMiddleware'
 import {
   APIKeyApi,

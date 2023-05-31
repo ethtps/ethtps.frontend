@@ -1,27 +1,28 @@
 'use client'
-import { useHandler } from '@/data'
-import { Dictionary } from '@reduxjs/toolkit'
+import { L2DataUpdateModel } from '@/data'
 import {
-    createSignalRContext, // SignalR
-    createWebSocketContext, // WebSocket
-    createSocketIoContext // Socket.io
+    createSignalRContext
 } from 'react-signalr'
 
 const { useSignalREffect, Provider } = createSignalRContext()
 
 export interface LiveDataContainerProps {
     component: JSX.Element
-    onDataReceived?: (data: Dictionary<number>) => void
+    onDataReceived?: (data: L2DataUpdateModel[]) => void
     onTotalChanged?: (total: number) => void
+    onConnected?: () => void
+    onDisconnected?: () => void
+    onError?: (error: any) => void
 }
 
 export function LiveDataContainer(props: LiveDataContainerProps) {
     console.log("Rendering LiveDataContainer")
     useSignalREffect("ConnectionEstablished", (data) => {
-        console.log("ConnectionEstablished")
+        if (props.onConnected) {
+            props.onConnected()
+        }
     }, [])
-    useSignalREffect("DataReceived", (data) => {
-        console.log("DataReceived")
+    useSignalREffect("LiveDataChanged", (data) => {
         if (props.onDataReceived) {
             props.onDataReceived(data)
         }

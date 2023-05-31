@@ -12,6 +12,7 @@ import { IconExclamationCircle } from '@tabler/icons-react'
 
 export default function AllProvidersTable({
   providerData,
+  maxData,
   maxRowsBeforeShowingExpand = 25
 }: IProviderTableModel): JSX.Element {
   const oldShowRowCountValue = maxRowsBeforeShowingExpand as number
@@ -56,6 +57,7 @@ export default function AllProvidersTable({
         <Tbody>
           <AllProvidersRows
             providerData={providerData}
+            maxData={maxData}
             maxRowsBeforeShowingExpand={showRowCount}
           />
         </Tbody>

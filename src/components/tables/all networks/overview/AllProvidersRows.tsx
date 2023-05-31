@@ -4,12 +4,14 @@ import {
   getModeData,
   extractData,
   useGetLiveDataFromAppStore,
-  useGetLiveDataModeFromAppStore
+  useGetLiveDataModeFromAppStore,
+  getMaxDataFor
 } from '@/data'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { Tr } from '@chakra-ui/react'
 import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, range } from '@/components'
+import { DataType } from '@/api-client'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
@@ -32,7 +34,9 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
               )
             )
             ?.map((x, i) => {
-              //console.log("AllProvidersRows", x, i)
+              const maxTPS = getMaxDataFor(model.maxData, x.name, DataType.Tps)
+              const maxGPS = getMaxDataFor(model.maxData, x.name, DataType.Gps)
+              const maxGTPS = getMaxDataFor(model.maxData, x.name, DataType.GasAdjustedTps)
               return (
                 <Tr key={i} placeContent={'center'}>
                   <IndexCell clickCallback={model.clickCallback} index={i + 1} />
@@ -45,6 +49,9 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                   />
                   <MaxValueCell
                     clickCallback={model.clickCallback}
+                    tps={maxTPS}
+                    gps={maxGPS}
+                    gtps={maxGTPS}
                     provider={x}
                   />
                   <ProviderTypeCell

@@ -38,56 +38,61 @@ export default function Navbar({ allProviders }: INavbarProps) {
     return (
         <Box >
             <Flex
-                pos={'static'}
+                top={0}
                 color={colors.text}
-                minH={'60px'}
+                h={'60px'}
                 py={{ base: 2 }}
                 px={{ base: 4 }}
                 borderBottom={1}
                 borderStyle={'solid'}
                 borderColor={colors.background}
-                bgColor={colors.background}
+                sx={{
+                    background: colors.background
+                }}
+                alignContent={'center'}
                 w={'100%'}
             >
-                <Link href="/">
-                    <Text className={styles.logoish}>ETHTPS.info</Text>
-                </Link>
-                <Spacer />
                 <Box>
-                    <HStack
-                        flex={{ base: 2, md: 0 }}
-                        justify={'space-between'} // Changed this from 'flex-start' to 'space-between'
-                        direction={'row'}
-                        spacing={6}
-                    >
-                        <Flex flex={{ base: 2 }} justify={{ base: 'start', md: 'start' }}>
-                            <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                                <Box>
-                                    {DesktopNav(allProviders)}
-                                </Box>
-                                <Spacer />
-                                <ThreeLinks />
-                            </Flex>
-                        </Flex>
-                        <Button onClick={toggleColorMode}>
-                            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                        </Button>
-                        <Flex
-                            flex={{ base: 1, md: 'auto' }}
-                            ml={{ base: -2 }}
-                            display={{ base: 'flex', md: 'none' }}
-                        >
-                            <IconButton
-                                onClick={onToggle}
-                                icon={
-                                    isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-                                }
-                                variant={'ghost'}
-                                aria-label={'Toggle Navigation'}
-                            />
-                        </Flex>
-                    </HStack>
+                    <Link href="/">
+                        <Text className={styles.logoish}>ETHTPS.info</Text>
+                    </Link>
                 </Box>
+                <Spacer />
+                <HStack
+                    flex={{ base: 2, md: 0 }}
+                    justify={'space-between'} // Changed this from 'flex-start' to 'space-between'
+                    direction={'row'}
+                    spacing={6}
+                >
+                    <Flex
+                        flex={{ base: 2 }}
+                        justify={{ base: 'start', md: 'start' }}>
+                        <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+                            <Box>
+                                {DesktopNav(allProviders)}
+                            </Box>
+                            <Spacer />
+                            <ThreeLinks />
+                        </Flex>
+                    </Flex>
+                    <Button onClick={toggleColorMode}>
+                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                    </Button>
+                    <Flex
+                        flex={{ base: 1, md: 'auto' }}
+                        ml={{ base: -2 }}
+                        display={{ base: 'flex', md: 'none' }}
+                    >
+                        <IconButton
+                            onClick={onToggle}
+                            icon={
+                                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                            }
+                            variant={'ghost'}
+                            aria-label={'Toggle Navigation'}
+                        />
+                    </Flex>
+                </HStack>
             </Flex>
 
 

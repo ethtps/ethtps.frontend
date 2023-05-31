@@ -14,6 +14,7 @@ import { components } from './markdown'
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore({})
+
   return (
     <>
       <MDXProvider components={components}>
