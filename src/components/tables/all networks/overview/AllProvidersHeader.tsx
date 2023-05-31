@@ -11,8 +11,15 @@ export function AllProvidersHeader(): JSX.Element {
   const modeStr = m_toShortString(mode)
   return (
     <>
-      <TableHeader
-        text={['#', 'Name', modeStr, `Max recorded ${modeStr}`, 'Type']}
+      <TableHeader items={[
+        { text: '#' },
+        { text: 'Name' },
+        { text: 'Type' },
+        { text: 'TPS' },
+        {
+          text: `Max recorded TPS`
+        },
+      ]}
       />
     </>
   )

@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CurrentViewersIcon } from '../../CurrentViewersIcon'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
-import { useGetExperimentsFromAppStore, useHandler } from '@/data'
-import { conditionalRender } from '@/services'
-import { Box, Tooltip, Text } from '@chakra-ui/react'
+import { useHandler } from '@/data'
+import { conditionalRender, useColors } from '@/services'
+import { Box, Tooltip, Text, ModalFooter, useEditable } from '@chakra-ui/react'
 import { IconButton } from '../../IconButton'
 import {
   IconGasStation,
@@ -14,22 +14,20 @@ import { DataType } from '@/api-client'
 
 export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
   const mode = useHandler(model.modeHandle)
+  const colors = useColors()
   const getColorComparedTo = (proposedMode: DataType) =>
-    proposedMode == mode?.value ? { color: 'primary' } : undefined
-  const experimentsAppStoreValue = useGetExperimentsFromAppStore()
+    proposedMode == mode?.value ? { color: colors.primary } : undefined
   return (
     <>
       <Box sx={{ float: 'right' }}>
-        {conditionalRender(
-          <CurrentViewersIcon />,
-          experimentsAppStoreValue?.includes(5) && false
-        )}
         <Tooltip
           hasArrow
-          placement={'top'}
-          {...getColorComparedTo(DataType.Tps)}
+          placement={'auto'}
           label={<Text>Transactions per second</Text>}>
           <IconButton
+            sx={
+              { ...getColorComparedTo(DataType.Tps) }
+            }
             onClick={() => mode?.setter(DataType.Tps)}
             icon={<IconNumber />}
           />
@@ -37,10 +35,13 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
 
         <Tooltip
           hasArrow
-          placement={'top'}
+          placement={'auto'}
           {...getColorComparedTo(DataType.Gps)}
           label={<Text>Gas per second</Text>}>
           <IconButton
+            sx={
+              { ...getColorComparedTo(DataType.Gps) }
+            }
             onClick={() => mode?.setter(DataType.Gps)}
             icon={<IconGasStation />}
           />
@@ -48,10 +49,13 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
 
         <Tooltip
           hasArrow
-          placement={'top'}
+          placement={'auto'}
           {...getColorComparedTo(DataType.GasAdjustedTps)}
           label={<Text>Gas-adjusted transactions per second</Text>}>
           <IconButton
+            sx={
+              { ...getColorComparedTo(DataType.GasAdjustedTps) }
+            }
             onClick={() => mode?.setter(DataType.GasAdjustedTps)}
             icon={<IconRazorElectric />}
           />

@@ -18,6 +18,7 @@ export function IconButton(props: {
       disabled={!props.visible ?? false}
       leftIcon={props.icon}
       iconSpacing={'auto'}
+      variant={'ghost'}
       style={{
         ...props.sx,
         opacity: props.visible ?? true ? 1 : 0

@@ -2,6 +2,7 @@ import {
 	AppState,
 	DataPointDictionary,
 	IMaxDataModel,
+	getMaxDataFor,
 	useAppSelector,
 } from '..'
 import { DataPoint, DataType } from '../../../api-client'
@@ -15,7 +16,7 @@ export function useGetMaxDataForProviderFromAppStore(
 	type: DataType
 ) {
 	return useAppSelector((state: AppState) =>
-		state.maxData.getMaxDataFor(provider, type)
+		getMaxDataFor(state.maxData, provider, type)
 	) as DataPoint
 }
 

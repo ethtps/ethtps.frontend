@@ -11,7 +11,15 @@ export default function AllProvidersStatusHeader(): JSX.Element {
   const modeStr = m_toShortString(mode)
   return (
     <>
-      <TableHeader text={['#', 'Name', 'Status']}
+      <TableHeader items={[{
+        text: "#"
+      },
+      {
+        text: "Name"
+      },
+      {
+        text: "Status"
+      }]}
       />
     </>
   )

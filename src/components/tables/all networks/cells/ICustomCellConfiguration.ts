@@ -3,7 +3,7 @@ import { ICellClickedEvent } from './ICellClickedEvent'
 
 export const buildClassNames = (config: ICustomCellConfiguration) => {
   return {
-    className: `inline ${config.clickCallback !== undefined ? 'pointable' : ''}`
+    className: ` ${config.clickCallback !== undefined ? 'pointable' : ''}`
   }
 }
 

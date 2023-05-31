@@ -1,29 +1,37 @@
-/* eslint-disable import/no-internal-modules */
 import React from 'react'
-import { Td, Text, Th } from '@chakra-ui/react'
-import { tableHeaderCellTypography } from './all networks/cells/Typography.types'
+import { Th } from '@chakra-ui/react'
 import { useColors } from '@/services'
-interface ITableHeaderParams {
-  text?: string[]
+
+export interface ITableHeader {
+  text: string
+  subItems?: ITableHeader[]
 }
 
-export function TableHeader(params: ITableHeaderParams): JSX.Element {
+// Component for rendering a single table header
+const SingleTableHeader: React.FC<ITableHeader> = ({ text, subItems }): JSX.Element => {
   const colors = useColors()
+
   return (
-    <>
-      {params.text?.map((x, i) => (
-        <Th
-          color={colors.text}
-          bgColor={colors.gray1}
-          _hover={{ color: colors.primary, bgColor: colors.gray2, cursor: 's-resize' }}
-          fontSize={'1rem'}
-          height={50}
-          key={i}
-          alignContent={'center'}>
-          {x}
-        </Th >
-      ))
-      }
-    </>
+    <Th
+      color={colors.text}
+      bgColor={colors.gray1}
+      _hover={{ color: colors.primary, bgColor: colors.gray2, cursor: 's-resize' }}
+      fontSize={'1rem'}
+      height={50}
+    >
+      {text}
+      {/*subItems && subItems.map((subItem, index) => (
+        <SingleTableHeader key={`${subItem.text}${index}`} {...subItem} />
+      ))*/}
+    </Th>
   )
 }
+
+// Component for rendering multiple table headers
+export const TableHeader: React.FC<{ items: ITableHeader[] }> = ({ items }): JSX.Element => (
+  <>
+    {items.map((item, index) => (
+      <SingleTableHeader key={`${item.text}${index}`} {...item} />
+    ))}
+  </>
+)

@@ -51,6 +51,7 @@ export function MaxValueCell(config: Partial<IMaxValueCellProps>) {
       <Td
         {...buildClassNames(config)}
         textColor={colors.text}
+        textAlign={'center'}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'MaxValue')

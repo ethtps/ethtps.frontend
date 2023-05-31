@@ -9,8 +9,8 @@ import {
 } from '@/data'
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { Tr } from '@chakra-ui/react'
-import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, range } from '@/components'
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, TableHeader, range } from '@/components'
 import { DataType } from '@/api-client'
 
 export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
@@ -38,6 +38,10 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                 <Tr key={i} placeContent={'center'}>
                   <IndexCell clickCallback={model.clickCallback} index={i + 1} />
                   <NameCell clickCallback={model.clickCallback} provider={x} />
+                  <ProviderTypeCell
+                    clickCallback={model.clickCallback}
+                    provider={x}
+                  />
                   <DataValueCell
                     clickCallback={model.clickCallback}
                     provider={x}
@@ -48,12 +52,7 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                     clickCallback={model.clickCallback}
                     maxData={model.maxData}
                     dataType={DataType.Tps}
-                    provider={x}
-                  />
-                  <ProviderTypeCell
-                    clickCallback={model.clickCallback}
-                    provider={x}
-                  />
+                    provider={x} />
                 </Tr>
               )
             })}

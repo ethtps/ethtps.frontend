@@ -28,7 +28,7 @@ function createHandlerFromType<TReturnValue>(
 function createHandler<THandler extends IHandler<TReturnValue>, TReturnValue>(
 	handler?: THandler
 ): Handler<TReturnValue> {
-	if (handler == null) {
+	if (!handler) {
 		return new Handler<TReturnValue>((newValue?: TReturnValue) => { })
 	}
 
@@ -37,7 +37,8 @@ function createHandler<THandler extends IHandler<TReturnValue>, TReturnValue>(
 	)
 	const setter = (newValue?: TReturnValue): void => {
 		setValue(newValue)
-		handler.callback?.(newValue as TReturnValue)
+		if (handler?.callback)
+			handler?.callback(newValue as TReturnValue)
 	}
 	return new Handler<TReturnValue>(setter, value)
 }
