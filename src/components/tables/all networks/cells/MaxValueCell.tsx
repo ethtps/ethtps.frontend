@@ -7,8 +7,10 @@ import {
 import { tableCellTypographyStandard } from './Typography.types'
 import { Td, Tooltip } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
-import { DataPoint } from '@/api-client'
+import { DataPoint, DataType } from '@/api-client'
 import {
+  IMaxDataModel,
+  getMaxDataFor,
   numberFormat
 } from '@/data'
 import { useColors } from '@/services'
@@ -37,13 +39,12 @@ function generateMaxTypography(data?: DataPoint) {
 }
 
 interface IMaxValueCellProps extends ICustomCellConfiguration {
-  tps: DataPoint
-  gps: DataPoint
-  gtps: DataPoint
+  maxData: IMaxDataModel
+  dataType: DataType
 }
 export function MaxValueCell(config: Partial<IMaxValueCellProps>) {
-
-  const tooltipTypography = generateMaxTypography(config.tps)
+  const max = getMaxDataFor(config.maxData, config.provider?.name, config.dataType)
+  const tooltipTypography = generateMaxTypography(max)
   const colors = useColors()
   return (
     <>
@@ -63,7 +64,7 @@ export function MaxValueCell(config: Partial<IMaxValueCellProps>) {
               textDecoration:
                 tooltipTypography !== undefined ? 'underline' : undefined
             }}>
-            {numberFormat(config?.tps?.value).toString()}
+            {numberFormat(max?.value).toString()}
           </Text>
         </Tooltip>
       </Td>

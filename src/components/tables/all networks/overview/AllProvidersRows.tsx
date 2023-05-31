@@ -34,9 +34,6 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
               )
             )
             ?.map((x, i) => {
-              const maxTPS = getMaxDataFor(model.maxData, x.name, DataType.Tps)
-              const maxGPS = getMaxDataFor(model.maxData, x.name, DataType.Gps)
-              const maxGTPS = getMaxDataFor(model.maxData, x.name, DataType.GasAdjustedTps)
               return (
                 <Tr key={i} placeContent={'center'}>
                   <IndexCell clickCallback={model.clickCallback} index={i + 1} />
@@ -49,9 +46,8 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                   />
                   <MaxValueCell
                     clickCallback={model.clickCallback}
-                    tps={maxTPS}
-                    gps={maxGPS}
-                    gtps={maxGTPS}
+                    maxData={model.maxData}
+                    dataType={DataType.Tps}
                     provider={x}
                   />
                   <ProviderTypeCell
