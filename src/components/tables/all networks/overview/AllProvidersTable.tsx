@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AllProvidersHeader } from './AllProvidersHeader'
 import { AllProvidersRows } from './AllProvidersRows'
 import React from 'react'
@@ -13,9 +13,10 @@ import { IconExclamationCircle } from '@tabler/icons-react'
 export default function AllProvidersTable({
   providerData,
   maxData,
-  newestData,
+  aggregator,
+  dataType,
   maxRowsBeforeShowingExpand = 25
-}: IProviderTableModel): JSX.Element {
+}: Partial<IProviderTableModel>): JSX.Element {
   const oldShowRowCountValue = maxRowsBeforeShowingExpand as number
   const [showRowCount, setShowRowCount] = useState(
     maxRowsBeforeShowingExpand
@@ -58,8 +59,10 @@ export default function AllProvidersTable({
         </Thead>
         <Tbody>
           <AllProvidersRows
+            aggregator={aggregator}
             providerData={providerData}
             maxData={maxData}
+            dataType={dataType}
             maxRowsBeforeShowingExpand={showRowCount}
           />
         </Tbody>

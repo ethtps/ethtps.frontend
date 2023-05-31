@@ -1,17 +1,32 @@
 import { ICustomCellConfiguration } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
 import React from 'react'
-import { m_toShortString, numberFormat, toShortString } from '@/data'
+import { LiveDataAggregator, m_toShortString, numberFormat, toShortString } from '@/data'
 import { AnimatedTypography, SkeletonWithTooltip } from '@/components'
 import { DataType } from '@/api-client'
 import { Td } from '@chakra-ui/react'
 
-interface IDataValueCellConficuration extends ICustomCellConfiguration {
-  value?: number
+interface IDataValueCellConfiguration extends ICustomCellConfiguration {
   dataType: DataType
+  aggregator?: LiveDataAggregator
 }
 
-export function DataValueCell(config: IDataValueCellConficuration) {
+export function DataValueCell(config: IDataValueCellConfiguration) {
+  const value = config.aggregator?.get(config.provider?.name)
+  let v: number | undefined
+  switch (config.dataType) {
+    case DataType.Tps:
+      v = value?.data?.tps
+      break
+    case DataType.GasAdjustedTps:
+      if (value?.data?.gps)
+        v = value?.data?.gps / 21000
+      break
+    case DataType.Gps:
+      v = value?.data?.gps
+      break
+  }
+
   return (
     <>
       <Td
@@ -20,8 +35,8 @@ export function DataValueCell(config: IDataValueCellConficuration) {
             ? config.clickCallback(config.provider, 'DataValue')
             : () => { }
         }
-        >
-        {config.value === undefined ? (
+      >
+        {v === undefined ? (
           <SkeletonWithTooltip
             text={`Loading ${config.provider?.name} ${m_toShortString(
               config.dataType
@@ -31,7 +46,7 @@ export function DataValueCell(config: IDataValueCellConficuration) {
           <AnimatedTypography
             animationClassName='animated-cell'
             standard={tableCellTypographyStandard}
-            child={numberFormat(config.value).toString()}
+            child={numberFormat(v).toString()}
             durationMs={1000}
           />
         )}

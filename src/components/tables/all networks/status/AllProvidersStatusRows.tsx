@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { Tr } from '@chakra-ui/react'
 import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, UpdaterStatusCell, range } from '@/components'
 
-export default function AllProvidersStatusRows(model: IProviderTableModel): JSX.Element {
+export default function AllProvidersStatusRows(model: Partial<IProviderTableModel>): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
   const mode = useGetLiveDataModeFromAppStore()
   const liveData = useGetLiveDataFromAppStore()

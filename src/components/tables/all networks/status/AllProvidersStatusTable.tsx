@@ -11,7 +11,7 @@ import { ProviderResponseModel } from '@/api-client'
 export default function AllProvidersStatusTable({
     providerData,
     maxRowsBeforeShowingExpand = 25
-}: IProviderTableModel): JSX.Element {
+}: Partial<IProviderTableModel>): JSX.Element {
     const oldShowRowCountValue = maxRowsBeforeShowingExpand as number
     const [showRowCount, setShowRowCount] = useState(
         maxRowsBeforeShowingExpand

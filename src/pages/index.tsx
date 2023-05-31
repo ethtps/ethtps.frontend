@@ -32,18 +32,20 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
   const containerRef = useRef<any>(null)
   const [connected, setConnected] = useState(false)
   const sizeRef = useSize(containerRef)
-  const [currentValue, setCurrentValue] = useState(0)
   const aggregator = new LiveDataAggregator()
+  const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
   const modeHandler = createHandlerFromCallback<DataType>((newValue) => {
     console.log(newValue)
   })
   const { data, setTPS, setGPS } = useLiveDataWithDelta()
-  const [newestData, setNewestData] = useState<L2DataUpdateModel[]>()
-  const onDataReceived = (liveData: L2DataUpdateModel[]) => {
+  const [newestData, setNewestData] = useState<Dictionary<L2DataUpdateModel>>()
+  const onDataReceived = (liveData: Dictionary<L2DataUpdateModel>) => {
     aggregator.updateMultiple(liveData)
     const average = aggregator.average
     setTPS(average.tps)
     setGPS(average.gps)
+    setNewestData(liveData)
+    setCopiedAggregator(aggregator) // [0_2] Trigger
   }
 
   return (
@@ -73,13 +75,13 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
               <AllProvidersTable
                 maxData={maxData}
                 providerData={providerData}
-                newestData={newestData}
+                aggregator={copiedAggregator}
+                dataType={DataType.Tps}
                 maxRowsBeforeShowingExpand={25} />
             </Stack>
           </Center>
         </>
         } />
-
     </>
   )
 }

@@ -1,38 +1,42 @@
+import { Dictionary } from '@reduxjs/toolkit'
 import { L2DataUpdateModel } from '.'
 
 /**
  * Aggregates live data from multiple providers
  */
 export class LiveDataAggregator {
-    private providers: { [key: string]: L2DataUpdateModel[] } = {};
-    private tpsSum: number = 0;
-    private gpsSum: number = 0;
-    private count: number = 0;
+    private data: Dictionary<L2DataUpdateModel> = {}
+    private tpsSum: number = 0
+    private gpsSum: number = 0
 
     public update(entry: L2DataUpdateModel) {
-        if (!this.providers[entry.provider]) {
-            this.providers[entry.provider] = []
-        }
-        this.providers[entry.provider].push(entry)
         if (entry.data?.tps) {
+            this.tpsSum -= this.data[entry.provider]?.data?.tps || 0
             this.tpsSum += entry.data.tps
         }
         if (entry.data?.gps) {
+            this.gpsSum -= this.data[entry.provider]?.data?.gps || 0
             this.gpsSum += entry.data.gps
         }
-        this.count++
+        this.data[entry.provider] = entry
     }
 
-    public updateMultiple(entries: L2DataUpdateModel[]) {
-        for (let entry of entries) {
-            this.update(entry)
+    public get(provider?: string | null) {
+        if (!provider) return undefined
+        return this.data[provider]
+    }
+
+    public updateMultiple(entries: Dictionary<L2DataUpdateModel>) {
+        for (let key in entries) {
+            this.update(entries[key] as L2DataUpdateModel)
         }
     }
 
     public get average() {
+        const count = Object.keys(this.data).length
         return {
-            tps: this.count > 0 ? this.tpsSum / this.count : 0,
-            gps: this.count > 0 ? this.gpsSum / this.count : 0
+            tps: count > 0 ? this.tpsSum / count : 0,
+            gps: count > 0 ? this.gpsSum / count : 0
         }
     }
 }

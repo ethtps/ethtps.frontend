@@ -2,9 +2,10 @@ import { IComponentSize } from "@/components"
 import { L2DataUpdateModel } from "@/data"
 import { useColors } from "@/services"
 import { Box } from "@chakra-ui/react"
+import { Dictionary } from "@reduxjs/toolkit"
 
 interface ISimpleBarStatProps extends IComponentSize {
-    newestData?: L2DataUpdateModel[]
+    newestData?: Dictionary<L2DataUpdateModel>
 }
 
 export function SimpleBarStat(props: ISimpleBarStatProps) {

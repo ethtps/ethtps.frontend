@@ -13,14 +13,9 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, TableHeader, range } from '@/components'
 import { DataType } from '@/api-client'
 
-export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
+export function AllProvidersRows(model: Partial<IProviderTableModel>): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
-  const mode = useGetLiveDataModeFromAppStore()
-  const liveData = useGetLiveDataFromAppStore()
-  const [data, setData] = useState(getModeData(liveData ?? {}, mode))
-  useEffect(() => {
-    setData(getModeData(liveData ?? {}, mode))
-  }, [mode, liveData])
+  const dataType = model.dataType ?? DataType.Tps
   return (
     <>
       {hasData ? (
@@ -45,13 +40,13 @@ export function AllProvidersRows(model: IProviderTableModel): JSX.Element {
                   <DataValueCell
                     clickCallback={model.clickCallback}
                     provider={x}
-                    dataType={mode}
-                    value={extractData(data, x.name)}
+                    dataType={dataType}
+                    aggregator={model.aggregator}
                   />
                   <MaxValueCell
                     clickCallback={model.clickCallback}
                     maxData={model.maxData}
-                    dataType={DataType.Tps}
+                    dataType={dataType}
                     provider={x} />
                 </Tr>
               )
