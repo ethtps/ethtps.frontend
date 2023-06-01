@@ -5,7 +5,7 @@ interface IAnimatedTypographyConfiguration {
   child: JSX.Element | string | number
   animationClassName: string
   durationMs: number
-  standard?: any
+  sx?: any
   centerText?: boolean
 }
 
@@ -13,7 +13,7 @@ export function AnimatedTypography(config: IAnimatedTypographyConfiguration) {
   return (
     <>
       <Text
-        {...config.standard}
+        {...config.sx}
         className={config.animationClassName}
         key={config.child.toString()}
         textAlign={config.centerText ? 'center' : undefined}>

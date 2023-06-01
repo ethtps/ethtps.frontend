@@ -33,7 +33,6 @@ export default function AllProvidersTable({
     <>
       <Table
         aria-label='collapsible table'
-        w={'container.lg'}
         overflow={'scroll'}
         variant={'unstyled'}>
         <TableCaption placement={'top'}>

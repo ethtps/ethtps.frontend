@@ -1,4 +1,4 @@
 export interface IComponentSize {
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
 }

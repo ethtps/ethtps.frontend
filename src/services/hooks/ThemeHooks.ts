@@ -36,9 +36,9 @@ const lightTheme: Theme = {
 
 const darkTheme: Theme = {
     primary: '#B799FF',
-    primaryContrast: '#000000',
+    primaryContrast: '#FFFFFF',
     secondary: '#ACBCFF',
-    tertiary: '#AEE2FF',
+    tertiary: '#385fb3',
     background: 'gray.900',
     backgroundLight: "gray.800",
     text: 'white',

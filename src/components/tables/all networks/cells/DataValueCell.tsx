@@ -45,7 +45,7 @@ export function DataValueCell(config: IDataValueCellConfiguration) {
         ) : (
           <AnimatedTypography
             animationClassName='animated-cell'
-            standard={tableCellTypographyStandard}
+            sx={tableCellTypographyStandard}
             child={numberFormat(v).toString()}
             durationMs={1000}
           />

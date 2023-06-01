@@ -1,5 +1,5 @@
 /* eslint-disable import/no-internal-modules */
-import { Box, Center, Container, Stack } from '@chakra-ui/react'
+import { Box, Center, Container, Kbd, Stack } from '@chakra-ui/react'
 import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, useLiveDataWithDelta } from '@/components'
 import { Suspense, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
@@ -30,8 +30,9 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 
 export default function Index({ providerData, maxData }: IIndexPageProps) {
   const containerRef = useRef<any>(null)
-  const [connected, setConnected] = useState(false)
   const sizeRef = useSize(containerRef)
+
+  const [connected, setConnected] = useState(false)
   const aggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
   const modeHandler = createHandlerFromCallback<DataType>((newValue) => {
@@ -47,39 +48,34 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
     setNewestData(liveData)
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }
-
   return (
     <>
-      <DataModeButtonGroup modeHandle={modeHandler} />
       <LiveDataContainer
         onConnected={() => setConnected(true)}
         onDisconnected={() => setConnected(false)}
         onError={(error) => console.error(error)}
         onDataReceived={onDataReceived}
         component={<>
-          <Container>
-            <SimpleLiveDataStat connected={connected} data={{
-              tps: data.tps,
-              gps: data.gps,
-              gtps: data.gtps
-            }} />
-          </Container>
-          <Box w={'100%'} overflow={'scroll'} ref={containerRef}>
-            <Center>
-              <SimpleBarStat newestData={newestData} width={Math.max((sizeRef?.width ?? 0) * 0.95 ?? 500, 750)} height={500} />
-            </Center>
-          </Box>
-          <br />
-          <Center>
-            <Stack overflow={'scroll'} boxSize={'container.xl'}>
+          <Box
+            w={'100%'}
+            ref={containerRef}>
+            <SimpleBarStat
+              width={sizeRef?.width}
+              liveData={data}
+              newestData={newestData}
+              connected={connected}
+              height={500} />
+            <br />
+
+            <Box overflow={'scroll'} >
               <AllProvidersTable
                 maxData={maxData}
                 providerData={providerData}
                 aggregator={copiedAggregator}
                 dataType={DataType.Tps}
                 maxRowsBeforeShowingExpand={25} />
-            </Stack>
-          </Center>
+            </Box>
+          </Box>
         </>
         } />
     </>
