@@ -12,9 +12,11 @@ import {
 import { schemeDark2 } from "d3-scale-chromatic"
 import { scaleLinear, scaleOrdinal } from "d3-scale"
 import { extent } from "d3-array"
-import { Box, Container } from "@chakra-ui/react"
+import { Box, Container, Text } from "@chakra-ui/react"
 import { SimpleLiveDataStat } from "@/components"
-import { useColors } from "@/services"
+import { binaryConditionalRender, useColors } from "@/services"
+import { set } from "date-fns"
+import { BeatLoader } from "react-spinners"
 
 const Tooltip = ({ opacity, text }) => {
     return (
@@ -24,13 +26,14 @@ const Tooltip = ({ opacity, text }) => {
     )
 }
 
-export const D3Stream = ({ data, width, height, newestData }) => {
+export const D3Stream = ({ data, width, height, newestData, connected }) => {
     // Optional tooltip in top right corner when hovering a stream
     // You could also export the Tooltip to its own file
     const [opacity, setOpacity] = useState(0)
     const [text, setText] = useState("initialState")
     const [stacks, setStacks] = useState([])
     const [liveData, setLiveData] = useState([])
+    const [cumulatedLiveData, setCumulatedLiveData] = useState([])
     const [columns, setColumns] = useState([])
     const [totals, setTotals] = useState([])
     useEffect(() => {
@@ -45,10 +48,22 @@ export const D3Stream = ({ data, width, height, newestData }) => {
                 const dataPoint = {}
                 newColumns.forEach(c => dataPoint[c] = newestData[c]?.data.tps)
                 setTotals(m => [...m, Object.keys(dataPoint).map(x => dataPoint[x]).reduce((a, b) => (a ?? 0) + (b ?? 0), 0)])
+
+                setCumulatedLiveData(cd => {
+                    let accumulatedLiveData = 0
+                    let newDataPoint = {}
+                    for (let key in newestData) {
+                        newDataPoint[key] = newestData[key]?.data.tps ?? 0 + accumulatedLiveData
+                        accumulatedLiveData += newestData[key] ?? 0
+                    }
+                    return [...cd, newDataPoint]
+                })
+
                 return [...l, dataPoint]
             })
             return newColumns
         })
+
     }, [newestData])
     useEffect(() => {
         if (columns?.length === 0) return
@@ -65,17 +80,9 @@ export const D3Stream = ({ data, width, height, newestData }) => {
         const yScale = scaleLinear().domain([-Math.max(...totals), Math.max(...totals)]).range([height, 0])
 
         // could do some filtering here
-        let accumulatedLiveData = []
 
-        for (let i = 0; i < liveData.length; i++) {
-            let newDataPoint = {}
-            for (let key in liveData[i]) {
-                newDataPoint[key] = liveData[i][key] + (accumulatedLiveData[i - 1]?.[key] || 0)
-            }
-            accumulatedLiveData.push(newDataPoint)
-        }
 
-        const stackData = accumulatedLiveData
+        const stackData = cumulatedLiveData
 
         // Setup the layout of the graph
         const stackLayout = stack()
@@ -129,9 +136,19 @@ export const D3Stream = ({ data, width, height, newestData }) => {
                 }}
             />
         )))
-    }, [data, width, height, text, liveData, columns, totals])
-    return <svg width={width} height={height}>
-        <Tooltip opacity={opacity} text={text} />
-        <>{stacks}</>
-    </svg>
+    }, [data, width, height, text, liveData, columns, totals, cumulatedLiveData])
+    return <>
+        {binaryConditionalRender(<svg width={width} height={height}>
+            <Tooltip opacity={opacity} text={text} />
+            <>{stacks}</>
+        </svg>,
+            <>
+                <Container
+                    marginTop={height / 2}
+                    centerContent>
+                    <BeatLoader size={8} color={'black'} />
+                    <Text>Connecting...</Text>
+                </Container>
+            </>, connected)}
+    </>
 }
