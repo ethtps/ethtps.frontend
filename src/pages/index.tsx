@@ -77,6 +77,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
                 w={sizeRef?.width} />
               <Box w={sizeRef?.width} h={sizeRef?.height} bg={colors.tertiary} borderRadius="lg" overflow="hidden">
                 <D3Stream
+                  newestData={newestData}
                   width={sizeRef?.width}
                   data={streamData}
                   height={500} />
