@@ -13,7 +13,7 @@ import { Box, Container } from "@chakra-ui/react"
 import { SimpleLiveDataStat } from "@/components"
 import { useColors } from "@/services"
 
-export const D3Stream = ({ data, width, height, newestData, connected, liveData }) => {
+export const D3Stream = ({ data, width, height }) => {
     if (data?.columns === undefined) return <></>
     const keys = data.columns.slice(1)
 
@@ -93,26 +93,8 @@ export const D3Stream = ({ data, width, height, newestData, connected, liveData 
             }}
         />
     ))
-    const colors = useColors()
-    return (<Container
-        w={width}
-        sx={{
-            margin: 0,
-            padding: 0,
-        }}>
-        <SimpleLiveDataStat
-            absolute
-            fillWidth
-            connected={connected}
-            data={liveData}
-            w={width} />
-        <Box w={width} h={height} bg={colors.tertiary} borderRadius="lg" overflow="hidden">
-
-            <svg width={width} height={height}>
-                <Tooltip opacity={opacity} text={text} />
-                <>{stacks}</>
-            </svg>
-        </Box>
-    </Container>
-    )
+    return <svg width={width} height={height}>
+        <Tooltip opacity={opacity} text={text} />
+        <>{stacks}</>
+    </svg>
 }

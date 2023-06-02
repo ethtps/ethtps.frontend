@@ -6,7 +6,7 @@ import { useSize } from "@chakra-ui/react-use-size"
 import Loading from './components/Loading'
 import { GetServerSideProps } from 'next'
 import { DataType, ProviderResponseModel } from '@/api-client'
-import { api, conditionalRender, getAsync } from '@/services'
+import { api, conditionalRender, getAsync, useColors } from '@/services'
 import { DataPointDictionary, IMaxDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback, setMaxTPSData, useAppDispatch, useHandler } from '@/data'
 import { Dictionary } from '@reduxjs/toolkit'
 import { D3Stream } from '@/components'
@@ -50,6 +50,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }
   const streamData = useData()
+  const colors = useColors()
   return (
     <>
       <LiveDataContainer
@@ -61,23 +62,38 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
           <Box
             w={'100%'}
             ref={containerRef}>
-            <D3Stream
-              width={sizeRef?.width}
-              data={streamData}
-              newestData={newestData}
-              liveData={data}
-              connected={connected}
-              height={500} />
-            <br />
+            <Container
+              h={500}
+              w={sizeRef?.width}
+              sx={{
+                margin: 0,
+                padding: 0,
+              }}>
+              <SimpleLiveDataStat
+                absolute
+                fillWidth
+                connected={connected}
+                data={data}
+                w={sizeRef?.width} />
+              <Box w={sizeRef?.width} h={sizeRef?.height} bg={colors.tertiary} borderRadius="lg" overflow="hidden">
+                <D3Stream
+                  width={sizeRef?.width}
+                  data={streamData}
+                  height={500} />
 
-            <Box overflow={'scroll'} >
-              <AllProvidersTable
-                maxData={maxData}
-                providerData={providerData}
-                aggregator={copiedAggregator}
-                dataType={DataType.Tps}
-                maxRowsBeforeShowingExpand={25} />
-            </Box>
+              </Box>
+            </Container>
+
+          </Box>
+          <br />
+
+          <Box overflow={'scroll'} >
+            <AllProvidersTable
+              maxData={maxData}
+              providerData={providerData}
+              aggregator={copiedAggregator}
+              dataType={DataType.Tps}
+              maxRowsBeforeShowingExpand={25} />
           </Box>
         </>
         } />
