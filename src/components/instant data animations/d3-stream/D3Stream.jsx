@@ -3,8 +3,11 @@ import {
     stack,
     area,
     curveBasis,
+    curveBumpY,
+    curveBasisClosed,
     stackOrderInsideOut,
     stackOffsetSilhouette,
+    stackOrderReverse
 } from "d3-shape"
 import { schemeDark2 } from "d3-scale-chromatic"
 import { scaleLinear, scaleOrdinal } from "d3-scale"
@@ -29,6 +32,7 @@ export const D3Stream = ({ data, width, height, newestData }) => {
     const [stacks, setStacks] = useState([])
     const [liveData, setLiveData] = useState([])
     const [columns, setColumns] = useState([])
+    const [totals, setTotals] = useState([])
     useEffect(() => {
         if (!newestData) return
 
@@ -40,6 +44,7 @@ export const D3Stream = ({ data, width, height, newestData }) => {
             setLiveData(l => {
                 const dataPoint = {}
                 newColumns.forEach(c => dataPoint[c] = newestData[c]?.data.tps)
+                setTotals(m => [...m, Object.keys(dataPoint).map(x => dataPoint[x]).reduce((a, b) => (a ?? 0) + (b ?? 0), 0)])
                 return [...l, dataPoint]
             })
             return newColumns
@@ -55,12 +60,22 @@ export const D3Stream = ({ data, width, height, newestData }) => {
 
         // Accessor function to get the year and then build scale from it
         const xValue = (d, i) => i
-        const xScale = scaleLinear().domain(extent(data, xValue)).range([0, width])
+        const xScale = scaleLinear().domain([0, liveData.length - 1]).range([0, width])
 
-        const yScale = scaleLinear().domain([-30, 30]).range([height, 0])
+        const yScale = scaleLinear().domain([-Math.max(...totals), Math.max(...totals)]).range([height, 0])
 
         // could do some filtering here
-        const stackData = liveData
+        let accumulatedLiveData = []
+
+        for (let i = 0; i < liveData.length; i++) {
+            let newDataPoint = {}
+            for (let key in liveData[i]) {
+                newDataPoint[key] = liveData[i][key] + (accumulatedLiveData[i - 1]?.[key] || 0)
+            }
+            accumulatedLiveData.push(newDataPoint)
+        }
+
+        const stackData = accumulatedLiveData
 
         // Setup the layout of the graph
         const stackLayout = stack()
@@ -114,7 +129,7 @@ export const D3Stream = ({ data, width, height, newestData }) => {
                 }}
             />
         )))
-    }, [data, width, height, text, liveData, columns])
+    }, [data, width, height, text, liveData, columns, totals])
     return <svg width={width} height={height}>
         <Tooltip opacity={opacity} text={text} />
         <>{stacks}</>
