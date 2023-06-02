@@ -3,7 +3,7 @@ import {
     stack,
     area,
     curveBasis,
-    curveBumpY,
+    curveBumpY, curveCardinal,
     curveBasisClosed,
     stackOrderInsideOut,
     stackOffsetSilhouette,
@@ -13,20 +13,21 @@ import { schemeDark2 } from "d3-scale-chromatic"
 import { scaleLinear, scaleOrdinal } from "d3-scale"
 import { extent } from "d3-array"
 import { Box, Container, Text } from "@chakra-ui/react"
+import { motion } from "framer-motion"
 import { SimpleLiveDataStat } from "@/components"
 import { binaryConditionalRender, useColors } from "@/services"
 import { set } from "date-fns"
 import { BeatLoader } from "react-spinners"
 
-const Tooltip = ({ opacity, text }) => {
+const Tooltip = ({ opacity, text, x, y }) => {
     return (
-        <text x={50} y={50} style={{ opacity: opacity, fontSize: 17, fill: "black" }}>
+        <text x={x} y={y} style={{ opacity: opacity, fontSize: 17, fill: "black" }}>
             {text}
         </text>
     )
 }
 
-export const D3Stream = ({ data, width, height, newestData, connected }) => {
+export const D3Stream = ({ data, width, height, newestData, connected, maxEntries = 10 }) => {
     // Optional tooltip in top right corner when hovering a stream
     // You could also export the Tooltip to its own file
     const [opacity, setOpacity] = useState(0)
@@ -47,7 +48,7 @@ export const D3Stream = ({ data, width, height, newestData, connected }) => {
             setLiveData(l => {
                 const dataPoint = {}
                 newColumns.forEach(c => dataPoint[c] = newestData[c]?.data.tps)
-                setTotals(m => [...m, Object.keys(dataPoint).map(x => dataPoint[x]).reduce((a, b) => (a ?? 0) + (b ?? 0), 0)])
+                setTotals(m => [...m, Object.keys(dataPoint).map(x => dataPoint[x]).reduce((a, b) => (a ?? 0) + (b ?? 0), 0)].slice(-maxEntries))
 
                 setCumulatedLiveData(cd => {
                     let accumulatedLiveData = 0
@@ -56,15 +57,15 @@ export const D3Stream = ({ data, width, height, newestData, connected }) => {
                         newDataPoint[key] = newestData[key]?.data.tps ?? 0 + accumulatedLiveData
                         accumulatedLiveData += newestData[key] ?? 0
                     }
-                    return [...cd, newDataPoint]
+                    return [...cd, newDataPoint].slice(-maxEntries)
                 })
 
-                return [...l, dataPoint]
+                return [...l, dataPoint].slice(-maxEntries)
             })
             return newColumns
         })
 
-    }, [newestData])
+    }, [newestData, maxEntries])
     useEffect(() => {
         if (columns?.length === 0) return
 
@@ -73,8 +74,6 @@ export const D3Stream = ({ data, width, height, newestData, connected }) => {
         // Color for each category
         const colorScale = scaleOrdinal().domain(keys).range(schemeDark2)
 
-        // Accessor function to get the year and then build scale from it
-        const xValue = (d, i) => i
         const xScale = scaleLinear().domain([0, liveData.length - 1]).range([0, width])
 
         const yScale = scaleLinear().domain([-Math.max(...totals), Math.max(...totals)]).range([height, 0])
@@ -96,7 +95,7 @@ export const D3Stream = ({ data, width, height, newestData, connected }) => {
             .x((d, i) => xScale(i))
             .y0((d) => yScale(d[0]))
             .y1((d) => yScale(-d[0]))
-            .curve(curveBasis)
+            .curve(curveCardinal)
 
         //Interactivity function #1: Hovering
         const handleMouseover = (d) => {
@@ -122,8 +121,8 @@ export const D3Stream = ({ data, width, height, newestData, connected }) => {
                 style={{
                     fill: colorScale(d.key),
                     stroke: "black",
-                    strokeOpacity: 0.25,
-                    opacity: text === "initialState" || d.key === text ? 1 : 0.2,
+                    strokeOpacity: 0.1,
+                    opacity: text === "initialState" || d.key === text ? 0.5 : 0.2,
                 }}
                 onMouseOver={() => {
                     handleMouseover(d)
@@ -138,10 +137,19 @@ export const D3Stream = ({ data, width, height, newestData, connected }) => {
         )))
     }, [data, width, height, text, liveData, columns, totals, cumulatedLiveData])
     return <>
-        {binaryConditionalRender(<svg width={width} height={height}>
-            <Tooltip opacity={opacity} text={text} />
-            <>{stacks}</>
-        </svg>,
+        {binaryConditionalRender(<>
+            <motion.div initial={{ translateX: 0 }}
+                animate={{ translateX: -width }}
+                transition={{
+                    type: "just",
+                    duration: 60 * 5 * 1000,
+                }}>
+                <svg width={width} height={height}>
+                    <Tooltip opacity={opacity} text={text} x={width / 2} y={height / 2 - 100} />
+                    <>{stacks}</>
+                </svg>
+            </motion.div>
+        </>,
             <>
                 <Container
                     marginTop={height / 2}
