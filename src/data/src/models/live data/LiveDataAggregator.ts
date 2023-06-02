@@ -33,7 +33,7 @@ export class LiveDataAggregator {
     }
 
     public get average() {
-        const count = Object.keys(this.data).length
+        const count = 1//Object.keys(this.data).length
         return {
             tps: count > 0 ? this.tpsSum / count : 0,
             gps: count > 0 ? this.gpsSum / count : 0

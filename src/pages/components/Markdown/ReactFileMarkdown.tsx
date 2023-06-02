@@ -10,7 +10,7 @@ type MarkdownPageModel = {
   fileName?: string | null
 }
 
-export const getStaticProps: GetStaticProps<{ model: MarkdownPageModel }> = async (
+const getStaticProps: GetStaticProps<{ model: MarkdownPageModel }> = async (
   context
 ) => {
   const markdown = await fetch(`/markdown/${context.params?.fileName}`)

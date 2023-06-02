@@ -40,7 +40,8 @@
     "src/pages/providers/[slug]/page.js",
     "next.config.mjs",
     "src/pages/components/Layout",
-    "src/components/partials/provider-page/overview/WithTooltip.jsx"
+    "src/components/partials/provider-page/overview/WithTooltip.jsx",
+    "src/components/instant data animations/d3-stream/D3Stream.jsx"
   ],
   "exclude": [
     "node_modules",

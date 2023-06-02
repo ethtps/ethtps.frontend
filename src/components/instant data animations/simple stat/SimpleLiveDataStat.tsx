@@ -32,11 +32,11 @@ export function SimpleLiveDataStat({
                 paddingTop: '1rem',
             }}>
             <Box>
-                <SimpleStat loading={!connected} data={data.tps} alt={'Transactions per second'} />
+                <SimpleStat loading={!connected} data={data.gps} alt={'Gas per second'} />
             </Box>
             <Spacer />
             <Box>
-                <SimpleStat loading={!connected} data={data.gps} alt={'Gas per second'} />
+                <SimpleStat loading={!connected} data={data.tps} alt={'Transactions per second'} />
             </Box>
             <Spacer />
             <Box>

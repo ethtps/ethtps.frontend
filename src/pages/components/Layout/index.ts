@@ -3,7 +3,7 @@ export {default as CustomNavbar} from './CustomNavbar';
 export * from './DesktopNav';
 export * from './DesktopSubNav';
 export {default as HeaderWithTabs} from './HeaderWithTabs';
-export {default as MainLayout} from './MainLayout';
+export * from './MainLayout';
 export * from './MobileNav';
 export * from './MobileNavItem';
 export * from './Navbar';

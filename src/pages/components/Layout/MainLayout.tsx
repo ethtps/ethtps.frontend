@@ -24,7 +24,9 @@ export default function MainLayout(props: Partial<{
       <Navbar allProviders={props.providerData} />
       <Container sx={{
         maxWidth: '75%',
-        minW: '450px'
+        minW: '450px',
+        paddingTop: '1rem',
+        paddingBottom: '1rem'
       }}  >
         {props.component}
       </Container>

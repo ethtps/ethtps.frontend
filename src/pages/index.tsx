@@ -1,14 +1,15 @@
 /* eslint-disable import/no-internal-modules */
 import { Box, Center, Container, Kbd, Stack } from '@chakra-ui/react'
-import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, useLiveDataWithDelta } from '@/components'
+import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, useData, useLiveDataWithDelta } from '@/components'
 import { Suspense, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
 import Loading from './components/Loading'
 import { GetServerSideProps } from 'next'
 import { DataType, ProviderResponseModel } from '@/api-client'
-import { api, getAsync } from '@/services'
+import { api, conditionalRender, getAsync } from '@/services'
 import { DataPointDictionary, IMaxDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback, setMaxTPSData, useAppDispatch, useHandler } from '@/data'
 import { Dictionary } from '@reduxjs/toolkit'
+import { D3Stream } from '@/components'
 
 interface IIndexPageProps {
   providerData?: ProviderResponseModel[]
@@ -48,6 +49,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
     setNewestData(liveData)
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }
+  const streamData = useData()
   return (
     <>
       <LiveDataContainer
@@ -59,10 +61,11 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
           <Box
             w={'100%'}
             ref={containerRef}>
-            <SimpleBarStat
+            <D3Stream
               width={sizeRef?.width}
-              liveData={data}
+              data={streamData}
               newestData={newestData}
+              liveData={data}
               connected={connected}
               height={500} />
             <br />

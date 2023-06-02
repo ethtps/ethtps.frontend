@@ -1,3 +1,4 @@
+export * from './d3-stream';
 export * from './framer bar';
 export * from './hooks';
 export * from './LiveDataContainer';
