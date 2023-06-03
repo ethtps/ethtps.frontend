@@ -1,12 +1,7 @@
-import { Chart, registerables } from 'chart.js'
+
 import { Line } from 'react-chartjs-2'
 import 'chartjs-adapter-luxon'
-import StreamingPlugin from 'chartjs-plugin-streaming'
 import { useState, useEffect, useRef, useMemo } from 'react'
-
-//Needed for chartjs to work
-Chart.register(...registerables)
-Chart.register(StreamingPlugin)
 
 export function StreamingTest({ data, width, height, newestData, connected, providerData, maxEntries = 150 }) {
     const [opacity, setOpacity] = useState(0)
@@ -55,14 +50,19 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
         })
     }, [newestData, maxEntries])
     const chart = useMemo(() => <Line
+        datasetIdKey='id'
         height={height}
         width={width}
         data={{
-            datasets: columns.map(c => {
+            labels: columns,
+            datasets: columns.map((c, i) => {
                 return {
                     label: c,
+                    id: i,
                     backgroundColor: providerData.find(p => p.name === c)?.color ?? 'black',
+                    borderColor: providerData.find(p => p.name === c)?.color ?? 'black',
                     fill: true,
+                    borderDash: [0, 0],
                     cubicInterpolationMode: 'monotone',
                     data: liveData.filter(d => d.z === c).map(x => {
                         return {
@@ -80,7 +80,7 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
                     realtime: {
                         delay: 2000,
                         refresh: 1000,
-                        duration: 60000,
+                        duration: 1 * 60000,
                         delay: 2000,
                         onRefresh: chart => {
                             const now = Date.now()
@@ -92,8 +92,49 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
                             })
                         }
                     }
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: false,
+                        text: 'TPS'
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        max: 20,
+                        min: 0,
+                        stepSize: 5
+                    }
+                },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'nearest'
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                title: {
+                    display: false,
+                },
+                tooltip: {
+                    enabled: false,
+                    intersect: false,
+                    mode: 'nearest',
+                    callbacks: {
+                        label: function (context) {
+                            const label = context.dataset.label || ''
+                            if (label) {
+                                return label + ': ' + context.parsed.y
+                            }
+                            return null
+                        }
+                    }
                 }
-            }
+            },
         }}
     />, [width, height, lastValues, liveData, columns, providerData])
 
