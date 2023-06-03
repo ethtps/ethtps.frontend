@@ -1,7 +1,7 @@
 /* eslint-disable import/no-internal-modules */
-import { Box, Center, Container, Kbd, Stack } from '@chakra-ui/react'
+import { Box, Button, Center, Container, Kbd, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react'
 import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, StreamingTest, useData, useLiveDataWithDelta } from '@/components'
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useMemo, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
 import Loading from './components/Loading'
 import { GetServerSideProps } from 'next'
@@ -32,7 +32,8 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 export default function Index({ providerData, maxData }: IIndexPageProps) {
   const containerRef = useRef<any>(null)
   const sizeRef = useSize(containerRef)
-
+  const [dataMode, setDataMode] = useState<DataType>(DataType.Tps)
+  const [hoveredDataMode, setHoveredDataMode] = useState<DataType | undefined>(DataType.Tps)
   const [connected, setConnected] = useState(false)
   const aggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
@@ -51,6 +52,49 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
   }
   const streamData = useData()
   const colors = useColors()
+  const onClick = (dataType: DataType) => {
+    setDataMode(dataType)
+  }
+  const onMouseOver = (dataType: DataType) => {
+    setHoveredDataMode(dataType)
+  }
+  const onMouseLeave = (dataType: DataType) => {
+    setHoveredDataMode(undefined)
+  }
+  const liveStat = useMemo(() => {
+    return <Container
+      h={500}
+      w={sizeRef?.width}
+      sx={{
+        margin: 0,
+        padding: 0,
+      }}>
+      <SimpleLiveDataStat
+        absolute
+        fillWidth
+        connected={connected}
+        onClick={onClick}
+        onMouseLeave={onMouseLeave}
+        onMouseOver={onMouseOver}
+        currentDataType={hoveredDataMode ?? dataMode}
+        data={data}
+        w={sizeRef?.width} />
+      <Box w={sizeRef?.width} h={sizeRef?.height} bg={colors.tertiary} borderRadius="lg" overflow="scroll">
+        <div style={{
+          float: 'right',
+        }}>
+        </div>
+        <StreamingTest
+          dataType={hoveredDataMode ?? dataMode}
+          newestData={newestData}
+          connected={connected}
+          providerData={providerData}
+          width={sizeRef?.width}
+          data={streamData}
+          height={sizeRef?.height} />
+      </Box>
+    </Container>
+  }, [connected, data, newestData, sizeRef?.width, sizeRef?.height, streamData, providerData, colors.tertiary, hoveredDataMode, dataMode])
   return (
     <>
       <LiveDataContainer
@@ -60,33 +104,8 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
         onDataReceived={onDataReceived}
         component={<>
           <Box
-            w={'100%'}
             ref={containerRef}>
-            <Container
-              h={500}
-              w={sizeRef?.width}
-              sx={{
-                margin: 0,
-                padding: 0,
-              }}>
-              <SimpleLiveDataStat
-                absolute
-                fillWidth
-                connected={connected}
-                data={data}
-                w={sizeRef?.width} />
-              <Box w={sizeRef?.width} h={sizeRef?.height} bg={colors.tertiary} borderRadius="lg" overflow="scroll">
-                <StreamingTest
-                  newestData={newestData}
-                  connected={connected}
-                  providerData={providerData}
-                  width={sizeRef?.width}
-                  data={streamData}
-                  height={sizeRef?.height} />
-
-              </Box>
-            </Container>
-
+            {liveStat}
           </Box>
           <br />
 

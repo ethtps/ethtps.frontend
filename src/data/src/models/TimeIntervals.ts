@@ -42,6 +42,17 @@ export function dataTypeToString(type: DataType) {
 	}
 }
 
+export function dataTypeToHumanReadableString(type: DataType) {
+	switch (type) {
+		case DataType.Tps:
+			return 'Transactions per second'
+		case DataType.Gps:
+			return 'Gas per second'
+		default:
+			return 'Gas-adjusted transactions per second'
+	}
+}
+
 // long string > short string
 // example: OneMinute > 1m
 export function toShortString_2(intervalName: string) {

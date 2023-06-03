@@ -2,16 +2,38 @@
 import { Line } from 'react-chartjs-2'
 import 'chartjs-adapter-luxon'
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { DataType } from '@/api-client'
+import { dataTypeToHumanReadableString } from '@/data'
 
-export function StreamingTest({ data, width, height, newestData, connected, providerData, maxEntries = 150 }) {
-    const [opacity, setOpacity] = useState(0)
-    const [text, setText] = useState("initialState")
-    const [stacks, setStacks] = useState([])
+const dataExtractor = (data, dataType) => {
+    return {
+        tps: data?.tps,
+        gps: data?.gps,
+        gtps: data?.gps / 21000
+    }
+}
+
+const dataSelector = (data, dataType) => {
+    if (dataType === DataType.Tps)
+        return data?.tps
+    if (dataType === DataType.Gps)
+        return data?.gps
+    return data?.gtps
+}
+
+export function StreamingTest(
+    {
+        data,
+        width,
+        height,
+        dataType,
+        newestData,
+        connected,
+        providerData,
+        maxEntries = 150
+    }) {
     const [liveData, setLiveData] = useState([])
-    const [cumulatedLiveData, setCumulatedLiveData] = useState([])
     const [columns, setColumns] = useState([])
-    const [colors, setColors] = useState([])
-    const [totals, setTotals] = useState([])
     const [lastValues, setLastValues] = useState({})
     useEffect(() => {
         if (!newestData) return
@@ -29,7 +51,11 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
 
                     // Add new data point for each column
                     newColumns.forEach(c => {
-                        const value = newestData[c]?.data.tps ?? newLastValues[c] ?? 0
+                        const value = dataExtractor(newestData[c]?.data ?? newLastValues[c], dataType) ?? {
+                            tps: 0,
+                            gps: 0,
+                            gtps: 0
+                        }
 
                         dataPoints.push({
                             x: Date.now(),
@@ -48,7 +74,10 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
 
             return newColumns
         })
-    }, [newestData, maxEntries])
+    }, [newestData, maxEntries, dataType])
+    useEffect(() => {
+        console.log('StreamingTest: dataType changed')
+    }, [dataType])
     const chart = useMemo(() => <Line
         datasetIdKey='id'
         height={height}
@@ -67,7 +96,7 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
                     data: liveData.filter(d => d.z === c).map(x => {
                         return {
                             x: x.x,
-                            y: x.y
+                            y: dataSelector(x.y ?? lastValues[c], dataType) ?? 0
                         }
                     }),
                 }
@@ -87,7 +116,7 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
                             chart.data.datasets.forEach(dataset => {
                                 dataset.data.push({
                                     x: now,
-                                    y: lastValues[dataset.label] ?? 0
+                                    y: dataSelector(lastValues[dataset.label] ?? lastValues[dataset.label], dataType) ?? 0
                                 })
                             })
                         }
@@ -97,13 +126,16 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
                     stacked: true,
                     title: {
                         display: false,
-                        text: 'TPS'
+                        text: dataTypeToHumanReadableString(dataType)
                     },
                     ticks: {
-                        beginAtZero: true,
-                        max: 20,
-                        min: 0,
-                        stepSize: 5
+                        callback: function (label, index, labels) {
+                            if (label >= 1000000)
+                                return label / 1000000 + 'M'
+                            if (label >= 1000)
+                                return label / 1000 + 'k'
+                            return label
+                        }
                     }
                 },
             },
@@ -136,7 +168,7 @@ export function StreamingTest({ data, width, height, newestData, connected, prov
                 }
             },
         }}
-    />, [width, height, lastValues, liveData, columns, providerData])
+    />, [width, height, lastValues, liveData, columns, providerData, dataType])
 
     return <>
         {chart}
