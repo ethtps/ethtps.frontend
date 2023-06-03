@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react"
+import * as d3 from "d3"
+import { SVG } from '@svgdotjs/svg.js'
+import React, { useEffect, useState, useRef } from "react"
 import {
     stack,
     area,
@@ -14,7 +16,7 @@ import { scaleLinear, scaleOrdinal } from "d3-scale"
 import { extent } from "d3-array"
 import { Box, Container, Text } from "@chakra-ui/react"
 import { motion } from "framer-motion"
-import { SimpleLiveDataStat } from "@/components"
+import { SimpleLiveDataStat, Streamgraph } from "@/components"
 import { binaryConditionalRender, useColors } from "@/services"
 import { set } from "date-fns"
 import { BeatLoader } from "react-spinners"
@@ -28,8 +30,6 @@ const Tooltip = ({ opacity, text, x, y }) => {
 }
 
 export const D3Stream = ({ data, width, height, newestData, connected, maxEntries = 10 }) => {
-    // Optional tooltip in top right corner when hovering a stream
-    // You could also export the Tooltip to its own file
     const [opacity, setOpacity] = useState(0)
     const [text, setText] = useState("initialState")
     const [stacks, setStacks] = useState([])
@@ -48,7 +48,18 @@ export const D3Stream = ({ data, width, height, newestData, connected, maxEntrie
             setLiveData(l => {
                 const dataPoint = {}
                 newColumns.forEach(c => dataPoint[c] = newestData[c]?.data.tps)
-                setTotals(m => [...m, Object.keys(dataPoint).map(x => dataPoint[x]).reduce((a, b) => (a ?? 0) + (b ?? 0), 0)].slice(-maxEntries))
+                let lastValues = {}
+
+                setTotals(m => [...m,
+                Object.keys(dataPoint).map(x => {
+                    // If the current value is not defined, use the last value if it exists, otherwise use 0.
+                    let value = dataPoint[x] !== undefined ? dataPoint[x] : (lastValues[x] !== undefined ? lastValues[x] : 0)
+                    // Update the last value for this key.
+                    lastValues[x] = value
+                    return value
+                }).reduce((a, b) => a + b, 0)]
+                    .slice(-maxEntries))
+
 
                 setCumulatedLiveData(cd => {
                     let accumulatedLiveData = 0
@@ -66,76 +77,39 @@ export const D3Stream = ({ data, width, height, newestData, connected, maxEntrie
         })
 
     }, [newestData, maxEntries])
+    let lastValues = {}
+
+    const processed = liveData.flatMap((d, i) =>
+        Object.keys(d).map(x => {
+            // If the current value is not defined, use the last value if it exists, otherwise use 0.
+            let value = d[x] !== undefined ? d[x] : (lastValues[x] !== undefined ? lastValues[x] : 0)
+            // Update the last value for this key.
+            lastValues[x] = value
+            return {
+                x: i,
+                y: value,
+                z: x
+            }
+        })
+    )
+    const stream = Streamgraph(processed,
+        {
+            width: width,
+            height: height,
+            x: d => d.x,
+            y: d => d.y,
+            z: d => d.z,
+            yLabel: "TPS",
+            yDomain: [-Math.max(...totals), Math.max(...totals)],
+        })
+
+    const ref = useRef(null)
     useEffect(() => {
-        if (columns?.length === 0) return
+        if (!ref.current) return
 
-        const keys = columns
-
-        // Color for each category
-        const colorScale = scaleOrdinal().domain(keys).range(schemeDark2)
-
-        const xScale = scaleLinear().domain([0, liveData.length - 1]).range([0, width])
-
-        const yScale = scaleLinear().domain([-Math.max(...totals), Math.max(...totals)]).range([height, 0])
-
-        // could do some filtering here
-
-
-        const stackData = cumulatedLiveData
-
-        // Setup the layout of the graph
-        const stackLayout = stack()
-            .offset(stackOffsetSilhouette)
-            .order(stackOrderInsideOut)
-            .keys(keys)
-
-        // Using the stackLayout we get two additional components for y0 and y1.
-        // For x we want to get the yeaer from the original data, so we have to access d.data
-        const stackArea = area()
-            .x((d, i) => xScale(i))
-            .y0((d) => yScale(d[0]))
-            .y1((d) => yScale(-d[0]))
-            .curve(curveCardinal)
-
-        //Interactivity function #1: Hovering
-        const handleMouseover = (d) => {
-            setOpacity(1)
-        }
-        //Interactivity function #2: Moving
-        const handleMousemove = (d) => {
-            setText(d.key)
-        }
-        //Interactivity function #3: Leaving
-        const handleMouseleave = (d) => {
-            setOpacity(0)
-            setText("initialState")
-        }
-
-
-        // Generate path elements using React 
-        // Mouseovers and opacity are optional for interactivity
-        setStacks(stackLayout(stackData).map((d, i) => (
-            <path
-                key={"stack" + i}
-                d={stackArea(d)}
-                style={{
-                    fill: colorScale(d.key),
-                    stroke: "black",
-                    strokeOpacity: 0.1,
-                    opacity: text === "initialState" || d.key === text ? 0.5 : 0.2,
-                }}
-                onMouseOver={() => {
-                    handleMouseover(d)
-                }}
-                onMouseMove={() => {
-                    handleMousemove(d)
-                }}
-                onMouseLeave={() => {
-                    handleMouseleave(d)
-                }}
-            />
-        )))
-    }, [data, width, height, text, liveData, columns, totals, cumulatedLiveData])
+        if (!ref.current.children[0]) ref.current.appendChild(stream)
+        else ref.current.replaceChild(stream, ref.current.children[0])
+    }, [ref, stream])
     return <>
         {binaryConditionalRender(<>
             <motion.div initial={{ translateX: 0 }}
@@ -144,10 +118,8 @@ export const D3Stream = ({ data, width, height, newestData, connected, maxEntrie
                     type: "just",
                     duration: 60 * 5 * 1000,
                 }}>
-                <svg width={width} height={height}>
-                    <Tooltip opacity={opacity} text={text} x={width / 2} y={height / 2 - 100} />
-                    <>{stacks}</>
-                </svg>
+                <div ref={ref} width={width} height={height}>
+                </div>
             </motion.div>
         </>,
             <>

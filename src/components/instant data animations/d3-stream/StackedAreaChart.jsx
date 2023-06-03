@@ -1,22 +1,15 @@
 import * as d3 from "d3"
-// https://observablehq.com/@d3/streamgraph
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
-// https://observablehq.com/@d3/streamgraph
-/**
- * 
- * @param {*} data 
- * @param {*} param1 
- * @returns 
- */
-export function Streamgraph(data, {
+// https://observablehq.com/@d3/normalized-stacked-area-chart
+export function StackedAreaChart(data, {
     x = ([x]) => x, // given d in data, returns the (ordinal) x-value
     y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
     z = () => 1, // given d in data, returns the (categorical) z-value
     marginTop = 20, // top margin, in pixels
     marginRight = 30, // right margin, in pixels
     marginBottom = 30, // bottom margin, in pixels
-    marginLeft = 20, // left margin, in pixels
+    marginLeft = 40, // left margin, in pixels
     width = 640, // outer width, in pixels
     height = 400, // outer height, in pixels
     xType = d3.scaleUtc, // type of x-scale
@@ -26,15 +19,15 @@ export function Streamgraph(data, {
     yDomain, // [ymin, ymax]
     yRange = [height - marginBottom, marginTop], // [bottom, top]
     zDomain, // array of z-values
-    offset = d3.stackOffsetWiggle, // stack offset method
-    order = d3.stackOrderAppearance, // stack order method
-    xFormat, // a format specifier string for the x-axis
-    yFormat, // a format specifier string for the y-axis
+    offset = d3.stackOffsetExpand, // stack offset method
+    order = d3.stackOrderNone, // stack order method
     yLabel, // a label for the y-axis
-    colors = d3.schemeTableau10,
+    xFormat, // a format specifier string for the x-axis
+    yFormat = "%", // a format specifier string for the y-axis
+    colors = d3.schemeTableau10, // an array of colors for the (z) categories
 } = {}) {
-    if (typeof window === 'undefined') return
     // Compute values.
+    if (typeof window === 'undefined') return
     const X = d3.map(data, x)
     const Y = d3.map(data, y)
     const Z = d3.map(data, z)
@@ -61,20 +54,19 @@ export function Streamgraph(data, {
         .map(s => s.map(d => Object.assign(d, { i: d.data[1].get(s.key) })))
 
     // Compute the default y-domain. Note: diverging stacks can be negative.
-    if (yDomain === undefined) yDomain = d3.extent(series.flat(2))
+    if (yDomain === undefined) yDomain = [0, 1]
 
     // Construct scales and axes.
     const xScale = xType(xDomain, xRange)
     const yScale = yType(yDomain, yRange)
-    const yAxis = d3.axisLeft(yScale).ticks(height / 50, yFormat)
     const color = d3.scaleOrdinal(zDomain, colors)
     const xAxis = d3.axisBottom(xScale).ticks(width / 80, xFormat).tickSizeOuter(0)
+    const yAxis = d3.axisLeft(yScale).ticks(height / 50, yFormat)
 
     const area = d3.area()
         .x(({ i }) => xScale(X[i]))
         .y0(([y1]) => yScale(y1))
-        .y1(([y1, y2]) => yScale(-y1))
-        .curve(d3.curveCatmullRom)
+        .y1(([, y2]) => yScale(y2))
 
     const svg = d3.create("svg")
         .attr("width", width)
@@ -98,26 +90,17 @@ export function Streamgraph(data, {
 
     svg.append("g")
         .attr("transform", `translate(${marginLeft},0)`)
-        .call(g => g.append("text")
-            .attr("x", -marginLeft)
-            .attr("y", 10)
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
-            .text(yLabel))
-    svg.append("g")
-        .attr("transform", `translate(0,${height - marginBottom})`)
-        .call(xAxis)
-        .call(g => g.select(".domain").remove())
-
-    svg.append("g")
-        .attr("transform", `translate(${marginLeft},0)`)
         .call(yAxis)
         .call(g => g.select(".domain").remove())
+        .call(g => g.selectAll(".tick line")
+            .filter(d => d === 0 || d === 1)
+            .clone()
+            .attr("x2", width - marginLeft - marginRight))
         .call(g => g.append("text")
             .attr("x", -marginLeft)
             .attr("y", 10)
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
+            .attr("fill", "currentColor")
+            .attr("text-anchor", "start")
             .text(yLabel))
 
     return Object.assign(svg.node(), { scales: { color } })

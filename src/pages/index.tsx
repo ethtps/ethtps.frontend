@@ -1,6 +1,6 @@
 /* eslint-disable import/no-internal-modules */
 import { Box, Center, Container, Kbd, Stack } from '@chakra-ui/react'
-import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, useData, useLiveDataWithDelta } from '@/components'
+import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, StreamingTest, useData, useLiveDataWithDelta } from '@/components'
 import { Suspense, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
 import Loading from './components/Loading'
@@ -75,13 +75,14 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
                 connected={connected}
                 data={data}
                 w={sizeRef?.width} />
-              <Box w={sizeRef?.width} h={sizeRef?.height} bg={colors.tertiary} borderRadius="lg" overflow="hidden">
-                <D3Stream
+              <Box w={sizeRef?.width} h={sizeRef?.height} bg={colors.tertiary} borderRadius="lg" overflow="scroll">
+                <StreamingTest
                   newestData={newestData}
                   connected={connected}
+                  providerData={providerData}
                   width={sizeRef?.width}
                   data={streamData}
-                  height={500} />
+                  height={sizeRef?.height} />
 
               </Box>
             </Container>
