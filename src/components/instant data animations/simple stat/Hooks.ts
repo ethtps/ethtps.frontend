@@ -72,3 +72,11 @@ export const useLiveDataWithDelta = () => {
         },
     }
 }
+
+export type LiveDataWithDeltaReturnType = ReturnType<typeof useLiveDataWithDelta>
+
+export type SimpleLiveDataPoint = {
+    tps: LiveDataDelta
+    gps: LiveDataDelta
+    gtps: LiveDataDelta
+}

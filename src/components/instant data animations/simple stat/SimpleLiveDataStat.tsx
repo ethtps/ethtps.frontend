@@ -1,16 +1,12 @@
 import { Box, Flex, HStack, SimpleGrid, Spacer, Stack, StatGroup } from "@chakra-ui/react"
-import { LiveDataDelta, SimpleStat } from "."
+import { LiveDataDelta, SimpleLiveDataPoint, SimpleStat } from "."
 import { MouseOverEvents } from "@/components"
 import { DataType } from "@/api-client"
 import { current } from "@reduxjs/toolkit"
 
 interface ISimpleLiveDataStatProps {
     connected: boolean,
-    data: {
-        tps: LiveDataDelta
-        gps: LiveDataDelta
-        gtps: LiveDataDelta
-    },
+    data: SimpleLiveDataPoint,
     absolute?: boolean,
     w?: string | number,
     fillWidth?: boolean,

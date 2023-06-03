@@ -4,6 +4,8 @@ import 'chartjs-adapter-luxon'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { DataType } from '@/api-client'
 import { dataTypeToHumanReadableString } from '@/data'
+import * as pattern from 'patternomaly'
+import { getPattern } from '../Patterns'
 
 const dataExtractor = (data, dataType) => {
     return {
@@ -23,7 +25,6 @@ const dataSelector = (data, dataType) => {
 
 export function StreamingTest(
     {
-        data,
         width,
         height,
         dataType,
@@ -45,7 +46,7 @@ export function StreamingTest(
             const newColumns = [...c, ...keys.filter(k => !c.includes(k))]
 
             setLiveData(l => {
-                const dataPoints = l.slice(-maxEntries) // Take the last 'maxEntries' data points
+                const dataPoints = l // Take the last 'maxEntries' data points
                 setLastValues(oldValues => {
                     const newLastValues = { ...oldValues } // Make a copy of the last values
 
@@ -69,15 +70,12 @@ export function StreamingTest(
                     return newLastValues
                 }) // Store the updated last values
 
-                return dataPoints // This replaces the old liveData with the new dataPoints, including the newly added points
+                return dataPoints.slice(-maxEntries) // This replaces the old liveData with the new dataPoints, including the newly added points
             })
 
             return newColumns
         })
     }, [newestData, maxEntries, dataType])
-    useEffect(() => {
-        console.log('StreamingTest: dataType changed')
-    }, [dataType])
     const chart = useMemo(() => <Line
         datasetIdKey='id'
         height={height}
@@ -88,7 +86,7 @@ export function StreamingTest(
                 return {
                     label: c,
                     id: i,
-                    backgroundColor: providerData.find(p => p.name === c)?.color ?? 'black',
+                    backgroundColor: pattern.draw(getPattern(i * 4), providerData.find(p => p.name === c)?.color ?? 'black'),
                     borderColor: providerData.find(p => p.name === c)?.color ?? 'black',
                     fill: true,
                     borderDash: [0, 0],
@@ -108,16 +106,16 @@ export function StreamingTest(
                     type: 'realtime',
                     realtime: {
                         delay: 2000,
-                        refresh: 1000,
+                        refresh: 2000,
                         duration: 1 * 60000,
-                        delay: 2000,
                         onRefresh: chart => {
                             const now = Date.now()
                             chart.data.datasets.forEach(dataset => {
-                                dataset.data.push({
+                                const e = {
                                     x: now,
                                     y: dataSelector(lastValues[dataset.label] ?? lastValues[dataset.label], dataType) ?? 0
-                                })
+                                }
+                                dataset.data.push(e)
                             })
                         }
                     }
@@ -147,6 +145,7 @@ export function StreamingTest(
             },
             plugins: {
                 legend: {
+                    display: false,
                     position: 'bottom',
                 },
                 title: {

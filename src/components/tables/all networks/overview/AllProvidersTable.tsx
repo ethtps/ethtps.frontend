@@ -7,7 +7,7 @@ import { DataIssueDialog, SeeMoreButton } from '@/components'
 import { Alert, AlertIcon, Heading, Link, Table, TableCaption, Tbody, Thead, Tr, Text, HStack, Box, Flex, Spacer, Button, Stack, SimpleGrid, Tooltip } from '@chakra-ui/react'
 import { IProviderTableModel } from '@/data'
 import { GetServerSideProps } from 'next'
-import { ProviderResponseModel } from '@/api-client'
+import { DataType, ProviderResponseModel } from '@/api-client'
 import { IconExclamationCircle } from '@tabler/icons-react'
 
 export default function AllProvidersTable({
@@ -53,7 +53,7 @@ export default function AllProvidersTable({
         </TableCaption>
         <Thead >
           <Tr placeContent={'center'}>
-            <AllProvidersHeader />
+            <AllProvidersHeader dataType={dataType ?? DataType.Tps} />
           </Tr>
         </Thead>
         <Tbody>

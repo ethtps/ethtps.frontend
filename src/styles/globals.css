@@ -374,3 +374,9 @@ img {
   margin-right: 0.3rem;
   margin-left: 0.3rem;
 }
+
+.text-with-border {
+  /* Choose whatever color your text should be */
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+}
