@@ -6,6 +6,9 @@ import { DataType } from '@/api-client'
 import { dataTypeToHumanReadableString } from '@/data'
 import * as pattern from 'patternomaly'
 import { getPattern } from '../Patterns'
+import { BeatLoader } from 'react-spinners'
+import { Container, Text, Center } from '@chakra-ui/react'
+import { conditionalRender, useColors } from '@/services'
 
 const dataExtractor = (data, dataType) => {
     return {
@@ -33,6 +36,7 @@ export function StreamingTest(
         providerData,
         maxEntries = 150
     }) {
+    const colors = useColors()
     const [liveData, setLiveData] = useState([])
     const [columns, setColumns] = useState([])
     const [lastValues, setLastValues] = useState({})
@@ -170,6 +174,11 @@ export function StreamingTest(
     />, [width, height, lastValues, liveData, columns, providerData, dataType])
 
     return <>
+        {conditionalRender(<BeatLoader size={8} color={colors.text} style={{
+            position: 'absolute',
+            marginTop: height / 2 - 8,
+            marginLeft: width / 2 - 8,
+        }} />, !connected || liveData.length < 2)}
         {chart}
     </>
 }
