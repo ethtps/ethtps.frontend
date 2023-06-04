@@ -1,5 +1,5 @@
 /* eslint-disable import/no-internal-modules */
-import { Box, Button, Center, Container, Kbd, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Center, Container, Flex, Kbd, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react'
 import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, StreamingTest, useData, useLiveDataWithDelta } from '@/components'
 import { Suspense, useMemo, useRef, useState } from 'react'
 import { useSize } from "@chakra-ui/react-use-size"
@@ -73,19 +73,22 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
         onError={(error) => console.error(error)}
         onDataReceived={onDataReceived}
         component={<>
-          <StreamingComponent
-            connected={connected}
-            data={showSidechains ? data : noSidechainData.data}
-            newestData={newestData}
-            providerData={providerData}
-            onClick={onClick}
-            onMouseOver={onMouseOver}
-            onMouseLeave={onMouseLeave}
-            dataMode={dataMode}
-            hoveredDataMode={hoveredDataMode}
-            showSidechains={showSidechains}
-            showSidechainsToggled={() => setShowSidechains(!showSidechains)}
-          />
+
+          <Box>
+            <StreamingComponent
+              connected={connected}
+              data={showSidechains ? data : noSidechainData.data}
+              newestData={newestData}
+              providerData={providerData}
+              onClick={onClick}
+              onMouseOver={onMouseOver}
+              onMouseLeave={onMouseLeave}
+              dataMode={dataMode}
+              hoveredDataMode={hoveredDataMode}
+              showSidechains={showSidechains}
+              showSidechainsToggled={() => setShowSidechains(!showSidechains)}
+            />
+          </Box>
           <br />
           <Box overflow={'scroll'} >
             <AllProvidersTable

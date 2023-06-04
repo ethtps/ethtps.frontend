@@ -66,7 +66,7 @@ export function StreamingTest(
                         }
 
                         dataPoints.push({
-                            x: Date.now(),
+                            x: Date.now() + refreshInterval,
                             y: value,
                             z: c
                         })
@@ -84,7 +84,7 @@ export function StreamingTest(
             })
             return newColumns
         })
-    }, [newestData, maxEntries, dataType, providerData])
+    }, [newestData, maxEntries, dataType, providerData, refreshInterval])
     const chart = useMemo(() => {
         return <Chart
             type='line'
@@ -126,6 +126,7 @@ export function StreamingTest(
                             delay: refreshInterval * 3,
                             refresh: refreshInterval,
                             duration: duration,
+                            pause: !connected,
                             onRefresh: chart => {
                                 const now = Date.now() + refreshInterval
                                 chart.data.datasets.forEach(dataset => {
@@ -196,7 +197,7 @@ export function StreamingTest(
                 },
             }
             } />
-    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors])
+    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors, connected])
     return <>
         {conditionalRender(<BeatLoader size={8} color={colors.text} style={{
             position: 'absolute',

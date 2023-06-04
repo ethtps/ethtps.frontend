@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next'
 import Navbar from './Navbar'
 import { ProviderResponseModel } from '@/api-client'
 import { getAsync } from '@/services'
-import { Box, Container } from '@chakra-ui/react'
+import { Box, Container, Flex } from '@chakra-ui/react'
 
 
 export const getStaticProps: GetServerSideProps = async (context) => {
@@ -22,14 +22,25 @@ export default function MainLayout(props: Partial<{
   return (
     <>
       <Navbar allProviders={props.providerData} />
-      <Container sx={{
-        maxWidth: '80%',
-        minW: '450px',
-        paddingTop: '1rem',
-        paddingBottom: '1rem'
-      }}  >
-        {props.component}
-      </Container>
+      <Flex direction={'column'}
+        flex={{ base: '0', 'md': '1' }}
+        display={{ base: 'flex', 'md': 'flex' }}
+        justifyContent={{ md: 'center' }}
+        px={{ base: 0, md: 2 }}
+        w={'100%'}>
+        <Box
+          alignSelf={{ md: 'center' }}
+          w={{ base: '100%', 'md': '80%' }}
+          maxW={950}
+          sx={{
+            paddingTop: '1rem',
+            paddingBottom: '1rem'
+          }}>
+          <Box>
+            {props.component}
+          </Box>
+        </Box >
+      </Flex >
     </>
   )
 }

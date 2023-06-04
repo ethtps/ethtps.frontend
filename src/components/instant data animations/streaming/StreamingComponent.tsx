@@ -88,7 +88,10 @@ export function StreamingComponent({
             <Box
                 w={sizeRef?.width}
                 bg={colors.tertiary}
-                borderRadius="lg">
+                borderRadius="lg"
+                sx={{
+                    padding: '5px'
+                }}>
                 <TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
                 <Tooltip label={`Sidechains ${showSidechains ? "shown" : "hidden"}. Click to toggle`}>
                     <Button leftIcon={showSidechains ? <IconLink /> : <IconLinkOff />} variant={'ghost'} onClick={showSidechainsToggled} />
