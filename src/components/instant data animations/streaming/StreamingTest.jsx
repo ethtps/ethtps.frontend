@@ -34,7 +34,9 @@ export function StreamingTest(
         newestData,
         connected,
         providerData,
-        maxEntries = 150
+        maxEntries,
+        duration,
+        refreshInterval
     }) {
     const colors = useColors()
     const [liveData, setLiveData] = useState([])
@@ -50,7 +52,7 @@ export function StreamingTest(
             const newColumns = [...c, ...keys.filter(k => !c.includes(k))]
 
             setLiveData(l => {
-                const dataPoints = l // Take the last 'maxEntries' data points
+                let dataPoints = l // Take the last 'maxEntries' data points
                 setLastValues(oldValues => {
                     const newLastValues = { ...oldValues } // Make a copy of the last values
 
@@ -73,8 +75,9 @@ export function StreamingTest(
 
                     return newLastValues
                 }) // Store the updated last values
-
-                return dataPoints.slice(-maxEntries) // This replaces the old liveData with the new dataPoints, including the newly added points
+                if (dataPoints.length > 2 * maxEntries * newColumns.length)
+                    dataPoints = dataPoints.slice(-maxEntries * newColumns.length)
+                return dataPoints // This replaces the old liveData with the new dataPoints, including the newly added points
             })
 
             return newColumns
@@ -109,9 +112,9 @@ export function StreamingTest(
                 x: {
                     type: 'realtime',
                     realtime: {
-                        delay: 2000,
-                        refresh: 2000,
-                        duration: 1 * 60000,
+                        delay: refreshInterval * 2,
+                        refresh: refreshInterval,
+                        duration: duration,
                         onRefresh: chart => {
                             const now = Date.now()
                             chart.data.datasets.forEach(dataset => {
@@ -141,6 +144,7 @@ export function StreamingTest(
                     }
                 },
             },
+            animation: false,
             responsive: true,
             maintainAspectRatio: false,
             interaction: {
@@ -171,7 +175,7 @@ export function StreamingTest(
                 }
             },
         }}
-    />, [width, height, lastValues, liveData, columns, providerData, dataType])
+    />, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval])
 
     return <>
         {conditionalRender(<BeatLoader size={8} color={colors.text} style={{

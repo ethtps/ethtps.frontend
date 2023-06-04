@@ -24,19 +24,23 @@ export function SimpleStat(props:
     }
     const color = (props.isSelected ?? false) ? colors.text : colors.text
     const opacity = (props.isSelected ?? false) ? 1 : 0.5
+    const transform = (props.isSelected ?? false) ? 'scale(1)' : 'scale(0.95)' // Added
     return <>
         <Tooltip hasArrow label={props.alt ?? ''}>
             <Stat
                 sx={{
                     cursor: 'pointer',
+                    transition: 'transform 500ms, opacity 500ms', // Added
+                    transform: transform, // Added
+                    opacity: opacity,
                 }}
                 onMouseOver={props.onMouseOver}
                 onMouseLeave={props.onMouseLeave}
                 onClick={props.onClick}>
-                <StatLabel opacity={opacity} color={color}>{props.data.type.toUpperCase()}</StatLabel>
-                <StatNumber opacity={opacity} color={color}>
+                <StatLabel className={'unselectable'} color={color}>{props.data.type.toUpperCase()}</StatLabel>
+                <StatNumber color={color}>
                     {binaryConditionalRender(<AnimatedTypography
-                        animationClassName='animated-cell'
+                        animationClassName='animated-cell unselectable'
                         child={`${props.isEstimated ? "~" : ""}${numberFormat(props.data.value)}`}
                         durationMs={800}
                     />,
@@ -50,7 +54,7 @@ export function SimpleStat(props:
                         sx={{
                             textColor: color
                         }}
-                        animationClassName='animated-cell inline'
+                        animationClassName='animated-cell inline unselectable'
                         child={numberFormat(props.data.delta.value)}
                         durationMs={800}
                     />

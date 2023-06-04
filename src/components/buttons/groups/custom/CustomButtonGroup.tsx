@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ICustomButtonGroupParameters } from './ICustomButtonGroupParameters'
-import { Button, Stack } from '@chakra-ui/react'
+import { Button, HStack, Stack, Tooltip } from '@chakra-ui/react'
+import { useColors } from '@/services'
 
 export function CustomButtonGroup(params: ICustomButtonGroupParameters) {
+  const colors = useColors()
+  const [currentSelected, setCurrentSelected] = useState<string | undefined>(params.selected)
   return (
     <>
-      <Stack aria-label='outlined primary button group'>
+      <HStack aria-label='outlined primary button group'>
         {params?.buttons?.map((x, i) => (
-          <Button key={i}>{x}</Button>
+          <Tooltip key={`ttt-${i}`} label={params.tooltipFunction?.(x)}>
+            <Button
+              {...params.props}
+              sx={{
+                ...params.sx,
+                ...(currentSelected === x ? { bg: colors.tertiary, color: colors.primaryContrast } : {})
+              }}
+              onClick={() => {
+                setCurrentSelected(x)
+                params.onChange?.(x)
+              }}
+              key={i}>{x}</Button>
+          </Tooltip>
         ))}
-      </Stack>
+      </HStack>
     </>
   )
 }

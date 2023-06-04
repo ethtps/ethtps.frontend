@@ -1,10 +1,10 @@
-import { DataPoint, LiveDataWithDeltaReturnType, MouseOverDataTypesEvents, MouseOverEvents, SimpleLiveDataPoint, SimpleLiveDataStat, StreamingTest } from "@/components"
-import { Container, Box } from "@chakra-ui/react"
-import { useMemo, useRef, useState } from "react"
+import { DataPoint, IntervalSlider, LiveDataWithDeltaReturnType, MouseOverDataTypesEvents, MouseOverEvents, SimpleLiveDataPoint, SimpleLiveDataStat, StreamingTest, TimeIntervalButtonGroup } from "@/components"
+import { Container, Box, Switch, FormControl, FormLabel, Text, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark } from "@chakra-ui/react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useSize } from "@chakra-ui/react-use-size"
-import { DataType, ProviderResponseModel } from "@/api-client"
+import { DataType, ProviderResponseModel, TimeInterval } from "@/api-client"
 import { useColors } from "@/services"
-import { L2DataUpdateModel } from "@/data"
+import { L2DataUpdateModel, TimeIntervalToSeconds, TimeIntervalToStreamProps } from "@/data"
 import { Dictionary } from "@reduxjs/toolkit"
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents {
@@ -15,6 +15,8 @@ interface IStreamingComponentProps extends MouseOverDataTypesEvents {
     dataMode: DataType
     hoveredDataMode?: DataType
 }
+
+const pad = 100
 
 export function StreamingComponent({
     connected,
@@ -30,10 +32,14 @@ export function StreamingComponent({
     const colors = useColors()
     const containerRef = useRef<any>(null)
     const sizeRef = useSize(containerRef)
-
+    const [interval, setInterval] = useState<TimeInterval>(TimeInterval.OneMinute)
+    const [streamConfig, setStreamConfig] = useState(TimeIntervalToStreamProps(interval))
+    useEffect(() => {
+        setStreamConfig(TimeIntervalToStreamProps(interval))
+    }, [interval])
     const liveStat = useMemo(() => {
         return <Container
-            h={500}
+            h={650}
             w={sizeRef?.width}
             sx={{
                 margin: 0,
@@ -51,20 +57,36 @@ export function StreamingComponent({
                 w={sizeRef?.width} />
             <Box
                 w={sizeRef?.width}
-                h={sizeRef?.height}
+                h={sizeRef?.height ?? 0 + pad * 2}
                 bg={colors.tertiary}
                 borderRadius="lg"
                 overflow="scroll">
-                <StreamingTest
-                    dataType={hoveredDataMode ?? dataMode}
-                    newestData={newestData}
-                    connected={connected}
-                    providerData={providerData}
+                <Box
                     width={sizeRef?.width}
-                    height={sizeRef?.height} />
+                    height={sizeRef?.height ?? 0 - pad * 2}
+                    sx={{
+                        paddingTop: pad
+                    }}>
+                    <StreamingTest
+                        dataType={hoveredDataMode ?? dataMode}
+                        newestData={newestData}
+                        connected={connected}
+                        providerData={providerData}
+                        width={sizeRef?.width}
+                        maxEntries={streamConfig.limit}
+                        duration={streamConfig.duration}
+                        refreshInterval={streamConfig.refreshInterval}
+                        height={sizeRef?.height} />
+                </Box>
+            </Box>
+            <Box
+                w={sizeRef?.width}
+                bg={colors.tertiary}
+                borderRadius="lg">
+                <TimeIntervalButtonGroup onChange={(v: TimeInterval) => setInterval(v)} />
             </Box>
         </Container>
-    }, [connected, newestData, sizeRef?.width, sizeRef?.height, providerData, colors.tertiary, hoveredDataMode, dataMode, onClick, onMouseLeave, onMouseOver, data])
+    }, [connected, newestData, sizeRef?.width, sizeRef?.height, providerData, colors, hoveredDataMode, dataMode, onClick, onMouseLeave, onMouseOver, data, streamConfig])
     return (
         <>
             <Box
