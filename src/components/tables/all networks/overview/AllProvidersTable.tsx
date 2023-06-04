@@ -15,6 +15,7 @@ export default function AllProvidersTable({
   maxData,
   aggregator,
   dataType,
+  showSidechains,
   maxRowsBeforeShowingExpand = 25
 }: Partial<IProviderTableModel>): JSX.Element {
   const oldShowRowCountValue = maxRowsBeforeShowingExpand as number
@@ -40,7 +41,7 @@ export default function AllProvidersTable({
             <Spacer />
             <Box>
               <Text color={colors.text} fontSize={'sm'}>
-                L2s + sidechains
+                {`L2s ${showSidechains ? "+ sidechains" : ""}`}
               </Text>
             </Box>
             <Box>

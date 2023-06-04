@@ -11,5 +11,6 @@ export interface IProviderTableModel extends ICellClickedEvent, IMaxRowsModel {
 	dataType: DataType,
 	width: number
 	selectedProvider: string
+	showSidechains: boolean
 	providerRowHovered: (providerName: string) => void
 }

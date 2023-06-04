@@ -15,7 +15,7 @@ export function CustomButtonGroup(params: ICustomButtonGroupParameters) {
               {...params.props}
               sx={{
                 ...params.sx,
-                ...(currentSelected === x ? { bg: colors.tertiary, color: colors.primaryContrast } : {})
+                ...(currentSelected === x ? { bg: colors.secondary, color: 'black' } : {})
               }}
               onClick={() => {
                 setCurrentSelected(x)

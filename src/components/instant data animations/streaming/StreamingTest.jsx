@@ -1,5 +1,6 @@
-
-import { Line } from 'react-chartjs-2'
+// eslint-disable-next-line import/no-internal-modules
+import 'chart.js/auto'
+import { Line, Chart } from 'react-chartjs-2'
 import 'chartjs-adapter-luxon'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { DataType } from '@/api-client'
@@ -75,16 +76,19 @@ export function StreamingTest(
 
                     return newLastValues
                 }) // Store the updated last values
+                // We don't really need to remove old data points, since we're using a 'realtime' x-axis
+                /*
                 if (dataPoints.length > 2 * maxEntries * newColumns.length)
-                    dataPoints = dataPoints.slice(-maxEntries * newColumns.length)
+                    dataPoints = dataPoints.slice(-maxEntries * newColumns.length)*/
                 return dataPoints // This replaces the old liveData with the new dataPoints, including the newly added points
             })
             return newColumns
         })
     }, [newestData, maxEntries, dataType, providerData])
     const chart = useMemo(() => {
-        return <Line
-            datasetIdKey='id'
+        return <Chart
+            type='line'
+            id='chart'
             height={height}
             width={width}
             data={{
@@ -98,6 +102,8 @@ export function StreamingTest(
                         borderColor: providerData.find(p => p.name === c)?.color ?? 'black',
                         fill: true,
                         borderDash: [0, 0],
+                        pointRadius: 0,
+                        //pointHitRadius: 0,
                         cubicInterpolationMode: 'monotone',
                         data: liveData.filter(d => d.z === c).map(x => {
                             return {
@@ -109,15 +115,19 @@ export function StreamingTest(
                 })
             }}
             options={{
+                onHover: (event, chartElement) => {
+                    if (chartElement?.length > 0 && chartElement[0]?.datasetIndex !== undefined)
+                        console.log(event.type, chartElement)
+                },
                 scales: {
                     x: {
                         type: 'realtime',
                         realtime: {
-                            delay: refreshInterval * 2,
+                            delay: refreshInterval * 3,
                             refresh: refreshInterval,
                             duration: duration,
                             onRefresh: chart => {
-                                const now = Date.now()
+                                const now = Date.now() + refreshInterval
                                 chart.data.datasets.forEach(dataset => {
                                     const e = {
                                         x: now,
@@ -126,6 +136,12 @@ export function StreamingTest(
                                     dataset.data.push(e)
                                 })
                             }
+                        },
+                        ticks: {
+                            color: colors.text,
+                        },
+                        grid: {
+                            color: colors.grid,
                         }
                     },
                     y: {
@@ -135,6 +151,7 @@ export function StreamingTest(
                             text: dataTypeToHumanReadableString(dataType)
                         },
                         ticks: {
+                            color: colors.text,
                             callback: function (label, index, labels) {
                                 if (label >= 1000000)
                                     return label / 1000000 + 'M'
@@ -142,46 +159,48 @@ export function StreamingTest(
                                     return label / 1000 + 'k'
                                 return label
                             }
+                        },
+                        grid: {
+                            color: colors.grid,
                         }
                     },
                 },
                 animation: false,
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'nearest'
-                },
                 plugins: {
+                    decimation: {
+                        enabled: true,
+                        algorithm: 'lttb',
+                    },
                     legend: {
                         display: false,
                         position: 'bottom',
                     },
                     title: {
                         display: false,
-                    },
-                    tooltip: {
-                        enabled: false,
-                        intersect: false,
-                        mode: 'nearest',
-                        callbacks: {
-                            label: function (context) {
-                                const label = context.dataset.label || ''
-                                if (label) {
-                                    return label + ': ' + context.parsed.y
-                                }
-                                return null
+                    }
+                },
+                tooltip: {
+                    enabled: false,
+                    mode: 'nearest',
+                    callbacks: {
+                        label: function (context) {
+                            const label = context.dataset.label || ''
+                            if (label) {
+                                return label + ': ' + context.parsed.y
                             }
+                            return null
                         }
                     }
                 },
-            }}
-        />
-    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains])
+            }
+            } />
+    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors])
     return <>
         {conditionalRender(<BeatLoader size={8} color={colors.text} style={{
             position: 'absolute',
-            marginTop: height / 2 - 8,
+            marginTop: (height ?? 250) / 2 - 18,
             marginLeft: width / 2 - 8,
         }} />, !connected || liveData.length < 2)}
         {chart}

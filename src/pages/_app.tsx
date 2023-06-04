@@ -13,6 +13,7 @@ import { MDXProvider } from '@mdx-js/react'
 import { components } from './markdown'
 //Needed for chartjs to work
 import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
+import 'chartjs-adapter-luxon'
 import StreamingPlugin from 'chartjs-plugin-streaming'
 Chart.register(
   CategoryScale,
@@ -23,8 +24,9 @@ Chart.register(
   Tooltip,
   Legend,
   ...registerables,
-  StreamingPlugin
+  ...StreamingPlugin
 )
+
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore({})
 

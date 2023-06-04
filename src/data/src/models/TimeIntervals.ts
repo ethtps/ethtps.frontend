@@ -93,10 +93,15 @@ export function fromShortString_2(intervalName: string) {
 	}
 }
 
-export const TimeIntervalToSeconds = (interval: TimeInterval) => {
+export enum ExtraIntervals { FifteenMinutes }
+export type ExtendedTimeInterval = TimeInterval | ExtraIntervals
+
+export const TimeIntervalToSeconds = (interval: ExtendedTimeInterval) => {
 	switch (interval) {
 		case TimeInterval.OneMinute:
 			return 60
+		case ExtraIntervals.FifteenMinutes:
+			return 60 * 15
 		case TimeInterval.OneHour:
 			return 60 * 60
 		case TimeInterval.OneDay:
@@ -112,10 +117,12 @@ export const TimeIntervalToSeconds = (interval: TimeInterval) => {
 	}
 }
 
-export const TimeIntervalToStreamProps = (interval: TimeInterval) => {
+export const TimeIntervalToStreamProps = (interval: ExtendedTimeInterval) => {
 	switch (interval) {
 		case TimeInterval.OneMinute:
-			return { interval: '1m', limit: 60, duration: 60 * 1000, refreshInterval: 2 * 1000 }
+			return { interval: '1m', limit: 60, duration: 60 * 1000, refreshInterval: 1 * 1000 }
+		case ExtraIntervals.FifteenMinutes:
+			return { interval: '15m', limit: 60, duration: 60 * 15 * 1000, refreshInterval: 3 * 1000 }
 		case TimeInterval.OneHour:
 			return { interval: '1h', limit: 60, duration: 60 * 60 * 1000, refreshInterval: 15 * 1000 }
 		case TimeInterval.OneDay:
@@ -135,6 +142,8 @@ export const TimeIntervalFromLabel = (label: string) => {
 	switch (label) {
 		case "1m":
 			return TimeInterval.OneMinute
+		case "15m":
+			return ExtraIntervals.FifteenMinutes
 		case "1h":
 			return TimeInterval.OneHour
 		case "1d":
@@ -152,27 +161,31 @@ export const TimeIntervalFromLabel = (label: string) => {
 
 export const TimeIntervalToLabel_2 = (interval: string) => {
 	switch (interval) {
-		case "OneMinute":
+		case "1m":
 			return "One minute"
-		case "OneHour":
+		case "15m":
+			return "Fifteen minutes"
+		case "1h":
 			return "One hour"
-		case "OneDay":
+		case "1d":
 			return "One day"
-		case "OneWeek":
+		case "1w":
 			return "One week"
-		case "OneMonth":
+		case "1mo":
 			return "One month"
-		case "OneYear":
+		case "1y":
 			return "One year"
 		default:
 			return "One minute"
 	}
 }
 
-export const TimeIntervalToLabel = (interval: TimeInterval) => {
+export const TimeIntervalToLabel = (interval: ExtendedTimeInterval) => {
 	switch (interval) {
 		case TimeInterval.OneMinute:
 			return "1m"
+		case ExtraIntervals.FifteenMinutes:
+			return '15m'
 		case TimeInterval.OneHour:
 			return "1h"
 		case TimeInterval.OneDay:
@@ -191,10 +204,11 @@ export const TimeIntervalToLabel = (interval: TimeInterval) => {
 export const EnumerateIntervals = () => {
 	return [
 		TimeInterval.OneMinute,
+		ExtraIntervals.FifteenMinutes,
 		TimeInterval.OneHour,
 		TimeInterval.OneDay,
 		TimeInterval.OneWeek,
 		TimeInterval.OneMonth,
-		TimeInterval.OneYear
+		TimeInterval.OneYear,
 	]
 }

@@ -4663,6 +4663,13 @@ chartjs-plugin-streaming@^2.0.0:
   resolved "https://registry.yarnpkg.com/chartjs-plugin-streaming/-/chartjs-plugin-streaming-2.0.0.tgz#daa2124ed3b3069bad92d24c07dbb0e6b1774635"
   integrity sha512-oBwHRmovGbPDS1h8PhpttnlKjI6eiJO13v4h+xz+mfbHhIc+iNF9xuMobCIFMKFH7rlVWi5TJAOIxoXyGElYYg==
 
+chartjs-plugin-zoom@^1.2.1:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-zoom/-/chartjs-plugin-zoom-1.3.0.tgz#3dc525a59e9ca34c5823ba543b32218ccefabac9"
+  integrity sha512-cMlatkcr8zLP0DW1xikZVLZ0WoaiBEnMthmEotGZ0+p02G8B5WHymr5wRr9qexK5GAmjWrSP68ZFnrJAxqou0A==
+  dependencies:
+    hammerjs "^2.0.8"
+
 "chokidar@>=3.0.0 <4.0.0":
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
@@ -6589,6 +6596,11 @@ groupby-js@^1.1.9:
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/groupby-js/-/groupby-js-1.1.9.tgz#48f54cc762ff4f7488e313008a751b8889059b29"
   integrity sha512-u+xjzKVIY+m8q9Kttobfb0Fyipbp9D6BKT/zo4wP0NSDCMw1oVPPUeN+28o9to75Ov/Yo/NZACCAk6fmYz/4+A==
+
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
+  integrity sha512-tSQXBXS/MWQOn/RKckawJ61vvsDpCom87JgxiYdGwHdOa0ht0vzUWDlfioofFCRU0L+6NGDt6XzbgoJvZkMeRQ==
 
 has-ansi@^2.0.0:
   version "2.0.0"

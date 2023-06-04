@@ -1,9 +1,10 @@
 import { TimeInterval } from "@/api-client"
 import { CustomButtonGroup } from "@/components"
-import { EnumerateIntervals, TimeIntervalFromLabel, TimeIntervalToLabel, TimeIntervalToLabel_2 } from "@/data"
+import { EnumerateIntervals, ExtendedTimeInterval, TimeIntervalFromLabel, TimeIntervalToLabel, TimeIntervalToLabel_2 } from "@/data"
+import { useState } from "react"
 
 interface ITimeIntervalButtonGroupProps {
-    onChange?: (interval: TimeInterval) => void
+    onChange?: (interval: ExtendedTimeInterval) => void
 }
 
 export function TimeIntervalButtonGroup({ onChange }: ITimeIntervalButtonGroupProps) {
@@ -22,8 +23,8 @@ export function TimeIntervalButtonGroup({ onChange }: ITimeIntervalButtonGroupPr
                     variant: 'ghost',
                     w: '1rem'
                 }}
-                selected="1m"
-                tooltipFunction={(v) => `Change to ${TimeIntervalToLabel_2(v.toString()).toLowerCase()}`}
+                selected={"1m"}
+                tooltipFunction={(v) => `Change view to ${TimeIntervalToLabel_2(v.toString()).toLowerCase()}`}
                 buttons={EnumerateIntervals().map((x, i) => TimeIntervalToLabel(x))} />
         </div>
     </>

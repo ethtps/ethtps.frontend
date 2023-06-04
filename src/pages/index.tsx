@@ -93,6 +93,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
               providerData={getFilteredProviderData()}
               aggregator={copiedAggregator}
               dataType={hoveredDataMode ?? dataMode}
+              showSidechains={showSidechains}
               maxRowsBeforeShowingExpand={25} />
           </Box>
         </>

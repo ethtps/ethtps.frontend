@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useSize } from "@chakra-ui/react-use-size"
 import { DataType, ProviderResponseModel, TimeInterval } from "@/api-client"
 import { useColors } from "@/services"
-import { L2DataUpdateModel, TimeIntervalToSeconds, TimeIntervalToStreamProps } from "@/data"
+import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToSeconds, TimeIntervalToStreamProps } from "@/data"
 import { Dictionary } from "@reduxjs/toolkit"
 import { IconLink, IconLinkOff } from "@tabler/icons-react"
 
@@ -37,7 +37,7 @@ export function StreamingComponent({
     const colors = useColors()
     const containerRef = useRef<any>(null)
     const sizeRef = useSize(containerRef)
-    const [interval, setInterval] = useState<TimeInterval>(TimeInterval.OneMinute)
+    const [interval, setInterval] = useState<ExtendedTimeInterval>(TimeInterval.OneMinute)
     const [streamConfig, setStreamConfig] = useState(TimeIntervalToStreamProps(interval))
     useEffect(() => {
         setStreamConfig(TimeIntervalToStreamProps(interval))
@@ -89,7 +89,7 @@ export function StreamingComponent({
                 w={sizeRef?.width}
                 bg={colors.tertiary}
                 borderRadius="lg">
-                <TimeIntervalButtonGroup onChange={(v: TimeInterval) => setInterval(v)} />
+                <TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
                 <Tooltip label={`Sidechains ${showSidechains ? "shown" : "hidden"}. Click to toggle`}>
                     <Button leftIcon={showSidechains ? <IconLink /> : <IconLinkOff />} variant={'ghost'} onClick={showSidechainsToggled} />
                 </Tooltip>
