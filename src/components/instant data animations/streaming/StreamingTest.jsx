@@ -36,7 +36,8 @@ export function StreamingTest(
         providerData,
         maxEntries,
         duration,
-        refreshInterval
+        refreshInterval,
+        showSidechains
     }) {
     const colors = useColors()
     const [liveData, setLiveData] = useState([])
@@ -48,7 +49,6 @@ export function StreamingTest(
         setColumns(c => {
             const keys = Object.keys(newestData)
             if (keys?.length === 0) return c
-
             const newColumns = [...c, ...keys.filter(k => !c.includes(k))]
 
             setLiveData(l => {
@@ -79,104 +79,105 @@ export function StreamingTest(
                     dataPoints = dataPoints.slice(-maxEntries * newColumns.length)
                 return dataPoints // This replaces the old liveData with the new dataPoints, including the newly added points
             })
-
             return newColumns
         })
-    }, [newestData, maxEntries, dataType])
-    const chart = useMemo(() => <Line
-        datasetIdKey='id'
-        height={height}
-        width={width}
-        data={{
-            labels: columns,
-            datasets: columns.map((c, i) => {
-                return {
-                    label: c,
-                    id: i,
-                    backgroundColor: pattern.draw(getPattern(i * 4), providerData.find(p => p.name === c)?.color ?? 'black'),
-                    borderColor: providerData.find(p => p.name === c)?.color ?? 'black',
-                    fill: true,
-                    borderDash: [0, 0],
-                    cubicInterpolationMode: 'monotone',
-                    data: liveData.filter(d => d.z === c).map(x => {
-                        return {
-                            x: x.x,
-                            y: dataSelector(x.y ?? lastValues[c], dataType) ?? 0
-                        }
-                    }),
-                }
-            })
-        }}
-        options={{
-            scales: {
-                x: {
-                    type: 'realtime',
-                    realtime: {
-                        delay: refreshInterval * 2,
-                        refresh: refreshInterval,
-                        duration: duration,
-                        onRefresh: chart => {
-                            const now = Date.now()
-                            chart.data.datasets.forEach(dataset => {
-                                const e = {
-                                    x: now,
-                                    y: dataSelector(lastValues[dataset.label] ?? lastValues[dataset.label], dataType) ?? 0
-                                }
-                                dataset.data.push(e)
-                            })
-                        }
+    }, [newestData, maxEntries, dataType, providerData])
+    const chart = useMemo(() => {
+        return <Line
+            datasetIdKey='id'
+            height={height}
+            width={width}
+            data={{
+                labels: columns,
+                datasets: columns.map((c, i) => {
+                    return {
+                        label: c,
+                        id: i,
+                        hidden: !showSidechains && providerData?.filter(y => y.type === "Sidechain" && y.name === c)?.length > 0,
+                        backgroundColor: pattern.draw(getPattern(i * 4), providerData.find(p => p.name === c)?.color ?? 'black'),
+                        borderColor: providerData.find(p => p.name === c)?.color ?? 'black',
+                        fill: true,
+                        borderDash: [0, 0],
+                        cubicInterpolationMode: 'monotone',
+                        data: liveData.filter(d => d.z === c).map(x => {
+                            return {
+                                x: x.x,
+                                y: dataSelector(x.y ?? lastValues[c], dataType) ?? 0
+                            }
+                        }),
                     }
+                })
+            }}
+            options={{
+                scales: {
+                    x: {
+                        type: 'realtime',
+                        realtime: {
+                            delay: refreshInterval * 2,
+                            refresh: refreshInterval,
+                            duration: duration,
+                            onRefresh: chart => {
+                                const now = Date.now()
+                                chart.data.datasets.forEach(dataset => {
+                                    const e = {
+                                        x: now,
+                                        y: dataSelector(lastValues[dataset.label] ?? lastValues[dataset.label], dataType) ?? 0
+                                    }
+                                    dataset.data.push(e)
+                                })
+                            }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        title: {
+                            display: false,
+                            text: dataTypeToHumanReadableString(dataType)
+                        },
+                        ticks: {
+                            callback: function (label, index, labels) {
+                                if (label >= 1000000)
+                                    return label / 1000000 + 'M'
+                                if (label >= 1000)
+                                    return label / 1000 + 'k'
+                                return label
+                            }
+                        }
+                    },
                 },
-                y: {
-                    stacked: true,
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'nearest'
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        position: 'bottom',
+                    },
                     title: {
                         display: false,
-                        text: dataTypeToHumanReadableString(dataType)
                     },
-                    ticks: {
-                        callback: function (label, index, labels) {
-                            if (label >= 1000000)
-                                return label / 1000000 + 'M'
-                            if (label >= 1000)
-                                return label / 1000 + 'k'
-                            return label
-                        }
-                    }
-                },
-            },
-            animation: false,
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-                intersect: false,
-                mode: 'nearest'
-            },
-            plugins: {
-                legend: {
-                    display: false,
-                    position: 'bottom',
-                },
-                title: {
-                    display: false,
-                },
-                tooltip: {
-                    enabled: false,
-                    intersect: false,
-                    mode: 'nearest',
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || ''
-                            if (label) {
-                                return label + ': ' + context.parsed.y
+                    tooltip: {
+                        enabled: false,
+                        intersect: false,
+                        mode: 'nearest',
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || ''
+                                if (label) {
+                                    return label + ': ' + context.parsed.y
+                                }
+                                return null
                             }
-                            return null
                         }
                     }
-                }
-            },
-        }}
-    />, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval])
-
+                },
+            }}
+        />
+    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains])
     return <>
         {conditionalRender(<BeatLoader size={8} color={colors.text} style={{
             position: 'absolute',

@@ -1,5 +1,6 @@
 import { Dictionary } from '@reduxjs/toolkit'
 import { L2DataUpdateModel } from '.'
+import { ProviderResponseModel } from '../../../../api-client'
 
 /**
  * Aggregates live data from multiple providers
@@ -26,8 +27,12 @@ export class LiveDataAggregator {
         return this.data[provider]
     }
 
-    public updateMultiple(entries: Dictionary<L2DataUpdateModel>) {
+    public updateMultiple(entries: Dictionary<L2DataUpdateModel>, excludeSidechains?: boolean, providerData?: ProviderResponseModel[]) {
         for (let key in entries) {
+            if (excludeSidechains && providerData) {
+                const provider = providerData.find(p => p.name === key)
+                if (provider && provider.type === "Sidechain") continue
+            }
             this.update(entries[key] as L2DataUpdateModel)
         }
     }

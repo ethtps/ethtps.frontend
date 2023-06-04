@@ -33,10 +33,13 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 export default function Index({ providerData, maxData }: IIndexPageProps) {
   const [connected, setConnected] = useState(false)
   const aggregator = new LiveDataAggregator()
+  const noSidechainAggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
   const modeHandler = createHandlerFromCallback<DataType>((newValue) => {
     console.log(newValue)
   })
+  const [showSidechains, setShowSidechains] = useState(false)
+  const noSidechainData = useLiveDataWithDelta()
   const { data, setTPS, setGPS } = useLiveDataWithDelta()
   const [newestData, setNewestData] = useState<Dictionary<L2DataUpdateModel>>()
   const onDataReceived = (liveData: Dictionary<L2DataUpdateModel>) => {
@@ -44,10 +47,12 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
     const average = aggregator.average
     setTPS(average.tps)
     setGPS(average.gps)
+    noSidechainAggregator.updateMultiple(liveData, true, providerData)
+    noSidechainData.setTPS(noSidechainAggregator.average.tps)
+    noSidechainData.setGPS(noSidechainAggregator.average.gps)
     setNewestData(liveData)
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }
-  const colors = useColors()
   const [hoveredDataMode, setHoveredDataMode] = useState<DataType | undefined>(DataType.Tps)
   const [dataMode, setDataMode] = useState<DataType>(DataType.Tps)
   const onClick = (dataType: DataType) => {
@@ -59,6 +64,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
   const onMouseLeave = (dataType: DataType) => {
     setHoveredDataMode(undefined)
   }
+  const getFilteredProviderData = () => providerData?.filter(x => showSidechains ? true : x.type !== "Sidechain")
   return (
     <>
       <LiveDataContainer
@@ -69,7 +75,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
         component={<>
           <StreamingComponent
             connected={connected}
-            data={data}
+            data={showSidechains ? data : noSidechainData.data}
             newestData={newestData}
             providerData={providerData}
             onClick={onClick}
@@ -77,12 +83,14 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
             onMouseLeave={onMouseLeave}
             dataMode={dataMode}
             hoveredDataMode={hoveredDataMode}
+            showSidechains={showSidechains}
+            showSidechainsToggled={() => setShowSidechains(!showSidechains)}
           />
           <br />
           <Box overflow={'scroll'} >
             <AllProvidersTable
               maxData={maxData}
-              providerData={providerData}
+              providerData={getFilteredProviderData()}
               aggregator={copiedAggregator}
               dataType={hoveredDataMode ?? dataMode}
               maxRowsBeforeShowingExpand={25} />

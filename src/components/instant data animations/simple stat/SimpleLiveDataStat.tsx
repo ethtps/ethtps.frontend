@@ -1,7 +1,7 @@
 import { Box, Flex, HStack, SimpleGrid, Spacer, Stack, StatGroup } from "@chakra-ui/react"
 import { LiveDataDelta, SimpleLiveDataPoint, SimpleStat } from "."
 import { MouseOverEvents } from "@/components"
-import { DataType } from "@/api-client"
+import { DataType, ProviderResponseModel } from "@/api-client"
 import { current } from "@reduxjs/toolkit"
 
 interface ISimpleLiveDataStatProps {
