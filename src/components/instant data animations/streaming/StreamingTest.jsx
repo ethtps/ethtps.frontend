@@ -1,6 +1,21 @@
+//Needed for chartjs to work
+import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
+import 'chartjs-adapter-luxon'
+import StreamingPlugin from 'chartjs-plugin-streaming'
+Chart.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ...registerables,
+    ...StreamingPlugin
+)
 // eslint-disable-next-line import/no-internal-modules
 import 'chart.js/auto'
-import { Line, Chart } from 'react-chartjs-2'
+import { Line, Chart as Chart2 } from 'react-chartjs-2'
 import 'chartjs-adapter-luxon'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { DataType } from '@/api-client'
@@ -38,7 +53,8 @@ export function StreamingTest(
         maxEntries,
         duration,
         refreshInterval,
-        showSidechains
+        showSidechains,
+        paused
     }) {
     const colors = useColors()
     const [liveData, setLiveData] = useState([])
@@ -86,7 +102,7 @@ export function StreamingTest(
         })
     }, [newestData, maxEntries, dataType, providerData, refreshInterval])
     const chart = useMemo(() => {
-        return <Chart
+        return <Chart2
             type='line'
             id='chart'
             height={height}
@@ -115,10 +131,6 @@ export function StreamingTest(
                 })
             }}
             options={{
-                onHover: (event, chartElement) => {
-                    if (chartElement?.length > 0 && chartElement[0]?.datasetIndex !== undefined)
-                        console.log(event.type, chartElement)
-                },
                 scales: {
                     x: {
                         type: 'realtime',
@@ -126,7 +138,7 @@ export function StreamingTest(
                             delay: refreshInterval * 3,
                             refresh: refreshInterval,
                             duration: duration,
-                            pause: !connected,
+                            pause: !connected || paused,
                             onRefresh: chart => {
                                 const now = Date.now() + refreshInterval
                                 chart.data.datasets.forEach(dataset => {
@@ -153,13 +165,13 @@ export function StreamingTest(
                         },
                         ticks: {
                             color: colors.text,
-                            callback: function (label, index, labels) {
+                            callback: (!paused && connected) ? function (label, index, labels) {
                                 if (label >= 1000000)
                                     return label / 1000000 + 'M'
                                 if (label >= 1000)
                                     return label / 1000 + 'k'
                                 return label
-                            }
+                            } : undefined
                         },
                         grid: {
                             color: colors.grid,
@@ -197,7 +209,7 @@ export function StreamingTest(
                 },
             }
             } />
-    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors, connected])
+    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors, connected, paused])
     return <>
         {conditionalRender(<BeatLoader size={8} color={colors.text} style={{
             position: 'absolute',

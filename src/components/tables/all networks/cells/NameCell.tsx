@@ -23,6 +23,7 @@ export function NameCell(config: INameCellProps) {
   return (
     <>
       <Td
+        minW={'250px'}
         onClick={() =>
           config.clickCallback !== undefined
             ? config.clickCallback(config.provider, 'Name')

@@ -11,22 +11,23 @@ import { DataPointDictionary, IMaxDataModel, L2DataUpdateModel, LiveDataAggregat
 import { Dictionary } from '@reduxjs/toolkit'
 import { D3Stream } from '@/components'
 import { StreamingComponent } from '@/components/instant data animations/streaming/StreamingComponent'
+import { OrderProvidersByMax } from '@/services/experiments/index/OrderProviders'
 
-interface IIndexPageProps {
+export interface IIndexPageProps {
   providerData?: ProviderResponseModel[]
   maxData?: IMaxDataModel
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
   return {
-    props: {
+    props: OrderProvidersByMax({
       providerData: await api.getProvidersAsync(),
       maxData: {
-        maxTPSData: await api.getMax(DataType.Tps),
-        maxGPSData: await api.getMax(DataType.Gps),
-        maxGTPSData: await api.getMax(DataType.GasAdjustedTps)
+        maxTPSData: await api.getMax(DataType.Tps, "All"),
+        maxGPSData: await api.getMax(DataType.Gps, "All"),
+        maxGTPSData: await api.getMax(DataType.GasAdjustedTps, "All")
       }
-    } as IIndexPageProps
+    } as IIndexPageProps)
   }
 }
 

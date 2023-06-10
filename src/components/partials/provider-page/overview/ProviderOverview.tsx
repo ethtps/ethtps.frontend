@@ -1,5 +1,5 @@
 import { ProviderResponseModel } from "@/api-client"
-import { AnalysisTab, CompareTab, DetailsTab, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
+import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
 import { binaryConditionalRender, useColors } from "@/services"
 import { Badge, Text, Box, Image, Tabs, Skeleton, TabList, TabPanel, Tab, TabPanels, SimpleGrid, Heading, Highlight } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
@@ -11,7 +11,7 @@ const iconSize = 65
 
 export function ProviderOverview(props: {
     provider: ProviderResponseModel | undefined
-}) {
+} & IComponentSize) {
     const provider = props.provider
     const router = useRouter()
     const [currentTab, setCurrentTab] = useState<string | undefined>()
@@ -80,8 +80,10 @@ export function ProviderOverview(props: {
                     <SocialButtons color={colors.text} />
                 </SimpleGrid>
             </SimpleGrid>
-            <Box sx={{ padding: '1rem' }}>
-                <Tabs defaultValue="analysis" onChange={(v) => setCurrentTab(v?.toString())}>
+            <Box>
+                <Tabs
+                    defaultValue="analysis"
+                    onChange={(v) => setCurrentTab(v?.toString())}>
                     <TabList>
                         <Tab>Overview</Tab>
                         <Tab>Details</Tab>

@@ -6,7 +6,7 @@ import { DataType, ProviderResponseModel, TimeInterval } from "@/api-client"
 import { useColors } from "@/services"
 import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToSeconds, TimeIntervalToStreamProps } from "@/data"
 import { Dictionary } from "@reduxjs/toolkit"
-import { IconLink, IconLinkOff } from "@tabler/icons-react"
+import { IconLink, IconLinkOff, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react"
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents {
     connected: boolean
@@ -42,9 +42,10 @@ export function StreamingComponent({
     useEffect(() => {
         setStreamConfig(TimeIntervalToStreamProps(interval))
     }, [interval])
+    const [paused, setPaused] = useState(false)
     const liveStat = useMemo(() => {
         return <Container
-            h={650}
+            h={600}
             w={sizeRef?.width}
             sx={{
                 margin: 0,
@@ -82,7 +83,8 @@ export function StreamingComponent({
                         duration={streamConfig.duration}
                         refreshInterval={streamConfig.refreshInterval}
                         height={sizeRef?.height}
-                        showSidechains={showSidechains} />
+                        showSidechains={showSidechains}
+                        paused={paused} />
                 </Box>
             </Box>
             <Box
@@ -94,11 +96,14 @@ export function StreamingComponent({
                 }}>
                 <TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
                 <Tooltip label={`Sidechains ${showSidechains ? "shown" : "hidden"}. Click to toggle`}>
-                    <Button leftIcon={showSidechains ? <IconLink /> : <IconLinkOff />} variant={'ghost'} onClick={showSidechainsToggled} />
+                    <Button iconSpacing={0} leftIcon={showSidechains ? <IconLink /> : <IconLinkOff />} variant={'ghost'} onClick={showSidechainsToggled} />
+                </Tooltip>
+                <Tooltip label={`Click to ${paused ? "play" : "pause"}`}>
+                    <Button disabled={!connected} iconSpacing={0} leftIcon={paused ? <IconPlayerPlay /> : <IconPlayerPause />} variant={'ghost'} onClick={() => setPaused(!paused)} />
                 </Tooltip>
             </Box>
         </Container>
-    }, [connected, newestData, sizeRef?.width, sizeRef?.height, providerData, colors, hoveredDataMode, dataMode, onClick, onMouseLeave, onMouseOver, data, streamConfig, showSidechains, showSidechainsToggled])
+    }, [connected, newestData, sizeRef?.width, sizeRef?.height, providerData, colors, hoveredDataMode, dataMode, onClick, onMouseLeave, onMouseOver, data, streamConfig, showSidechains, showSidechainsToggled, paused])
     return (
         <>
             <Box

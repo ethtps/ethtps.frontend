@@ -12,6 +12,7 @@ export function ProviderTypeCell(config: ICustomCellConfiguration) {
   return (
     <>
       <Td
+        minW={'200px'}
         textColor={colors.text}
         onClick={() =>
           config.clickCallback !== undefined

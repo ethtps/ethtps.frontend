@@ -30,6 +30,7 @@ export default function AllProvidersTable({
   }
   const colors = useColors()
   const [issueOpen, setIssueOpen] = React.useState(false)
+
   return (
     <>
       <Table
@@ -74,7 +75,7 @@ export default function AllProvidersTable({
           onSeeLess={onSeeLess}
         />,
 
-        showRowCount > 0)}
+        showRowCount > 0 && (providerData?.length as number) > showRowCount)}
       {conditionalRender(
         <Alert status='error'>
           <AlertIcon />

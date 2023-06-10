@@ -11,21 +11,6 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { wrapper } from '@/data'
 import { MDXProvider } from '@mdx-js/react'
 import { components } from './markdown'
-//Needed for chartjs to work
-import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
-import 'chartjs-adapter-luxon'
-import StreamingPlugin from 'chartjs-plugin-streaming'
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ...registerables,
-  ...StreamingPlugin
-)
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore({})
