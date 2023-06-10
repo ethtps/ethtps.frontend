@@ -4,8 +4,9 @@ import {
 	DataResponseModelDictionary,
 	InstantDataResponseModel,
 } from './Dictionaries'
-import { DataPoint, DataType } from '../../../api-client'
+import { DataPoint, DataResponseModel, DataType, ProviderResponseModel } from '../../../api-client'
 import { m_toShortString, toShortString_2 } from '../'
+import { Dictionary } from '@reduxjs/toolkit'
 
 export function fromShortString(typeStr: string): DataType {
 	switch (typeStr.toUpperCase()) {
@@ -114,4 +115,11 @@ export const numberFormat = (value?: number) => {
 
 export const inline = {
 	display: 'inline-block',
+}
+
+
+export interface AllData {
+	tps: Dictionary<DataResponseModel[]>
+	gps: Dictionary<DataResponseModel[]>
+	gtps: Dictionary<DataResponseModel[]>
 }

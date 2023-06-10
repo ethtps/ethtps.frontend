@@ -13,6 +13,7 @@ import {
   GasAdjustedTPSApi,
   GeneralApi,
   L2DataApi,
+  L2DataResponseModel,
   MarkdownPagesApi,
   TPSApi,
   TimeInterval
@@ -23,6 +24,7 @@ import {
   StringDictionary
 } from '@/data'
 import { mainnet } from '../data'
+import { getAsync, postAsync } from './HTTPHelper'
 
 export class ETHTPSApi {
   public generalApi: GeneralApi = new GeneralApi()
@@ -244,5 +246,18 @@ export class ETHTPSApi {
   }
   public async getL2Data(request: ApiV3L2DataGetPostRequest) {
     return await this.l2DataAPI.apiV3L2DataGetPost(request)
+  }
+
+  public async getJunkL2Data(dataType: DataType,
+    interval: TimeInterval,
+    provider?: string,
+    network?: string,
+    includeSidechains?: boolean) {
+    const res = await getAsync<L2DataResponseModel>(`${this._apiURL}/api/v3/L2Data/GetSingleDatasetJunk`, {
+      headers: {
+        'X-API-KEY': this.apiKey ?? ""
+      }
+    })
+    return res.parsedBody
   }
 }

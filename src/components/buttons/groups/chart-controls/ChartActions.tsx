@@ -19,10 +19,10 @@ export function ChartActions(props: Partial<IChartActionsProps>) {
                 display: 'flex',
             }}>
             {conditionalRender(<Tooltip label="Download .png">
-                <IconDownload onClick={() => { if (props.onDownload) props.onDownload() }} size='1.5rem' />
+                <IconDownload onClick={() => { if (props.onDownload) props.onDownload() }} size='20px' />
             </Tooltip>, props.showDownload)}
             {conditionalRender(<Tooltip label="Maximize">
-                <IconMaximize onClick={() => { if (props.onMaximize) props.onMaximize() }} size='1.5rem' />
+                <IconMaximize onClick={() => { if (props.onMaximize) props.onMaximize() }} size='20px' />
             </Tooltip>, props.showMaximize)}
         </Stack>
     </>

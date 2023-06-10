@@ -226,7 +226,7 @@ h3 {
   position: absolute;
   z-index: 1;
   margin-left: -100%;
-  margin-top: 1.5rem;
+  margin-top: 20px;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */

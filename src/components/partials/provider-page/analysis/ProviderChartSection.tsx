@@ -1,4 +1,5 @@
 import { LineChart } from "@/components"
+import { AllData } from "@/data"
 import { Stack, Text } from "@chakra-ui/react"
 
 export interface IProviderChartSectionProps {

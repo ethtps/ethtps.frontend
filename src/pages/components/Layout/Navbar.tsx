@@ -8,7 +8,6 @@ import {
     Button,
     Collapse,
     Link,
-    useColorModeValue,
     useDisclosure,
     useColorMode,
     HStack,
@@ -23,10 +22,7 @@ import {
 import { ThreeLinks } from './ThreeLinks'
 import { DesktopNav } from './DesktopNav'
 import { MobileNav } from './MobileNav'
-import { getAsync, useColors } from '@/services'
-import { GetServerSideProps } from 'next'
-import { ProviderResponseModel } from '@/api-client'
-import { IconGasStation } from '@tabler/icons-react'
+import { useColors } from '@/services'
 
 export interface INavbarProps {
     allProviders?: any[]

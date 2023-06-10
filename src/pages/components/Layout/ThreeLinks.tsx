@@ -18,12 +18,12 @@ export function ThreeLinks() {
                     </Link>
                     <Link href={'https://discord.gg/jWPcsTzpCT'}>
                         <Tooltip label="Join our Discord channel" aria-label="discord-button">
-                            <IconBrandDiscord size={'1.5rem'} {...color} />
+                            <IconBrandDiscord size={'20px'} {...color} />
                         </Tooltip>
                     </Link>
                     <Link href={'https://github.com/orgs/ethtps/repositories'}>
                         <Tooltip label="GitHub repo" aria-label="twitter-button">
-                            <IconBrandGithub size={'1.5rem'} {...color} />
+                            <IconBrandGithub size={'20px'} {...color} />
                         </Tooltip>
                     </Link>
                 </Stack>

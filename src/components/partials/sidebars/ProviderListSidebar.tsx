@@ -11,8 +11,9 @@ import { useToggle } from "@mantine/hooks"
 import { Theme, useColors } from "@/services"
 import { motion } from "framer-motion"
 
-const createProviderButton = (provider: ProviderResponseModel, colors: Theme, hasLeftIcon: boolean = false, hasRightIcon: boolean = false, width?: string, pad?: boolean) => <Button
+const createProviderButton = (provider: ProviderResponseModel, key: string, colors: Theme, hasLeftIcon: boolean = false, hasRightIcon: boolean = false, width?: string, pad?: boolean) => <Button
     flex={3}
+    key={key}
     variant={'ghost'}
     as={NextLink}
     href={`/providers/${provider.name}`}
@@ -23,8 +24,8 @@ const createProviderButton = (provider: ProviderResponseModel, colors: Theme, ha
     rightIcon={hasRightIcon ? <ChevronRightIcon color={colors.text} /> : undefined}
     leftIcon={hasLeftIcon ? <ChevronLeftIcon color={colors.text} /> : undefined} >
     <Image alt={`${provider.name}-image`} src={`/provider-icons/${provider.name}.png`} sx={{
-        width: "1.5rem",
-        height: "1.5rem",
+        width: "20px",
+        height: "20px",
         marginRight: "0.5rem"
     }}
     />
@@ -77,7 +78,7 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
             drawerContent={<>
                 <Flex backgroundColor={colors.backgroundLight} >
                     <Box>
-                        {createProviderButton(prevProvider, colors, true, false)}
+                        {createProviderButton(prevProvider, 'prev-provider', colors, true, false)}
                     </Box>
                     <Spacer />
                     <Box sx={{
@@ -89,7 +90,7 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
                     </Box>
                     <Spacer />
                     <Box>
-                        {createProviderButton(nextProvider, colors, false, true)}
+                        {createProviderButton(nextProvider, 'next-provider', colors, false, true)}
                     </Box>
                 </Flex>
                 <Box
@@ -107,9 +108,9 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
                         }}>
 
                         <SimpleGrid columns={[2, 1]} spacing={10}>
-                            {Object.entries(groupedProviders).map(([type, providers]) => (<GridItem key={type}>
+                            {Object.entries(groupedProviders).map(([type, providers], q) => (<GridItem key={q}>
                                 {createTypeTag(type, colors)}
-                                {providers.map(x => createProviderButton(x, colors, false, false, "100%", false))}
+                                {providers.map((x, l) => createProviderButton(x, l.toString(), colors, false, false, "100%", false))}
                             </GridItem>))}
                         </SimpleGrid>
                     </motion.div>
@@ -122,7 +123,7 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({ allProviders, cu
                             {createTypeTag(type, colors)}
                             {providers.map((provider) => <Box
                                 key={provider.name}>
-                                {createProviderButton(provider, colors, false, true, "100%", true)}
+                                {createProviderButton(provider, provider.name ?? "", colors, false, true, "100%", true)}
                             </Box>)}
                         </Box>
                     ))}

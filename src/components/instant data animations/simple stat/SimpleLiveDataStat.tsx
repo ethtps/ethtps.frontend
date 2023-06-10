@@ -3,6 +3,7 @@ import { LiveDataDelta, SimpleLiveDataPoint, SimpleStat } from "."
 import { MouseOverEvents } from "@/components"
 import { DataType, ProviderResponseModel } from "@/api-client"
 import { current } from "@reduxjs/toolkit"
+import { AllData } from "@/data"
 
 interface ISimpleLiveDataStatProps {
     connected: boolean,
@@ -25,7 +26,7 @@ export function SimpleLiveDataStat({
     currentDataType,
     onMouseOver,
     onMouseLeave,
-    onClick
+    onClick,
 }: ISimpleLiveDataStatProps) {
     return (
         <Flex

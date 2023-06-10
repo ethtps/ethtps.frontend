@@ -1,14 +1,15 @@
 /* eslint-disable import/no-internal-modules */
 //import { api } from '@/services'
 
-import { ProviderResponseModel } from "@/api-client"
+import { DataType, ProviderResponseModel, TimeInterval } from "@/api-client"
 import { ProviderListSidebar, ProviderOverview, SidebarVariant } from "@/components"
-import { generatePath } from "@/data"
-import { conditionalRender, getAsync, queryClient } from "@/services"
+import { AllData, generatePath } from "@/data"
+import { api, conditionalRender, getAsync, queryClient } from "@/services"
 import { Container, Box, Flex, Spacer, useBreakpointValue } from "@chakra-ui/react"
 import { GetServerSideProps, InferGetStaticPropsType } from "next"
 import { useRef } from "react"
 import { useDimensions } from "@chakra-ui/react"
+import { Dictionary } from "@reduxjs/toolkit"
 
 interface IProviderPageParams {
   currentProvider?: string,
@@ -33,9 +34,11 @@ export async function getStaticPaths() {
 }
 export const getStaticProps: GetServerSideProps = async (context) => {
   const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
+  const currentProvider = context.params?.currentProvider as string
+  const defaultInterval = TimeInterval.OneMinute
   return {
     props: {
-      currentProvider: context.params?.currentProvider as string,
+      currentProvider: currentProvider,
       allProviders: providers.parsedBody
     } as IProviderPageParams
   }
