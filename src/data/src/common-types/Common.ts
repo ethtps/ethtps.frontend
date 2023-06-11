@@ -4,7 +4,7 @@ import {
 	DataResponseModelDictionary,
 	InstantDataResponseModel,
 } from './Dictionaries'
-import { DataPoint, DataResponseModel, DataType, ProviderResponseModel } from '../../../api-client'
+import { DataPoint, DataResponseModel, DataType, DatedXYDataPoint, ProviderResponseModel } from '../../../api-client'
 import { m_toShortString, toShortString_2 } from '../'
 import { Dictionary } from '@reduxjs/toolkit'
 
@@ -119,7 +119,7 @@ export const inline = {
 
 
 export interface AllData {
-	tps: Dictionary<DataResponseModel[]>
-	gps: Dictionary<DataResponseModel[]>
-	gtps: Dictionary<DataResponseModel[]>
+	tps: Dictionary<DatedXYDataPoint[]>
+	gps: Dictionary<DatedXYDataPoint[]>
+	gtps: Dictionary<DatedXYDataPoint[]>
 }

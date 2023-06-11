@@ -5,9 +5,11 @@ import { useState } from "react"
 
 interface ITimeIntervalButtonGroupProps {
     onChange?: (interval: ExtendedTimeInterval) => void
+    loading?: boolean
 }
 
-export function TimeIntervalButtonGroup({ onChange }: ITimeIntervalButtonGroupProps) {
+export function TimeIntervalButtonGroup({ onChange, loading }: ITimeIntervalButtonGroupProps) {
+    const [current, setCurrent] = useState("1m")
     return <>
         <div style={{
             float: 'right',
@@ -17,13 +19,15 @@ export function TimeIntervalButtonGroup({ onChange }: ITimeIntervalButtonGroupPr
                 onChange={(v) => {
                     if (onChange) {
                         onChange(TimeIntervalFromLabel(v))
+                        setCurrent(v)
                     }
                 }}
                 props={{
                     variant: 'ghost',
                     w: '1rem'
                 }}
-                selected={"1m"}
+                selected={'1m'}
+                highlighed={loading ? current : undefined}
                 tooltipFunction={(v) => `Change view to ${TimeIntervalToLabel_2(v.toString()).toLowerCase()}`}
                 buttons={EnumerateIntervals().map((x, i) => TimeIntervalToLabel(x))} />
         </div>

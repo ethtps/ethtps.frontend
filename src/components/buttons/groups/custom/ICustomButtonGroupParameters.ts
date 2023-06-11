@@ -5,4 +5,5 @@ export interface ICustomButtonGroupParameters {
   selected?: string
   onChange?: (value: string) => void
   tooltipFunction?: (value: string) => string
+  highlighed?: string
 }

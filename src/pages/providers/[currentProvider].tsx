@@ -8,7 +8,7 @@ import { api, conditionalRender, getAsync, queryClient } from "@/services"
 import { Container, Box, Flex, Spacer, useBreakpointValue } from "@chakra-ui/react"
 import { GetServerSideProps, InferGetStaticPropsType } from "next"
 import { useRef } from "react"
-import { useDimensions } from "@chakra-ui/react"
+import { useSize } from "@chakra-ui/react-use-size"
 import { Dictionary } from "@reduxjs/toolkit"
 
 interface IProviderPageParams {
@@ -46,7 +46,7 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 
 export default function ProviderPage({ currentProvider, allProviders }: IProviderPageParams) {
   const containerRef = useRef<any>(null)
-  const containerSize = useDimensions(containerRef)
+  const containerSize = useSize(containerRef)
   const variants = useBreakpointValue(
     {
       base: {
@@ -65,19 +65,22 @@ export default function ProviderPage({ currentProvider, allProviders }: IProvide
         alignItems={'flex-start'}
         flexDirection={'row'}
         flexGrow={'initial'}
-        flexWrap={'wrap'}>
+        flexWrap={'wrap'}
+        maxW={1000}>
         <Box>
           <ProviderListSidebar
             variant={variants?.navigation ?? SidebarVariant.DRAWER}
             currentProvider={currentProvider}
             allProviders={allProviders} />
         </Box>
-        <Box sx={{
-          marginLeft: variants?.navigation === SidebarVariant.SIDEBAR ? '350px' : '0px',
-          marginRight: variants?.navigation === SidebarVariant.SIDEBAR ? '50px' : '0px'
-        }} overflow={'scroll'}>
+        <Box
+          width={containerSize?.width}
+          sx={{
+            marginLeft: variants?.navigation === SidebarVariant.SIDEBAR ? '350px' : '0px',
+            marginRight: variants?.navigation === SidebarVariant.SIDEBAR ? '50px' : '0px'
+          }} overflow={'scroll'}>
           <ProviderOverview
-            width={containerRef?.current?.offsetWidth}
+            width={containerSize?.width}
             provider={allProviders?.find(x => x.name === currentProvider as string)} />
         </Box>
         <Spacer />
