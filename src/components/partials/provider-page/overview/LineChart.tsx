@@ -2,8 +2,8 @@
 import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
 import { DataResponseModel, DataType, DatedXYDataPoint, ProviderResponseModel, TimeInterval } from "@/api-client"
 // eslint-disable-next-line import/no-internal-modules
-import { TimeIntervalButtonGroup } from "@/components/buttons"
-import { AllData, ExtendedTimeInterval, dataTypeToHumanReadableString } from "@/data"
+import { DataModeButtonGroup, TimeIntervalButtonGroup } from "@/components/buttons"
+import { AllData, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment, toShortString } from "@/data"
 import { api, conditionalRender, useColors } from "@/services"
 import { Box, Container, Progress } from "@chakra-ui/react"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -23,6 +23,7 @@ import 'chart.js/auto'
 import { Chart as Chart2 } from 'react-chartjs-2'
 import { Dictionary } from '@reduxjs/toolkit'
 import { motion } from 'framer-motion'
+import moment from 'moment'
 
 interface ILineChartProps {
   width: number
@@ -76,9 +77,17 @@ export function LineChart(props: ILineChartProps) {
     }
   }, [allData, dataType])
   useEffect(() => {
+    const m = toMoment(interval)
     async function fetchData(dataType: DataType) {
       try {
-        const data = await api.getJunkL2Data(dataType, interval as TimeInterval)
+        const data = await api.getL2Data({
+          dataType: dataType,
+          l2DataRequestModel: {
+            endDate: moment().utc(true).toDate(),
+            startDate: moment().utc(true).subtract(m.amount, m.unit).toDate(),
+            provider: props.provider ?? 'All',
+          }
+        })
         const processed = {} as Record<string, DatedXYDataPoint[]>
         processed[props.provider ?? 'auto'] = data?.data?.dataPoints?.map(x => x as DatedXYDataPoint) ?? []
         setAllData(old => {
@@ -157,7 +166,6 @@ export function LineChart(props: ILineChartProps) {
       },
       maintainAspectRatio: false,
       responsive: true,
-      animation: false,
       plugins: {
         decimation: {
           enabled: true,
@@ -181,16 +189,16 @@ export function LineChart(props: ILineChartProps) {
         return {
           label: s.name,
           data: s.data,
-          borderColor: colors.primary,
-          backgroundColor: colors.primary,
+          borderColor: colors.text,
+          backgroundColor: colors.text,
           fill: false,
           borderDash: [0, 0],
           pointRadius: 0,
           pointHitRadius: 0,
-          tension: 0.1
+          tension: 0.3
         }
       }) ?? [])
-    }} />, [chartData, colors.grid, colors.primary, colors.text, sizeRef?.height, sizeRef?.width, loading, dataType])
+    }} />, [chartData, colors.grid, colors.text, sizeRef?.height, sizeRef?.width, loading, dataType])
   return <>
     <Box
       ref={containerRef}
@@ -213,6 +221,7 @@ export function LineChart(props: ILineChartProps) {
           position: 'absolute',
         }}
         h={pad + 'px'}>
+        <DataModeButtonGroup float='left' />
         <TimeIntervalButtonGroup loading={loading} onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
       </Box>
       {chart}

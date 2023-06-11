@@ -1,3 +1,4 @@
+import { unitOfTime } from 'moment'
 import { TimeInterval, DataType } from '../../../api-client'
 
 export function m_toShortString(mode: DataType) {
@@ -28,6 +29,29 @@ export function toShortString(interval: TimeInterval) {
 			return '1y'
 		default:
 			return 'Other'
+	}
+}
+
+export function toMoment(interval: ExtendedTimeInterval): { amount: number, unit: unitOfTime.DurationConstructor } {
+	switch (interval) {
+		case TimeInterval.Instant:
+			return { amount: 0, unit: 'second' }
+		case TimeInterval.OneDay:
+			return { amount: 1, unit: 'day' }
+		case ExtraIntervals.FifteenMinutes:
+			return { amount: 15, unit: 'minute' }
+		case TimeInterval.OneHour:
+			return { amount: 1, unit: 'hour' }
+		case TimeInterval.OneMinute:
+			return { amount: 1, unit: 'minute' }
+		case TimeInterval.OneWeek:
+			return { amount: 7, unit: 'day' }
+		case TimeInterval.OneMonth:
+			return { amount: 1, unit: 'month' }
+		case TimeInterval.OneYear:
+			return { amount: 1, unit: 'year' }
+		default:
+			return { amount: 10, unit: 'year' }
 	}
 }
 

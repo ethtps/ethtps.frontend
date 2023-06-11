@@ -3,4 +3,5 @@ import { IHandler } from '@/data'
 
 export interface IDataModeButtonGroupConfiguration {
   modeHandle?: IHandler<DataType>
+  float?: 'left' | 'right'
 }

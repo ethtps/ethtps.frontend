@@ -16,6 +16,7 @@ export interface Theme {
     gray2: string
     topBarGradient: string
     grid: string
+    chartBackground: string
 }
 
 const lightTheme: Theme = {
@@ -33,13 +34,14 @@ const lightTheme: Theme = {
     gray1: 'gray.50',
     gray2: 'gray.100',
     topBarGradient: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(87,99,111,1) 35%, rgba(59,47,80,1) 100%)',
-    grid: '#B799FF'
+    grid: '#B799FF',
+    chartBackground: '#afe6ff'
 }
 
 const darkTheme: Theme = {
     primary: '#B799FF',
     primaryContrast: '#FFFFFF',
-    secondary: '#ACBCFF',
+    secondary: '#8897d6',
     tertiary: '#385fb3',
     background: 'gray.900',
     backgroundLight: "gray.800",
@@ -51,7 +53,8 @@ const darkTheme: Theme = {
     gray1: 'gray.800',
     gray2: 'gray.800',
     topBarGradient: 'linear-gradient(0deg, #15141A 0%, #000706 50%, #15141A 100%)',
-    grid: '#B799FF'
+    grid: '#B799FF',
+    chartBackground: 'linear-gradient(0deg, #385fb3 0%, #385fb3 45%,#2c3868 50%,#385fb3 60%, #385fb3 100%)',
 }
 
 
