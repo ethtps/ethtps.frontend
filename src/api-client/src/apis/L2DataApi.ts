@@ -12,23 +12,16 @@
  * Do not edit the class manually.
  */
 
-import * as runtime from '../runtime'
 import type {
   DataType,
   L2DataRequestModel,
-  L2DataResponseModel,
-  ValidationResult
+  L2DataResponseModel
 } from '../models'
 import {
-  DataTypeFromJSON,
-  DataTypeToJSON,
-  L2DataRequestModelFromJSON,
   L2DataRequestModelToJSON,
-  L2DataResponseModelFromJSON,
-  L2DataResponseModelToJSON,
-  ValidationResultFromJSON,
-  ValidationResultToJSON
+  L2DataResponseModelFromJSON
 } from '../models'
+import * as runtime from '../runtime'
 
 export interface ApiV3L2DataGetPostRequest {
   xAPIKey?: string
@@ -86,7 +79,9 @@ export class L2DataApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<L2DataResponseModel> {
     const response = await this.apiV3L2DataGetPostRaw(
-      requestParameters,
+      {
+        ...requestParameters,
+      },
       initOverrides
     )
     return await response.value()

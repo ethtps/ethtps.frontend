@@ -12,23 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime'
+import { exists } from '../runtime'
 import type { BucketOptions } from './BucketOptions'
 import {
   BucketOptionsFromJSON,
-  BucketOptionsFromJSONTyped,
   BucketOptionsToJSON
 } from './BucketOptions'
 import type { DatasetMergeOptions } from './DatasetMergeOptions'
 import {
   DatasetMergeOptionsFromJSON,
-  DatasetMergeOptionsFromJSONTyped,
   DatasetMergeOptionsToJSON
 } from './DatasetMergeOptions'
 import type { XPointType } from './XPointType'
 import {
   XPointTypeFromJSON,
-  XPointTypeFromJSONTyped,
   XPointTypeToJSON
 } from './XPointType'
 
@@ -136,13 +133,13 @@ export function L2DataRequestModelFromJSONTyped(
     startDate: !exists(json, 'startDate')
       ? undefined
       : json['startDate'] === null
-      ? null
-      : new Date(json['startDate']),
+        ? null
+        : new Date(json['startDate']),
     endDate: !exists(json, 'endDate')
       ? undefined
       : json['endDate'] === null
-      ? null
-      : new Date(json['endDate']),
+        ? null
+        : new Date(json['endDate']),
     bucketOptions: !exists(json, 'bucketOptions')
       ? undefined
       : BucketOptionsFromJSON(json['bucketOptions']),
@@ -184,14 +181,14 @@ export function L2DataRequestModelToJSON(
       value.startDate === undefined
         ? undefined
         : value.startDate === null
-        ? null
-        : value.startDate.toISOString(),
+          ? null
+          : value.startDate.toISOString(),
     endDate:
       value.endDate === undefined
         ? undefined
         : value.endDate === null
-        ? null
-        : value.endDate.toISOString(),
+          ? null
+          : value.endDate.toISOString(),
     bucketOptions: BucketOptionsToJSON(value.bucketOptions),
     returnXAxisType: XPointTypeToJSON(value.returnXAxisType),
     includeEmptyDatasets: value.includeEmptyDatasets,

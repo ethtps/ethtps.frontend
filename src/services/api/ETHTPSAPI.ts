@@ -1,4 +1,3 @@
-import { APIKeyMiddleware } from './APIKeyMiddleware'
 import {
   APIKeyApi,
   ApiV3ChartDataGetStackedChartDataGetRequest,
@@ -12,19 +11,20 @@ import {
   GPSApi,
   GasAdjustedTPSApi,
   GeneralApi,
-  L2DataApi,
   L2DataResponseModel,
   MarkdownPagesApi,
   TPSApi,
   TimeInterval
 } from '@/api-client'
 import {
-  DataResponseModelDictionary,
   DataPointDictionary,
+  DataResponseModelDictionary,
+  ExtendedL2DataApi,
   StringDictionary
 } from '@/data'
 import { mainnet } from '../data'
-import { getAsync, postAsync } from './HTTPHelper'
+import { APIKeyMiddleware } from './APIKeyMiddleware'
+import { getAsync } from './HTTPHelper'
 
 export class ETHTPSApi {
   public generalApi: GeneralApi = new GeneralApi()
@@ -36,7 +36,7 @@ export class ETHTPSApi {
   public externalWebsitePAI: ExternalWebsitesApi = new ExternalWebsitesApi()
   public markdownAPI: MarkdownPagesApi = new MarkdownPagesApi()
   public chartDataAPI: ChartDataApi = new ChartDataApi()
-  public l2DataAPI: L2DataApi = new L2DataApi()
+  public l2DataAPI: ExtendedL2DataApi = new ExtendedL2DataApi()
   public apiKeyAPI: APIKeyApi
   public apiKey?: string
 
@@ -78,7 +78,7 @@ export class ETHTPSApi {
     )
 
     this.chartDataAPI = new ChartDataApi(this._genConfig(this._apiURL))
-    this.l2DataAPI = new L2DataApi(this._genConfig(this._apiURL))
+    this.l2DataAPI = new ExtendedL2DataApi(this._genConfig(this._apiURL))
     /*
     this.statusAPI = new StatusApi(
       new Configuration({
@@ -245,7 +245,18 @@ export class ETHTPSApi {
     )
   }
   public async getL2Data(request: ApiV3L2DataGetPostRequest) {
+    this.l2DataAPI
     return await this.l2DataAPI.apiV3L2DataGetPost(request)
+  }
+
+  public async getTimedL2Data(request: ApiV3L2DataGetPostRequest) {
+    this.l2DataAPI
+    return await this.l2DataAPI.apiV3L2TimeDataGetPost(request)
+  }
+
+  public async getNumberedL2Data(request: ApiV3L2DataGetPostRequest) {
+    this.l2DataAPI
+    return await this.l2DataAPI.apiV3L2NumberedDataGetPost(request)
   }
 
   public async getJunkL2Data(dataType: DataType,

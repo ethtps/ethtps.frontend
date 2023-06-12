@@ -12,23 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime'
+import { exists } from '../runtime'
 import type { ComplexDatasetAnalysis } from './ComplexDatasetAnalysis'
 import {
   ComplexDatasetAnalysisFromJSON,
-  ComplexDatasetAnalysisFromJSONTyped,
   ComplexDatasetAnalysisToJSON
 } from './ComplexDatasetAnalysis'
 import type { IXYMultiConvertible } from './IXYMultiConvertible'
 import {
   IXYMultiConvertibleFromJSON,
-  IXYMultiConvertibleFromJSONTyped,
   IXYMultiConvertibleToJSON
 } from './IXYMultiConvertible'
 import type { SimpleDatasetAnalysis } from './SimpleDatasetAnalysis'
 import {
   SimpleDatasetAnalysisFromJSON,
-  SimpleDatasetAnalysisFromJSONTyped,
   SimpleDatasetAnalysisToJSON
 } from './SimpleDatasetAnalysis'
 
@@ -88,8 +85,8 @@ export function DatasetFromJSONTyped(
     dataPoints: !exists(json, 'dataPoints')
       ? undefined
       : json['dataPoints'] === null
-      ? null
-      : (json['dataPoints'] as Array<any>).map(IXYMultiConvertibleFromJSON),
+        ? null
+        : (json['dataPoints'] as Array<any>).map(IXYMultiConvertibleFromJSON),
     provider: !exists(json, 'provider') ? undefined : json['provider'],
     simpleAnalysis: !exists(json, 'simpleAnalysis')
       ? undefined
@@ -112,8 +109,8 @@ export function DatasetToJSON(value?: Dataset | null): any {
       value.dataPoints === undefined
         ? undefined
         : value.dataPoints === null
-        ? null
-        : (value.dataPoints as Array<any>).map(IXYMultiConvertibleToJSON),
+          ? null
+          : (value.dataPoints as Array<any>).map(IXYMultiConvertibleToJSON),
     provider: value.provider,
     simpleAnalysis: SimpleDatasetAnalysisToJSON(value.simpleAnalysis),
     complexAnalysis: ComplexDatasetAnalysisToJSON(value.complexAnalysis)

@@ -1,13 +1,13 @@
 //Needed for chartjs to work
+import { DataType, NumericXYDataPoint, TimeInterval } from "@/api-client"
 import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
-import { DataResponseModel, DataType, DatedXYDataPoint, ProviderResponseModel, TimeInterval } from "@/api-client"
 // eslint-disable-next-line import/no-internal-modules
 import { DataModeButtonGroup, TimeIntervalButtonGroup } from "@/components/buttons"
-import { AllData, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment, toShortString } from "@/data"
+import { AllData, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment } from "@/data"
 import { api, conditionalRender, useColors } from "@/services"
-import { Box, Container, Progress } from "@chakra-ui/react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { Box, Progress } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
+import { useEffect, useMemo, useRef, useState } from "react"
 Chart.register(
   CategoryScale,
   LinearScale,
@@ -20,10 +20,8 @@ Chart.register(
 )
 // eslint-disable-next-line import/no-internal-modules
 import 'chart.js/auto'
-import { Chart as Chart2 } from 'react-chartjs-2'
-import { Dictionary } from '@reduxjs/toolkit'
-import { motion } from 'framer-motion'
 import moment from 'moment'
+import { Chart as Chart2 } from 'react-chartjs-2'
 
 interface ILineChartProps {
   width: number
@@ -33,7 +31,7 @@ interface ILineChartProps {
 
 interface Series {
   name: string
-  data?: (DatedXYDataPoint | undefined)[]
+  data?: (NumericXYDataPoint | undefined)[]
 }
 
 const pad = 40
@@ -53,7 +51,7 @@ export function LineChart(props: ILineChartProps) {
     const keyz = Object.keys(allData?.tps)
     if (keyz?.length > 0) {
       const series: Series[] = []
-      let data: DatedXYDataPoint[] | undefined
+      let data: NumericXYDataPoint[] | undefined
       for (const key of keyz) {
         switch (dataType) {
           case DataType.Tps:
@@ -80,33 +78,43 @@ export function LineChart(props: ILineChartProps) {
     const m = toMoment(interval)
     async function fetchData(dataType: DataType) {
       try {
-        const data = await api.getL2Data({
+        const data = await api.getNumberedL2Data({
           dataType: dataType,
           l2DataRequestModel: {
+            returnXAxisType: 'Number',
+            includeEmptyDatasets: false,
             endDate: moment().utc(true).toDate(),
             startDate: moment().utc(true).subtract(m.amount, m.unit).toDate(),
             provider: props.provider ?? 'All',
           }
         })
-        const processed = {} as Record<string, DatedXYDataPoint[]>
-        processed[props.provider ?? 'auto'] = data?.data?.dataPoints?.map(x => x as DatedXYDataPoint) ?? []
+        const processed = {} as Record<string, NumericXYDataPoint[]>
+        processed[props.provider ?? 'auto'] = data?.data?.dataPoints?.map((x, i) => {
+          return {
+            x: x.x ? x.x : i,
+            y: x.y,
+          }
+        }) ?? []
+        console.log(processed)
         setAllData(old => {
 
           switch (dataType) {
             case DataType.Tps:
-              old.tps = processed as Record<string, DatedXYDataPoint[]>
+              old.tps = processed as Record<string, NumericXYDataPoint[]>
               break
             case DataType.Gps:
-              old.gps = processed as Record<string, DatedXYDataPoint[]>
+              old.gps = processed as Record<string, NumericXYDataPoint[]>
               break
             case DataType.GasAdjustedTps:
-              old.gtps = processed as Record<string, DatedXYDataPoint[]>
+              old.gtps = processed as Record<string, NumericXYDataPoint[]>
               break
             default:
               break
           }
           return {
-            ...old
+            tps: old.tps,
+            gps: old.gps,
+            gtps: old.gtps,
           }
         })
       }
@@ -123,82 +131,84 @@ export function LineChart(props: ILineChartProps) {
   }, [interval, props.provider, dataType])
   const containerRef = useRef<any>(null)
   const sizeRef = useSize(containerRef)
-  const chart = useMemo(() => <Chart2
-    type={'line'}
-    width={sizeRef?.width}
-    height={sizeRef?.height ?? 0 - pad}
-    style={{
-      padding: '5px',
-      paddingTop: pad
-    }}
-    options={{
-      scales: {
-        x: {
-          type: 'time',
-          ticks: {
-            color: colors.text,
+  const chart = useMemo(() => {
+    return <Chart2
+      type={'line'}
+      width={sizeRef?.width}
+      height={sizeRef?.height ?? 0 - pad}
+      style={{
+        padding: '5px',
+        paddingTop: pad
+      }}
+      options={{
+        scales: {
+          x: {
+            type: 'timeseries',
+            ticks: {
+              color: colors.text,
+            },
+            grid: {
+              color: colors.grid,
+            }
           },
-          grid: {
-            color: colors.grid,
-          }
+          y: {
+            stacked: true,
+            title: {
+              display: false,
+              text: dataTypeToHumanReadableString(dataType)
+            },
+            ticks: {
+              color: colors.text,
+              callback: (!loading) ? function (label, index, labels) {
+                const v = parseInt(label.toString())
+                if (v >= 1000000)
+                  return v / 1000000 + 'M'
+                if (v >= 1000)
+                  return v / 1000 + 'k'
+                return label
+              } : undefined
+            },
+            grid: {
+              color: colors.grid,
+            }
+          },
         },
-        y: {
-          stacked: true,
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+            position: 'bottom',
+          },
           title: {
             display: false,
-            text: dataTypeToHumanReadableString(dataType)
           },
-          ticks: {
-            color: colors.text,
-            callback: (!loading) ? function (label, index, labels) {
-              const v = parseFloat(label.toString())
-              if (v >= 1000000)
-                return v / 1000000 + 'M'
-              if (v >= 1000)
-                return v / 1000 + 'k'
-              return label
-            } : undefined
-          },
-          grid: {
-            color: colors.grid,
+          tooltip: {
+            enabled: false,
           }
         },
-      },
-      maintainAspectRatio: false,
-      responsive: true,
-      plugins: {
-        decimation: {
-          enabled: true,
-          algorithm: 'lttb',
-        },
-        legend: {
-          display: false,
-          position: 'bottom',
-        },
-        title: {
-          display: false,
-        },
-        tooltip: {
-          enabled: false,
-        }
-      },
-    }}
-    data={{
-      labels: chartData?.map(d => d?.name),
-      datasets: (chartData?.map?.(s => {
-        return {
-          label: s.name,
-          data: s.data,
-          borderColor: colors.text,
-          backgroundColor: colors.text,
-          fill: false,
-          borderDash: [0, 0],
-          pointRadius: 0,
-          pointHitRadius: 0,
-          tension: 0.3
-        }
-      }) ?? [])
-    }} />, [chartData, colors.grid, colors.text, sizeRef?.height, sizeRef?.width, loading, dataType])
+      }}
+      data={{
+        labels: chartData?.map(d => d?.name),
+        datasets: (chartData?.map?.(s => {
+          return {
+            label: s.name,
+            data: s.data?.map(d => {
+              return {
+                x: d?.x,
+                y: d?.y
+              }
+            }),
+            fill: false,
+            borderColor: colors.text,
+            borderDash: [0, 0],
+            pointRadius: 0,
+            pointHitRadius: 0,
+            tension: 0.3
+          }
+        }) ?? [])
+      }} />
+  }, [chartData, colors.grid, colors.text, sizeRef?.height, sizeRef?.width, loading, dataType])
   return <>
     <Box
       ref={containerRef}

@@ -1,12 +1,11 @@
-import { Moment } from 'moment'
-import moment from 'moment'
+import { Dictionary } from '@reduxjs/toolkit'
+import moment, { Moment } from 'moment'
+import { m_toShortString, toShortString_2 } from '../'
+import { DataPoint, DataType, NumericXYDataPoint } from '../../../api-client'
 import {
 	DataResponseModelDictionary,
 	InstantDataResponseModel,
 } from './Dictionaries'
-import { DataPoint, DataResponseModel, DataType, DatedXYDataPoint, ProviderResponseModel } from '../../../api-client'
-import { m_toShortString, toShortString_2 } from '../'
-import { Dictionary } from '@reduxjs/toolkit'
 
 export function fromShortString(typeStr: string): DataType {
 	switch (typeStr.toUpperCase()) {
@@ -119,7 +118,8 @@ export const inline = {
 
 
 export interface AllData {
-	tps: Dictionary<DatedXYDataPoint[]>
-	gps: Dictionary<DatedXYDataPoint[]>
-	gtps: Dictionary<DatedXYDataPoint[]>
+	tps: Dictionary<NumericXYDataPoint[]>
+	gps: Dictionary<NumericXYDataPoint[]>
+	gtps: Dictionary<NumericXYDataPoint[]>
 }
+
