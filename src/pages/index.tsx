@@ -1,39 +1,51 @@
 /* eslint-disable import/no-internal-modules */
-import { Box, Button, Center, Container, Flex, Kbd, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react'
-import { AllProvidersTable, DataModeButtonGroup, LiveDataContainer, LivePSPartial, SimpleBarStat, SimpleLiveDataStat, StreamingTest, useData, useLiveDataWithDelta } from '@/components'
-import { Suspense, useMemo, useRef, useState } from 'react'
-import { useSize } from "@chakra-ui/react-use-size"
-import Loading from './components/Loading'
-import { GetServerSideProps } from 'next'
-import { DataType, ProviderResponseModel } from '@/api-client'
-import { api, conditionalRender, getAsync, useColors } from '@/services'
-import { DataPointDictionary, IMaxDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback, setMaxTPSData, useAppDispatch, useHandler } from '@/data'
-import { Dictionary } from '@reduxjs/toolkit'
-import { D3Stream } from '@/components'
+import { DataType, ProviderResponseModel, TimeInterval } from '@/api-client'
+import { AllProvidersTable, LiveDataContainer, useLiveDataWithDelta } from '@/components'
 import { StreamingComponent } from '@/components/instant data animations/streaming/StreamingComponent'
+import { IDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback } from '@/data'
+import { api } from '@/services'
 import { OrderProvidersByMax } from '@/services/experiments/index/OrderProviders'
+import { Box } from '@chakra-ui/react'
+import { Dictionary } from '@reduxjs/toolkit'
+import { GetServerSideProps } from 'next'
+import { useState } from 'react'
 
 export interface IIndexPageProps {
   providerData?: ProviderResponseModel[]
-  maxData?: IMaxDataModel
+  maxData?: IDataModel
+  instantData?: IDataModel
+  defaultIntervalData?: IDataModel
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
+  const instant = await api.getInstantData(TimeInterval.Instant)
   return {
     props: OrderProvidersByMax({
       providerData: await api.getProvidersAsync(),
       maxData: {
-        maxTPSData: await api.getMax(DataType.Tps, "All"),
-        maxGPSData: await api.getMax(DataType.Gps, "All"),
-        maxGTPSData: await api.getMax(DataType.GasAdjustedTps, "All")
+        tpsData: await api.getMax(DataType.Tps, "All"),
+        gpsData: await api.getMax(DataType.Gps, "All"),
+        gtpsData: await api.getMax(DataType.GasAdjustedTps, "All")
+      },
+      instantData: {
+        tpsData: instant['tps'],
+        gpsData: instant['gps'],
+        gtpsData: instant['gasAdjustedTps'],
+      },
+      defaultIntervalData: {
+        tpsData: await api.getData(DataType.Tps, TimeInterval.OneHour, "All", undefined, true),
+        gpsData: await api.getData(DataType.Gps, TimeInterval.OneHour, "All", undefined, true),
+        gtpsData: await api.getData(DataType.GasAdjustedTps, TimeInterval.OneHour, "All", undefined, true),
       }
     } as IIndexPageProps)
   }
 }
 
-export default function Index({ providerData, maxData }: IIndexPageProps) {
-  const [connected, setConnected] = useState(false)
+export default function Index({ providerData, maxData, instantData, defaultIntervalData }: IIndexPageProps) {
+  console.clear()
+  console.info(defaultIntervalData)
   const aggregator = new LiveDataAggregator()
+  const [connected, setConnected] = useState(false)
   const noSidechainAggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
   const modeHandler = createHandlerFromCallback<DataType>((newValue) => {
@@ -94,6 +106,7 @@ export default function Index({ providerData, maxData }: IIndexPageProps) {
           <Box overflow={'scroll'} >
             <AllProvidersTable
               maxData={maxData}
+              instantData={instantData}
               providerData={getFilteredProviderData()}
               aggregator={copiedAggregator}
               dataType={hoveredDataMode ?? dataMode}

@@ -10,6 +10,10 @@ export class LiveDataAggregator {
     private tpsSum: number = 0
     private gpsSum: number = 0
 
+    constructor(data?: Dictionary<L2DataUpdateModel>) {
+        if (data) this.data = data
+    }
+
     public update(entry: L2DataUpdateModel) {
         if (entry.data?.tps) {
             this.tpsSum -= this.data[entry.provider]?.data?.tps || 0

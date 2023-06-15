@@ -1,14 +1,14 @@
 import {
 	AppState,
 	DataPointDictionary,
-	IMaxDataModel,
+	IDataModel,
 	getMaxDataFor,
 	useAppSelector,
 } from '..'
 import { DataPoint, DataType } from '../../../api-client'
 
 export function useGetMaxDataFromAppStore() {
-	return useAppSelector((state: AppState) => state.maxData) as IMaxDataModel
+	return useAppSelector((state: AppState) => state.maxData) as IDataModel
 }
 
 export function useGetMaxDataForProviderFromAppStore(
@@ -22,19 +22,19 @@ export function useGetMaxDataForProviderFromAppStore(
 
 export function useGetMaxTPSDataFromAppStore() {
 	return useAppSelector(
-		(state: AppState) => state.maxData.maxTPSData
+		(state: AppState) => state.maxData.tpsData
 	) as DataPointDictionary
 }
 
 export function useGetMaxGPSDataFromAppStore() {
 	return useAppSelector(
-		(state: AppState) => state.maxData.maxGPSData
+		(state: AppState) => state.maxData.gpsData
 	) as DataPointDictionary
 }
 
 export function useGetMaxGTPSDataFromAppStore() {
 	return useAppSelector(
-		(state: AppState) => state.maxData.maxGTPSData
+		(state: AppState) => state.maxData.gtpsData
 	) as DataPointDictionary
 }
 

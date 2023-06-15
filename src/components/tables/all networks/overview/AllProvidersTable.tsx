@@ -1,19 +1,18 @@
-import { useEffect, useState } from 'react'
+import { DataType } from '@/api-client'
+import { DataIssueDialog, SeeMoreButton } from '@/components'
+import { IProviderTableModel } from '@/data'
+import { conditionalRender, useColors } from '@/services'
+import { Alert, AlertIcon, Box, Button, Link, SimpleGrid, Spacer, Table, TableCaption, Tbody, Text, Thead, Tooltip, Tr } from '@chakra-ui/react'
+import { IconExclamationCircle } from '@tabler/icons-react'
+import React, { useState } from 'react'
 import { AllProvidersHeader } from './AllProvidersHeader'
 import { AllProvidersRows } from './AllProvidersRows'
-import React from 'react'
-import { conditionalRender, getAsync, useColors } from '@/services'
-import { DataIssueDialog, SeeMoreButton } from '@/components'
-import { Alert, AlertIcon, Heading, Link, Table, TableCaption, Tbody, Thead, Tr, Text, HStack, Box, Flex, Spacer, Button, Stack, SimpleGrid, Tooltip } from '@chakra-ui/react'
-import { IProviderTableModel } from '@/data'
-import { GetServerSideProps } from 'next'
-import { DataType, ProviderResponseModel } from '@/api-client'
-import { IconExclamationCircle } from '@tabler/icons-react'
 
 export default function AllProvidersTable({
   providerData,
   maxData,
   aggregator,
+  instantData,
   dataType,
   showSidechains,
   maxRowsBeforeShowingExpand = 25
@@ -64,6 +63,7 @@ export default function AllProvidersTable({
             providerData={providerData}
             maxData={maxData}
             dataType={dataType}
+            instantData={instantData}
             maxRowsBeforeShowingExpand={showRowCount}
           />
         </Tbody>

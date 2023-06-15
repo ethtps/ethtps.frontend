@@ -1,4 +1,4 @@
-import { DataPointDictionary, IMaxDataModel } from '..'
+import { IDataModel } from '..'
 import { DataPoint, DataType, ProviderResponseModel } from '../../../api-client'
 
 export const groupBy = <T>(array: T[] | undefined, predicate: (value: T, index: number, array: T[]) => string) =>
@@ -9,17 +9,17 @@ export const groupBy = <T>(array: T[] | undefined, predicate: (value: T, index: 
 
 export const generatePath = (provider?: ProviderResponseModel) => { return { params: { currentProvider: provider?.name ?? "" } } }
 
-export function getMaxDataFor(model?: IMaxDataModel, provider?: string | null, type?: DataType): DataPoint | undefined {
+export function getMaxDataFor(model?: IDataModel, provider?: string | null, type?: DataType): DataPoint | undefined {
     if (!provider || !type || !model) return
     switch (type) {
         case DataType.Tps:
-            if (model.maxTPSData)
-                return model.maxTPSData[provider]
+            if (model.tpsData)
+                return model.tpsData[provider]
         case DataType.Gps:
-            if (model.maxGPSData)
-                return model.maxGPSData[provider]
+            if (model.gpsData)
+                return model.gpsData[provider]
         case DataType.GasAdjustedTps:
-            if (model.maxGTPSData)
-                return model.maxGTPSData[provider]
+            if (model.gtpsData)
+                return model.gtpsData[provider]
     }
 }

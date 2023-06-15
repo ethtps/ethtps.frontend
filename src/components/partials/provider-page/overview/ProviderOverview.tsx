@@ -1,8 +1,7 @@
 import { ProviderResponseModel } from "@/api-client"
 import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
-import { AllData } from "@/data"
 import { binaryConditionalRender, useColors } from "@/services"
-import { Badge, Text, Box, Image, Tabs, Skeleton, TabList, TabPanel, Tab, TabPanels, SimpleGrid, Heading, Highlight } from "@chakra-ui/react"
+import { Box, Heading, Highlight, Image, SimpleGrid, Skeleton, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
 import { useRouter } from "next/router"
 // eslint-disable-next-line import/no-internal-modules

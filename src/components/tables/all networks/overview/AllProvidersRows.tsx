@@ -1,21 +1,30 @@
 /* eslint-disable import/no-internal-modules */
-import {
-  IProviderTableModel,
-  getModeData,
-  extractData,
-  useGetLiveDataFromAppStore,
-  useGetLiveDataModeFromAppStore,
-  getMaxDataFor
-} from '@/data'
-import React from 'react'
-import { useEffect, useState } from 'react'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
-import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, TableHeader, range } from '@/components'
 import { DataType } from '@/api-client'
+import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, range } from '@/components'
+import {
+  DataPointDictionary,
+  IProviderTableModel
+} from '@/data'
+import { Tr } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 
 export function AllProvidersRows(model: Partial<IProviderTableModel>): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
   const dataType = model.dataType ?? DataType.Tps
+  const [initialData, setInitialData] = useState<DataPointDictionary>({})
+  useEffect(() => {
+    switch (dataType) {
+      case DataType.Tps:
+        setInitialData(model.instantData?.tpsData ?? {})
+        break
+      case DataType.Gps:
+        setInitialData(model.instantData?.gpsData ?? {})
+        break
+      default:
+        setInitialData(model.instantData?.gtpsData ?? {})
+        break
+    }
+  }, [model.instantData])
   return (
     <>
       {hasData ? (
@@ -40,6 +49,7 @@ export function AllProvidersRows(model: Partial<IProviderTableModel>): JSX.Eleme
                   <DataValueCell
                     clickCallback={model.clickCallback}
                     provider={x}
+                    initialValue={initialData[x.name ?? '']?.value}
                     dataType={dataType}
                     aggregator={model.aggregator}
                   />

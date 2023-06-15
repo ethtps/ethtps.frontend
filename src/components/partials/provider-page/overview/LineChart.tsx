@@ -1,11 +1,11 @@
 //Needed for chartjs to work
 import { DataType, NumericXYDataPoint, TimeInterval } from "@/api-client"
-import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
+import { CategoryScale, Chart, Decimation, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
 // eslint-disable-next-line import/no-internal-modules
 import { DataModeButtonGroup, TimeIntervalButtonGroup } from "@/components/buttons"
 import { AllData, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment } from "@/data"
 import { api, conditionalRender, useColors } from "@/services"
-import { Box, Progress } from "@chakra-ui/react"
+import { Box, Heading, Progress } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
 import { useEffect, useMemo, useRef, useState } from "react"
 Chart.register(
@@ -16,17 +16,21 @@ Chart.register(
   Title,
   Tooltip,
   Legend,
+  Decimation,
   ...registerables
 )
 // eslint-disable-next-line import/no-internal-modules
 import 'chart.js/auto'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { Chart as Chart2 } from 'react-chartjs-2'
+
+moment.tz.setDefault("Europe/Berlin")
 
 interface ILineChartProps {
   width: number
   height: number
   provider?: string
+  title?: string
 }
 
 interface Series {
@@ -83,9 +87,12 @@ export function LineChart(props: ILineChartProps) {
           l2DataRequestModel: {
             returnXAxisType: 'Number',
             includeEmptyDatasets: false,
-            endDate: moment().utc(true).toDate(),
-            startDate: moment().utc(true).subtract(m.amount, m.unit).toDate(),
+            includeSimpleAnalysis: true,
+            includeComplexAnalysis: true,
+            endDate: moment().toDate(),
+            startDate: moment().subtract(m.amount, m.unit).toDate(),
             provider: props.provider ?? 'All',
+
           }
         })
         const processed = {} as Record<string, NumericXYDataPoint[]>
@@ -95,7 +102,6 @@ export function LineChart(props: ILineChartProps) {
             y: x.y,
           }
         }) ?? []
-        console.log(processed)
         setAllData(old => {
 
           switch (dataType) {
@@ -141,11 +147,14 @@ export function LineChart(props: ILineChartProps) {
         paddingTop: pad
       }}
       options={{
+        indexAxis: 'x',
         scales: {
           x: {
             type: 'timeseries',
             ticks: {
+              source: 'data',
               color: colors.text,
+              maxTicksLimit: 10,
             },
             grid: {
               color: colors.grid,
@@ -189,7 +198,6 @@ export function LineChart(props: ILineChartProps) {
         },
       }}
       data={{
-        labels: chartData?.map(d => d?.name),
         datasets: (chartData?.map?.(s => {
           return {
             label: s.name,
@@ -210,6 +218,7 @@ export function LineChart(props: ILineChartProps) {
       }} />
   }, [chartData, colors.grid, colors.text, sizeRef?.height, sizeRef?.width, loading, dataType])
   return <>
+    <Heading size={'md'}>{props.title}</Heading>
     <Box
       ref={containerRef}
       w={'100%'}

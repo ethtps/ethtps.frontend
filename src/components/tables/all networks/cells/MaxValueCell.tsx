@@ -1,19 +1,17 @@
+import { DataPoint, DataType } from '@/api-client'
+import {
+  IDataModel,
+  getMaxDataFor,
+  numberFormat
+} from '@/data'
+import { useColors } from '@/services'
+import { Td, Text, Tooltip } from '@chakra-ui/react'
 import moment from 'moment'
-import React from 'react'
 import {
   ICustomCellConfiguration,
   buildClassNames
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
-import { Td, Tooltip } from '@chakra-ui/react'
-import { Text } from '@chakra-ui/react'
-import { DataPoint, DataType } from '@/api-client'
-import {
-  IMaxDataModel,
-  getMaxDataFor,
-  numberFormat
-} from '@/data'
-import { useColors } from '@/services'
 
 function generateMaxHoverMessage(data?: DataPoint): string {
   if (
@@ -39,7 +37,7 @@ function generateMaxTypography(data?: DataPoint) {
 }
 
 interface IMaxValueCellProps extends ICustomCellConfiguration {
-  maxData: IMaxDataModel
+  maxData: IDataModel
   dataType: DataType
 }
 export function MaxValueCell(config: Partial<IMaxValueCellProps>) {

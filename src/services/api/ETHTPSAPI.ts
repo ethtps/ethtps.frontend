@@ -165,7 +165,8 @@ export class ETHTPSApi {
 
   public getInstantData(smoothing: TimeInterval) {
     return this.generalApi.apiV2InstantDataGet({
-      includeSidechains: true
+      includeSidechains: true,
+      provider: "All",
       //toShortString_2(smoothing),
     })
   }

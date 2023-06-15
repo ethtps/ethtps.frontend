@@ -30,6 +30,11 @@
       "dom",
       "dom.iterable",
       "esnext"
+    ],
+    "plugins": [
+      {
+        "name": "typescript-plugin-proactive-code-fixes"
+      }
     ]
   },
   "include": [
