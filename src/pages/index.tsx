@@ -3,7 +3,7 @@ import { DataType, ProviderResponseModel, TimeInterval } from '@/api-client'
 import { AllProvidersTable, LiveDataContainer, useLiveDataWithDelta } from '@/components'
 import { StreamingComponent } from '@/components/instant data animations/streaming/StreamingComponent'
 import { IDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback } from '@/data'
-import { api } from '@/services'
+import { api, useQueryStringAndLocalStorageBoundState } from '@/services'
 import { OrderProvidersByMax } from '@/services/experiments/index/OrderProviders'
 import { Box } from '@chakra-ui/react'
 import { Dictionary } from '@reduxjs/toolkit'
@@ -42,16 +42,14 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 }
 
 export default function Index({ providerData, maxData, instantData, defaultIntervalData }: IIndexPageProps) {
-  console.clear()
-  console.info(defaultIntervalData)
   const aggregator = new LiveDataAggregator()
   const [connected, setConnected] = useState(false)
   const noSidechainAggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
   const modeHandler = createHandlerFromCallback<DataType>((newValue) => {
-    console.log(newValue)
+
   })
-  const [showSidechains, setShowSidechains] = useState(false)
+  const [showSidechains, setShowSidechains] = useQueryStringAndLocalStorageBoundState(false, 'showSidechains')
   const noSidechainData = useLiveDataWithDelta()
   const { data, setTPS, setGPS } = useLiveDataWithDelta()
   const [newestData, setNewestData] = useState<Dictionary<L2DataUpdateModel>>()
@@ -66,8 +64,8 @@ export default function Index({ providerData, maxData, instantData, defaultInter
     setNewestData(liveData)
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }
-  const [hoveredDataMode, setHoveredDataMode] = useState<DataType | undefined>(DataType.Tps)
-  const [dataMode, setDataMode] = useState<DataType>(DataType.Tps)
+  const [dataMode, setDataMode] = useQueryStringAndLocalStorageBoundState<DataType>(DataType.Tps, 'dataType')
+  const [hoveredDataMode, setHoveredDataMode] = useState<DataType | undefined>(dataMode)
   const onClick = (dataType: DataType) => {
     setDataMode(dataType)
   }
@@ -96,9 +94,9 @@ export default function Index({ providerData, maxData, instantData, defaultInter
               onClick={onClick}
               onMouseOver={onMouseOver}
               onMouseLeave={onMouseLeave}
-              dataMode={dataMode}
+              dataMode={dataMode ?? DataType.Tps}
               hoveredDataMode={hoveredDataMode}
-              showSidechains={showSidechains}
+              showSidechains={showSidechains ?? false}
               showSidechainsToggled={() => setShowSidechains(!showSidechains)}
             />
           </Box>

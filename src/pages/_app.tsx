@@ -1,15 +1,15 @@
 /* eslint-disable import/no-internal-modules */
+import { AppPropsWithLayout, RecaptchaTokenLoader } from '@/components'
+import { wrapper } from '@/data'
+import { CacheProvider } from '@chakra-ui/next-js'
+import { ChakraProvider } from '@chakra-ui/react'
+import { MDXProvider } from '@mdx-js/react'
+import { Provider as ReduxProvider } from 'react-redux'
+import '../styles/Home.module.css'
 import '../styles/app.module.scss'
 import '../styles/cells.styles.scss'
-import '../styles/Home.module.css'
 import '../styles/globals.css'
-import { AppPropsWithLayout } from '@/components'
 import MainLayout from './components/Layout/MainLayout'
-import { ChakraProvider } from '@chakra-ui/react'
-import { CacheProvider } from '@chakra-ui/next-js'
-import { Provider as ReduxProvider } from 'react-redux'
-import { wrapper } from '@/data'
-import { MDXProvider } from '@mdx-js/react'
 import { components } from './markdown'
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
@@ -21,6 +21,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <ReduxProvider store={store}>
           <CacheProvider>
             <ChakraProvider>
+              <RecaptchaTokenLoader />
               <MainLayout component={<Component {...pageProps} />} />
             </ChakraProvider>
           </CacheProvider>

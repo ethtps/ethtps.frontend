@@ -1,5 +1,5 @@
 import { unitOfTime } from 'moment'
-import { TimeInterval, DataType } from '../../../api-client'
+import { DataType, TimeInterval } from '../../../api-client'
 
 export function m_toShortString(mode: DataType) {
 	switch (mode) {
@@ -141,12 +141,11 @@ export const TimeIntervalToSeconds = (interval: ExtendedTimeInterval) => {
 	}
 }
 
-export const TimeIntervalToStreamProps = (interval: ExtendedTimeInterval) => {
+export const TimeIntervalToStreamProps = (interval?: ExtendedTimeInterval) => {
+	if (!interval) return { interval: '15m', limit: 60, duration: 60 * 15 * 1000, refreshInterval: 3 * 1000 }
 	switch (interval) {
 		case TimeInterval.OneMinute:
 			return { interval: '1m', limit: 60, duration: 60 * 1000, refreshInterval: 1 * 1000 }
-		case ExtraIntervals.FifteenMinutes:
-			return { interval: '15m', limit: 60, duration: 60 * 15 * 1000, refreshInterval: 3 * 1000 }
 		case TimeInterval.OneHour:
 			return { interval: '1h', limit: 60, duration: 60 * 60 * 1000, refreshInterval: 15 * 1000 }
 		case TimeInterval.OneDay:
@@ -158,7 +157,7 @@ export const TimeIntervalToStreamProps = (interval: ExtendedTimeInterval) => {
 		case TimeInterval.OneYear:
 			return { interval: '1y', limit: 365, duration: 60 * 24 * 365 * 1000, refreshInterval: 60 * 60 * 1000 }
 		default:
-			return { interval: '1m', limit: 60, duration: 60 * 1000 }
+			return { interval: '15m', limit: 60, duration: 60 * 15 * 1000, refreshInterval: 3 * 1000 }
 	}
 }
 

@@ -9,7 +9,7 @@ export function DataOverviewChart(props: Test) {
 }
 
 export async function getStaticProps(ctx: any) {
-  console.log('fetching')
+  //console.log('fetching')
   const res = await fetch('https://api.github.com/repos/vercel/next.js')
   const json = await res.json()
   return { props: { stars: json.stargazers_count } as Test }

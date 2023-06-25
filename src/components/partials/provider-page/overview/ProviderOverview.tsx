@@ -1,11 +1,11 @@
 import { ProviderResponseModel } from "@/api-client"
 import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
-import { binaryConditionalRender, useColors } from "@/services"
+import { binaryConditionalRender, useColors, useQueryStringAndLocalStorageBoundState } from "@/services"
 import { Box, Heading, Highlight, Image, SimpleGrid, Skeleton, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
 // eslint-disable-next-line import/no-internal-modules
 import { useRouter } from "next/router"
 // eslint-disable-next-line import/no-internal-modules
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 const iconSize = 65
 
@@ -14,7 +14,7 @@ export function ProviderOverview(props: {
 } & IComponentSize) {
     const provider = props.provider
     const router = useRouter()
-    const [currentTab, setCurrentTab] = useState<string | undefined>()
+    const [currentTab, setCurrentTab] = useQueryStringAndLocalStorageBoundState<string | undefined>(undefined, 'tab')
     useEffect(() => {
         if (currentTab) {
             setQueryParams({ tab: currentTab })
@@ -82,7 +82,7 @@ export function ProviderOverview(props: {
             </SimpleGrid>
             <Box>
                 <Tabs
-                    defaultValue="analysis"
+                    index={currentTab ? parseInt(currentTab) : 0}
                     onChange={(v) => setCurrentTab(v?.toString())}>
                     <TabList>
                         <Tab>Overview</Tab>
@@ -92,24 +92,24 @@ export function ProviderOverview(props: {
                         <Tab>Status and data</Tab>
                     </TabList>
                     <TabPanels>
-                        <TabPanel pt="md">
+                        <TabPanel pt="md" tabIndex={0}>
                             <ProviderChartSection
                                 provider={provider?.name ?? undefined} />
                         </TabPanel>
 
-                        <TabPanel pt="md">
+                        <TabPanel pt="md" tabIndex={1}>
                             <DetailsTab provider={provider} />
                         </TabPanel>
 
-                        <TabPanel pt="md">
+                        <TabPanel pt="md" tabIndex={2}>
                             <AnalysisTab provider={provider} />
                         </TabPanel>
 
-                        <TabPanel pt="md">
+                        <TabPanel pt="md" tabIndex={3}>
                             <CompareTab provider={provider} />
                         </TabPanel>
 
-                        <TabPanel pt="xs">
+                        <TabPanel pt="xs" tabIndex={4}>
                             <StatusTab provider={provider} />
                         </TabPanel>
                     </TabPanels>

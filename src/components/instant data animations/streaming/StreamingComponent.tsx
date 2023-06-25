@@ -1,12 +1,12 @@
-import { DataPoint, IntervalSlider, LiveDataWithDeltaReturnType, MouseOverDataTypesEvents, MouseOverEvents, SimpleLiveDataPoint, SimpleLiveDataStat, StreamingTest, TimeIntervalButtonGroup } from "@/components"
-import { Container, Box, Switch, FormControl, FormLabel, Text, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, Button, Tooltip } from "@chakra-ui/react"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { useSize } from "@chakra-ui/react-use-size"
 import { DataType, ProviderResponseModel, TimeInterval } from "@/api-client"
+import { MouseOverDataTypesEvents, SimpleLiveDataPoint, SimpleLiveDataStat, StreamingTest, TimeIntervalButtonGroup } from "@/components"
+import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToStreamProps } from "@/data"
 import { useColors } from "@/services"
-import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToSeconds, TimeIntervalToStreamProps } from "@/data"
+import { Box, Button, Container, Tooltip } from "@chakra-ui/react"
+import { useSize } from "@chakra-ui/react-use-size"
 import { Dictionary } from "@reduxjs/toolkit"
 import { IconLink, IconLinkOff, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents {
     connected: boolean

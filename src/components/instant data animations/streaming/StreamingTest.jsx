@@ -14,17 +14,16 @@ Chart.register(
     ...StreamingPlugin
 )
 // eslint-disable-next-line import/no-internal-modules
-import 'chart.js/auto'
-import { Line, Chart as Chart2 } from 'react-chartjs-2'
-import 'chartjs-adapter-luxon'
-import { useState, useEffect, useRef, useMemo } from 'react'
 import { DataType } from '@/api-client'
 import { dataTypeToHumanReadableString } from '@/data'
-import * as pattern from 'patternomaly'
-import { getPattern } from '../Patterns'
-import { BeatLoader } from 'react-spinners'
-import { Container, Text, Center } from '@chakra-ui/react'
 import { conditionalRender, useColors } from '@/services'
+import 'chart.js/auto'
+import 'chartjs-adapter-luxon'
+import * as pattern from 'patternomaly'
+import { useEffect, useMemo, useState } from 'react'
+import { Chart as Chart2 } from 'react-chartjs-2'
+import { BeatLoader } from 'react-spinners'
+import { getPattern } from '../Patterns'
 
 const dataExtractor = (data, dataType) => {
     return {
@@ -167,10 +166,10 @@ export function StreamingTest(
                             color: colors.text,
                             callback: (!paused && connected) ? function (label, index, labels) {
                                 if (label >= 1000000)
-                                    return label / 1000000 + 'M'
+                                    return Math.round(label / 1000000) + 'M'
                                 if (label >= 1000)
-                                    return label / 1000 + 'k'
-                                return label
+                                    return Math.round(label) / 1000 + 'k'
+                                return Math.round(label)
                             } : undefined
                         },
                         grid: {

@@ -1,5 +1,4 @@
-import { Tooltip, Button } from '@chakra-ui/react'
-import { MouseEventHandler } from 'react'
+import { Button, Tooltip } from '@chakra-ui/react'
 
 export function IconButton(props: {
   text?: string
@@ -16,7 +15,11 @@ export function IconButton(props: {
     <Button
       size={props.size}
       disabled={!props.visible ?? false}
-      leftIcon={props.icon}
+      leftIcon={<>
+        <Tooltip label={props.text} >
+          {props.icon}
+        </Tooltip>
+      </>}
       iconSpacing={'auto'}
       variant={'ghost'}
       style={{
@@ -24,6 +27,7 @@ export function IconButton(props: {
         opacity: props.visible ?? true ? 1 : 0
       }}
       onClick={props.onClick}>
+
     </Button>
   )
 }

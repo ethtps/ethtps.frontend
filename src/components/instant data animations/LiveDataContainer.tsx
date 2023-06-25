@@ -28,7 +28,7 @@ export function LiveDataContainer(props: LiveDataContainerProps) {
         }
     }, [])
     useSignalREffect("TotalChanged", (data) => {
-        console.log("TotalChanged")
+        //console.log("TotalChanged")
         if (props.onTotalChanged) {
             props.onTotalChanged(data)
         }
