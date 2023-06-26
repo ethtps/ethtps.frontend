@@ -7,12 +7,14 @@ import {
   Configuration,
   DataType,
   ExperimentApi,
+  ExternalWebsiteCategory,
   ExternalWebsitesApi,
   GPSApi,
   GasAdjustedTPSApi,
   GeneralApi,
   L2DataResponseModel,
   MarkdownPagesApi,
+  ProviderLink,
   TPSApi,
   TimeInterval
 } from '@/api-client'
@@ -33,7 +35,7 @@ export class ETHTPSApi {
   public gpsApi: GPSApi = new GPSApi()
   public gtpsApi: GasAdjustedTPSApi = new GasAdjustedTPSApi()
   public experimentAPI: ExperimentApi = new ExperimentApi()
-  public externalWebsitePAI: ExternalWebsitesApi = new ExternalWebsitesApi()
+  public externalWebsitesAPI: ExternalWebsitesApi = new ExternalWebsitesApi()
   public markdownAPI: MarkdownPagesApi = new MarkdownPagesApi()
   public chartDataAPI: ChartDataApi = new ChartDataApi()
   public l2DataAPI: ExtendedL2DataApi = new ExtendedL2DataApi()
@@ -66,7 +68,7 @@ export class ETHTPSApi {
     this.gpsApi = new GPSApi(this._genConfig(this._apiURL))
     this.gtpsApi = new GasAdjustedTPSApi(this._genConfig(this._apiURL))
     this.experimentAPI = new ExperimentApi(this._genConfig(this._apiURL))
-    this.externalWebsitePAI = new ExternalWebsitesApi(
+    this.externalWebsitesAPI = new ExternalWebsitesApi(
       this._genConfig(this._apiURL)
     )
     this.markdownAPI = new MarkdownPagesApi(this._genConfig(this._apiURL))
@@ -216,7 +218,7 @@ export class ETHTPSApi {
     if (!providerName) {
       return Promise.reject()
     }
-    return this.externalWebsitePAI.apiV3ExternalWebsitesGet({
+    return this.externalWebsitesAPI.apiV3ExternalWebsitesGet({
       providerName
     })
   }
@@ -271,5 +273,29 @@ export class ETHTPSApi {
       }
     })
     return res.parsedBody
+  }
+
+  public async getAllExternalWebsites() {
+    return await this.externalWebsitesAPI.apiV3ExternalWebsitesGetAllGet()
+  }
+
+  public async getProviderLinks(provider: string) {
+    return (await getAsync<ProviderLink[]>(
+      `${this._apiURL}/api/v3/provider-links/GetLinksFor?providerName=${provider}`,
+      {
+        headers: {
+          'X-API-KEY': this.apiKey ?? ""
+        }
+      })).parsedBody
+  }
+
+  public async getAllExternalWebsiteCategories() {
+    return (await getAsync<ExternalWebsiteCategory[]>(
+      `${this._apiURL}/api/v3/external-website-categories/GetAll`,
+      {
+        headers: {
+          'X-API-KEY': this.apiKey ?? ""
+        }
+      })).parsedBody
   }
 }

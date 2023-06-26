@@ -8,7 +8,8 @@ import { OrderProvidersByMax } from '@/services/experiments/index/OrderProviders
 import { Box } from '@chakra-ui/react'
 import { Dictionary } from '@reduxjs/toolkit'
 import { GetServerSideProps } from 'next'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 export interface IIndexPageProps {
   providerData?: ProviderResponseModel[]
@@ -42,6 +43,18 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 }
 
 export default function Index({ providerData, maxData, instantData, defaultIntervalData }: IIndexPageProps) {
+  // Listen for leave events in order to unmount the streaming component - otherwise we get an error
+  const [isLeaving, setIsLeaving] = useState(false)
+  const router = useRouter()
+  useEffect(() => {
+    const incrementStartCount = (url: any) => {
+      setIsLeaving(true)
+    }
+    router.events.on('routeChangeStart', incrementStartCount)
+    return () => {
+      router.events.off('routeChangeStart', incrementStartCount)
+    }
+  }, [])
   const aggregator = new LiveDataAggregator()
   const [connected, setConnected] = useState(false)
   const noSidechainAggregator = new LiveDataAggregator()
@@ -94,6 +107,7 @@ export default function Index({ providerData, maxData, instantData, defaultInter
               onClick={onClick}
               onMouseOver={onMouseOver}
               onMouseLeave={onMouseLeave}
+              isLeaving={isLeaving}
               dataMode={dataMode ?? DataType.Tps}
               hoveredDataMode={hoveredDataMode}
               showSidechains={showSidechains ?? false}

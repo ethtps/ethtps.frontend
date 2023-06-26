@@ -17,6 +17,7 @@ interface IStreamingComponentProps extends MouseOverDataTypesEvents {
     hoveredDataMode?: DataType
     showSidechains: boolean
     showSidechainsToggled?: () => void
+    isLeaving?: boolean
 }
 
 const pad = 100
@@ -32,7 +33,8 @@ export function StreamingComponent({
     dataMode,
     hoveredDataMode,
     showSidechains,
-    showSidechainsToggled
+    showSidechainsToggled,
+    isLeaving
 }: IStreamingComponentProps) {
     const colors = useColors()
     const containerRef = useRef<any>(null)
@@ -74,6 +76,7 @@ export function StreamingComponent({
                         paddingTop: pad
                     }}>
                     <StreamingTest
+                        isLeaving={isLeaving}
                         dataType={hoveredDataMode ?? dataMode}
                         newestData={newestData}
                         connected={connected}

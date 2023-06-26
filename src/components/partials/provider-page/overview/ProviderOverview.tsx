@@ -1,4 +1,4 @@
-import { ProviderResponseModel } from "@/api-client"
+import { ProviderLink, ProviderResponseModel } from "@/api-client"
 import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
 import { binaryConditionalRender, useColors, useQueryStringAndLocalStorageBoundState } from "@/services"
 import { Box, Heading, Highlight, Image, SimpleGrid, Skeleton, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
@@ -10,7 +10,8 @@ import { useEffect } from "react"
 const iconSize = 65
 
 export function ProviderOverview(props: {
-    provider: ProviderResponseModel | undefined
+    provider: ProviderResponseModel | undefined,
+    providerLinks?: ProviderLink[]
 } & IComponentSize) {
     const provider = props.provider
     const router = useRouter()
@@ -98,7 +99,7 @@ export function ProviderOverview(props: {
                         </TabPanel>
 
                         <TabPanel pt="md" tabIndex={1}>
-                            <DetailsTab provider={provider} />
+                            <DetailsTab providerLinks={props.providerLinks} provider={provider} />
                         </TabPanel>
 
                         <TabPanel pt="md" tabIndex={2}>

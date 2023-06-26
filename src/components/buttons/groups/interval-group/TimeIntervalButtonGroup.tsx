@@ -26,7 +26,7 @@ export function TimeIntervalButtonGroup({ onChange, loading, selected }: ITimeIn
                     variant: 'ghost',
                     w: '1rem'
                 }}
-                selected={selected ?? '15m'}
+                selected={selected ?? '1m'}
                 highlighed={loading ? current : undefined}
                 tooltipFunction={(v) => `Change view to ${TimeIntervalToLabel_2(v.toString()).toLowerCase()}`}
                 buttons={EnumerateIntervals().map((x, i) => TimeIntervalToLabel(x))} />

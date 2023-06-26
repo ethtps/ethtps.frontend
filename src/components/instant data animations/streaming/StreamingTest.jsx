@@ -1,6 +1,7 @@
 //Needed for chartjs to work
-import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
+import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, registerables } from 'chart.js'
 import 'chartjs-adapter-luxon'
+import AnnotationPlugin from 'chartjs-plugin-annotation'
 import StreamingPlugin from 'chartjs-plugin-streaming'
 Chart.register(
     CategoryScale,
@@ -8,10 +9,10 @@ Chart.register(
     PointElement,
     LineElement,
     Title,
-    Tooltip,
     Legend,
+    AnnotationPlugin,
     ...registerables,
-    ...StreamingPlugin
+    ...StreamingPlugin,
 )
 // eslint-disable-next-line import/no-internal-modules
 import { DataType } from '@/api-client'
@@ -20,7 +21,7 @@ import { conditionalRender, useColors } from '@/services'
 import 'chart.js/auto'
 import 'chartjs-adapter-luxon'
 import * as pattern from 'patternomaly'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Chart as Chart2 } from 'react-chartjs-2'
 import { BeatLoader } from 'react-spinners'
 import { getPattern } from '../Patterns'
@@ -53,7 +54,8 @@ export function StreamingTest(
         duration,
         refreshInterval,
         showSidechains,
-        paused
+        paused,
+        isLeaving
     }) {
     const colors = useColors()
     const [liveData, setLiveData] = useState([])
@@ -100,9 +102,11 @@ export function StreamingTest(
             return newColumns
         })
     }, [newestData, maxEntries, dataType, providerData, refreshInterval])
+    const ref = useRef(null)
     const chart = useMemo(() => {
         return <Chart2
             type='line'
+            ref={ref}
             id='chart'
             height={height}
             width={width}
@@ -131,7 +135,7 @@ export function StreamingTest(
             }}
             options={{
                 scales: {
-                    x: {
+                    x: !isLeaving ? {
                         type: 'realtime',
                         realtime: {
                             delay: refreshInterval * 3,
@@ -155,7 +159,7 @@ export function StreamingTest(
                         grid: {
                             color: colors.grid,
                         }
-                    },
+                    } : {},
                     y: {
                         stacked: true,
                         title: {
@@ -205,16 +209,22 @@ export function StreamingTest(
                             return null
                         }
                     }
-                },
+                }
             }
             } />
-    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors, connected, paused])
+    }, [width, height, lastValues, liveData, columns, providerData, dataType, duration, refreshInterval, showSidechains, colors, connected, paused, isLeaving])
+    useEffect(() => {
+        if (isLeaving) {
+            ref.current?.notifyPlugins('reset')
+            ref.current?.destroy()
+        }
+    }, [isLeaving])
     return <>
         {conditionalRender(<BeatLoader size={8} color={colors.text} style={{
             position: 'absolute',
             marginTop: (height ?? 250) / 2 - 18,
             marginLeft: width / 2 - 8,
         }} />, !connected || liveData.length < 2)}
-        {chart}
+        {conditionalRender(chart, !isLeaving)}
     </>
 }
