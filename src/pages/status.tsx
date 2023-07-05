@@ -1,8 +1,7 @@
 import { ProviderResponseModel } from "@/api-client"
-import { AllProvidersStatusTable, ProviderRequestDialog } from "@/components/"
 import { getAsync, useColors } from "@/services"
 import { Link } from "@chakra-ui/next-js"
-import { Button, Container, Flex, Heading, Spacer, Text, useBoolean } from "@chakra-ui/react"
+import { Button, Container, Flex, Heading, Text, useBoolean } from "@chakra-ui/react"
 import { GetServerSideProps } from "next"
 
 interface IStatusProps {

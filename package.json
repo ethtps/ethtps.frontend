@@ -2,6 +2,10 @@
   "name": "ethtps.frontend",
   "version": "1.5.0",
   "private": true,
+  "license": "ISC",
+  "author": {
+    "name": "Mister_Eth"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

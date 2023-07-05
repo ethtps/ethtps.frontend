@@ -1,6 +1,7 @@
 {
 	"name": "ethtps.data",
 	"version": "0.1.0",
+	"license": "ISC",
 	"description": "Data layer for ETHTPS.info frontend",
 	"main": "dist/index.js",
 	"module": "dist/esm/index.js",
@@ -38,7 +39,6 @@
 		".vscode"
 	],
 	"author": "Mister_Eth",
-	"license": "ISC",
 	"relativeDependencies": {
 		"ethtps.api.client": "../ethtps.api.client"
 	},

@@ -1,9 +1,9 @@
 import { DataType } from '@/api-client'
-import { AnimatedTypography } from '@/components'
 import { LiveDataAggregator, numberFormat } from '@/data'
 import { Td } from '@chakra-ui/react'
 import { ICustomCellConfiguration } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
+import { AnimatedTypography } from 'src'
 
 interface IDataValueCellConfiguration extends ICustomCellConfiguration {
   dataType: DataType
