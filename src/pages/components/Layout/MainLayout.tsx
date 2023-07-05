@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-internal-modules
-import { GetServerSideProps } from 'next'
-import Navbar from './Navbar'
 import { ProviderResponseModel } from '@/api-client'
 import { getAsync } from '@/services'
-import { Box, Container, Flex } from '@chakra-ui/react'
+import { Box, Divider, Flex } from '@chakra-ui/react'
+import { GetServerSideProps } from 'next'
+import Navbar from './Navbar'
 
 
 export const getStaticProps: GetServerSideProps = async (context) => {
@@ -22,6 +22,7 @@ export default function MainLayout(props: Partial<{
   return (
     <>
       <Navbar allProviders={props.providerData} />
+      <Divider />
       <Flex direction={'column'}
         flex={{ base: '0', 'md': '1' }}
         display={{ base: 'flex', 'md': 'flex' }}

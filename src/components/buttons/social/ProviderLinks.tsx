@@ -2,8 +2,9 @@ import { ExternalWebsiteCategory, IExternalWebsite, IProviderExternalWebsite, Pr
 import { TryAgainLink } from "@/components"
 import { groupBy } from "@/data"
 import { api, binaryConditionalRender, conditionalRender, useColors } from "@/services"
-import { Box, Card, CardBody, CardHeader, Divider, Heading, Skeleton, Stack, Text } from "@chakra-ui/react"
+import { Box, Card, CardBody, CardHeader, Divider, Heading, Skeleton, Stack } from "@chakra-ui/react"
 import { Dictionary } from "@reduxjs/toolkit"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
 interface IProviderLinksProps {
@@ -25,6 +26,7 @@ export function ProviderLinks(props: Partial<IProviderLinksProps>) {
     const [loadedWebsiteCategories, setLoadedWebsiteCategories] = useState<boolean>(false)
     const [hasError, setHasError] = useState<boolean>(false)
     const [websites, setWebsites] = useState<Dictionary<IExternalWebsite[]>>()
+    const [groupedLinks, setGroupedLinks] = useState<Dictionary<ProviderLink[]> | undefined>()
     const [categories, setCategories] = useState<ExternalWebsiteCategory[]>()
     useEffect(() => {
         api.getAllExternalWebsites().then((response) => {
@@ -41,43 +43,68 @@ export function ProviderLinks(props: Partial<IProviderLinksProps>) {
         }).catch(() => setHasError(true))
     }, [websites, api])
 
-    return <>
-        <Card>
-            <Skeleton fadeDuration={2} isLoaded={(loadedWebsites && loadedWebsiteCategories) || hasError} width='100%' >
+    useEffect(() => {
+        if (categories) {
+            const c = Object.keys(categories)
+        }
+        setGroupedLinks(groupBy(props.providerLinks, x => (categories?.find(z => z.id === websites?.[z.id ?? ""]?.find(q => q.id === x.externalWebsiteId))?.id ?? 0).toString()))
+    }, [categories])
+
+    return (
+        <Card
+            sx={{
+                backgroundColor: colors.muted,
+                margin: '1rem',
+                padding: '1rem',
+                borderRadius: '0.5rem',
+            }}
+        >
+            <Skeleton fadeDuration={2} isLoaded={loadedWebsites && loadedWebsiteCategories || hasError} >
                 <CardHeader>
-                    <Heading size='md'>Useful references for {props.provider?.name}</Heading>
+                    <Heading size='md'>Useful links for {props.provider?.name}</Heading>
                 </CardHeader>
             </Skeleton>
+
             <CardBody>
                 <Stack spacing='4'>
-                    <Skeleton fadeDuration={3} isLoaded={(loadedWebsites && loadedWebsiteCategories) || hasError} width='100%' >
-                        {binaryConditionalRender(<>
-                            {conditionalRender(<>
-                                {Object.keys(websites ?? {}).map((key, index) => {
-                                    const categoryID = parseInt(key)
-                                    const category = categories?.find(z => z.id === categoryID)
-                                    return <>
-                                        {conditionalRender(<Divider sx={{
-                                            marginTop: '1rem',
-                                            marginBottom: '1rem'
-                                        }} />, (index > 0))}
-                                        <Box key={`${category?.name}${index}`}>
-                                            <Heading size='xs' textTransform='uppercase'>{category?.name}</Heading>
-                                            <>
-                                                {websites?.[key]?.map((website, index) => {
-                                                    return <Text key={index}>{website.name}</Text>
-                                                })}
-                                            </>
-                                        </Box>
-                                    </>
-                                })}
-                            </>, (categories?.length ?? 0) > 0)}
-                        </>, <>
-                            <TryAgainLink />
-                        </>, !hasError)}
+                    <Skeleton fadeDuration={3} isLoaded={loadedWebsites && loadedWebsiteCategories || hasError} >
+                        {binaryConditionalRender(
+                            <>
+                                {conditionalRender(
+                                    <>
+                                        {Object.keys(groupedLinks ?? {}).map((key, index) => {
+                                            const categoryID = parseInt(key)
+                                            const category = categories?.find(z => z.id === categoryID)
+                                            console.log(key)
+                                            return (
+                                                <Box key={`${category?.name}${index}`} mt={index > 0 ? '4' : '0'}>
+                                                    {index > 0 && <Divider sx={{ my: '1rem' }} />}
+                                                    <Heading size='xs' textTransform='uppercase' mb='1rem'>{category?.name}</Heading>
+                                                    {groupedLinks?.[key]?.map((website, index) => {
+                                                        return (
+                                                            <Card sx={{ backgroundColor: colors.muted, marginBottom: '1rem' }} key={index}>
+                                                                <CardBody>
+                                                                    <Link href={website.link ?? "/"}>
+                                                                        {websites?.[key]?.find(x => x.id === website.externalWebsiteId)?.name ?? website.link?.replace("http://", "").replace("https://", "")}
+                                                                    </Link>
+                                                                </CardBody>
+                                                            </Card>
+                                                        )
+                                                    })}
+                                                </Box>
+                                            )
+                                        })}
+                                    </>,
+                                    (categories?.length ?? 0) > 0
+                                )}
+                            </>,
+                            <TryAgainLink />,
+                            !hasError
+                        )}
                     </Skeleton>
                 </Stack>
             </CardBody>
         </Card>
-    </>
+    )
+
 }
