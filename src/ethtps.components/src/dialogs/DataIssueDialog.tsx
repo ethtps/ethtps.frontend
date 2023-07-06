@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from "react"
+
 import {
-    Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
-    AlertDialogCloseButton, AlertDialogBody, AlertDialogFooter, Text,
-    Input, Stack, Textarea
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogCloseButton,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Button,
+    Stack,
+    Text,
+    Textarea
 } from "@chakra-ui/react"
-import { useColors } from "@/services"
+import React, { useEffect, useState } from "react"
+import { useColors } from ".."
 
 interface IDataIssueDialogDialogProps {
     isOpen: boolean

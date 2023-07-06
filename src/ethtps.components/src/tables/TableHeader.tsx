@@ -1,10 +1,11 @@
-import React from 'react'
-import { Th } from '@chakra-ui/react'
-import { useColors } from '@/services'
-import { ProviderResponseModel } from '@/api-client'
 
-export function toProviderResponseModelKey(key: string): keyof ProviderResponseModel {
-  const model: ProviderResponseModel = {
+import { Th } from '@chakra-ui/react'
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+import React from 'react'
+import { useColors } from '..'
+
+export function toETHTPSDataCoreModelsResponseModelsProviderResponseModelKey(key: string): keyof ETHTPSDataCoreModelsResponseModelsProviderResponseModel {
+  const model: ETHTPSDataCoreModelsResponseModelsProviderResponseModel = {
     name: null,
     color: null,
     theoreticalMaxTPS: undefined,
@@ -15,7 +16,7 @@ export function toProviderResponseModelKey(key: string): keyof ProviderResponseM
   }
 
   if (key in model) {
-    return key as keyof ProviderResponseModel
+    return key as keyof ETHTPSDataCoreModelsResponseModelsProviderResponseModel
   } else {
     return 'status'
   }
@@ -24,7 +25,7 @@ export function toProviderResponseModelKey(key: string): keyof ProviderResponseM
 export interface ITableHeader {
   text: string
   subItems?: ITableHeader[]
-  columnClicked?: (column: keyof ProviderResponseModel) => void
+  columnClicked?: (column: keyof ETHTPSDataCoreModelsResponseModelsProviderResponseModel) => void
 }
 
 // Component for rendering a single table header
@@ -36,7 +37,7 @@ const SingleTableHeader: React.FC<ITableHeader> = ({ text, subItems, columnClick
       color={colors.text}
       bgColor={colors.gray1}
       _hover={{ color: colors.primary, bgColor: colors.gray2, cursor: 's-resize' }}
-      onClick={() => columnClicked?.(toProviderResponseModelKey(text))}
+      onClick={() => columnClicked?.(toETHTPSDataCoreModelsResponseModelsProviderResponseModelKey(text))}
       fontSize={'1rem'}
       height={50}
     >
@@ -51,7 +52,7 @@ const SingleTableHeader: React.FC<ITableHeader> = ({ text, subItems, columnClick
 // Component for rendering multiple table headers
 export function TableHeader({ items, columnClicked }: {
   items: ITableHeader[],
-  columnClicked?: (column: keyof ProviderResponseModel) => void
+  columnClicked?: (column: keyof ETHTPSDataCoreModelsResponseModelsProviderResponseModel) => void
 }) {
   return <>
     {items.map((item, index) => (

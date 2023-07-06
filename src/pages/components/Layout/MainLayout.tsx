@@ -1,23 +1,22 @@
 // eslint-disable-next-line import/no-internal-modules
-import { ProviderResponseModel } from '@/api-client'
-import { getAsync } from '@/services'
 import { Box, Divider, Flex } from '@chakra-ui/react'
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api/dist/models'
 import { GetServerSideProps } from 'next'
+import { api } from '../../../services/'
 import Navbar from './Navbar'
 
-
 export const getStaticProps: GetServerSideProps = async (context) => {
-  const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
+  const providers = await api.getProvidersAsync()
   return {
     props: {
-      providerData: providers.parsedBody
+      providerData: providers
     }
   }
 }
 
 export default function MainLayout(props: Partial<{
   component: JSX.Element,
-  providerData: ProviderResponseModel[]
+  providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
 }>) {
   return (
     <>

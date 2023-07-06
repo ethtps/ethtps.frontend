@@ -1,7 +1,4 @@
-import { ProviderResponseModel } from "@/api-client"
-import { conditionalRender } from "@/services"
-import { useState } from "react"
-import { PeriodTab } from "./volume"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { HeatmapTab } from ".."
 
 export enum Breakdowns {
@@ -10,7 +7,7 @@ export enum Breakdowns {
 }
 
 interface IBreakdownTabProps {
-    provider: ProviderResponseModel
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
     selectedSection: string
 }
 

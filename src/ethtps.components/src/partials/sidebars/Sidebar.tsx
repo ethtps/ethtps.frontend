@@ -1,6 +1,6 @@
-import { Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Box } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import { SidebarVariant } from ".."
-import { useColors } from "@/services"
+import { useColors } from "../../.."
 
 interface Props {
     onClose: () => void

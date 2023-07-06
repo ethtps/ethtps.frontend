@@ -1,12 +1,8 @@
-import { IHandler, useHandler, useAppState } from '@/data'
-import { conditionalRender } from '@/services'
-import React from 'react'
-import { createRef } from 'react'
-import { useState } from 'react'
-import {
-  GoogleReCaptcha,
-  GoogleReCaptchaProvider
-} from 'react-google-recaptcha-v3'
+
+import { createRef, useState } from "react"
+import { GoogleReCaptcha, GoogleReCaptchaProvider } from "react-google-recaptcha-v3"
+import { conditionalRender } from "../../.."
+import { IHandler, useAppState, useHandler } from "../../../../ethtps.data/src"
 
 export function RecaptchaTokenLoader(props: {
   onKeyLoaded?: IHandler<string>

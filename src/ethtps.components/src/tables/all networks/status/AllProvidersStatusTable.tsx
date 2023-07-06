@@ -1,12 +1,9 @@
-import { useState } from 'react'
-import React from 'react'
-import { conditionalRender, getAsync, useColors } from '@/services'
-import { AllProvidersHeader, AllProvidersStatusHeader, AllProvidersStatusRows, SeeMoreButton } from '@/components'
-import { Alert, AlertIcon, Heading, Table, TableCaption, Tbody, Thead, Tr, Text, Spacer } from '@chakra-ui/react'
-import { Link } from '@chakra-ui/next-js'
-import { IProviderTableModel } from '@/data'
-import { GetServerSideProps } from 'next'
-import { ProviderResponseModel } from '@/api-client'
+import { Alert, AlertIcon, Link, Table, Tbody, Text, Thead, Tr } from "@chakra-ui/react"
+import { useState } from "react"
+import { conditionalRender, useColors } from "../../../.."
+import { IProviderTableModel } from "../../../../../ethtps.data/src"
+import AllProvidersStatusHeader from "./AllProvidersStatusHeader"
+import AllProvidersStatusRows from "./AllProvidersStatusRows"
 
 export default function AllProvidersStatusTable({
     providerData,

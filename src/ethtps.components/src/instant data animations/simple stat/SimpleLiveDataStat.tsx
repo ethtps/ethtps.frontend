@@ -1,9 +1,6 @@
-import { Box, Flex, HStack, SimpleGrid, Spacer, Stack, StatGroup } from "@chakra-ui/react"
-import { LiveDataDelta, SimpleLiveDataPoint, SimpleStat } from "."
-import { MouseOverEvents } from "@/components"
-import { DataType, ProviderResponseModel } from "@/api-client"
-import { current } from "@reduxjs/toolkit"
-import { AllData } from "@/data"
+import { Box, Flex, Spacer } from "@chakra-ui/react"
+import { ETHTPSDataCoreDataType } from "ethtps.api"
+import { SimpleLiveDataPoint, SimpleStat } from "."
 
 interface ISimpleLiveDataStatProps {
     connected: boolean,
@@ -11,10 +8,10 @@ interface ISimpleLiveDataStatProps {
     absolute?: boolean,
     w?: string | number,
     fillWidth?: boolean,
-    currentDataType?: DataType,
-    onMouseOver?: (dataType: DataType) => void
-    onMouseLeave?: (dataType: DataType) => void
-    onClick?: (dataType: DataType) => void
+    currentDataType?: ETHTPSDataCoreDataType,
+    onMouseOver?: (dataType: ETHTPSDataCoreDataType) => void
+    onMouseLeave?: (dataType: ETHTPSDataCoreDataType) => void
+    onClick?: (dataType: ETHTPSDataCoreDataType) => void
 }
 
 export function SimpleLiveDataStat({
@@ -41,10 +38,10 @@ export function SimpleLiveDataStat({
             }}>
             <Box>
                 <SimpleStat
-                    isSelected={currentDataType === DataType.Gps}
-                    onClick={() => onClick?.(DataType.Gps)}
-                    onMouseOver={() => onMouseOver?.(DataType.Gps)}
-                    onMouseLeave={() => onMouseLeave?.(DataType.Gps)}
+                    isSelected={currentDataType === ETHTPSDataCoreDataType.GPS}
+                    onClick={() => onClick?.(ETHTPSDataCoreDataType.GPS)}
+                    onMouseOver={() => onMouseOver?.(ETHTPSDataCoreDataType.GPS)}
+                    onMouseLeave={() => onMouseLeave?.(ETHTPSDataCoreDataType.GPS)}
                     loading={!connected}
                     data={data.gps}
                     alt={'Gas per second'} />
@@ -52,10 +49,10 @@ export function SimpleLiveDataStat({
             <Spacer />
             <Box>
                 <SimpleStat
-                    isSelected={currentDataType === DataType.Tps}
-                    onClick={() => onClick?.(DataType.Tps)}
-                    onMouseOver={() => onMouseOver?.(DataType.Tps)}
-                    onMouseLeave={() => onMouseLeave?.(DataType.Tps)}
+                    isSelected={currentDataType === ETHTPSDataCoreDataType.TPS}
+                    onClick={() => onClick?.(ETHTPSDataCoreDataType.TPS)}
+                    onMouseOver={() => onMouseOver?.(ETHTPSDataCoreDataType.TPS)}
+                    onMouseLeave={() => onMouseLeave?.(ETHTPSDataCoreDataType.TPS)}
                     loading={!connected}
                     data={data.tps}
                     alt={'Transactions per second'} />
@@ -64,10 +61,10 @@ export function SimpleLiveDataStat({
             <Box>
                 <SimpleStat
                     isEstimated
-                    isSelected={currentDataType === DataType.GasAdjustedTps}
-                    onClick={() => onClick?.(DataType.GasAdjustedTps)}
-                    onMouseOver={() => onMouseOver?.(DataType.GasAdjustedTps)}
-                    onMouseLeave={() => onMouseLeave?.(DataType.GasAdjustedTps)}
+                    isSelected={currentDataType === ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS}
+                    onClick={() => onClick?.(ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS)}
+                    onMouseOver={() => onMouseOver?.(ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS)}
+                    onMouseLeave={() => onMouseLeave?.(ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS)}
                     loading={!connected}
                     data={data.gtps}
                     alt={"Gas-adjusted transactions per second"} />

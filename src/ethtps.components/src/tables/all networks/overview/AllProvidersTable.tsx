@@ -1,12 +1,11 @@
-import { DataType } from '@/api-client'
-import { DataIssueDialog, SeeMoreButton } from '@/components'
-import { IProviderTableModel } from '@/data'
-import { conditionalRender, useColors } from '@/services'
-import { Alert, AlertIcon, Box, Button, Link, SimpleGrid, Spacer, Table, TableCaption, Tbody, Text, Thead, Tooltip, Tr } from '@chakra-ui/react'
-import { IconExclamationCircle } from '@tabler/icons-react'
-import React, { useState } from 'react'
-import { AllProvidersHeader } from './AllProvidersHeader'
-import { AllProvidersRows } from './AllProvidersRows'
+import { Alert, AlertIcon, Box, Button, Link, SimpleGrid, Spacer, Table, TableCaption, Tbody, Text, Thead, Tooltip, Tr } from "@chakra-ui/react"
+import { IconExclamationCircle } from "@tabler/icons-react"
+import { ETHTPSDataCoreDataType } from "ethtps.api"
+import React, { useState } from "react"
+import { DataIssueDialog, SeeMoreButton, conditionalRender, useColors } from "../../../.."
+import { IProviderTableModel } from "../../../../../ethtps.data/src"
+import { AllProvidersHeader } from "./AllProvidersHeader"
+import { AllProvidersRows } from "./AllProvidersRows"
 
 export default function AllProvidersTable({
   providerData,
@@ -54,7 +53,7 @@ export default function AllProvidersTable({
         </TableCaption>
         <Thead >
           <Tr placeContent={'center'}>
-            <AllProvidersHeader dataType={dataType ?? DataType.Tps} />
+            <AllProvidersHeader dataType={dataType ?? ETHTPSDataCoreDataType.TPS} />
           </Tr>
         </Thead>
         <Tbody>

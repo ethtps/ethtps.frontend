@@ -1,4 +1,4 @@
-import { DataType } from '@/api-client'
+import { ETHTPSDataCoreDataType } from 'ethtps.api'
 
 export type StreamGraphProps = {
   width: number
@@ -13,9 +13,9 @@ export type MouseOverEvents = {
 }
 
 export type MouseOverDataTypesEvents = {
-  onMouseOver?: (dataType: DataType) => void,
-  onMouseLeave?: (dataType: DataType) => void,
-  onClick?: (dataType: DataType) => void
+  onMouseOver?: (dataType: ETHTPSDataCoreDataType) => void,
+  onMouseLeave?: (dataType: ETHTPSDataCoreDataType) => void,
+  onClick?: (dataType: ETHTPSDataCoreDataType) => void
 }
 
 export type DataPoint = {

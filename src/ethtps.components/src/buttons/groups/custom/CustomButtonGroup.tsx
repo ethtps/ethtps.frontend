@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+
+import { Button, HStack, Tooltip } from '@chakra-ui/react'
+import { useState } from 'react'
+import { useColors } from '../../../..'
 import { ICustomButtonGroupParameters } from './ICustomButtonGroupParameters'
-import { Button, HStack, Stack, Tooltip } from '@chakra-ui/react'
-import { useColors } from '@/services'
 
 export function CustomButtonGroup(params: ICustomButtonGroupParameters) {
   const colors = useColors()

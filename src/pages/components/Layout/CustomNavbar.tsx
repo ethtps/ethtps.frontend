@@ -1,10 +1,10 @@
-import { ProviderResponseModel } from "@/api-client"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 // eslint-disable-next-line import/no-internal-modules
 import { useState } from "react"
 
 interface ICustomNavbarProps {
     opened: boolean,
-    allProviders?: ProviderResponseModel[]
+    allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
     currentProvider?: string
 }
 

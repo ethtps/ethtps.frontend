@@ -1,10 +1,9 @@
-import { IComponentSize, LiveDataWithDelta, SimpleLiveDataStat } from "@/components"
-import { L2DataUpdateModel } from "@/data"
-import { useColors } from "@/services"
+
 import { Box, Container, } from "@chakra-ui/react"
 import { Dictionary } from "@reduxjs/toolkit"
-import { useRef } from "react"
-import { useSize } from "@chakra-ui/react-use-size"
+import { IComponentSize, useColors } from "../../.."
+import { L2DataUpdateModel } from "../../../../ethtps.data/src"
+import { LiveDataWithDelta, SimpleLiveDataStat } from "../simple stat"
 
 interface ISimpleBarStatProps extends IComponentSize {
     newestData?: Dictionary<L2DataUpdateModel>

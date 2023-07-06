@@ -1,18 +1,8 @@
-import { ProviderResponseModel, TimeInterval, DataType } from '@/api-client'
-import {
-  DataResponseModelDictionary,
-  extractData,
-  useAppSelector,
-  useGetProvidersFromAppStore,
-  useGetProviderColorDictionaryFromAppStore,
-  useGetLiveDataFromAppStore,
-  getModeData,
-  dataTypeToString,
-  useGetLiveDataModeFromAppStore,
-  useGetLiveDataSmoothingFromAppStore,
-  useGetSidechainsIncludedFromAppStore
-} from '@/data'
-import { useState, useEffect } from 'react'
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
+
+import { useEffect, useState } from 'react'
+import { DataResponseModelDictionary, dataTypeToString, extractData, getModeData, useAppSelector, useGetLiveDataFromAppStore, useGetLiveDataModeFromAppStore, useGetLiveDataSmoothingFromAppStore, useGetProviderColorDictionaryFromAppStore, useGetProvidersFromAppStore, useGetSidechainsIncludedFromAppStore } from '../../../ethtps.data/src'
+
 
 export type InstantBarChartDataset = {
   label: string
@@ -41,7 +31,7 @@ export type LiveData = {
 
 export const createDataPoint = (
   data: DataResponseModelDictionary,
-  provider: ProviderResponseModel,
+  provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel,
   color: string
 ) => {
   let value = extractData(data, provider.name as string)
@@ -64,9 +54,9 @@ export function useGet1mGTPS() {
   return useAppSelector((state) => state.liveData.oneMinuteGTPSData)
 }
 export type LiveDataState = {
-  smoothing: TimeInterval
+  smoothing: ETHTPSDataCoreTimeInterval
   sidechainsIncluded: boolean
-  mode: DataType
+  mode: ETHTPSDataCoreDataType
 }
 
 export function useLiveDataState(): LiveDataState {
@@ -81,7 +71,7 @@ export function useStreamchartData(interval: string) {
   const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
   const { data, status, refetch } = useQuery("get streamchart data", () =>
     api.getStreamChartData({
-      interval: TimeIntervalFromJSON(`"${interval}"`),
+      interval: ETHTPSDataCoreTimeIntervalFromJSON(`"${interval}"`),
       includeSidechains: sidechainsIncluded,
     }),
   )
@@ -92,7 +82,7 @@ export function useStreamchartData(interval: string) {
 }
 
 export function useLiveData() {
-  const providers: ProviderResponseModel[] = useGetProvidersFromAppStore()
+  const providers: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[] = useGetProvidersFromAppStore()
   const smoothing = useGetLiveDataSmoothingFromAppStore()
   const colors = useGetProviderColorDictionaryFromAppStore()
   const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()

@@ -1,3 +1,4 @@
+import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { useState } from 'react'
 
 export enum DeltaType {
@@ -41,7 +42,7 @@ export const useLiveDataWithDelta = () => {
             type: DeltaType.increase,
             value: 0
         },
-        type: 'tps'
+        type: ETHTPSDataCoreDataType.TPS
     })
     const [gps, setGPS] = useState<LiveDataDelta>({
         value: 0,
@@ -49,7 +50,7 @@ export const useLiveDataWithDelta = () => {
             type: DeltaType.none,
             value: 0
         },
-        type: 'gps'
+        type: ETHTPSDataCoreDataType.GPS
     })
     const [gtps, setGTPS] = useState<LiveDataDelta>({
         value: 0,

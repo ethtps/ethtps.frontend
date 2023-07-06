@@ -1,5 +1,6 @@
-import { IComponentSize } from '@/components'
+
 import { motion } from 'framer-motion'
+import { IComponentSize } from '../../..'
 import { LoadingAnimation } from './LoadingAnimation'
 
 enum States {

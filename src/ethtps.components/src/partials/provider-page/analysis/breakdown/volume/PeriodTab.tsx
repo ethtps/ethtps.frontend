@@ -1,7 +1,7 @@
-import { ProviderResponseModel } from "@/api-client"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 
 interface IPeriodTabProps {
-    provider: ProviderResponseModel
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
 export function PeriodTab(props: Partial<IPeriodTabProps>) {

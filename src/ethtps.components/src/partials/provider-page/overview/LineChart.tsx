@@ -1,12 +1,7 @@
 //Needed for chartjs to work
-import { DataType, NumericXYDataPoint, TimeInterval } from "@/api-client"
-import { CategoryScale, Chart, Decimation, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
-// eslint-disable-next-line import/no-internal-modules
-import { DataModeButtonGroup, TimeIntervalButtonGroup } from "@/components/buttons"
-import { AllData, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment } from "@/data"
-import { api, conditionalRender, useColors } from "@/services"
 import { Box, Heading, Progress } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
+import { CategoryScale, Chart, Decimation, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
 import { useEffect, useMemo, useRef, useState } from "react"
 Chart.register(
   CategoryScale,
@@ -21,8 +16,11 @@ Chart.register(
 )
 // eslint-disable-next-line import/no-internal-modules
 import 'chart.js/auto'
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint, ETHTPSDataCoreModelsDataPointsXYPointsXPointType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 import moment from 'moment-timezone'
 import { Chart as Chart2 } from 'react-chartjs-2'
+import { DataModeButtonGroup, TimeIntervalButtonGroup, conditionalRender, useColors } from '../../../..'
+import { AllData, ETHTPSApi, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment } from "../../../../../ethtps.data/src"
 
 moment.tz.setDefault("Europe/Berlin")
 
@@ -31,20 +29,22 @@ interface ILineChartProps {
   height: number
   provider?: string
   title?: string
+  api: ETHTPSApi
 }
 
 interface Series {
   name: string
-  data?: (NumericXYDataPoint | undefined)[]
+  data?: (ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint | undefined)[]
 }
 
 const pad = 40
 
 export function LineChart(props: ILineChartProps) {
+  const api = props.api
   const [loading, setLoading] = useState<boolean>(true)
   const colors = useColors()
-  const [interval, setInterval] = useState<ExtendedTimeInterval>(TimeInterval.OneMinute)
-  const [dataType, setDataType] = useState<DataType>(DataType.Tps)
+  const [interval, setInterval] = useState<ExtendedTimeInterval>(ETHTPSDataCoreTimeInterval.ONE_MINUTE)
+  const [dataType, setDataType] = useState<ETHTPSDataCoreDataType>(ETHTPSDataCoreDataType.TPS)
   const [allData, setAllData] = useState<Partial<AllData>>({})
   const [chartData, setChartData] = useState<Series[]>()
   useEffect(() => {
@@ -55,16 +55,16 @@ export function LineChart(props: ILineChartProps) {
     const keyz = Object.keys(allData?.tps)
     if (keyz?.length > 0) {
       const series: Series[] = []
-      let data: NumericXYDataPoint[] | undefined
+      let data: ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[] | undefined
       for (const key of keyz) {
         switch (dataType) {
-          case DataType.Tps:
+          case ETHTPSDataCoreDataType.TPS:
             data = allData.tps?.[key]
             break
-          case DataType.Gps:
+          case ETHTPSDataCoreDataType.GPS:
             data = allData.gps?.[key]
             break
-          case DataType.GasAdjustedTps:
+          case ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS:
             data = allData.gtps?.[key]
             break
           default:
@@ -80,12 +80,12 @@ export function LineChart(props: ILineChartProps) {
   }, [allData, dataType])
   useEffect(() => {
     const m = toMoment(interval)
-    async function fetchData(dataType: DataType) {
+    async function fetchData(dataType: ETHTPSDataCoreDataType) {
       try {
-        const data = await api.getNumberedL2Data({
+        const data = await api.getL2Data({
           dataType: dataType,
-          l2DataRequestModel: {
-            returnXAxisType: 'Number',
+          eTHTPSDataCoreModelsQueriesDataRequestsL2DataRequestModel: {
+            returnXAxisType: ETHTPSDataCoreModelsDataPointsXYPointsXPointType.NUMBER,
             includeEmptyDatasets: false,
             includeSimpleAnalysis: true,
             includeComplexAnalysis: true,
@@ -95,8 +95,8 @@ export function LineChart(props: ILineChartProps) {
 
           }
         })
-        const processed = {} as Record<string, NumericXYDataPoint[]>
-        processed[props.provider ?? 'auto'] = data?.data?.dataPoints?.map((x, i) => {
+        const processed = {} as Record<string, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
+        processed[props.provider ?? 'auto'] = data?.data?.dataPoints?.map((x: ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint, i: number) => {
           return {
             x: x.x ? x.x : i,
             y: x.y,
@@ -105,14 +105,14 @@ export function LineChart(props: ILineChartProps) {
         setAllData(old => {
 
           switch (dataType) {
-            case DataType.Tps:
-              old.tps = processed as Record<string, NumericXYDataPoint[]>
+            case ETHTPSDataCoreDataType.TPS:
+              old.tps = processed as Record<string, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
               break
-            case DataType.Gps:
-              old.gps = processed as Record<string, NumericXYDataPoint[]>
+            case ETHTPSDataCoreDataType.GPS:
+              old.gps = processed as Record<string, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
               break
-            case DataType.GasAdjustedTps:
-              old.gtps = processed as Record<string, NumericXYDataPoint[]>
+            case ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS:
+              old.gtps = processed as Record<string, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
               break
             default:
               break

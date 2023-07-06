@@ -1,7 +1,7 @@
-import { ProviderResponseModel } from "@/api-client"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 
 interface ICompareTabProps {
-    provider: ProviderResponseModel
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
 export function CompareTab(props: Partial<ICompareTabProps>) {

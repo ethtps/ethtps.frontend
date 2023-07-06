@@ -1,7 +1,7 @@
-import { IOptionalCallback } from "@/data"
-import { conditionalRender } from "@/services"
+
 import { Stack, Tooltip } from "@chakra-ui/react"
 import { IconDownload, IconMaximize } from "@tabler/icons-react"
+import { conditionalRender } from "../../../.."
 
 export interface IChartActionsProps {
     showMaximize: boolean

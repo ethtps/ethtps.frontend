@@ -1,7 +1,7 @@
-import { ProviderResponseModel } from "@/api-client"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 
 interface IStatusTabProps {
-    provider: ProviderResponseModel
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
 export function StatusTab(props: Partial<IStatusTabProps>) {

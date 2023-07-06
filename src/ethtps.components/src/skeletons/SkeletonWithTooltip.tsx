@@ -1,8 +1,7 @@
+import { Box, Text, Tooltip } from '@chakra-ui/react'
 import { useState } from 'react'
+import { conditionalRender } from '..'
 import { ISkeletonWithTooltipConfiguration } from './ISkeletonWithTooltipConfiguration'
-import React from 'react'
-import { conditionalRender } from '@/services'
-import { Box, Skeleton, Tooltip, Text } from '@chakra-ui/react'
 
 export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
   const message = config.text ?? 'Loading...'

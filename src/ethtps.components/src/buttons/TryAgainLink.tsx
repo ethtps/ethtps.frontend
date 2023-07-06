@@ -1,5 +1,6 @@
-import { useColors } from '@/services'
+
 import { Alert, AlertIcon, Text } from '@chakra-ui/react'
+import { useColors } from '../..'
 
 export function TryAgainLink() {
     const colors = useColors()

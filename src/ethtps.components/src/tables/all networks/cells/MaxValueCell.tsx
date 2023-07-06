@@ -1,19 +1,13 @@
-import { DataPoint, DataType } from '@/api-client'
-import {
-  IDataModel,
-  getMaxDataFor,
-  numberFormat
-} from '@/data'
-import { useColors } from '@/services'
-import { Td, Text, Tooltip } from '@chakra-ui/react'
-import moment from 'moment'
-import {
-  ICustomCellConfiguration,
-  buildClassNames
-} from './ICustomCellConfiguration'
-import { tableCellTypographyStandard } from './Typography.types'
+import { Td, Text, Tooltip } from "@chakra-ui/react"
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsDataPointsDataPoint } from "ethtps.api"
+import moment from "moment"
+import { useColors } from "../../../.."
+import { IDataModel, getMaxDataFor, numberFormat } from "../../../../../ethtps.data/src"
+import { ICustomCellConfiguration, buildClassNames } from "./ICustomCellConfiguration"
+import { tableCellTypographyStandard } from "./Typography.types"
 
-function generateMaxHoverMessage(data?: DataPoint): string {
+
+function generateMaxHoverMessage(data?: ETHTPSDataCoreModelsDataPointsDataPoint): string {
   if (
     data === undefined ||
     (data?.blockNumber === undefined && data?.date === undefined) ||
@@ -31,14 +25,14 @@ function generateMaxHoverMessage(data?: DataPoint): string {
   return `Seen ${moment(data?.date)}`
 }
 
-function generateMaxTypography(data?: DataPoint) {
+function generateMaxTypography(data?: ETHTPSDataCoreModelsDataPointsDataPoint) {
   const message = generateMaxHoverMessage(data)
   return message?.length > 0 ? <Text>{message}</Text> : undefined
 }
 
 interface IMaxValueCellProps extends ICustomCellConfiguration {
   maxData: IDataModel
-  dataType: DataType
+  dataType: ETHTPSDataCoreDataType
 }
 export function MaxValueCell(config: Partial<IMaxValueCellProps>) {
   const max = getMaxDataFor(config.maxData, config.provider?.name, config.dataType)

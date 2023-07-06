@@ -1,11 +1,7 @@
+
 import { Td, Text } from '@chakra-ui/react'
-import {
-  ICustomCellConfiguration,
-  buildClassNames
-} from './ICustomCellConfiguration'
-import React from 'react'
-import { useGetProviderTypeColorDictionaryFromAppStore } from '@/data'
-import { useColors } from '@/services'
+import { ICustomCellConfiguration } from '..'
+import { useColors } from '../../../..'
 
 export function ProviderTypeCell(config: ICustomCellConfiguration) {
   const colors = useColors()

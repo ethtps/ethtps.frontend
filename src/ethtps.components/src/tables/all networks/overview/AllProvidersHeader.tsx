@@ -1,16 +1,12 @@
-import {
-  dataTypeToString,
-  m_toShortString,
-  toShortString,
-  useGetLiveDataModeFromAppStore
-} from '@/data'
-import React from 'react'
+
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+import { dataTypeToString, m_toShortString, useGetLiveDataModeFromAppStore } from '../../../../../ethtps.data/src'
 import { TableHeader } from '../../TableHeader'
-import { DataType, ProviderResponseModel } from '@/api-client'
+
 
 export function AllProvidersHeader(props: {
-  dataType: DataType,
-  columnClicked?: (column: keyof ProviderResponseModel) => void
+  dataType: ETHTPSDataCoreDataType,
+  columnClicked?: (column: keyof ETHTPSDataCoreModelsResponseModelsProviderResponseModel) => void
 }): JSX.Element {
   const mode = useGetLiveDataModeFromAppStore()
   const modeStr = m_toShortString(mode)

@@ -1,10 +1,10 @@
-import React from 'react'
+import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { CustomButtonGroup } from './groups'
 
 export function ModeButton(): JSX.Element {
   return (
     <>
-      <CustomButtonGroup {...{ buttons: ['TPS', 'GPS', 'GTPS'] }} />
+      <CustomButtonGroup {...{ buttons: [ETHTPSDataCoreDataType.TPS, ETHTPSDataCoreDataType.GPS, 'GTPS'] }} />
     </>
   )
 }

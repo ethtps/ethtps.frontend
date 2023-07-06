@@ -1,12 +1,13 @@
-import { IBasicLiveUpdaterStatus } from "@/api-client"
-import { Alert, AlertIcon, HStack, Td, Text, Tooltip } from "@chakra-ui/react"
-import { ICustomCellConfiguration } from "."
-import { binaryConditionalRender, conditionalRender, useColors } from "@/services"
+
+import { HStack, Td, Text, Tooltip } from "@chakra-ui/react"
 import { IconCheck, IconExclamationMark, IconX } from "@tabler/icons-react"
+import { ETHTPSDataCoreModelsDataUpdaterLiveDataUpdaterStatus } from "ethtps.api"
 import { useEffect, useState } from "react"
+import { ICustomCellConfiguration } from "."
+import { binaryConditionalRender, useColors } from "../../../.."
 
 interface IUpdaterStatusCellProps extends ICustomCellConfiguration {
-    status?: IBasicLiveUpdaterStatus
+    status?: ETHTPSDataCoreModelsDataUpdaterLiveDataUpdaterStatus
 }
 
 export function UpdaterStatusCell(props: IUpdaterStatusCellProps) {

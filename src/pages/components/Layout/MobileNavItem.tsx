@@ -1,8 +1,7 @@
 import { ChevronDownIcon } from "@chakra-ui/icons"
-import { ColorMode, useDisclosure, Stack, Flex, useColorModeValue, Icon, Collapse, Text } from "@chakra-ui/react"
-import { Link } from "@chakra-ui/react"
+import { Collapse, Flex, Icon, Link, Stack, Text, useDisclosure } from "@chakra-ui/react"
 import { NavItem } from "."
-import { useColors } from "@/services"
+import { useColors } from '../../../ethtps.components'
 
 export const MobileNavItem = ({ label, children, href }: NavItem) => {
     const { isOpen, onToggle } = useDisclosure()

@@ -1,7 +1,8 @@
-import { DataType } from '@/api-client'
-import { IHandler } from '@/data'
+import { ETHTPSDataCoreDataType } from 'ethtps.api'
+import { IHandler } from '../../../../../ethtps.data/src'
+
 
 export interface IDataModeButtonGroupConfiguration {
-  modeHandle?: IHandler<DataType>
+  modeHandle?: IHandler<ETHTPSDataCoreDataType>
   float?: 'left' | 'right'
 }

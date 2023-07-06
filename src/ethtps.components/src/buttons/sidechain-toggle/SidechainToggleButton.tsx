@@ -1,9 +1,8 @@
-import { useAppDispatch, setIncludeSidechains } from '@/data'
-import { Tooltip, Text } from '@chakra-ui/react'
-import { IconLink, IconLinkOff } from '@tabler/icons-react'
-import React, { useState } from 'react'
-import { IconButton } from '../IconButton'
-import { ISidechainToggleButtonConfiguration } from './ISidechainToggleButtonConfiguration'
+import { Text, Tooltip } from "@chakra-ui/react"
+import { IconLink, IconLinkOff } from "@tabler/icons-react"
+import { useState } from "react"
+import { ISidechainToggleButtonConfiguration, IconButton } from ".."
+import { setIncludeSidechains, useAppDispatch } from "../../../../ethtps.data/src"
 
 export function SidechainToggleButton(
   config: ISidechainToggleButtonConfiguration

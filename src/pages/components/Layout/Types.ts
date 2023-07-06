@@ -1,4 +1,5 @@
-import { ProviderResponseModel } from '@/api-client'
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+
 
 export interface NavItem {
     label: string
@@ -7,7 +8,7 @@ export interface NavItem {
     href?: string
 }
 
-export const NAV_ITEMS = (allProviders?: ProviderResponseModel[]): Array<NavItem> => [
+export const NAV_ITEMS = (allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]): Array<NavItem> => [
     {
         label: 'Rollups',
         children: [

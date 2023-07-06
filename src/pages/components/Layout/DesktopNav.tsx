@@ -1,11 +1,12 @@
-import { ProviderResponseModel } from "@/api-client"
-import { ColorMode, Text, Flex, Stack, Popover, PopoverTrigger, PopoverContent, Spacer, Box } from "@chakra-ui/react"
+
 import { Link } from "@chakra-ui/layout"
+import { Box, Flex, Popover, PopoverContent, PopoverTrigger, Stack, Text } from "@chakra-ui/react"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+import { useColors } from '../../../ethtps.components'
 import { DesktopSubNav } from "./DesktopSubNav"
 import { NAV_ITEMS } from "./Types"
-import { useColors } from "@/services"
 
-export const DesktopNav = (allProviders?: ProviderResponseModel[]) => {
+export const DesktopNav = (allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]) => {
     const colors = useColors()
     return (
         <Flex>

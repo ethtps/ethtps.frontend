@@ -1,13 +1,10 @@
 /* eslint-disable import/no-internal-modules */
-import { ICustomCellConfiguration } from './ICustomCellConfiguration'
-import { HStack, Link, Stack, Td, Text, Tooltip } from '@chakra-ui/react'
-import React, { forwardRef, useEffect, useState } from 'react'
-import { conditionalRender, useColors } from '@/services'
-import { useGetProviderColorDictionaryFromAppStore } from '@/data'
-import Image from 'next/image'
-import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
-import { Link as NextLink } from '@chakra-ui/next-js'
 
+import { HStack, Image, Link, Td, Text, Tooltip } from "@chakra-ui/react"
+import { IconCloudOff, IconTriangleOff } from "@tabler/icons-react"
+import NextLink from 'next/link'
+import { conditionalRender, useColors } from "../../../.."
+import { ICustomCellConfiguration } from "./ICustomCellConfiguration"
 export interface INameCellProps extends ICustomCellConfiguration {
 
 }

@@ -1,11 +1,11 @@
 /* eslint-disable import/no-internal-modules */
-import { ProviderResponseModel } from "@/api-client"
-import { Text, Box, Tabs, TabList, TabPanel } from "@chakra-ui/react"
-import { BreakdownTab } from '..'
+import { Box, TabList, TabPanel, Tabs, Text } from "@chakra-ui/react"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { useState } from "react"
+import { BreakdownTab } from '..'
 
 interface IAnalysisTabProps {
-    provider: ProviderResponseModel
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
     selectedTab: string
 }
 

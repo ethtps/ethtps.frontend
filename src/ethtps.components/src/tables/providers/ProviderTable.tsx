@@ -1,26 +1,27 @@
-import { ProviderResponseModel } from '@/api-client'
-import { darkenColorIfNecessary } from '@/components'
-import { Text, Table, Image, Stack, Tooltip } from '@chakra-ui/react'
+
+import { Image, Stack, Table, Text, Tooltip } from '@chakra-ui/react'
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 // eslint-disable-next-line import/no-internal-modules
 import Link from 'next/link'
 import { useState } from 'react'
+import { darkenColorIfNecessary } from '../../..'
 
 type ExtraColumns = Partial<{
   currentValue: number,
   maxRecorded: number
 }>
 
-type ExtendedProviderResponseModel = ProviderResponseModel & ExtraColumns
+type ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel = ETHTPSDataCoreModelsResponseModelsProviderResponseModel & ExtraColumns
 
 type SortState = {
-  column: keyof ExtendedProviderResponseModel | null
+  column: keyof ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel | null
   ascending: boolean
 }
 
 const arrowUp = <span>&#9660;</span>
 const arrowDown = <span>&#9650;</span>
 
-const getArrowForColumn = (column: keyof ExtendedProviderResponseModel, sortState: SortState) => {
+const getArrowForColumn = (column: keyof ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel, sortState: SortState) => {
   if (sortState.column === column) {
     return sortState.ascending ? arrowUp : arrowDown
   } else {
@@ -29,18 +30,18 @@ const getArrowForColumn = (column: keyof ExtendedProviderResponseModel, sortStat
 }
 
 interface IProviderTableProps {
-  providers: ProviderResponseModel[]
+  providers: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
 }
 
 export function ProviderTable(props: IProviderTableProps) {
 
-  const [data, setData] = useState<(ExtendedProviderResponseModel)[]>(props.providers)
+  const [data, setData] = useState<(ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel)[]>(props.providers)
   const [sortState, setSortState] = useState<SortState>({
     column: null,
     ascending: false,
   })
 
-  const handleSort = (columnName: keyof ExtendedProviderResponseModel) => {
+  const handleSort = (columnName: keyof ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel) => {
     setData(data.slice().sort((a, b) => {
       const valueA = a[columnName]
       const valueB = b[columnName]
@@ -65,7 +66,7 @@ export function ProviderTable(props: IProviderTableProps) {
     })
   }
 
-  const arrowForColumn = (column: keyof ExtendedProviderResponseModel) => getArrowForColumn(column, sortState)
+  const arrowForColumn = (column: keyof ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel) => getArrowForColumn(column, sortState)
 
   return (
     <Table className="my-table" cellSpacing="sm">

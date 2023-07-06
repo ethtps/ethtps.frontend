@@ -1,5 +1,5 @@
-import { ProviderModel } from '@/api-client'
+import { ETHTPSDataCoreModelsDataPointsProviderModel } from 'ethtps.api'
 
 export interface ICellClickedEvent {
-  clickCallback?: (provider?: ProviderModel, cellName?: string) => void
+  clickCallback?: (provider?: ETHTPSDataCoreModelsDataPointsProviderModel, cellName?: string) => void
 }

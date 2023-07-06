@@ -1,17 +1,20 @@
-import { ProviderLink, ProviderResponseModel } from "@/api-client"
-import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, setQueryParams } from "@/components"
-import { binaryConditionalRender, useColors, useQueryStringAndLocalStorageBoundState } from "@/services"
-import { Box, Heading, Highlight, Image, SimpleGrid, Skeleton, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
+
 // eslint-disable-next-line import/no-internal-modules
 import { useRouter } from "next/router"
 // eslint-disable-next-line import/no-internal-modules
+import { Box, Heading, Highlight, Image, SimpleGrid, Skeleton, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataIntegrationsMSSQLProviderLink } from "ethtps.api"
+
 import { useEffect } from "react"
+import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, binaryConditionalRender, setQueryParams, useColors, useQueryStringAndLocalStorageBoundState } from "../../../.."
+import { ETHTPSApi } from "../../../../../ethtps.data/src"
 
 const iconSize = 65
 
 export function ProviderOverview(props: {
-    provider: ProviderResponseModel | undefined,
-    providerLinks?: ProviderLink[]
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel | undefined,
+    api: ETHTPSApi
+    providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[],
 } & IComponentSize) {
     const provider = props.provider
     const router = useRouter()
@@ -95,6 +98,7 @@ export function ProviderOverview(props: {
                     <TabPanels>
                         <TabPanel pt="md" tabIndex={0}>
                             <ProviderChartSection
+                                api={props.api}
                                 provider={provider?.name ?? undefined} />
                         </TabPanel>
 

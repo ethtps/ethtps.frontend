@@ -1,15 +1,10 @@
 /* eslint-disable import/no-internal-modules */
-import {
-  IProviderTableModel,
-  getModeData,
-  extractData,
-  useGetLiveDataFromAppStore,
-  useGetLiveDataModeFromAppStore
-} from '@/data'
-import React from 'react'
-import { useEffect, useState } from 'react'
-import { Tr } from '@chakra-ui/react'
-import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, UpdaterStatusCell, range } from '@/components'
+
+import { Tr } from "@chakra-ui/react"
+import { range } from "d3-array"
+import { useEffect, useState } from "react"
+import { IProviderTableModel, getModeData, useGetLiveDataFromAppStore, useGetLiveDataModeFromAppStore } from "../../../../../ethtps.data/src"
+import { IndexCell, NameCell, UpdaterStatusCell } from "../cells"
 
 export default function AllProvidersStatusRows(model: Partial<IProviderTableModel>): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0

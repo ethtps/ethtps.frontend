@@ -1,9 +1,7 @@
 import { ChevronRightIcon } from "@chakra-ui/icons"
-import { ColorMode, Popover, PopoverTrigger, useColorModeValue, Stack, Flex, Icon, PopoverContent, Box, Text } from "@chakra-ui/react"
+import { Box, Flex, Icon, Link, Popover, PopoverContent, PopoverTrigger, Stack, Text } from "@chakra-ui/react"
+import { useColors } from "../../../ethtps.components"
 import { NavItem } from "./Types"
-import { Link } from "@chakra-ui/react"
-import { useColors } from "@/services"
-
 export const DesktopSubNav = ({ label, href, subLabel, children }: NavItem) => {
     const colors = useColors()
     return (

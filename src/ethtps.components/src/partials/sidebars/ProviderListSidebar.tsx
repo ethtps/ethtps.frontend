@@ -1,17 +1,16 @@
-import { ProviderResponseModel } from "@/api-client"
-import { groupBy } from "@/data"
-import { Image, Box, Button, Link, Heading, useTheme, HStack, Text, Flex, Spacer, useBreakpointValue, useBoolean, SimpleGrid, Tag, Center, GridItem } from "@chakra-ui/react"
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Link as NextLink } from "@chakra-ui/next-js"
+import { Box, Button, Flex, GridItem, Image, SimpleGrid, Spacer, Tag, Text, useBoolean } from "@chakra-ui/react"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { useState } from "react"
 import { Sidebar, SidebarVariant } from ".."
 // eslint-disable-next-line import/no-internal-modules
-import { FiChevronDown, FiChevronUp } from "react-icons/fi"
-import { useToggle } from "@mantine/hooks"
-import { Theme, useColors } from "@/services"
 import { motion } from "framer-motion"
+import { FiChevronDown, FiChevronUp } from "react-icons/fi"
+import { Theme, useColors } from '../../..'
+import { groupBy } from '../../../../ethtps.data/src'
 
-const createProviderButton = (provider: ProviderResponseModel, key: string, colors: Theme, hasLeftIcon: boolean = false, hasRightIcon: boolean = false, width?: string, pad?: boolean) => <Button
+const createProviderButton = (provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel, key: string, colors: Theme, hasLeftIcon: boolean = false, hasRightIcon: boolean = false, width?: string, pad?: boolean) => <Button
     flex={3}
     key={key}
     variant={'ghost'}
@@ -50,7 +49,7 @@ const createTypeTag = (type: string, colors: Theme) => <>
 </>
 
 interface SidePanelProps {
-    allProviders?: ProviderResponseModel[]
+    allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
     currentProvider?: string
     variant: SidebarVariant
 }

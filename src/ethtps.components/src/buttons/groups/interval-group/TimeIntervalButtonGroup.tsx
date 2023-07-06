@@ -1,6 +1,7 @@
-import { CustomButtonGroup } from "@/components"
-import { EnumerateIntervals, ExtendedTimeInterval, TimeIntervalFromLabel, TimeIntervalToLabel, TimeIntervalToLabel_2 } from "@/data"
+
 import { useState } from "react"
+import { CustomButtonGroup } from '..'
+import { EnumerateIntervals, ExtendedTimeInterval, TimeIntervalFromLabel, TimeIntervalToLabel, TimeIntervalToLabel_2 } from "../../../../../ethtps.data/src"
 
 interface ITimeIntervalButtonGroupProps {
     onChange?: (interval: ExtendedTimeInterval) => void
@@ -18,7 +19,7 @@ export function TimeIntervalButtonGroup({ onChange, loading, selected }: ITimeIn
             <CustomButtonGroup
                 onChange={(v) => {
                     if (onChange) {
-                        onChange(TimeIntervalFromLabel(v))
+                        onChange(TimeIntervalFromLabel(v) as ExtendedTimeInterval)
                         setCurrent(v)
                     }
                 }}
@@ -29,7 +30,7 @@ export function TimeIntervalButtonGroup({ onChange, loading, selected }: ITimeIn
                 selected={selected ?? '1m'}
                 highlighed={loading ? current : undefined}
                 tooltipFunction={(v) => `Change view to ${TimeIntervalToLabel_2(v.toString()).toLowerCase()}`}
-                buttons={EnumerateIntervals().map((x, i) => TimeIntervalToLabel(x))} />
+                buttons={EnumerateIntervals().map((x, i) => TimeIntervalToLabel(x as ExtendedTimeInterval))} />
         </div>
     </>
 }

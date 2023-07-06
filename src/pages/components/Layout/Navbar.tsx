@@ -1,28 +1,28 @@
 // eslint-disable-next-line import/no-internal-modules
-import styles from '../../../styles/app.module.scss'
 import {
-    Box,
-    Flex,
-    Text,
-    IconButton,
-    Button,
-    Collapse,
-    Link,
-    useDisclosure,
-    useColorMode,
-    HStack,
-    Spacer,
-} from '@chakra-ui/react'
-import {
-    HamburgerIcon,
     CloseIcon,
+    HamburgerIcon,
     MoonIcon,
     SunIcon,
 } from '@chakra-ui/icons'
-import { ThreeLinks } from './ThreeLinks'
+import {
+    Box,
+    Button,
+    Collapse,
+    Flex,
+    HStack,
+    IconButton,
+    Link,
+    Spacer,
+    Text,
+    useColorMode,
+    useDisclosure,
+} from '@chakra-ui/react'
+import { useColors } from '../../../ethtps.components/'
+import styles from '../../../styles/app.module.scss'
 import { DesktopNav } from './DesktopNav'
 import { MobileNav } from './MobileNav'
-import { useColors } from '@/services'
+import { ThreeLinks } from './ThreeLinks'
 
 export interface INavbarProps {
     allProviders?: any[]

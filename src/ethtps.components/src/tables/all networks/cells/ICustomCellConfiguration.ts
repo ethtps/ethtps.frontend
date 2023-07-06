@@ -1,5 +1,6 @@
-import { ProviderResponseModel } from '@/api-client'
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { ICellClickedEvent } from './ICellClickedEvent'
+
 
 export const buildClassNames = (config: ICustomCellConfiguration) => {
   return {
@@ -8,5 +9,5 @@ export const buildClassNames = (config: ICustomCellConfiguration) => {
 }
 
 export interface ICustomCellConfiguration extends ICellClickedEvent {
-  provider?: ProviderResponseModel
+  provider?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }

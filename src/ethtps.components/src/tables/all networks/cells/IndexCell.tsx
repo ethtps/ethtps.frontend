@@ -1,12 +1,10 @@
-import {
-  ICustomCellConfiguration,
-  buildClassNames
-} from './ICustomCellConfiguration'
-import React from 'react'
-import { conditionalRender, useColors } from '@/services'
-import { IconButton } from '@/components'
-import { IconArrowRight } from '@tabler/icons-react'
+
 import { Td } from '@chakra-ui/react'
+import { IconArrowRight } from '@tabler/icons-react'
+import { IconButton, conditionalRender, useColors } from '../../../..'
+import {
+  ICustomCellConfiguration
+} from './ICustomCellConfiguration'
 
 interface IIndexCellConfiguration extends ICustomCellConfiguration {
   index: number

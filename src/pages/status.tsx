@@ -1,19 +1,20 @@
-import { ProviderResponseModel } from "@/api-client"
-import { getAsync, useColors } from "@/services"
+import { api } from ""
 import { Link } from "@chakra-ui/next-js"
 import { Button, Container, Flex, Heading, Text, useBoolean } from "@chakra-ui/react"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { GetServerSideProps } from "next"
+import { AllProvidersStatusTable, ProviderRequestDialog, useColors } from "../ethtps.components"
 
 interface IStatusProps {
-    providerData: ProviderResponseModel[]
+    providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
-    const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
+    const providers = await api.getProvidersAsync()
     return {
         props: {
-            providerData: providers.parsedBody
-        } as IStatusProps
+            providerData: providers
+        }
     }
 }
 

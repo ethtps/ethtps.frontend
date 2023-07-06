@@ -1,18 +1,17 @@
 /* eslint-disable import/no-internal-modules */
-//import { api } from '@/services'
 
-import { ProviderLink, ProviderResponseModel, TimeInterval } from "@/api-client"
-import { ProviderListSidebar, ProviderOverview, SidebarVariant } from "@/components"
-import { api, getAsync } from "@/services"
 import { Box, Flex, Spacer, useBreakpointValue } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval, ETHTPSDataIntegrationsMSSQLProviderLink } from "ethtps.api/dist/models"
 import { GetServerSideProps } from "next"
 import { useRef } from "react"
+import { ProviderListSidebar, ProviderOverview, SidebarVariant } from '../../ethtps.components'
+import { api } from '../../services'
 
 interface IProviderPageParams {
   currentProvider?: string,
-  allProviders?: ProviderResponseModel[]
-  providerLinks?: ProviderLink[]
+  allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+  providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[]
 }
 
 type Path = {
@@ -24,7 +23,7 @@ type Path = {
 
 /*
 export async function getStaticPaths() {
-  const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
+  const providers = await getAsync<ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
   const paths = providers.parsedBody?.filter(x => x && x.name)?.map(generatePath)
   return {
     paths: paths,
@@ -32,14 +31,14 @@ export async function getStaticPaths() {
   }
 }*/
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const providers = await getAsync<ProviderResponseModel[]>(`${process.env.REACT_APP_API_DEV_GENERAL_ENDPOINT}/api/v2/Providers?includeSidechains=true&XAPIKey=${process.env.REACT_APP_FRONTEND_API_KEY}`)
+  const providers = await api.getProvidersAsync()
   const currentProvider = context.params?.currentProvider as string
-  const defaultInterval = TimeInterval.OneMinute
+  const defaultInterval = ETHTPSDataCoreTimeInterval.ONE_MINUTE
   const providerLinks = await api.getProviderLinks(currentProvider)
   return {
     props: {
       currentProvider: currentProvider,
-      allProviders: providers.parsedBody,
+      allProviders: providers,
       providerLinks: providerLinks,
     } as IProviderPageParams
   }
@@ -59,6 +58,7 @@ export default function ProviderPage({ currentProvider, allProviders, providerLi
         navigationButton: false
       }
     })
+
   return <>
     <Box>
       <Flex
@@ -81,6 +81,7 @@ export default function ProviderPage({ currentProvider, allProviders, providerLi
             marginRight: variants?.navigation === SidebarVariant.SIDEBAR ? '50px' : '0px'
           }} overflow={'scroll'}>
           <ProviderOverview
+            api={api}
             providerLinks={providerLinks}
             width={containerSize?.width}
             provider={allProviders?.find(x => x.name === currentProvider as string)} />

@@ -1,10 +1,11 @@
-import { TimeInterval } from "@/api-client"
-import { TimeIntervalToSeconds, EnumerateIntervals, TimeIntervalToLabel } from "@/data"
-import { useColors } from "@/services"
-import { Slider, SliderTrack, SliderMark, SliderThumb, Box, SliderFilledTrack } from "@chakra-ui/react"
+
+import { Box, Slider, SliderFilledTrack, SliderMark, SliderThumb } from "@chakra-ui/react"
+import { ETHTPSDataCoreTimeInterval } from 'ethtps.api'
+import { useColors } from "../../.."
+import { EnumerateIntervals, TimeIntervalToLabel, TimeIntervalToSeconds } from "../../../../ethtps.data/src"
 
 interface IIntervalSliderProps {
-    onChange?: (interval: TimeInterval) => void
+    onChange?: (interval: ETHTPSDataCoreTimeInterval) => void
 }
 
 
@@ -12,12 +13,12 @@ export function IntervalSlider({ onChange }: IIntervalSliderProps) {
     const colors = useColors()
     return <Box>
         <Slider
-            defaultValue={-TimeIntervalToSeconds(TimeInterval.OneMinute)}
-            min={-TimeIntervalToSeconds(TimeInterval.OneYear)}
-            max={-TimeIntervalToSeconds(TimeInterval.OneMinute)}
+            defaultValue={-TimeIntervalToSeconds(ETHTPSDataCoreTimeInterval.ONE_MINUTE)}
+            min={-TimeIntervalToSeconds(ETHTPSDataCoreTimeInterval.ONE_YEAR)}
+            max={-TimeIntervalToSeconds(ETHTPSDataCoreTimeInterval.ONE_MINUTE)}
         >
-            {EnumerateIntervals().map((interval, index) => <SliderMark key={`ti-${index}`} value={-TimeIntervalToSeconds(interval)} >
-                {TimeIntervalToLabel(interval)}
+            {EnumerateIntervals().map((interval, index) => <SliderMark key={`ti-${index}`} value={-TimeIntervalToSeconds(interval as ETHTPSDataCoreTimeInterval)} >
+                {TimeIntervalToLabel(interval as ETHTPSDataCoreTimeInterval)}
             </SliderMark>)}
             <SliderFilledTrack bg={colors.gray1}>
                 <SliderThumb boxSize={6} />

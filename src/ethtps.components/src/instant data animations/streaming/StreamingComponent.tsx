@@ -1,20 +1,23 @@
-import { DataType, ProviderResponseModel, TimeInterval } from "@/api-client"
-import { MouseOverDataTypesEvents, SimpleLiveDataPoint, SimpleLiveDataStat, StreamingTest, TimeIntervalButtonGroup } from "@/components"
-import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToStreamProps } from "@/data"
-import { useColors } from "@/services"
+
 import { Box, Button, Container, Tooltip } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
 import { Dictionary } from "@reduxjs/toolkit"
 import { IconLink, IconLinkOff, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react"
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval, } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from "react"
+import { TimeIntervalButtonGroup, useColors } from "../../.."
+import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToStreamProps } from "../../../../ethtps.data/src"
+import { SimpleLiveDataPoint, SimpleLiveDataStat } from "../simple stat"
+import { MouseOverDataTypesEvents } from "../types"
+import { StreamingTest } from "./StreamingTest"
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents {
     connected: boolean
     data: SimpleLiveDataPoint
     newestData?: Dictionary<L2DataUpdateModel>
-    providerData?: ProviderResponseModel[]
-    dataMode: DataType
-    hoveredDataMode?: DataType
+    providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+    dataMode: ETHTPSDataCoreDataType
+    hoveredDataMode?: ETHTPSDataCoreDataType
     showSidechains: boolean
     showSidechainsToggled?: () => void
     isLeaving?: boolean
@@ -39,7 +42,7 @@ export function StreamingComponent({
     const colors = useColors()
     const containerRef = useRef<any>(null)
     const sizeRef = useSize(containerRef)
-    const [interval, setInterval] = useState<ExtendedTimeInterval>(TimeInterval.OneMinute)
+    const [interval, setInterval] = useState<ExtendedTimeInterval>(ETHTPSDataCoreTimeInterval.ONE_MINUTE)
     const [streamConfig, setStreamConfig] = useState(TimeIntervalToStreamProps(interval))
     useEffect(() => {
         setStreamConfig(TimeIntervalToStreamProps(interval))

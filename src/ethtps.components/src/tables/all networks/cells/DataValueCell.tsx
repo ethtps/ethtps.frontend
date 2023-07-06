@@ -1,12 +1,13 @@
-import { DataType } from '@/api-client'
-import { LiveDataAggregator, numberFormat } from '@/data'
-import { Td } from '@chakra-ui/react'
-import { ICustomCellConfiguration } from './ICustomCellConfiguration'
-import { tableCellTypographyStandard } from './Typography.types'
-import { AnimatedTypography } from 'src'
+import { Td } from "@chakra-ui/react"
+import { ETHTPSDataCoreDataType } from "ethtps.api"
+import { AnimatedTypography } from "../../../.."
+import { LiveDataAggregator, numberFormat } from "../../../../../ethtps.data/src"
+import { ICustomCellConfiguration } from "./ICustomCellConfiguration"
+import { tableCellTypographyStandard } from "./Typography.types"
+
 
 interface IDataValueCellConfiguration extends ICustomCellConfiguration {
-  dataType: DataType
+  dataType: ETHTPSDataCoreDataType
   aggregator?: LiveDataAggregator
   initialValue?: number
 }
@@ -15,14 +16,14 @@ export function DataValueCell(config: IDataValueCellConfiguration) {
   const value = config.aggregator?.get(config.provider?.name)
   let v: number | undefined
   switch (config.dataType) {
-    case DataType.Tps:
+    case ETHTPSDataCoreDataType.TPS:
       v = value?.data?.tps
       break
-    case DataType.GasAdjustedTps:
+    case ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS:
       if (value?.data?.gps)
         v = value?.data?.gps / 21000
       break
-    case DataType.Gps:
+    case ETHTPSDataCoreDataType.GPS:
       v = value?.data?.gps
       break
   }

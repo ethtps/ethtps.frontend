@@ -1,7 +1,7 @@
-import { useColors } from "@/services"
-import { ColorMode, Flex, Stack, Tooltip } from "@chakra-ui/react"
-import { Link } from "@chakra-ui/react"
-import { IconBrandTwitter, IconBrandDiscord, IconBrandGithub } from "@tabler/icons-react"
+
+import { Flex, Link, Stack, Tooltip } from "@chakra-ui/react"
+import { IconBrandDiscord, IconBrandGithub, IconBrandTwitter } from "@tabler/icons-react"
+import { useColors } from '../../../ethtps.components'
 
 export function ThreeLinks() {
     const color = {

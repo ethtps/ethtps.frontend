@@ -1,11 +1,12 @@
-import { ProviderResponseModel } from "@/api-client"
-import { ColorMode, VStack, useColorModeValue, Center } from "@chakra-ui/react"
+
+import { Center, VStack } from "@chakra-ui/react"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+import { useColors } from '../../../ethtps.components'
 import { MobileNavItem } from "./MobileNavItem"
 import { ThreeLinks } from "./ThreeLinks"
 import { NAV_ITEMS } from "./Types"
-import { useColors } from "@/services"
 
-export const MobileNav = (allProviders?: ProviderResponseModel[]) => {
+export const MobileNav = (allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]) => {
     const colors = useColors()
     return (
         <VStack

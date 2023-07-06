@@ -1,4 +1,5 @@
-import { IComponentSize } from '@/components'
+import { IComponentSize } from "../../.."
+
 
 interface Test extends IComponentSize {
   stars?: any

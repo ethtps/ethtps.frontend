@@ -1,7 +1,7 @@
-import { IComponentSize } from '@/components'
+
 import { Center } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { StyledLoadingBox } from './styles'
+import { IComponentSize } from '../../..'
 
 
 export function LoadingAnimation(props: IComponentSize) {

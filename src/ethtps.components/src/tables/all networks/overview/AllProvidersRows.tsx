@@ -1,23 +1,21 @@
 /* eslint-disable import/no-internal-modules */
-import { DataType } from '@/api-client'
-import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell, range } from '@/components'
-import {
-  DataPointDictionary,
-  IProviderTableModel
-} from '@/data'
 import { Tr } from '@chakra-ui/react'
+import { range } from 'd3-array'
+import { ETHTPSDataCoreDataType } from "ethtps.api"
 import { useEffect, useState } from 'react'
+import { DataPointDictionary, IProviderTableModel } from '../../../../../ethtps.data/src'
+import { DataValueCell, IndexCell, MaxValueCell, NameCell, ProviderTypeCell } from '../cells'
 
 export function AllProvidersRows(model: Partial<IProviderTableModel>): JSX.Element {
   const hasData = (model.providerData?.length as number) > 0
-  const dataType = model.dataType ?? DataType.Tps
+  const dataType = model.dataType ?? ETHTPSDataCoreDataType.TPS
   const [initialData, setInitialData] = useState<DataPointDictionary>({})
   useEffect(() => {
     switch (dataType) {
-      case DataType.Tps:
+      case ETHTPSDataCoreDataType.TPS:
         setInitialData(model.instantData?.tpsData ?? {})
         break
-      case DataType.Gps:
+      case ETHTPSDataCoreDataType.GPS:
         setInitialData(model.instantData?.gpsData ?? {})
         break
       default:

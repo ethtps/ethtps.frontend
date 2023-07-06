@@ -1,6 +1,7 @@
+
 import { QueryClient } from 'react-query'
+import { ETHTPSApi } from '../ethtps.data/src'
 import { LocalStorageService } from './LocalStorageService'
-import { ETHTPSApi } from './api'
 
 var _api_key: string | undefined | null = ''
 export const apiURL = 'http://localhost:10202'

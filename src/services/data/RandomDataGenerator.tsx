@@ -1,3 +1,4 @@
+import { ETHTPSDataCoreModelsDataPointsDataPoint } from 'ethtps.api'
 type DataPoint = { seriesName: string, value: number }
 
 export class RandomDataGenerator {
@@ -20,20 +21,20 @@ export class RandomDataGenerator {
         return num
     }
 
-    startGeneratingData(min: number, max: number, onDataGenerated: (data: DataPoint[]) => void) {
+    startGeneratingData(min: number, max: number, onDataGenerated: (data: ETHTPSDataCoreModelsDataPointsDataPoint[]) => void) {
         if (this.timerId !== null) {
             throw new Error('Data generation is already in progress.')
         }
 
         const simulateConnectionTime = () => {
             setTimeout(() => {
-                const data: DataPoint[] = []
+                const data: ETHTPSDataCoreModelsDataPointsDataPoint[] = []
                 const seriesToGenerate = Math.floor(Math.random() * (this.seriesNames.length + 1))
 
                 for (let i = 0; i < seriesToGenerate; i++) {
                     const seriesName = this.seriesNames[i]
                     const value = this.boxMullerRandom(min, max)
-                    data.push({ seriesName, value })
+                    data.push({ value })
                 }
 
                 onDataGenerated(data)

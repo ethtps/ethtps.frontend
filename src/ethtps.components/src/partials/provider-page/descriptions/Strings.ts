@@ -1,4 +1,5 @@
-import { GenericDictionary, StringDictionary } from "@/data";
+import { StringDictionary } from '../../../../../ethtps.data/src'
+
 
 export enum DefaultStrings {
     pageSummary = 'Page Summary',

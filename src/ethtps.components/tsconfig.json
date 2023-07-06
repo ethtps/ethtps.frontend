@@ -1,29 +1,45 @@
 {
 	"compilerOptions": {
-		"module": "es6",
-		"target": "es5",
-		"moduleResolution": "node",
-		"outDir": "./dist",
+		"target": "ESNext",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"allowUmdGlobalAccess": true,
+		"strict": true,
+		"allowImportingTsExtensions": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
 		"esModuleInterop": true,
-		"baseUrl": ".",
-		"jsx": "react-jsx",
-		"noImplicitAny": true,
-		"resolveJsonModule": true,
-		"removeComments": false,
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"isolatedModules": true,
+		"jsx": "preserve",
 		"preserveConstEnums": true,
+		"incremental": true,
 		"declaration": true,
+		"declarationDir": "types",
 		"sourceMap": true,
-		"allowSyntheticDefaultImports": true
+		"outDir": "dist",
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		},
+		"resolveJsonModule": true,
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+		"plugins": [
+			{
+				"name": "typescript-plugin-proactive-code-fixes"
+			}
+		]
 	},
-	"include": [
-		"src/**/*.ts",
-		"tests/**/*.ts",
-		"src/index.ts",
-		"src/*.tsx"
-	],
 	"exclude": [
-		"node_modules/*",
-		"dist/*",
-		".vscode/*"
+		"node_modules",
+		"dist",
+		"merger"
 	]
 }

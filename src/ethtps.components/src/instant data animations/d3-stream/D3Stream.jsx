@@ -1,25 +1,9 @@
-import * as d3 from "d3"
-import { SVG } from '@svgdotjs/svg.js'
-import React, { useEffect, useState, useRef } from "react"
-import {
-    stack,
-    area,
-    curveBasis,
-    curveBumpY, curveCardinal,
-    curveBasisClosed,
-    stackOrderInsideOut,
-    stackOffsetSilhouette,
-    stackOrderReverse
-} from "d3-shape"
-import { schemeDark2 } from "d3-scale-chromatic"
-import { scaleLinear, scaleOrdinal } from "d3-scale"
-import { extent } from "d3-array"
-import { Box, Container, Text } from "@chakra-ui/react"
+import { Container, Text } from "@chakra-ui/react"
 import { motion } from "framer-motion"
-import { SimpleLiveDataStat, Streamgraph } from "@/components"
-import { binaryConditionalRender, useColors } from "@/services"
-import { set } from "date-fns"
+import { useEffect, useRef, useState } from "react"
 import { BeatLoader } from "react-spinners"
+import { binaryConditionalRender } from '../../../'
+import { Streamgraph } from "./"
 
 const Tooltip = ({ opacity, text, x, y }) => {
     return (

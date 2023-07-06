@@ -1,9 +1,10 @@
+
 import { Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Tooltip } from "@chakra-ui/react"
-import { LiveDataDelta } from "."
-import { binaryConditionalRender, conditionalRender, useColors } from "@/services"
 import { BeatLoader } from "react-spinners"
-import { AnimatedTypography, MouseOverEvents, tableCellTypographyStandard } from "@/components"
-import { numberFormat } from "@/data"
+import { LiveDataDelta } from "."
+import { AnimatedTypography, binaryConditionalRender, conditionalRender, useColors } from "../../.."
+import { numberFormat } from "../../../../ethtps.data/src"
+import { MouseOverEvents } from "../types"
 
 export function SimpleStat(props:
     {

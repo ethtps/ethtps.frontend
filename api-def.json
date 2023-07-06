@@ -389,7 +389,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProviderResponseModel"
+                    "$ref": "#/components/schemas/ETHTPSDataCoreModelsResponseModelsProviderResponseModel"
                   }
                 }
               },
@@ -397,7 +397,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProviderResponseModel"
+                    "$ref": "#/components/schemas/ETHTPSDataCoreModelsResponseModelsProviderResponseModel"
                   }
                 }
               },
@@ -405,7 +405,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProviderResponseModel"
+                    "$ref": "#/components/schemas/ETHTPSDataCoreModelsResponseModelsProviderResponseModel"
                   }
                 }
               }
@@ -533,19 +533,19 @@
               "text/plain": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               },
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               },
               "text/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -588,19 +588,19 @@
               "text/plain": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               },
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               },
               "text/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -1881,7 +1881,7 @@
           },
           "maxData": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           },
           "allTPSData": {
@@ -2021,12 +2021,12 @@
           },
           "maxData": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           },
           "instantData": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           },
           "colorDictionary": {
@@ -2046,7 +2046,7 @@
           "providers": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ProviderResponseModel"
+              "$ref": "#/components/schemas/ETHTPSDataCoreModelsResponseModelsProviderResponseModel"
             },
             "nullable": true
           }
@@ -2067,7 +2067,7 @@
         },
         "additionalProperties": false
       },
-      "ProviderResponseModel": {
+      "ETHTPSDataCoreModelsResponseModelsProviderResponseModel": {
         "type": "object",
         "properties": {
           "name": {

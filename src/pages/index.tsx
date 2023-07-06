@@ -1,42 +1,39 @@
 /* eslint-disable import/no-internal-modules */
-import { DataType, ProviderResponseModel, TimeInterval } from '@/api-client'
-import { AllProvidersTable, LiveDataContainer, useLiveDataWithDelta } from '@/components'
-import { StreamingComponent } from '@/components/instant data animations/streaming/StreamingComponent'
-import { IDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback } from '@/data'
-import { api, useQueryStringAndLocalStorageBoundState } from '@/services'
-import { OrderProvidersByMax } from '@/services/experiments/index/OrderProviders'
-import { Box } from '@chakra-ui/react'
-import { Dictionary } from '@reduxjs/toolkit'
-import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { Box } from "@chakra-ui/react"
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval } from "ethtps.api"
+import { GetServerSideProps } from "next"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { AllProvidersTable, LiveDataContainer, StreamingComponent, useLiveDataWithDelta, useQueryStringAndLocalStorageBoundState } from "../ethtps.components"
+import { GenericDictionary, IDataModel, L2DataUpdateModel, LiveDataAggregator, createHandlerFromCallback } from "../ethtps.data/src"
+import { OrderProvidersByMax, api } from '../services'
 
 export interface IIndexPageProps {
-  providerData?: ProviderResponseModel[]
+  providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
   maxData?: IDataModel
   instantData?: IDataModel
   defaultIntervalData?: IDataModel
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
-  const instant = await api.getInstantData(TimeInterval.Instant)
+  const instant = await api.getInstantData(ETHTPSDataCoreTimeInterval.INSTANT)
   return {
     props: OrderProvidersByMax({
       providerData: await api.getProvidersAsync(),
       maxData: {
-        tpsData: await api.getMax(DataType.Tps, "All"),
-        gpsData: await api.getMax(DataType.Gps, "All"),
-        gtpsData: await api.getMax(DataType.GasAdjustedTps, "All")
+        tpsData: await api.getMax(ETHTPSDataCoreDataType.TPS, "All"),
+        gpsData: await api.getMax(ETHTPSDataCoreDataType.GPS, "All"),
+        gtpsData: await api.getMax(ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS, "All")
       },
       instantData: {
-        tpsData: instant['tps'],
-        gpsData: instant['gps'],
-        gtpsData: instant['gasAdjustedTps'],
+        tpsData: instant[ETHTPSDataCoreDataType.TPS],
+        gpsData: instant[ETHTPSDataCoreDataType.GPS],
+        gtpsData: instant[ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS],
       },
       defaultIntervalData: {
-        tpsData: await api.getData(DataType.Tps, TimeInterval.OneHour, "All", undefined, true),
-        gpsData: await api.getData(DataType.Gps, TimeInterval.OneHour, "All", undefined, true),
-        gtpsData: await api.getData(DataType.GasAdjustedTps, TimeInterval.OneHour, "All", undefined, true),
+        tpsData: await api.getData(ETHTPSDataCoreDataType.TPS, ETHTPSDataCoreTimeInterval.ONE_HOUR, "All", undefined, true),
+        gpsData: await api.getData(ETHTPSDataCoreDataType.GPS, ETHTPSDataCoreTimeInterval.ONE_HOUR, "All", undefined, true),
+        gtpsData: await api.getData(ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS, ETHTPSDataCoreTimeInterval.ONE_HOUR, "All", undefined, true),
       }
     } as IIndexPageProps)
   }
@@ -59,14 +56,14 @@ export default function Index({ providerData, maxData, instantData, defaultInter
   const [connected, setConnected] = useState(false)
   const noSidechainAggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
-  const modeHandler = createHandlerFromCallback<DataType>((newValue) => {
+  const modeHandler = createHandlerFromCallback<ETHTPSDataCoreDataType>((newValue) => {
 
   })
   const [showSidechains, setShowSidechains] = useQueryStringAndLocalStorageBoundState(false, 'showSidechains')
   const noSidechainData = useLiveDataWithDelta()
   const { data, setTPS, setGPS } = useLiveDataWithDelta()
-  const [newestData, setNewestData] = useState<Dictionary<L2DataUpdateModel>>()
-  const onDataReceived = (liveData: Dictionary<L2DataUpdateModel>) => {
+  const [newestData, setNewestData] = useState<GenericDictionary<L2DataUpdateModel>>()
+  const onDataReceived = (liveData: GenericDictionary<L2DataUpdateModel>) => {
     aggregator.updateMultiple(liveData)
     const average = aggregator.average
     setTPS(average.tps)
@@ -77,15 +74,15 @@ export default function Index({ providerData, maxData, instantData, defaultInter
     setNewestData(liveData)
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }
-  const [dataMode, setDataMode] = useQueryStringAndLocalStorageBoundState<DataType>(DataType.Tps, 'dataType')
-  const [hoveredDataMode, setHoveredDataMode] = useState<DataType | undefined>(dataMode)
-  const onClick = (dataType: DataType) => {
+  const [dataMode, setDataMode] = useQueryStringAndLocalStorageBoundState<ETHTPSDataCoreDataType>(ETHTPSDataCoreDataType.TPS, 'dataType')
+  const [hoveredDataMode, setHoveredDataMode] = useState<ETHTPSDataCoreDataType | undefined>(dataMode)
+  const onClick = (dataType: ETHTPSDataCoreDataType) => {
     setDataMode(dataType)
   }
-  const onMouseOver = (dataType: DataType) => {
+  const onMouseOver = (dataType: ETHTPSDataCoreDataType) => {
     setHoveredDataMode(dataType)
   }
-  const onMouseLeave = (dataType: DataType) => {
+  const onMouseLeave = (dataType: ETHTPSDataCoreDataType) => {
     setHoveredDataMode(undefined)
   }
   const getFilteredProviderData = () => providerData?.filter(x => showSidechains ? true : x.type !== "Sidechain")
@@ -108,7 +105,7 @@ export default function Index({ providerData, maxData, instantData, defaultInter
               onMouseOver={onMouseOver}
               onMouseLeave={onMouseLeave}
               isLeaving={isLeaving}
-              dataMode={dataMode ?? DataType.Tps}
+              dataMode={dataMode ?? ETHTPSDataCoreDataType.TPS}
               hoveredDataMode={hoveredDataMode}
               showSidechains={showSidechains ?? false}
               showSidechainsToggled={() => setShowSidechains(!showSidechains)}

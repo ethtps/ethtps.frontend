@@ -1,8 +1,8 @@
-import { IAnimatedLinkButtonWithIconProperties } from './IAnimatedLinkButtonWithIconProperties'
-import React from 'react'
+
+import { Text, Tooltip } from '@chakra-ui/react'
+import { openNewTab } from '../../../..'
 import { IconButton } from '../../IconButton'
-import { Tooltip, Text } from '@chakra-ui/react'
-import { openNewTab } from '@/services'
+import { IAnimatedLinkButtonWithIconProperties } from './IAnimatedLinkButtonWithIconProperties'
 
 // No animation YET
 export function AnimatedLinkButtonWithIcon(

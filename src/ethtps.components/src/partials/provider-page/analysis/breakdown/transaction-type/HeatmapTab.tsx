@@ -1,12 +1,13 @@
 // eslint-disable-next-line import/no-internal-modules
-import { ProviderResponseModel } from "@/api-client"
-import { ChartActions, SocialButtons } from "@/components"
+
+import { Center, Modal, Select, Stack, Text } from '@chakra-ui/react'
 import { useDisclosure } from "@mantine/hooks"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { useCallback, useState } from "react"
-import { Text, Select, Stack, Center, Modal } from '@chakra-ui/react'
+import { ChartActions, SocialButtons } from '../../../../../..'
 
 interface IHeatmapTabProps {
-    provider: ProviderResponseModel
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
 enum Breakdowns {

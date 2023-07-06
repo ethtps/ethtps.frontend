@@ -1,9 +1,10 @@
-import { ProviderLink, ProviderResponseModel } from "@/api-client"
-import { ProviderLinks } from "@/components"
+
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataIntegrationsMSSQLProviderLink } from 'ethtps.api'
+import { ProviderLinks } from '../../../..'
 
 interface IDetailsTabProps {
-    provider: ProviderResponseModel
-    providerLinks?: ProviderLink[]
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
+    providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[]
 }
 
 export function DetailsTab(props: Partial<IDetailsTabProps>) {

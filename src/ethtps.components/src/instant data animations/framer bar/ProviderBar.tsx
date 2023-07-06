@@ -1,7 +1,9 @@
-import { IComponentSize } from '@/components'
-import { defaultColorDictionary } from '@/data'
-import { motion } from 'framer-motion'
-import { useCallback, useState } from 'react'
+
+import { motion } from "framer-motion"
+import { useCallback, useState } from "react"
+import { IComponentSize } from "../../.."
+import { defaultColorDictionary } from "../../../../ethtps.data/src"
+
 
 interface IProviderBarProps extends IComponentSize {
   x?: number

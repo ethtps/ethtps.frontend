@@ -1,15 +1,11 @@
-'use client'
-import { L2DataUpdateModel } from '@/data'
-import { Dictionary } from '@reduxjs/toolkit'
-import {
-    createSignalRContext
-} from 'react-signalr'
 
+import { createSignalRContext } from 'react-signalr'
+import { GenericDictionary, L2DataUpdateModel } from "../../../ethtps.data/src"
 const { useSignalREffect, Provider } = createSignalRContext()
 
 export interface LiveDataContainerProps {
     component: JSX.Element
-    onDataReceived?: (data: Dictionary<L2DataUpdateModel>) => void
+    onDataReceived?: (data: GenericDictionary<L2DataUpdateModel>) => void
     onTotalChanged?: (total: number) => void
     onConnected?: () => void
     onDisconnected?: () => void

@@ -1,7 +1,8 @@
 'use client'
+
+import { useColors } from "../../.."
+
 //import { VISXStreamChart } from '@/components/'
-import { useColors } from '@/services'
-import { Progress } from '@chakra-ui/react'
 
 export function LivePSPartial(props: { width: number, value: number }) {
   const colors = useColors()

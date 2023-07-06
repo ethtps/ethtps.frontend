@@ -1,10 +1,7 @@
-import {
-  m_toShortString,
-  toShortString,
-  useGetLiveDataModeFromAppStore
-} from '@/data'
-import React from 'react'
-import { TableHeader } from '../../TableHeader'
+
+import { TableHeader } from "../../../.."
+import { m_toShortString, useGetLiveDataModeFromAppStore } from "../../../../../ethtps.data/src"
+
 
 export default function AllProvidersStatusHeader(): JSX.Element {
   const mode = useGetLiveDataModeFromAppStore()

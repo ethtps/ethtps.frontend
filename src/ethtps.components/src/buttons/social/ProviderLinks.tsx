@@ -1,18 +1,21 @@
-import { ExternalWebsiteCategory, IExternalWebsite, IProviderExternalWebsite, ProviderLink, ProviderResponseModel } from "@/api-client"
-import { TryAgainLink } from "@/components"
-import { groupBy } from "@/data"
-import { api, binaryConditionalRender, conditionalRender, useColors } from "@/services"
+
 import { Box, Card, CardBody, CardHeader, Divider, Heading, Skeleton, Stack } from "@chakra-ui/react"
 import { Dictionary } from "@reduxjs/toolkit"
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataIntegrationsMSSQLExternalWebsite, ETHTPSDataIntegrationsMSSQLExternalWebsiteCategory, ETHTPSDataIntegrationsMSSQLProviderLink } from 'ethtps.api'
+
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { binaryConditionalRender, conditionalRender, useColors } from "../../.."
+import { ETHTPSApi, groupBy } from "../../../../ethtps.data/src"
+import { TryAgainLink } from "../TryAgainLink"
 
 interface IProviderLinksProps {
-    provider: ProviderResponseModel
-    providerLinks?: ProviderLink[]
+    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
+    providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[]
+    api: ETHTPSApi
 }
 
-const createLinks = (providerLinks?: ProviderLink[], websites?: IProviderExternalWebsite[]) => {
+const createLinks = (providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[], websites?: ETHTPSDataIntegrationsMSSQLExternalWebsite[]) => {
 }
 /* Cases:
 1 - Loading (&& no error) (x)
@@ -21,15 +24,16 @@ const createLinks = (providerLinks?: ProviderLink[], websites?: IProviderExterna
 4 - Ok
 */
 export function ProviderLinks(props: Partial<IProviderLinksProps>) {
+    const api = props.api
     const colors = useColors()
     const [loadedWebsites, setLoadedWebsites] = useState<boolean>(false)
     const [loadedWebsiteCategories, setLoadedWebsiteCategories] = useState<boolean>(false)
     const [hasError, setHasError] = useState<boolean>(false)
-    const [websites, setWebsites] = useState<Dictionary<IExternalWebsite[]>>()
-    const [groupedLinks, setGroupedLinks] = useState<Dictionary<ProviderLink[]> | undefined>()
-    const [categories, setCategories] = useState<ExternalWebsiteCategory[]>()
+    const [websites, setWebsites] = useState<Dictionary<ETHTPSDataIntegrationsMSSQLExternalWebsite[]>>()
+    const [groupedLinks, setGroupedLinks] = useState<Dictionary<ETHTPSDataIntegrationsMSSQLProviderLink[]> | undefined>()
+    const [categories, setCategories] = useState<ETHTPSDataIntegrationsMSSQLExternalWebsiteCategory[]>()
     useEffect(() => {
-        api.getAllExternalWebsites().then((response) => {
+        api?.getAllExternalWebsites().then((response) => {
             const value = response.filter(x => props.providerLinks?.find(y => y.externalWebsiteId === x.id))
             setWebsites(groupBy(value, x => (x.category ?? -1).toString()))
             setLoadedWebsites(true)
@@ -37,7 +41,7 @@ export function ProviderLinks(props: Partial<IProviderLinksProps>) {
     }, [props.providerLinks, api])
 
     useEffect(() => {
-        api.getAllExternalWebsiteCategories().then((response) => {
+        api?.getAllExternalWebsiteCategories().then((response) => {
             setCategories(response)
             setLoadedWebsiteCategories(true)
         }).catch(() => setHasError(true))
