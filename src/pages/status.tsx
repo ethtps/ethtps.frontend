@@ -1,9 +1,9 @@
-import { api } from ""
 import { Link } from "@chakra-ui/next-js"
 import { Button, Container, Flex, Heading, Text, useBoolean } from "@chakra-ui/react"
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { GetServerSideProps } from "next"
 import { AllProvidersStatusTable, ProviderRequestDialog, useColors } from "../ethtps.components"
+import { api } from "../services"
 
 interface IStatusProps {
     providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
