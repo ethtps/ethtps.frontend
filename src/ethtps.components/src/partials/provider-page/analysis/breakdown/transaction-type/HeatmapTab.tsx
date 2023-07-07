@@ -21,7 +21,7 @@ enum BreakdownPeriods {
 const plusYearsShown = 1
 const minusYearsShown = 1
 
-export function HeatmapTab(props: Partial<IHeatmapTabProps>) {
+export function HeatmapTab(props: Partial<IHeatmapTabProps>): JSX.Element {
     const [modelOpened, { open, close }] = useDisclosure(false)
     const [year, setYear] = useState<number>((new Date()).getFullYear())
     const [breakdown, setBreakdown] = useState<Breakdowns>(Breakdowns.tps)

@@ -10,7 +10,7 @@ export interface IChartActionsProps {
     onMaximize: () => void
 }
 
-export function ChartActions(props: Partial<IChartActionsProps>) {
+export function ChartActions(props: Partial<IChartActionsProps>): JSX.Element {
     return <>
         <Stack
             dir="col"
@@ -18,10 +18,10 @@ export function ChartActions(props: Partial<IChartActionsProps>) {
                 float: 'right',
                 display: 'flex',
             }}>
-            {conditionalRender(<Tooltip label="Download .png">
+            {conditionalRender(<Tooltip title="Download .png">
                 <IconDownload onClick={() => { if (props.onDownload) props.onDownload() }} size='20px' />
             </Tooltip>, props.showDownload)}
-            {conditionalRender(<Tooltip label="Maximize">
+            {conditionalRender(<Tooltip title="Maximize">
                 <IconMaximize onClick={() => { if (props.onMaximize) props.onMaximize() }} size='20px' />
             </Tooltip>, props.showMaximize)}
         </Stack>

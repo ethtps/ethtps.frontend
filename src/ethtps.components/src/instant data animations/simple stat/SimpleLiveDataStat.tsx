@@ -24,7 +24,7 @@ export function SimpleLiveDataStat({
     onMouseOver,
     onMouseLeave,
     onClick,
-}: ISimpleLiveDataStatProps) {
+}: ISimpleLiveDataStatProps): JSX.Element {
     return (
         <Flex
             alignItems={'flex-start'}

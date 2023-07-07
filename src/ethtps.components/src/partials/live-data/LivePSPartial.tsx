@@ -4,7 +4,7 @@ import { useColors } from "../../.."
 
 //import { VISXStreamChart } from '@/components/'
 
-export function LivePSPartial(props: { width: number, value: number }) {
+export function LivePSPartial(props: { width: number, value: number }): JSX.Element {
   const colors = useColors()
   return (
     <>

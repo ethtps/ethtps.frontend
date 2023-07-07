@@ -13,7 +13,7 @@ export function SimpleStat(props:
         isEstimated?: boolean,
         isSelected?: boolean,
         alt?: string
-    } & MouseOverEvents) {
+    } & MouseOverEvents): JSX.Element {
     const colors = useColors()
     let deltaType: 'increase' | 'decrease' | undefined = undefined
     if (props.data.delta.type !== 'none') {
@@ -27,7 +27,7 @@ export function SimpleStat(props:
     const opacity = (props.isSelected ?? false) ? 1 : 0.5
     const transform = (props.isSelected ?? false) ? 'scale(1)' : 'scale(0.95)' // Added
     return <>
-        <Tooltip hasArrow label={props.alt ?? ''}>
+        <Tooltip hasArrow title={props.alt ?? ''}>
             <Stat
                 sx={{
                     cursor: 'pointer',

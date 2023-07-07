@@ -10,13 +10,13 @@ export function IconButton(props: {
   visible?: boolean
   bottom?: boolean
   size?: string
-}) {
+}): JSX.Element {
   return (
     <Button
       size={props.size}
       disabled={!props.visible ?? false}
       leftIcon={<>
-        <Tooltip label={props.text} >
+        <Tooltip title={props.text} >
           {props.icon}
         </Tooltip>
       </>}

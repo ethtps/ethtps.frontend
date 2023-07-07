@@ -13,6 +13,7 @@ export * from './services';
 export * from './skeletons';
 export * from './stats';
 export * from './tables';
+export * from './tabs';
 export * from './text';
 export * from './thwrapper';
 export * from './Types';

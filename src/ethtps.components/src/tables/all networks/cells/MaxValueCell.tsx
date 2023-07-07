@@ -2,8 +2,8 @@ import { Td, Text, Tooltip } from "@chakra-ui/react"
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsDataPointsDataPoint } from "ethtps.api"
 import moment from "moment"
 import { useColors } from "../../../.."
-import { IDataModel, getMaxDataFor, numberFormat } from "../../../../../ethtps.data/src"
-import { ICustomCellConfiguration, buildClassNames } from "./ICustomCellConfiguration"
+import { getMaxDataFor, IDataModel, numberFormat } from "../../../../../ethtps.data/src"
+import { buildClassNames, ICustomCellConfiguration } from "./ICustomCellConfiguration"
 import { tableCellTypographyStandard } from "./Typography.types"
 
 
@@ -27,14 +27,14 @@ function generateMaxHoverMessage(data?: ETHTPSDataCoreModelsDataPointsDataPoint)
 
 function generateMaxTypography(data?: ETHTPSDataCoreModelsDataPointsDataPoint) {
   const message = generateMaxHoverMessage(data)
-  return message?.length > 0 ? <Text>{message}</Text> : undefined
+  return message?.length > 0 ? message : undefined
 }
 
 interface IMaxValueCellProps extends ICustomCellConfiguration {
   maxData: IDataModel
   dataType: ETHTPSDataCoreDataType
 }
-export function MaxValueCell(config: Partial<IMaxValueCellProps>) {
+export function MaxValueCell(config: Partial<IMaxValueCellProps>): JSX.Element {
   const max = getMaxDataFor(config.maxData, config.provider?.name, config.dataType)
   const tooltipTypography = generateMaxTypography(max)
   const colors = useColors()
@@ -49,7 +49,7 @@ export function MaxValueCell(config: Partial<IMaxValueCellProps>) {
             ? config.clickCallback(config.provider, 'MaxValue')
             : () => { }
         } >
-        <Tooltip hasArrow label={tooltipTypography}>
+        <Tooltip hasArrow title={tooltipTypography}>
           <Text
             className={'boldcell'}
             {...tableCellTypographyStandard}

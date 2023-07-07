@@ -6,7 +6,7 @@ import { Box, Heading, Highlight, Image, SimpleGrid, Skeleton, Tab, TabList, Tab
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataIntegrationsMSSQLProviderLink } from "ethtps.api"
 
 import { useEffect } from "react"
-import { AnalysisTab, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, SocialButtons, StatusTab, binaryConditionalRender, setQueryParams, useColors, useQueryStringAndLocalStorageBoundState } from "../../../.."
+import { AnalysisTab, binaryConditionalRender, CompareTab, DetailsTab, IComponentSize, ProviderChartSection, setQueryParams, SocialButtons, StatusTab, useColors, useQueryStringAndLocalStorageBoundState } from "../../../.."
 import { ETHTPSApi } from "../../../../../ethtps.data/src"
 
 const iconSize = 65
@@ -15,7 +15,7 @@ export function ProviderOverview(props: {
     provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel | undefined,
     api: ETHTPSApi
     providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[],
-} & IComponentSize) {
+} & IComponentSize): JSX.Element {
     const provider = props.provider
     const router = useRouter()
     const [currentTab, setCurrentTab] = useQueryStringAndLocalStorageBoundState<string | undefined>(undefined, 'tab')

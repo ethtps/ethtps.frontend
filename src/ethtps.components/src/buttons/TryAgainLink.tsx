@@ -2,7 +2,7 @@
 import { Alert, AlertIcon, Text } from '@chakra-ui/react'
 import { useColors } from '../..'
 
-export function TryAgainLink() {
+export function TryAgainLink(): JSX.Element {
     const colors = useColors()
     return <Alert status='error'>
         <AlertIcon />

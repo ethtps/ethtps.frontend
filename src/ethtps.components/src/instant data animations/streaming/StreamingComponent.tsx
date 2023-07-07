@@ -3,7 +3,7 @@ import { Box, Button, Container, Tooltip } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
 import { Dictionary } from "@reduxjs/toolkit"
 import { IconLink, IconLinkOff, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react"
-import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval, } from 'ethtps.api'
+import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from "react"
 import { TimeIntervalButtonGroup, useColors } from "../../.."
 import { ExtendedTimeInterval, L2DataUpdateModel, TimeIntervalToStreamProps } from "../../../../ethtps.data/src"
@@ -38,7 +38,7 @@ export function StreamingComponent({
     showSidechains,
     showSidechainsToggled,
     isLeaving
-}: IStreamingComponentProps) {
+}: IStreamingComponentProps): JSX.Element {
     const colors = useColors()
     const containerRef = useRef<any>(null)
     const sizeRef = useSize(containerRef)
@@ -101,10 +101,10 @@ export function StreamingComponent({
                     padding: '5px'
                 }}>
                 <TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
-                <Tooltip label={`Sidechains ${showSidechains ? "shown" : "hidden"}. Click to toggle`}>
+                <Tooltip title={`Sidechains ${showSidechains ? "shown" : "hidden"}. Click to toggle`}>
                     <Button iconSpacing={0} leftIcon={showSidechains ? <IconLink /> : <IconLinkOff />} variant={'ghost'} onClick={showSidechainsToggled} />
                 </Tooltip>
-                <Tooltip label={`Click to ${paused ? "play" : "pause"}`}>
+                <Tooltip title={`Click to ${paused ? "play" : "pause"}`}>
                     <Button disabled={!connected} iconSpacing={0} leftIcon={paused ? <IconPlayerPlay /> : <IconPlayerPause />} variant={'ghost'} onClick={() => setPaused(!paused)} />
                 </Tooltip>
             </Box>

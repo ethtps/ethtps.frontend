@@ -14,7 +14,7 @@ interface IProviderBarProps extends IComponentSize {
 
 const hoveredExtraWidth = 200
 
-export function ProviderBar(props: IProviderBarProps) {
+export function ProviderBar(props: IProviderBarProps): JSX.Element {
   const [xTranslation, setXTranslation] = useState(0)
   const [width, setWidth] = useState(props.width)
   const entered = useCallback(() => {

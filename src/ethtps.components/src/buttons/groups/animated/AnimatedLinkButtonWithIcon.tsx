@@ -17,7 +17,7 @@ export function AnimatedLinkButtonWithIcon(
   }
   return (
     <>
-      <Tooltip hasArrow label={<Text>{props.text}</Text>}>
+      <Tooltip hasArrow title={props.text}>
         <IconButton onClick={handleClick} icon={props.image}></IconButton>
       </Tooltip>
       {props.showText ? <Text>{props.text}</Text> : <></>}

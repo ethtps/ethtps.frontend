@@ -1,12 +1,12 @@
-import { Text, Tooltip } from "@chakra-ui/react"
+import { Tooltip } from "@chakra-ui/react"
 import { IconLink, IconLinkOff } from "@tabler/icons-react"
 import { useState } from "react"
-import { ISidechainToggleButtonConfiguration, IconButton } from ".."
+import { IconButton, ISidechainToggleButtonConfiguration } from ".."
 import { setIncludeSidechains, useAppDispatch } from "../../../../ethtps.data/src"
 
 export function SidechainToggleButton(
   config: ISidechainToggleButtonConfiguration
-) {
+): JSX.Element {
   const [on, setOn] = useState(config.defaultIncluded)
   const dispatch = useAppDispatch
   const toggle = () => {
@@ -20,12 +20,7 @@ export function SidechainToggleButton(
     <>
       <Tooltip
         hasArrow
-        label={
-          <Text>
-            Sidechains are {on ? 'included' : 'excluded'}. Click to
-            {on ? 'exclude' : 'include'}
-          </Text>
-        }>
+        title={`Sidechains are ${on ? 'included' : 'excluded'}. Click to ${(on ? 'exclude' : 'include')}`}>
         <IconButton
           onClick={toggle}
           icon={

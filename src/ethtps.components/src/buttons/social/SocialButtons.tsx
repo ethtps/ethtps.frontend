@@ -1,10 +1,10 @@
-import { Button, ButtonProps, HStack, Stack } from '@chakra-ui/react'
-import { IconBrandDiscord, IconBrandFacebook, IconBrandGithub, IconBrandGoogle, IconBrandMastodon, IconBrandReddit, IconBrandTwitter } from '@tabler/icons-react'
+import { Button, ButtonProps, HStack } from '@chakra-ui/react'
+import { IconBrandFacebook, IconBrandGoogle, IconBrandMastodon, IconBrandReddit, IconBrandTwitter } from '@tabler/icons-react'
 import { IconButton } from '../IconButton'
 // eslint-disable-next-line import/no-internal-modules
 import Link from 'next/link'
 
-export function GoogleButton(props: ButtonProps) {
+export function GoogleButton(props: ButtonProps): JSX.Element {
     return <Button leftIcon={<IconBrandGoogle />} variant="default" color="gray" {...props} />
 }
 
@@ -12,7 +12,7 @@ export function GoogleButton(props: ButtonProps) {
 export function SocialButtons(props: {
     bottom?: boolean,
     color?: string
-}) {
+}): JSX.Element {
     const sx = {
         color: props.color
     }

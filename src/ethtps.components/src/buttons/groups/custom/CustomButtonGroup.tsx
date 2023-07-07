@@ -4,16 +4,16 @@ import { useState } from 'react'
 import { useColors } from '../../../..'
 import { ICustomButtonGroupParameters } from './ICustomButtonGroupParameters'
 
-export function CustomButtonGroup(params: ICustomButtonGroupParameters) {
+export function CustomButtonGroup(params: ICustomButtonGroupParameters): JSX.Element {
   const colors = useColors()
   const [currentSelected, setCurrentSelected] = useState<string | undefined>(params.selected)
   return (
     <>
-      <HStack aria-label='outlined primary button group'>
+      <HStack className='outlined primary button group'>
         {params?.buttons?.map((x, i) => (
           <Tooltip
             key={`ttt-${i}`}
-            label={params.tooltipFunction?.(x)}>
+            title={params.tooltipFunction?.(x)}>
             <Button
               {...params.props}
               sx={{

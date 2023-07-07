@@ -4,7 +4,7 @@ interface IStatusTabProps {
     provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
-export function StatusTab(props: Partial<IStatusTabProps>) {
+export function StatusTab(props: Partial<IStatusTabProps>): JSX.Element {
     return <>
     </>
 }

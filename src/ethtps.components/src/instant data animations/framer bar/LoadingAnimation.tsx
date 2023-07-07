@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { IComponentSize } from '../../..'
 
 
-export function LoadingAnimation(props: IComponentSize) {
+export function LoadingAnimation(props: IComponentSize): JSX.Element {
   return (
     <>
       <Center>

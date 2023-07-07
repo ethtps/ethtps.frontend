@@ -16,7 +16,7 @@ export const Sidebar = ({
     onClose,
     sidebarContent,
     drawerContent
-}: Props) => {
+}: Props): JSX.Element => {
     const colors = useColors()
     return variant === SidebarVariant.SIDEBAR ? (
         <Box

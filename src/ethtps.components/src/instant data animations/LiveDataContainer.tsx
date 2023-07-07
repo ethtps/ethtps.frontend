@@ -12,7 +12,7 @@ export interface LiveDataContainerProps {
     onError?: (error: any) => void
 }
 
-export function LiveDataContainer(props: LiveDataContainerProps) {
+export function LiveDataContainer(props: LiveDataContainerProps): JSX.Element {
     useSignalREffect("ConnectionEstablished", (data) => {
         if (props.onConnected) {
             props.onConnected()

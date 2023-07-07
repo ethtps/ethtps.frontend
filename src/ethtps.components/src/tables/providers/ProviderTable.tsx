@@ -33,7 +33,7 @@ interface IProviderTableProps {
   providers: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
 }
 
-export function ProviderTable(props: IProviderTableProps) {
+export function ProviderTable(props: IProviderTableProps): JSX.Element {
 
   const [data, setData] = useState<(ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel)[]>(props.providers)
   const [sortState, setSortState] = useState<SortState>({
@@ -103,7 +103,7 @@ export function ProviderTable(props: IProviderTableProps) {
                 <Stack spacing={'xs'}>
                   <Image src={`/provider-icons/${provider.name}.png`} alt={provider.name ?? "provider name here"} width={24} height={24} />
                   <span className="name-text">
-                    <Tooltip label={`Click to read more about ${provider.name}`} sx={{ fontWeight: 'normal' }}>
+                    <Tooltip title={`Click to read more about ${provider.name}`} sx={{ fontWeight: 'normal' }}>
                       <Text >{provider.name}</Text>
                     </Tooltip>
                   </span>

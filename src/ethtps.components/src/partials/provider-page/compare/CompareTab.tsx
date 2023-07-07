@@ -4,7 +4,7 @@ interface ICompareTabProps {
     provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
-export function CompareTab(props: Partial<ICompareTabProps>) {
+export function CompareTab(props: Partial<ICompareTabProps>): JSX.Element {
     return <>
     </>
 }

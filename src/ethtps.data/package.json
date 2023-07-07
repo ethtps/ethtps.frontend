@@ -17,6 +17,7 @@
 		"@reduxjs/toolkit": "^1.9.1",
 		"@types/node": "^18.14.0",
 		"ethtps.api": "../../../ethtps.api.clients/typescript/ethtps.api",
+		"ethtps.data": "link:",
 		"moment": "^2.29.4",
 		"next-redux-wrapper": "^8.1.0",
 		"react-dom": "^18.2.0",

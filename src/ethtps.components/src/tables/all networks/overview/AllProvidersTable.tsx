@@ -2,7 +2,7 @@ import { Alert, AlertIcon, Box, Button, Link, SimpleGrid, Spacer, Table, TableCa
 import { IconExclamationCircle } from "@tabler/icons-react"
 import { ETHTPSDataCoreDataType } from "ethtps.api"
 import React, { useState } from "react"
-import { DataIssueDialog, SeeMoreButton, conditionalRender, useColors } from "../../../.."
+import { conditionalRender, DataIssueDialog, SeeMoreButton, useColors } from "../../../.."
 import { IProviderTableModel } from "../../../../../ethtps.data/src"
 import { AllProvidersHeader } from "./AllProvidersHeader"
 import { AllProvidersRows } from "./AllProvidersRows"
@@ -44,7 +44,7 @@ export default function AllProvidersTable({
               </Text>
             </Box>
             <Box>
-              <Tooltip hasArrow label={'Something\'s wrong?'} placement={'top'}>
+              <Tooltip hasArrow title={'Something\'s wrong?'} placement={'top'}>
                 <Button onClick={() => setIssueOpen(true)} leftIcon={<IconExclamationCircle />} variant={'ghost'} size={'sm'} colorScheme={'blue'} />
               </Tooltip>
               <DataIssueDialog isOpen={issueOpen} onClose={() => setIssueOpen(false)} />

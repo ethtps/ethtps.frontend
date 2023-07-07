@@ -5,7 +5,7 @@ interface Test extends IComponentSize {
   stars?: any
 }
 
-export function DataOverviewChart(props: Test) {
+export function DataOverviewChart(props: Test): JSX.Element {
   return <>Placeholder for data overview chart {props.stars}</>
 }
 

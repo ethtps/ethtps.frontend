@@ -1,40 +1,18 @@
-import React, { ReactNode } from 'react'
 import {
-    IconButton,
     Avatar,
-    Box,
-    CloseButton,
-    Flex,
-    HStack,
-    VStack,
-    Icon,
-    useColorModeValue,
-    Link,
-    Drawer,
-    DrawerContent,
-    Text,
-    useDisclosure,
-    BoxProps,
-    FlexProps,
-    Menu,
+    Box, BoxProps, CloseButton, Drawer,
+    DrawerContent, Flex, FlexProps, HStack, Icon, IconButton, Link, Menu,
     MenuButton,
     MenuDivider,
     MenuItem,
-    MenuList,
+    MenuList, Text, useColorModeValue, useDisclosure, VStack
 } from '@chakra-ui/react'
-import {
-    FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
-    FiMenu,
-    FiBell,
-    FiChevronDown,
-    // eslint-disable-next-line import/no-internal-modules
-} from 'react-icons/fi'
+import { ReactNode, ReactText } from 'react'
 import { IconType } from 'react-icons'
-import { ReactText } from 'react'
+import {
+    FiBell,
+    FiChevronDown, FiCompass, FiHome, FiMenu, FiSettings, FiStar, FiTrendingUp
+} from 'react-icons/fi'
 
 interface LinkItemProps {
     name: string
@@ -52,7 +30,7 @@ export default function SidebarWithHeader({
     children,
 }: {
     children: ReactNode
-}) {
+}): JSX.Element {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>

@@ -9,7 +9,7 @@ interface IIntervalSliderProps {
 }
 
 
-export function IntervalSlider({ onChange }: IIntervalSliderProps) {
+export function IntervalSlider({ onChange }: IIntervalSliderProps): JSX.Element {
     const colors = useColors()
     return <Box>
         <Slider

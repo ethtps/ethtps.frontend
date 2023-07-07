@@ -9,7 +9,7 @@ interface ITimeIntervalButtonGroupProps {
     selected?: string
 }
 
-export function TimeIntervalButtonGroup({ onChange, loading, selected }: ITimeIntervalButtonGroupProps) {
+export function TimeIntervalButtonGroup({ onChange, loading, selected }: ITimeIntervalButtonGroupProps): JSX.Element {
     const [current, setCurrent] = useState("1m")
     return <>
         <div style={{

@@ -1,5 +1,5 @@
 
-import { Box, Container, } from "@chakra-ui/react"
+import { Box, Container } from "@chakra-ui/react"
 import { Dictionary } from "@reduxjs/toolkit"
 import { IComponentSize, useColors } from "../../.."
 import { L2DataUpdateModel } from "../../../../ethtps.data/src"
@@ -11,7 +11,7 @@ interface ISimpleBarStatProps extends IComponentSize {
     connected: boolean
 }
 
-export function SimpleBarStat(props: ISimpleBarStatProps) {
+export function SimpleBarStat(props: ISimpleBarStatProps): JSX.Element {
     const colors = useColors()
     return <>
         <Container

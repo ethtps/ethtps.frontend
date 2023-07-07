@@ -10,7 +10,7 @@ export interface INameCellProps extends ICustomCellConfiguration {
 }
 
 
-export function NameCell(config: INameCellProps) {
+export function NameCell(config: INameCellProps): JSX.Element {
   const name = config.provider?.name ?? ''
   const colors = useColors()
   const hasIssues =
@@ -30,7 +30,7 @@ export function NameCell(config: INameCellProps) {
         <Tooltip hasArrow
           bgColor={colors.gray1}
           placement={'auto'}
-          label={<Text color={colors.text}>{`Read more about ${name}`}</Text>}>
+          title={`Read more about ${name}`}>
           <HStack align={'center'}>
             <HStack >
               <Image
@@ -56,14 +56,7 @@ export function NameCell(config: INameCellProps) {
                 <Tooltip
                   hasArrow
                   placement={'bottom'}
-                  label={
-                    <>
-                      <Text color={colors.text}>
-                        There are issues getting data for{' '}
-                        {config.provider?.name}
-                      </Text>
-                    </>
-                  }>
+                  title={`There are issues getting data for ${config.provider?.name} :/`}>
                   <>
                     <IconCloudOff className='inline small centered-vertically' />
                   </>
@@ -76,13 +69,7 @@ export function NameCell(config: INameCellProps) {
                 <Tooltip
                   hasArrow
                   placement={'bottom'}
-                  label={
-                    <>
-                      <Text>
-                        There is no data provider for {config.provider?.name} :/
-                      </Text>
-                    </>
-                  }>
+                  title={`There is no data provider for ${config.provider?.name} :/`}>
                   <>
                     <IconTriangleOff className='spaced-horizontally' />
                   </>

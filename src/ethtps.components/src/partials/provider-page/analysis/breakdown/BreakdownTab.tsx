@@ -14,7 +14,7 @@ interface IBreakdownTabProps {
 export function BreakdownTab({
     provider,
     selectedSection = "txtype"
-}: Partial<IBreakdownTabProps>) {
+}: Partial<IBreakdownTabProps>): JSX.Element {
     return <>
         <HeatmapTab{... { provider }} />
     </>

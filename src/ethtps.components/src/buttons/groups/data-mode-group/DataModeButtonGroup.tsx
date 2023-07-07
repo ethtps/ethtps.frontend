@@ -10,7 +10,7 @@ import { useColors } from '../../../..'
 import { useHandler } from '../../../../../ethtps.data/src'
 import { IDataModeButtonGroupConfiguration } from './IDataModeButtonGroupConfiguration'
 
-export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
+export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration): JSX.Element {
   const mode = useHandler(model.modeHandle)
   const colors = useColors()
   const getColorComparedTo = (proposedMode: ETHTPSDataCoreDataType) =>
@@ -21,7 +21,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
         <Tooltip
           hasArrow
           placement={'auto'}
-          label={'Display transactions per second'}>
+          title={'Display transactions per second'}>
           <Button
             variant={'ghost'}
             sx={
@@ -36,7 +36,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           hasArrow
           placement={'auto'}
           {...getColorComparedTo(ETHTPSDataCoreDataType.GPS)}
-          label={'Display gas per second'}>
+          title={'Display gas per second'}>
           <Button
             variant={'ghost'}
             sx={
@@ -51,7 +51,7 @@ export function DataModeButtonGroup(model: IDataModeButtonGroupConfiguration) {
           hasArrow
           placement={'auto'}
           {...getColorComparedTo(ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS)}
-          label={'Display gas-adjusted transactions per second'}>
+          title={'Display gas-adjusted transactions per second'}>
           <Button
             variant={'ghost'}
             sx={

@@ -1,7 +1,7 @@
 
 import { Td } from '@chakra-ui/react'
 import { IconArrowRight } from '@tabler/icons-react'
-import { IconButton, conditionalRender, useColors } from '../../../..'
+import { conditionalRender, IconButton, useColors } from '../../../..'
 import {
   ICustomCellConfiguration
 } from './ICustomCellConfiguration'
@@ -11,7 +11,7 @@ interface IIndexCellConfiguration extends ICustomCellConfiguration {
   showTick?: boolean
 }
 
-export function IndexCell(config: IIndexCellConfiguration) {
+export function IndexCell(config: IIndexCellConfiguration): JSX.Element {
   const colors = useColors()
   return (
     <>

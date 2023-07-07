@@ -9,7 +9,7 @@ interface IAnalysisTabProps {
     selectedTab: string
 }
 
-export function AnalysisTab(props: Partial<IAnalysisTabProps>) {
+export function AnalysisTab(props: Partial<IAnalysisTabProps>): JSX.Element {
     const [tab, setTab] = useState<string | undefined>(props.selectedTab)
     return <>
         <Box sx={{ marginLeft: '1rem' }}>

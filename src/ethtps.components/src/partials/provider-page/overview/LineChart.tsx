@@ -1,7 +1,7 @@
 //Needed for chartjs to work
 import { Box, Heading, Progress } from "@chakra-ui/react"
 import { useSize } from "@chakra-ui/react-use-size"
-import { CategoryScale, Chart, Decimation, Legend, LineElement, LinearScale, PointElement, Title, Tooltip, registerables } from 'chart.js'
+import { CategoryScale, Chart, Decimation, Legend, LinearScale, LineElement, PointElement, registerables, Title, Tooltip } from 'chart.js'
 import { useEffect, useMemo, useRef, useState } from "react"
 Chart.register(
   CategoryScale,
@@ -19,8 +19,8 @@ import 'chart.js/auto'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint, ETHTPSDataCoreModelsDataPointsXYPointsXPointType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 import moment from 'moment-timezone'
 import { Chart as Chart2 } from 'react-chartjs-2'
-import { DataModeButtonGroup, TimeIntervalButtonGroup, conditionalRender, useColors } from '../../../..'
-import { AllData, ETHTPSApi, ExtendedTimeInterval, dataTypeToHumanReadableString, toMoment } from "../../../../../ethtps.data/src"
+import { conditionalRender, DataModeButtonGroup, TimeIntervalButtonGroup, useColors } from '../../../..'
+import { AllData, dataTypeToHumanReadableString, ETHTPSApi, ExtendedTimeInterval, toMoment } from "../../../../../ethtps.data/src"
 
 moment.tz.setDefault("Europe/Berlin")
 
@@ -39,7 +39,7 @@ interface Series {
 
 const pad = 40
 
-export function LineChart(props: ILineChartProps) {
+export function LineChart(props: ILineChartProps): JSX.Element {
   const api = props.api
   const [loading, setLoading] = useState<boolean>(true)
   const colors = useColors()

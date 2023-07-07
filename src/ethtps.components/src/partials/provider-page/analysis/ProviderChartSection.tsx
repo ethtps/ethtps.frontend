@@ -8,7 +8,7 @@ export interface IProviderChartSectionProps {
     api: ETHTPSApi
 }
 
-export function ProviderChartSection(props: IProviderChartSectionProps) {
+export function ProviderChartSection(props: IProviderChartSectionProps): JSX.Element {
     return <>
         <Stack>
             <Stack>

@@ -1,9 +1,9 @@
-import { Box, Text, Tooltip } from '@chakra-ui/react'
+import { Box, Tooltip } from '@chakra-ui/react'
 import { useState } from 'react'
 import { conditionalRender } from '..'
 import { ISkeletonWithTooltipConfiguration } from './ISkeletonWithTooltipConfiguration'
 
-export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
+export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration): JSX.Element {
   const message = config.text ?? 'Loading...'
   const [delay, setDelay] = useState(config.randomDelay)
   if (config.randomDelay !== undefined) {
@@ -18,10 +18,10 @@ export function SkeletonWithTooltip(config: ISkeletonWithTooltipConfiguration) {
           <Tooltip
             hasArrow
             placement={'bottom-start'}
-            label={<><Text>{message}</Text></>}>
+            title={message}>
             <>
               <Box sx={{ width: '90%' }}>
-                <Tooltip label={"Not available"}>
+                <Tooltip title={"Not available"}>
                   -
                 </Tooltip>
               </Box>

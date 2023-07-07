@@ -7,7 +7,7 @@ interface IDetailsTabProps {
     providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[]
 }
 
-export function DetailsTab(props: Partial<IDetailsTabProps>) {
+export function DetailsTab(props: Partial<IDetailsTabProps>): JSX.Element {
     return <>
         <ProviderLinks providerLinks={props.providerLinks} provider={props.provider} />
     </>

@@ -7,7 +7,7 @@ import { IHandler, useAppState, useHandler } from "../../../../ethtps.data/src"
 export function RecaptchaTokenLoader(props: {
   onKeyLoaded?: IHandler<string>
   onIsHuman?: IHandler<boolean>
-}) {
+}): JSX.Element {
   const keyLoaded = useHandler(props.onKeyLoaded)
   const isHuman = useHandler(props.onIsHuman)
 

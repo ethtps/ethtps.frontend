@@ -23,7 +23,7 @@ const createLinks = (providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[], 
 3 - No links
 4 - Ok
 */
-export function ProviderLinks(props: Partial<IProviderLinksProps>) {
+export function ProviderLinks(props: Partial<IProviderLinksProps>): JSX.Element {
     const api = props.api
     const colors = useColors()
     const [loadedWebsites, setLoadedWebsites] = useState<boolean>(false)

@@ -1,5 +1,4 @@
 import { Text } from '@chakra-ui/react'
-import React from 'react'
 
 interface IAnimatedTypographyConfiguration {
   child: JSX.Element | string | number
@@ -9,7 +8,7 @@ interface IAnimatedTypographyConfiguration {
   centerText?: boolean
 }
 
-export function AnimatedTypography(config: IAnimatedTypographyConfiguration) {
+export function AnimatedTypography(config: IAnimatedTypographyConfiguration): JSX.Element {
   return (
     <>
       <Text

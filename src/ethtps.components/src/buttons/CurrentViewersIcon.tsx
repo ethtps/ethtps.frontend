@@ -1,12 +1,11 @@
-import { Tooltip, Text } from '@chakra-ui/react'
-import React from 'react'
-import { IconButton } from './IconButton'
+import { Tooltip } from '@chakra-ui/react'
 import { IconEye } from '@tabler/icons-react'
+import { IconButton } from './IconButton'
 
-export function CurrentViewersIcon() {
+export function CurrentViewersIcon(): JSX.Element {
   return (
     <>
-      <Tooltip hasArrow label={<Text>Nobody&aposs here</Text>}>
+      <Tooltip hasArrow title={'Nobody&aposs here'}>
         <IconButton icon={<IconEye />}></IconButton>
       </Tooltip>
     </>

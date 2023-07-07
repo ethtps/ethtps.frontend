@@ -12,7 +12,7 @@ interface IDataValueCellConfiguration extends ICustomCellConfiguration {
   initialValue?: number
 }
 
-export function DataValueCell(config: IDataValueCellConfiguration) {
+export function DataValueCell(config: IDataValueCellConfiguration): JSX.Element {
   const value = config.aggregator?.get(config.provider?.name)
   let v: number | undefined
   switch (config.dataType) {

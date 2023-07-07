@@ -3,7 +3,7 @@ import { Td, Text } from '@chakra-ui/react'
 import { ICustomCellConfiguration } from '..'
 import { useColors } from '../../../..'
 
-export function ProviderTypeCell(config: ICustomCellConfiguration) {
+export function ProviderTypeCell(config: ICustomCellConfiguration): JSX.Element {
   const colors = useColors()
   return (
     <>

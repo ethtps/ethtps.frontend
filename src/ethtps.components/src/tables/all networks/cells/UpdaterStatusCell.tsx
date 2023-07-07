@@ -10,7 +10,7 @@ interface IUpdaterStatusCellProps extends ICustomCellConfiguration {
     status?: ETHTPSDataCoreModelsDataUpdaterLiveDataUpdaterStatus
 }
 
-export function UpdaterStatusCell(props: IUpdaterStatusCellProps) {
+export function UpdaterStatusCell(props: IUpdaterStatusCellProps): JSX.Element {
     const colors = useColors()
     const [tooltipMessage, setTooltipMessage] = useState<string | undefined>(undefined)
     useEffect(() => {
@@ -27,9 +27,7 @@ export function UpdaterStatusCell(props: IUpdaterStatusCellProps) {
             <Tooltip
                 bgColor={colors.gray1}
                 placement={'top'}
-                label={<Text color={colors.text}>
-                    {tooltipMessage}
-                </Text>}>
+                title={tooltipMessage}>
                 <HStack alignContent={'center'}>
                     {binaryConditionalRender(<>
                         <>

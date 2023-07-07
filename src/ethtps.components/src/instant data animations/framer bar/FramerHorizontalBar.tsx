@@ -16,7 +16,7 @@ export enum Direction {
 }
 export interface IFramerHorizontalBarProps extends IComponentSize { }
 
-export function FramerHorizontalBar(props: IFramerHorizontalBarProps) {
+export function FramerHorizontalBar(props: IFramerHorizontalBarProps): JSX.Element {
   return (
     <>
       <motion.div
