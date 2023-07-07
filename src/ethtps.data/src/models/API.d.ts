@@ -4,2499 +4,2729 @@
  */
 
 export interface paths {
-  "/api/v3/APIKeys/RegisterNewKeyForProof/GetNewKey": {
-    get: {
-      parameters: {
-        query?: {
-          humanityProof?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel"]
-          }
-        }
-      }
-    }
-  }
-  "/api/v3/BlockInfo/GetBlocksBetween": {
-    get: {
-      parameters: {
-        query?: {
-          start?: string
-          end?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.IBlock"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.IBlock"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.IBlock"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/BlockInfo/GetLatestBlocks": {
-    get: {
-      parameters: {
-        query?: {
-          period?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.IBlock"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.IBlock"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.IBlock"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/ChartData/GetStreamchartData": {
-    get: {
-      parameters: {
-        query?: {
-          Interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-          Count?: number
-          DataType?: string
-          CombineSeriesWithAverageLessThanPercentage?: number
-          OrderByDateAscending?: boolean
-          NoDuplicates?: boolean
-          RemoveNullValues?: boolean
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/ChartData/GetStackedChartData": {
-    get: {
-      parameters: {
-        query?: {
-          Interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-          Count?: number
-          DataType?: string
-          CombineSeriesWithAverageLessThanPercentage?: number
-          OrderByDateAscending?: boolean
-          NoDuplicates?: boolean
-          RemoveNullValues?: boolean
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/Experiments/GetAvailableExperiments": {
-    get: {
-      parameters: {
-        query?: {
-          DeviceType?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (number)[]
-            "application/json": (number)[]
-            "text/json": (number)[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/Experiments/GetExperiment": {
-    get: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-            "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-            "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-website-categories/Create": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-website-categories/DeleteById": {
-    delete: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-website-categories/GetAll": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-website-categories/GetById": {
-    get: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-            "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-            "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-website-categories/Update": {
-    put: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-websites/Create": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-websites/DeleteById": {
-    delete: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-websites/GetAll": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-websites/GetById": {
-    get: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-            "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-            "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/external-websites/Update": {
-    put: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/Feedback/RequestNewL2": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/Feedback/ReportIssue": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.IssueModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.IssueModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.IssueModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.IssueModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GasAdjustedTPS/GetMonthlyDataByYear": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          year?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GasAdjustedTPS/Get": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GasAdjustedTPS/Instant": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GasAdjustedTPS/Max": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-            "application/json": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-            "text/json": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/Networks": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (string)[]
-            "application/json": (string)[]
-            "text/json": (string)[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/Intervals": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.TimeInterval"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.TimeInterval"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.TimeInterval"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/Providers": {
-    get: {
-      parameters: {
-        query?: {
-          subchainsOf?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/ColorDictionary": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: string | undefined
-            }
-            "application/json": {
-              [key: string]: string | undefined
-            }
-            "text/json": {
-              [key: string]: string | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/ProviderTypesColorDictionary": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: string | undefined
-            }
-            "application/json": {
-              [key: string]: string | undefined
-            }
-            "text/json": {
-              [key: string]: string | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/InstantData": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          smoothing?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: unknown
-            }
-            "application/json": {
-              [key: string]: unknown
-            }
-            "text/json": {
-              [key: string]: unknown
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/Max": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: unknown
-            }
-            "application/json": {
-              [key: string]: unknown
-            }
-            "text/json": {
-              [key: string]: unknown
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GetIntervalsWithData": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.TimeInterval"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.TimeInterval"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.TimeInterval"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GetUniqueDataYears": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (string)[]
-            "application/json": (string)[]
-            "text/json": (string)[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/AllData": {
-    get: {
-      parameters: {
-        query?: {
-          network?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.AllDataModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.AllDataModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.AllDataModel"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GPS/GetMonthlyDataByYear": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          year?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GPS/Get": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GPS/Instant": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/GPS/Max": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-            "application/json": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-            "text/json": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/Ingestion/IngestLatestData": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/L2Data/GetSingleDatasetJunk": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-          }
-        }
-        /** @description Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/L2Data/Get": {
-    post: {
-      parameters: {
-        query?: {
-          dataType?: components["schemas"]["ETHTPS.Data.Core.DataType"]
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-          }
-        }
-        /** @description Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/L2Data/GetDataRequest": {
-    get: {
-      parameters: {
-        query?: {
-          guid?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-          }
-        }
-        /** @description Accepted */
-        202: never
-        /** @description Not Found */
-        404: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/L2Data/GetDataRequestStatus": {
-    get: {
-      parameters: {
-        query?: {
-          guid?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel"]
-          }
-        }
-        /** @description Not Found */
-        404: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/L2Data/CreateDataRequest": {
-    post: {
-      parameters: {
-        query?: {
-          dataType?: components["schemas"]["ETHTPS.Data.Core.DataType"]
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-        }
-      }
-      responses: {
-        /** @description Created */
-        201: never
-        /** @description Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/L2Data/CreateLotsOfDummyRequests": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Created */
-        201: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/Pages/Home": {
-    get: {
-      parameters: {
-        query?: {
-          SubchainsOf?: string
-          Interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-          DataType?: components["schemas"]["ETHTPS.Data.Core.DataType"]
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/Pages/Provider": {
-    get: {
-      parameters: {
-        query?: {
-          Interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-          DataType?: components["schemas"]["ETHTPS.Data.Core.DataType"]
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/provider-links/GetLinksFor": {
-    get: {
-      parameters: {
-        query?: {
-          providerName?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/provider-links/Create": {
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/provider-links/DeleteById": {
-    delete: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/provider-links/GetAll": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/provider-links/GetById": {
-    get: {
-      parameters: {
-        query?: {
-          id?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-            "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-            "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/provider-links/Update": {
-    put: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          "application/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          "text/json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: never
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/TPS/GetMonthlyDataByYear": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          year?: number
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/TPS/Get": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-          interval?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    post: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      requestBody?: {
-        content: {
-          "application/json-patch+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "text/json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-          "application/*+json": components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel"]
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/TPS/Instant": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-            "application/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-            "text/json": {
-              [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v2/TPS/Max": {
-    get: {
-      parameters: {
-        query?: {
-          Provider?: string
-          Network?: string
-          IncludeSidechains?: boolean
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-            "application/json": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-            "text/json": {
-              [key: string]: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"] | undefined
-            }
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/updater-status/GetAllStatuses": {
-    get: {
-      parameters: {
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/updater-status/GetStatusFor": {
-    get: {
-      parameters: {
-        query?: {
-          provider?: string
-          updaterType?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"]
-            "application/json": components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"]
-            "text/json": components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
-  "/api/v3/updater-status/GetStatusesFor": {
-    get: {
-      parameters: {
-        query?: {
-          provider?: string
-        }
-        header?: {
-          "X-API-Key"?: string
-        }
-      }
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": (components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"])[]
-            "application/json": (components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"])[]
-            "text/json": (components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus"])[]
-          }
-        }
-      }
-    }
-    parameters: {
-      header?: {
-        "X-API-Key"?: string
-      }
-    }
-  }
+	'/api/v3/APIKeys/RegisterNewKeyForProof/GetNewKey': {
+		get: {
+			parameters: {
+				query?: {
+					humanityProof?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel']
+					}
+				}
+			}
+		}
+	}
+	'/api/v3/BlockInfo/GetBlocksBetween': {
+		get: {
+			parameters: {
+				query?: {
+					start?: string
+					end?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.IBlock'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.IBlock'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.IBlock'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/BlockInfo/GetLatestBlocks': {
+		get: {
+			parameters: {
+				query?: {
+					period?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.IBlock'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.IBlock'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.IBlock'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/ChartData/GetStreamchartData': {
+		get: {
+			parameters: {
+				query?: {
+					Interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+					Count?: number
+					DataType?: string
+					CombineSeriesWithAverageLessThanPercentage?: number
+					OrderByDateAscending?: boolean
+					NoDuplicates?: boolean
+					RemoveNullValues?: boolean
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/ChartData/GetStackedChartData': {
+		get: {
+			parameters: {
+				query?: {
+					Interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+					Count?: number
+					DataType?: string
+					CombineSeriesWithAverageLessThanPercentage?: number
+					OrderByDateAscending?: boolean
+					NoDuplicates?: boolean
+					RemoveNullValues?: boolean
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/Experiments/GetAvailableExperiments': {
+		get: {
+			parameters: {
+				query?: {
+					DeviceType?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': number[]
+						'application/json': number[]
+						'text/json': number[]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/Experiments/GetExperiment': {
+		get: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-website-categories/Create': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					'application/*+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-website-categories/DeleteById': {
+		delete: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-website-categories/GetAll': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory'][]
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory'][]
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-website-categories/GetById': {
+		get: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-website-categories/Update': {
+		put: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+					'application/*+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-websites/Create': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					'application/*+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-websites/DeleteById': {
+		delete: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-websites/GetAll': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite'][]
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite'][]
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-websites/GetById': {
+		get: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/external-websites/Update': {
+		put: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+					'application/*+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/Feedback/RequestNewL2': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/Feedback/ReportIssue': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.IssueModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.IssueModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.IssueModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.IssueModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GasAdjustedTPS/GetMonthlyDataByYear': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					year?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GasAdjustedTPS/Get': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GasAdjustedTPS/Instant': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GasAdjustedTPS/Max': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/Networks': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': string[]
+						'application/json': string[]
+						'text/json': string[]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/Intervals': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.TimeInterval'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.TimeInterval'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.TimeInterval'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/Providers': {
+		get: {
+			parameters: {
+				query?: {
+					subchainsOf?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/ColorDictionary': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]: string | undefined
+						}
+						'application/json': {
+							[key: string]: string | undefined
+						}
+						'text/json': {
+							[key: string]: string | undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/ProviderTypesColorDictionary': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]: string | undefined
+						}
+						'application/json': {
+							[key: string]: string | undefined
+						}
+						'text/json': {
+							[key: string]: string | undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/InstantData': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					smoothing?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]: unknown
+						}
+						'application/json': {
+							[key: string]: unknown
+						}
+						'text/json': {
+							[key: string]: unknown
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/Max': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]: unknown
+						}
+						'application/json': {
+							[key: string]: unknown
+						}
+						'text/json': {
+							[key: string]: unknown
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GetIntervalsWithData': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.TimeInterval'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.TimeInterval'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.TimeInterval'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GetUniqueDataYears': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': string[]
+						'application/json': string[]
+						'text/json': string[]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/AllData': {
+		get: {
+			parameters: {
+				query?: {
+					network?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.DataPoints.AllDataModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.DataPoints.AllDataModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.DataPoints.AllDataModel']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GPS/GetMonthlyDataByYear': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					year?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GPS/Get': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GPS/Instant': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/GPS/Max': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/Ingestion/IngestLatestData': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/L2Data/GetSingleDatasetJunk': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+					}
+				}
+				/** @description Bad Request */
+				400: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/L2Data/Get': {
+		post: {
+			parameters: {
+				query?: {
+					dataType?: components['schemas']['ETHTPS.Data.Core.DataType']
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+					}
+				}
+				/** @description Bad Request */
+				400: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/L2Data/GetDataRequest': {
+		get: {
+			parameters: {
+				query?: {
+					guid?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+					}
+				}
+				/** @description Accepted */
+				202: never
+				/** @description Not Found */
+				404: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/L2Data/GetDataRequestStatus': {
+		get: {
+			parameters: {
+				query?: {
+					guid?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel']
+					}
+				}
+				/** @description Not Found */
+				404: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/L2Data/CreateDataRequest': {
+		post: {
+			parameters: {
+				query?: {
+					dataType?: components['schemas']['ETHTPS.Data.Core.DataType']
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+				}
+			}
+			responses: {
+				/** @description Created */
+				201: never
+				/** @description Bad Request */
+				400: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/L2Data/CreateLotsOfDummyRequests': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Created */
+				201: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/Pages/Home': {
+		get: {
+			parameters: {
+				query?: {
+					SubchainsOf?: string
+					Interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+					DataType?: components['schemas']['ETHTPS.Data.Core.DataType']
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/Pages/Provider': {
+		get: {
+			parameters: {
+				query?: {
+					Interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+					DataType?: components['schemas']['ETHTPS.Data.Core.DataType']
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/provider-links/GetLinksFor': {
+		get: {
+			parameters: {
+				query?: {
+					providerName?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/provider-links/Create': {
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					'application/*+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/provider-links/DeleteById': {
+		delete: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/provider-links/GetAll': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink'][]
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink'][]
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/provider-links/GetById': {
+		get: {
+			parameters: {
+				query?: {
+					id?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+						'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+						'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/provider-links/Update': {
+		put: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					'application/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					'text/json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+					'application/*+json': components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: never
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/TPS/GetMonthlyDataByYear': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					year?: number
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/TPS/Get': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+					interval?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		post: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			requestBody?: {
+				content: {
+					'application/json-patch+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'text/json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+					'application/*+json': components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel']
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/TPS/Instant': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v2/TPS/Max': {
+		get: {
+			parameters: {
+				query?: {
+					Provider?: string
+					Network?: string
+					IncludeSidechains?: boolean
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+						'application/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+						'text/json': {
+							[key: string]:
+								| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint']
+								| undefined
+						}
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/updater-status/GetAllStatuses': {
+		get: {
+			parameters: {
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/updater-status/GetStatusFor': {
+		get: {
+			parameters: {
+				query?: {
+					provider?: string
+					updaterType?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus']
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus']
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus']
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
+	'/api/v3/updater-status/GetStatusesFor': {
+		get: {
+			parameters: {
+				query?: {
+					provider?: string
+				}
+				header?: {
+					'X-API-Key'?: string
+				}
+			}
+			responses: {
+				/** @description Success */
+				200: {
+					content: {
+						'text/plain': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus'][]
+						'application/json': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus'][]
+						'text/json': components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus'][]
+					}
+				}
+			}
+		}
+		parameters: {
+			header?: {
+				'X-API-Key'?: string
+			}
+		}
+	}
 }
 
 export type webhooks = Record<string, never>
 
 export interface components {
-  schemas: {
-    /** @enum {string} */
-    "ETHTPS.Data.Core.DataType": "TPS" | "GPS" | "GasAdjustedTPS"
-    "ETHTPS.Data.Core.IBlock": {
-      /** Format: int32 */
-      blockNumber?: number
-      /** Format: int32 */
-      transactionCount?: number
-      /** Format: int32 */
-      gasUsed?: number
-      /** Format: date-time */
-      date?: string
-      settled?: boolean
-      provider?: string | null
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.AllDataModel": {
-      providers?: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.ProviderModel"])[] | null
-      maxData?: {
-        [key: string]: unknown
-      } | null
-      allTPSData?: ({
-        Instant?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneMinute?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneHour?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneDay?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneWeek?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneMonth?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneYear?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        All?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        Auto?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-      }) | null
-      allGPSData?: ({
-        Instant?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneMinute?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneHour?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneDay?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneWeek?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneMonth?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneYear?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        All?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        Auto?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-      }) | null
-      allGasAdjustedTPSData?: ({
-        Instant?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneMinute?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneHour?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneDay?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneWeek?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneMonth?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        OneYear?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        All?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-        Auto?: {
-          [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-        }
-      }) | null
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.DataPoint": {
-      /** Format: date-time */
-      date?: string
-      /** Format: double */
-      value?: number
-      /** Format: int32 */
-      blockNumber?: number | null
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.DataResponseModel": {
-      data?: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataPoint"])[] | null
-      provider?: string | null
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.ProviderModel": {
-      name?: string | null
-      type?: string | null
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.DatedXYDataPoint": {
-      /** Format: date-time */
-      x?: string
-      /** Format: double */
-      y?: number
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.IProviderXYMultiConvertible": {
-      provider?: string | null
-      /** Format: double */
-      y?: number
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible": {
-      /** Format: double */
-      y?: number
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint": {
-      /** Format: double */
-      x?: number
-      /** Format: double */
-      y?: number
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.ProviderDatedXYDataPoint": {
-      provider?: string | null
-      /** Format: date-time */
-      x?: string
-      /** Format: double */
-      y?: number
-    }
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.StringXYDataPoint": {
-      x?: string | null
-      /** Format: double */
-      y?: number
-    }
-    /** @enum {string} */
-    "ETHTPS.Data.Core.Models.DataPoints.XYPoints.XPointType": "Date" | "Number" | "String"
-    "ETHTPS.Data.Core.Models.DataUpdater.IBasicLiveUpdaterStatus": {
-      status?: string | null
-      isUnreliable?: boolean
-      isProbablyDown?: boolean
-    }
-    "ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus": {
-      updater?: string | null
-      status?: string | null
-      updaterType?: string | null
-      /** Format: date-time */
-      lastSuccessfulRunTime?: string | null
-      /** Format: int32 */
-      numberOfSuccesses?: number
-      /** Format: int32 */
-      numberOfFailures?: number
-      enabled?: boolean | null
-      isUnreliable?: boolean
-      isProbablyDown?: boolean
-    }
-    "ETHTPS.Data.Core.Models.IssueModel": {
-      text?: string | null
-    }
-    "ETHTPS.Data.Core.Models.Pages.Chart.ChartData": {
-      data?: ({
-        [key: string]: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.DataResponseModel"])[] | undefined
-      }) | null
-      dataType?: components["schemas"]["ETHTPS.Data.Core.DataType"]
-    }
-    "ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel": {
-      maxData?: {
-        [key: string]: unknown
-      } | null
-      instantData?: {
-        [key: string]: unknown
-      } | null
-      colorDictionary?: ({
-        [key: string]: string | undefined
-      }) | null
-      providerTypesColorDictionary?: ({
-        [key: string]: string | undefined
-      }) | null
-      providers?: (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel"])[] | null
-      chartData?: components["schemas"]["ETHTPS.Data.Core.Models.Pages.Chart.ChartData"]
-    }
-    "ETHTPS.Data.Core.Models.Queries.Data.Requests.BucketOptions": {
-      useTimeBuckets?: boolean
-      bucketSize?: components["schemas"]["ETHTPS.Data.Core.TimeInterval"]
-      /** Format: date-span */
-      customBucketSize?: string | null
-    }
-    "ETHTPS.Data.Core.Models.Queries.Data.Requests.DatasetMergeOptions": {
-      /** Format: int32 */
-      mergePercentage?: number | null
-      /** Format: int32 */
-      maxCount?: number | null
-    }
-    "ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel": {
-      networkName?: string | null
-      type?: string | null
-      projectWebsite?: string | null
-      shortDescription?: string | null
-      blockExplorerURL?: string | null
-    }
-    "ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel": {
-      /** Format: date-time */
-      startDate?: string | null
-      /** Format: date-time */
-      endDate?: string | null
-      bucketOptions?: components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.BucketOptions"]
-      returnXAxisType?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.XPointType"]
-      includeEmptyDatasets?: boolean
-      mergeOptions?: components["schemas"]["ETHTPS.Data.Core.Models.Queries.Data.Requests.DatasetMergeOptions"]
-      includeSimpleAnalysis?: boolean
-      includeComplexAnalysis?: boolean
-      providers?: (string)[] | null
-      guid?: string | null
-      provider?: string | null
-      network?: string | null
-      includeSidechains?: boolean
-    }
-    "ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel": {
-      provider?: string | null
-      network?: string | null
-      includeSidechains?: boolean
-    }
-    "ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult": {
-      isValid?: boolean
-      reason?: string | null
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel": {
-      success?: boolean
-      failureReason?: string | null
-      key?: string | null
-      /** Format: int32 */
-      requestLimit24h?: number | null
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartDataPoint": {
-      /** Format: date-time */
-      x?: string | null
-      /** Format: double */
-      y?: number | null
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel": {
-      series?: (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartSeries"])[] | null
-      /** Format: double */
-      maxValue?: number
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartSeries": {
-      dataPoints?: (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartDataPoint"])[] | null
-      /** Format: double */
-      maxValue?: number
-      provider?: string | null
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.LegendModel": {
-      keys?: (string)[] | null
-      colors?: (string)[] | null
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel": {
-      legend?: components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.LegendModel"]
-      tpsData?: ((number)[])[] | null
-      /** Format: double */
-      maxTPS?: number
-      gpsData?: ((number)[])[] | null
-      /** Format: double */
-      maxGPS?: number
-      gtpsData?: ((number)[])[] | null
-      /** Format: double */
-      maxGTPS?: number
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.L2s.ComplexDatasetAnalysis": {
-      max?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible"]
-      min?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible"]
-      /** Format: double */
-      mean?: number
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.L2s.Dataset": {
-      dataPoints?: (components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible"])[] | null
-      provider?: string | null
-      simpleAnalysis?: components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleDatasetAnalysis"]
-      complexAnalysis?: components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.ComplexDatasetAnalysis"]
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel": {
-      data?: components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.Dataset"]
-      datasets?: (components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.Dataset"])[] | null
-      simpleAnalysis?: components["schemas"]["ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleMultiDatasetAnalysis"]
-      dataType?: components["schemas"]["ETHTPS.Data.Core.DataType"]
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleDatasetAnalysis": {
-      max?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible"]
-      min?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible"]
-      /** Format: double */
-      mean?: number
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleMultiDatasetAnalysis": {
-      max?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IProviderXYMultiConvertible"]
-      min?: components["schemas"]["ETHTPS.Data.Core.Models.DataPoints.XYPoints.IProviderXYMultiConvertible"]
-      /** Format: double */
-      mean?: number
-      allDatasetsSameLength?: boolean
-      /** Format: int32 */
-      uniformDatasetLength?: number | null
-    }
-    "ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      color?: string | null
-      /** Format: int32 */
-      theoreticalMaxTPS?: number
-      type?: string | null
-      isGeneralPurpose?: boolean
-      isSubchainOf?: string | null
-      status?: components["schemas"]["ETHTPS.Data.Core.Models.DataUpdater.IBasicLiveUpdaterStatus"]
-    }
-    /** @enum {string} */
-    "ETHTPS.Data.Core.TimeInterval": "Instant" | "OneMinute" | "OneHour" | "OneDay" | "OneWeek" | "OneMonth" | "OneYear" | "All" | "Auto"
-    "ETHTPS.Data.Integrations.MSSQL.Apikey": {
-      /** Format: int32 */
-      id?: number
-      keyHash?: string | null
-      /** Format: int32 */
-      totalCalls?: number
-      /** Format: int32 */
-      callsLast24h?: number
-      /** Format: int32 */
-      limit24h?: number
-      requesterIpaddress?: string | null
-      apikeyExperimentBindings?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ApikeyExperimentBinding"])[] | null
-      apikeyGroups?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ApikeyGroup"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ApikeyExperimentBinding": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      experimentId?: number
-      /** Format: int32 */
-      apikeyId?: number
-      apikey?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Apikey"]
-      experiment?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ApikeyGroup": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      apikeyId?: number
-      /** Format: int32 */
-      groupId?: number
-      apikey?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Apikey"]
-      group?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Group"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.DataUpdater": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      typeId?: number
-      /** Format: int32 */
-      providerId?: number
-      enabled?: boolean
-      liveDataUpdaterStatuses?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.LiveDataUpdaterStatus"])[] | null
-      provider?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"]
-      type?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.DataUpdaterType"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.DataUpdaterStatus": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      liveDataUpdaterStatuses?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.LiveDataUpdaterStatus"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.DataUpdaterType": {
-      /** Format: int32 */
-      id?: number
-      typeName?: string | null
-      dataUpdaters?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.DataUpdater"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Experiment": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      projectId?: number
-      name?: string | null
-      description?: string | null
-      /** Format: int32 */
-      target?: number
-      /** Format: int32 */
-      runParameters?: number
-      apikeyExperimentBindings?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ApikeyExperimentBinding"])[] | null
-      experimentFeedbacks?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentFeedback"])[] | null
-      experimentResults?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentResult"])[] | null
-      experimentalSession?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentalSession"]
-      project?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"]
-      runParametersNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentRunParameter"]
-      targetNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentTarget"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExperimentFeedback": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      experiment?: number
-      vote?: boolean | null
-      /** Format: int32 */
-      rating?: number | null
-      text?: string | null
-      experimentNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExperimentResult": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      experiment?: number
-      /** Format: int32 */
-      averageRetentionSeconds?: number
-      /** Format: int32 */
-      sdretentionSeconds?: number
-      /** Format: int32 */
-      averagePercentageReturnVisitors?: number
-      /** Format: int32 */
-      sdpercentageReturnVisitors?: number
-      experimentNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExperimentRunParameter": {
-      /** Format: int32 */
-      id?: number
-      /** Format: date-time */
-      startDate?: string | null
-      /** Format: date-time */
-      endDate?: string | null
-      enabled?: boolean
-      /** Format: int32 */
-      displayToNpeopleBeforeEnd?: number | null
-      /** Format: int32 */
-      considerFinishedAfterTimeoutSeconds?: number
-      /** Format: int32 */
-      enrollmentChance?: number | null
-      experiments?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExperimentTarget": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      description?: string | null
-      /** Format: int32 */
-      type?: number
-      experiments?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"])[] | null
-      typeNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentTargetType"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExperimentTargetType": {
-      /** Format: int32 */
-      id?: number
-      targetTypeName?: string | null
-      targetTypeValue?: string | null
-      experimentTargets?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExperimentTarget"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExperimentalSession": {
-      /** Format: int32 */
-      experiment?: number
-      targetIpaddress?: string | null
-      /** Format: int32 */
-      retentionSeconds?: number
-      idNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"]
-      /** Format: int32 */
-      id?: number
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExternalWebsite": {
-      name?: string | null
-      iconBase64?: string | null
-      /** Format: int32 */
-      category?: number
-      /** Format: int32 */
-      id?: number
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      externalWebsites?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ExternalWebsite"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Feature": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      projectId?: number
-      enabled?: boolean
-      name?: string | null
-      details?: string | null
-      project?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Project"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Group": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      apikeyGroups?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ApikeyGroup"])[] | null
-      groupRoles?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.GroupRole"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.GroupRole": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      groupId?: number
-      /** Format: int32 */
-      roleId?: number
-      group?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Group"]
-      role?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Role"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.LiveDataUpdaterStatus": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      updaterId?: number
-      /** Format: int32 */
-      statusId?: number
-      enabled?: boolean
-      /** Format: date-time */
-      lastSuccessfulRunTime?: string | null
-      /** Format: date-time */
-      lastRunTime?: string | null
-      /** Format: int32 */
-      numberOfSuccesses?: number
-      /** Format: int32 */
-      numberOfFailures?: number
-      status?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.DataUpdaterStatus"]
-      updater?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.DataUpdater"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Network": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      oldestLoggedHistoricalEntries?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.OldestLoggedHistoricalEntry"])[] | null
-      oldestLoggedTimeWarpBlocks?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.OldestLoggedTimeWarpBlock"])[] | null
-      starkwareTransactionCountData?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.StarkwareTransactionCountDatum"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.OldestLoggedHistoricalEntry": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      network?: number
-      /** Format: int32 */
-      provider?: number
-      /** Format: int32 */
-      oldestBlock?: number
-      /** Format: date-time */
-      oldestBlockDate?: string | null
-      networkNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Network"]
-      providerNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.OldestLoggedTimeWarpBlock": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      network?: number
-      /** Format: int32 */
-      provider?: number
-      /** Format: int32 */
-      oldestBlock?: number
-      networkNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Network"]
-      providerNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Permission": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      permissionsForRoles?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.PermissionsForRole"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.PermissionsForRole": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      roleId?: number
-      /** Format: int32 */
-      permissionId?: number
-      permission?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Permission"]
-      role?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Role"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Project": {
-      /** Format: int32 */
-      id?: number
-      enabled?: boolean
-      /** Format: int32 */
-      provider?: number | null
-      name?: string | null
-      website?: string | null
-      details?: string | null
-      features?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Feature"])[] | null
-      providerNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"]
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Provider": {
-      /** Format: int32 */
-      type?: number
-      color?: string | null
-      isGeneralPurpose?: boolean | null
-      /** Format: int32 */
-      historicalAggregationDeltaBlock?: number | null
-      enabled?: boolean
-      /** Format: int32 */
-      subchainOf?: number | null
-      /** Format: int32 */
-      theoreticalMaxTps?: number
-      subchainOfNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"]
-      typeNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderType"]
-      dataUpdaters?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.DataUpdater"])[] | null
-      experiments?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Experiment"])[] | null
-      inverseSubchainOfNavigation?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"])[] | null
-      oldestLoggedHistoricalEntries?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.OldestLoggedHistoricalEntry"])[] | null
-      oldestLoggedTimeWarpBlocks?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.OldestLoggedTimeWarpBlock"])[] | null
-      projects?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Project"])[] | null
-      providerLinks?: (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.ProviderLink"])[] | null
-      name?: string | null
-      /** Format: int32 */
-      id?: number
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ProviderLink": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      providerId?: number
-      /** Format: int32 */
-      externalWebsiteId?: number
-      link?: string | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.ProviderType": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      color?: string | null
-      isGeneralPurpose?: boolean
-      enabled?: boolean
-      providers?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Provider"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.Role": {
-      /** Format: int32 */
-      id?: number
-      name?: string | null
-      groupRoles?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.GroupRole"])[] | null
-      permissionsForRoles?: readonly (components["schemas"]["ETHTPS.Data.Integrations.MSSQL.PermissionsForRole"])[] | null
-    }
-    "ETHTPS.Data.Integrations.MSSQL.StarkwareTransactionCountDatum": {
-      /** Format: int32 */
-      id?: number
-      /** Format: int32 */
-      network?: number
-      product?: string | null
-      /** Format: date-time */
-      lastUpdateTime?: string
-      /** Format: int32 */
-      lastUpdateCount?: number
-      /** Format: double */
-      lastUpdateTps?: number
-      networkNavigation?: components["schemas"]["ETHTPS.Data.Integrations.MSSQL.Network"]
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+	schemas: {
+		/** @enum {string} */
+		'ETHTPS.Data.Core.DataType': 'TPS' | 'GPS' | 'GasAdjustedTPS'
+		'ETHTPS.Data.Core.IBlock': {
+			/** Format: int32 */
+			blockNumber?: number
+			/** Format: int32 */
+			transactionCount?: number
+			/** Format: int32 */
+			gasUsed?: number
+			/** Format: date-time */
+			date?: string
+			settled?: boolean
+			provider?: string | null
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.AllDataModel': {
+			providers?:
+				| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.ProviderModel'][]
+				| null
+			maxData?: {
+				[key: string]: unknown
+			} | null
+			allTPSData?: {
+				Instant?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneMinute?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneHour?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneDay?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneWeek?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneMonth?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneYear?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				All?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				Auto?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+			} | null
+			allGPSData?: {
+				Instant?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneMinute?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneHour?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneDay?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneWeek?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneMonth?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneYear?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				All?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				Auto?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+			} | null
+			allGasAdjustedTPSData?: {
+				Instant?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneMinute?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneHour?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneDay?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneWeek?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneMonth?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				OneYear?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				All?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+				Auto?: {
+					[key: string]:
+						| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+						| undefined
+				}
+			} | null
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.DataPoint': {
+			/** Format: date-time */
+			date?: string
+			/** Format: double */
+			value?: number
+			/** Format: int32 */
+			blockNumber?: number | null
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.DataResponseModel': {
+			data?:
+				| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataPoint'][]
+				| null
+			provider?: string | null
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.ProviderModel': {
+			name?: string | null
+			type?: string | null
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.DatedXYDataPoint': {
+			/** Format: date-time */
+			x?: string
+			/** Format: double */
+			y?: number
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.IProviderXYMultiConvertible': {
+			provider?: string | null
+			/** Format: double */
+			y?: number
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible': {
+			/** Format: double */
+			y?: number
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint': {
+			/** Format: double */
+			x?: number
+			/** Format: double */
+			y?: number
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.ProviderDatedXYDataPoint': {
+			provider?: string | null
+			/** Format: date-time */
+			x?: string
+			/** Format: double */
+			y?: number
+		}
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.StringXYDataPoint': {
+			x?: string | null
+			/** Format: double */
+			y?: number
+		}
+		/** @enum {string} */
+		'ETHTPS.Data.Core.Models.DataPoints.XYPoints.XPointType':
+			| 'Date'
+			| 'Number'
+			| 'String'
+		'ETHTPS.Data.Core.Models.DataUpdater.IBasicLiveUpdaterStatus': {
+			status?: string | null
+			isUnreliable?: boolean
+			isProbablyDown?: boolean
+		}
+		'ETHTPS.Data.Core.Models.DataUpdater.LiveDataUpdaterStatus': {
+			updater?: string | null
+			status?: string | null
+			updaterType?: string | null
+			/** Format: date-time */
+			lastSuccessfulRunTime?: string | null
+			/** Format: int32 */
+			numberOfSuccesses?: number
+			/** Format: int32 */
+			numberOfFailures?: number
+			enabled?: boolean | null
+			isUnreliable?: boolean
+			isProbablyDown?: boolean
+		}
+		'ETHTPS.Data.Core.Models.IssueModel': {
+			text?: string | null
+		}
+		'ETHTPS.Data.Core.Models.Pages.Chart.ChartData': {
+			data?: {
+				[key: string]:
+					| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.DataResponseModel'][]
+					| undefined
+			} | null
+			dataType?: components['schemas']['ETHTPS.Data.Core.DataType']
+		}
+		'ETHTPS.Data.Core.Models.Pages.HomePage.HomePageResponseModel': {
+			maxData?: {
+				[key: string]: unknown
+			} | null
+			instantData?: {
+				[key: string]: unknown
+			} | null
+			colorDictionary?: {
+				[key: string]: string | undefined
+			} | null
+			providerTypesColorDictionary?: {
+				[key: string]: string | undefined
+			} | null
+			providers?:
+				| components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel'][]
+				| null
+			chartData?: components['schemas']['ETHTPS.Data.Core.Models.Pages.Chart.ChartData']
+		}
+		'ETHTPS.Data.Core.Models.Queries.Data.Requests.BucketOptions': {
+			useTimeBuckets?: boolean
+			bucketSize?: components['schemas']['ETHTPS.Data.Core.TimeInterval']
+			/** Format: date-span */
+			customBucketSize?: string | null
+		}
+		'ETHTPS.Data.Core.Models.Queries.Data.Requests.DatasetMergeOptions': {
+			/** Format: int32 */
+			mergePercentage?: number | null
+			/** Format: int32 */
+			maxCount?: number | null
+		}
+		'ETHTPS.Data.Core.Models.Queries.Data.Requests.L2AdditionRequestModel': {
+			networkName?: string | null
+			type?: string | null
+			projectWebsite?: string | null
+			shortDescription?: string | null
+			blockExplorerURL?: string | null
+		}
+		'ETHTPS.Data.Core.Models.Queries.Data.Requests.L2DataRequestModel': {
+			/** Format: date-time */
+			startDate?: string | null
+			/** Format: date-time */
+			endDate?: string | null
+			bucketOptions?: components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.BucketOptions']
+			returnXAxisType?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.XPointType']
+			includeEmptyDatasets?: boolean
+			mergeOptions?: components['schemas']['ETHTPS.Data.Core.Models.Queries.Data.Requests.DatasetMergeOptions']
+			includeSimpleAnalysis?: boolean
+			includeComplexAnalysis?: boolean
+			providers?: string[] | null
+			guid?: string | null
+			provider?: string | null
+			network?: string | null
+			includeSidechains?: boolean
+		}
+		'ETHTPS.Data.Core.Models.Queries.Data.Requests.ProviderQueryModel': {
+			provider?: string | null
+			network?: string | null
+			includeSidechains?: boolean
+		}
+		'ETHTPS.Data.Core.Models.Queries.Data.Requests.ValidationResult': {
+			isValid?: boolean
+			reason?: string | null
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.APIKey.APIKeyResponseModel': {
+			success?: boolean
+			failureReason?: string | null
+			key?: string | null
+			/** Format: int32 */
+			requestLimit24h?: number | null
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartDataPoint': {
+			/** Format: date-time */
+			x?: string | null
+			/** Format: double */
+			y?: number | null
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartModel': {
+			series?:
+				| components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartSeries'][]
+				| null
+			/** Format: double */
+			maxValue?: number
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartSeries': {
+			dataPoints?:
+				| components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.StackedChart.StackedChartDataPoint'][]
+				| null
+			/** Format: double */
+			maxValue?: number
+			provider?: string | null
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.LegendModel': {
+			keys?: string[] | null
+			colors?: string[] | null
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.StreamchartModel': {
+			legend?: components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.ChartData.Streamchart.LegendModel']
+			tpsData?: number[][] | null
+			/** Format: double */
+			maxTPS?: number
+			gpsData?: number[][] | null
+			/** Format: double */
+			maxGPS?: number
+			gtpsData?: number[][] | null
+			/** Format: double */
+			maxGTPS?: number
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.L2s.ComplexDatasetAnalysis': {
+			max?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible']
+			min?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible']
+			/** Format: double */
+			mean?: number
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.L2s.Dataset': {
+			dataPoints?:
+				| components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible'][]
+				| null
+			provider?: string | null
+			simpleAnalysis?: components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleDatasetAnalysis']
+			complexAnalysis?: components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.ComplexDatasetAnalysis']
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.L2s.L2DataResponseModel': {
+			data?: components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.Dataset']
+			datasets?:
+				| components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.Dataset'][]
+				| null
+			simpleAnalysis?: components['schemas']['ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleMultiDatasetAnalysis']
+			dataType?: components['schemas']['ETHTPS.Data.Core.DataType']
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleDatasetAnalysis': {
+			max?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible']
+			min?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IXYMultiConvertible']
+			/** Format: double */
+			mean?: number
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.L2s.SimpleMultiDatasetAnalysis': {
+			max?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IProviderXYMultiConvertible']
+			min?: components['schemas']['ETHTPS.Data.Core.Models.DataPoints.XYPoints.IProviderXYMultiConvertible']
+			/** Format: double */
+			mean?: number
+			allDatasetsSameLength?: boolean
+			/** Format: int32 */
+			uniformDatasetLength?: number | null
+		}
+		'ETHTPS.Data.Core.Models.ResponseModels.ETHTPSDataCoreModelsResponseModelsProviderResponseModel': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			color?: string | null
+			/** Format: int32 */
+			theoreticalMaxTPS?: number
+			type?: string | null
+			isGeneralPurpose?: boolean
+			isSubchainOf?: string | null
+			status?: components['schemas']['ETHTPS.Data.Core.Models.DataUpdater.IBasicLiveUpdaterStatus']
+		}
+		/** @enum {string} */
+		'ETHTPS.Data.Core.TimeInterval':
+			| 'Instant'
+			| 'OneMinute'
+			| 'OneHour'
+			| 'OneDay'
+			| 'OneWeek'
+			| 'OneMonth'
+			| 'OneYear'
+			| 'All'
+			| 'Auto'
+		'ETHTPS.Data.Integrations.MSSQL.Apikey': {
+			/** Format: int32 */
+			id?: number
+			keyHash?: string | null
+			/** Format: int32 */
+			totalCalls?: number
+			/** Format: int32 */
+			callsLast24h?: number
+			/** Format: int32 */
+			limit24h?: number
+			requesterIpaddress?: string | null
+			apikeyExperimentBindings?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ApikeyExperimentBinding'][]
+				| null
+			apikeyGroups?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ApikeyGroup'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ApikeyExperimentBinding': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			experimentId?: number
+			/** Format: int32 */
+			apikeyId?: number
+			apikey?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Apikey']
+			experiment?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ApikeyGroup': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			apikeyId?: number
+			/** Format: int32 */
+			groupId?: number
+			apikey?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Apikey']
+			group?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Group']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.DataUpdater': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			typeId?: number
+			/** Format: int32 */
+			providerId?: number
+			enabled?: boolean
+			liveDataUpdaterStatuses?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.LiveDataUpdaterStatus'][]
+				| null
+			provider?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider']
+			type?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.DataUpdaterType']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.DataUpdaterStatus': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			liveDataUpdaterStatuses?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.LiveDataUpdaterStatus'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.DataUpdaterType': {
+			/** Format: int32 */
+			id?: number
+			typeName?: string | null
+			dataUpdaters?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.DataUpdater'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Experiment': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			projectId?: number
+			name?: string | null
+			description?: string | null
+			/** Format: int32 */
+			target?: number
+			/** Format: int32 */
+			runParameters?: number
+			apikeyExperimentBindings?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ApikeyExperimentBinding'][]
+				| null
+			experimentFeedbacks?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentFeedback'][]
+				| null
+			experimentResults?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentResult'][]
+				| null
+			experimentalSession?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentalSession']
+			project?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider']
+			runParametersNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentRunParameter']
+			targetNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentTarget']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExperimentFeedback': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			experiment?: number
+			vote?: boolean | null
+			/** Format: int32 */
+			rating?: number | null
+			text?: string | null
+			experimentNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExperimentResult': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			experiment?: number
+			/** Format: int32 */
+			averageRetentionSeconds?: number
+			/** Format: int32 */
+			sdretentionSeconds?: number
+			/** Format: int32 */
+			averagePercentageReturnVisitors?: number
+			/** Format: int32 */
+			sdpercentageReturnVisitors?: number
+			experimentNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExperimentRunParameter': {
+			/** Format: int32 */
+			id?: number
+			/** Format: date-time */
+			startDate?: string | null
+			/** Format: date-time */
+			endDate?: string | null
+			enabled?: boolean
+			/** Format: int32 */
+			displayToNpeopleBeforeEnd?: number | null
+			/** Format: int32 */
+			considerFinishedAfterTimeoutSeconds?: number
+			/** Format: int32 */
+			enrollmentChance?: number | null
+			experiments?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExperimentTarget': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			description?: string | null
+			/** Format: int32 */
+			type?: number
+			experiments?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment'][]
+				| null
+			typeNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentTargetType']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExperimentTargetType': {
+			/** Format: int32 */
+			id?: number
+			targetTypeName?: string | null
+			targetTypeValue?: string | null
+			experimentTargets?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExperimentTarget'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExperimentalSession': {
+			/** Format: int32 */
+			experiment?: number
+			targetIpaddress?: string | null
+			/** Format: int32 */
+			retentionSeconds?: number
+			idNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment']
+			/** Format: int32 */
+			id?: number
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExternalWebsite': {
+			name?: string | null
+			iconBase64?: string | null
+			/** Format: int32 */
+			category?: number
+			/** Format: int32 */
+			id?: number
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ExternalWebsiteCategory': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			externalWebsites?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ExternalWebsite'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Feature': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			projectId?: number
+			enabled?: boolean
+			name?: string | null
+			details?: string | null
+			project?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Project']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Group': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			apikeyGroups?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.ApikeyGroup'][]
+				| null
+			groupRoles?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.GroupRole'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.GroupRole': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			groupId?: number
+			/** Format: int32 */
+			roleId?: number
+			group?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Group']
+			role?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Role']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.LiveDataUpdaterStatus': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			updaterId?: number
+			/** Format: int32 */
+			statusId?: number
+			enabled?: boolean
+			/** Format: date-time */
+			lastSuccessfulRunTime?: string | null
+			/** Format: date-time */
+			lastRunTime?: string | null
+			/** Format: int32 */
+			numberOfSuccesses?: number
+			/** Format: int32 */
+			numberOfFailures?: number
+			status?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.DataUpdaterStatus']
+			updater?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.DataUpdater']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Network': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			oldestLoggedHistoricalEntries?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.OldestLoggedHistoricalEntry'][]
+				| null
+			oldestLoggedTimeWarpBlocks?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.OldestLoggedTimeWarpBlock'][]
+				| null
+			starkwareTransactionCountData?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.StarkwareTransactionCountDatum'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.OldestLoggedHistoricalEntry': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			network?: number
+			/** Format: int32 */
+			provider?: number
+			/** Format: int32 */
+			oldestBlock?: number
+			/** Format: date-time */
+			oldestBlockDate?: string | null
+			networkNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Network']
+			providerNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.OldestLoggedTimeWarpBlock': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			network?: number
+			/** Format: int32 */
+			provider?: number
+			/** Format: int32 */
+			oldestBlock?: number
+			networkNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Network']
+			providerNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Permission': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			permissionsForRoles?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.PermissionsForRole'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.PermissionsForRole': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			roleId?: number
+			/** Format: int32 */
+			permissionId?: number
+			permission?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Permission']
+			role?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Role']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Project': {
+			/** Format: int32 */
+			id?: number
+			enabled?: boolean
+			/** Format: int32 */
+			provider?: number | null
+			name?: string | null
+			website?: string | null
+			details?: string | null
+			features?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.Feature'][]
+				| null
+			providerNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider']
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Provider': {
+			/** Format: int32 */
+			type?: number
+			color?: string | null
+			isGeneralPurpose?: boolean | null
+			/** Format: int32 */
+			historicalAggregationDeltaBlock?: number | null
+			enabled?: boolean
+			/** Format: int32 */
+			subchainOf?: number | null
+			/** Format: int32 */
+			theoreticalMaxTps?: number
+			subchainOfNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider']
+			typeNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderType']
+			dataUpdaters?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.DataUpdater'][]
+				| null
+			experiments?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.Experiment'][]
+				| null
+			inverseSubchainOfNavigation?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider'][]
+				| null
+			oldestLoggedHistoricalEntries?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.OldestLoggedHistoricalEntry'][]
+				| null
+			oldestLoggedTimeWarpBlocks?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.OldestLoggedTimeWarpBlock'][]
+				| null
+			projects?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.Project'][]
+				| null
+			providerLinks?:
+				| components['schemas']['ETHTPS.Data.Integrations.MSSQL.ProviderLink'][]
+				| null
+			name?: string | null
+			/** Format: int32 */
+			id?: number
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ProviderLink': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			providerId?: number
+			/** Format: int32 */
+			externalWebsiteId?: number
+			link?: string | null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.ProviderType': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			color?: string | null
+			isGeneralPurpose?: boolean
+			enabled?: boolean
+			providers?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.Provider'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.Role': {
+			/** Format: int32 */
+			id?: number
+			name?: string | null
+			groupRoles?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.GroupRole'][]
+				| null
+			permissionsForRoles?:
+				| readonly components['schemas']['ETHTPS.Data.Integrations.MSSQL.PermissionsForRole'][]
+				| null
+		}
+		'ETHTPS.Data.Integrations.MSSQL.StarkwareTransactionCountDatum': {
+			/** Format: int32 */
+			id?: number
+			/** Format: int32 */
+			network?: number
+			product?: string | null
+			/** Format: date-time */
+			lastUpdateTime?: string
+			/** Format: int32 */
+			lastUpdateCount?: number
+			/** Format: double */
+			lastUpdateTps?: number
+			networkNavigation?: components['schemas']['ETHTPS.Data.Integrations.MSSQL.Network']
+		}
+	}
+	responses: never
+	parameters: never
+	requestBodies: never
+	headers: never
+	pathItems: never
 }
 
 export type external = Record<string, never>

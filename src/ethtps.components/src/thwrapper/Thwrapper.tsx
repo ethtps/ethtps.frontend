@@ -14,4 +14,4 @@ export function Thwrapper(props: { component: JSX.Element }) {
   )
 }
 */
-export { }
+export {}

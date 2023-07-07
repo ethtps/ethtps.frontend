@@ -1,15 +1,23 @@
 /* eslint-disable import/no-internal-modules */
 
-import { Box, Flex, Spacer, useBreakpointValue } from "@chakra-ui/react"
-import { useSize } from "@chakra-ui/react-use-size"
-import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataCoreTimeInterval, ETHTPSDataIntegrationsMSSQLProviderLink } from "ethtps.api/dist/models"
-import { GetServerSideProps } from "next"
-import { useRef } from "react"
-import { ProviderListSidebar, ProviderOverview, SidebarVariant } from '../../ethtps.components'
+import { Box, Flex, Spacer, useBreakpointValue } from '@chakra-ui/react'
+import { useSize } from '@chakra-ui/react-use-size'
+import {
+  ETHTPSDataCoreModelsResponseModelsProviderResponseModel,
+  ETHTPSDataCoreTimeInterval,
+  ETHTPSDataIntegrationsMSSQLProviderLink
+} from 'ethtps.api/dist/models'
+import { GetServerSideProps } from 'next'
+import { useRef } from 'react'
+import {
+  ProviderListSidebar,
+  ProviderOverview,
+  SidebarVariant
+} from '../../ethtps.components'
 import { api } from '../../services'
 
 interface IProviderPageParams {
-  currentProvider?: string,
+  currentProvider?: string
   allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
   providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[]
 }
@@ -19,7 +27,6 @@ type Path = {
     currentProvider: string
   }
 }
-
 
 /*
 export async function getStaticPaths() {
@@ -39,56 +46,69 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       currentProvider: currentProvider,
       allProviders: providers,
-      providerLinks: providerLinks,
+      providerLinks: providerLinks
     } as IProviderPageParams
   }
 }
 
-export default function ProviderPage({ currentProvider, allProviders, providerLinks }: IProviderPageParams) {
+export default function ProviderPage({
+  currentProvider,
+  allProviders,
+  providerLinks
+}: IProviderPageParams) {
   const containerRef = useRef<any>(null)
   const containerSize = useSize(containerRef)
-  const variants = useBreakpointValue(
-    {
-      base: {
-        navigation: SidebarVariant.DRAWER,
-        navigationButton: true
-      },
-      xl: {
-        navigation: SidebarVariant.SIDEBAR,
-        navigationButton: false
-      }
-    })
+  const variants = useBreakpointValue({
+    base: {
+      navigation: SidebarVariant.DRAWER,
+      navigationButton: true
+    },
+    xl: {
+      navigation: SidebarVariant.SIDEBAR,
+      navigationButton: false
+    }
+  })
 
-  return <>
-    <Box>
-      <Flex
-        ref={containerRef}
-        alignItems={'flex-start'}
-        flexDirection={'row'}
-        flexGrow={'initial'}
-        flexWrap={'wrap'}
-        maxW={1000}>
-        <Box>
-          <ProviderListSidebar
-            variant={variants?.navigation ?? SidebarVariant.DRAWER}
-            currentProvider={currentProvider}
-            allProviders={allProviders} />
-        </Box>
-        <Box
-          width={containerSize?.width}
-          sx={{
-            marginLeft: variants?.navigation === SidebarVariant.SIDEBAR ? '350px' : '0px',
-            marginRight: variants?.navigation === SidebarVariant.SIDEBAR ? '50px' : '0px'
-          }} overflow={'scroll'}>
-          <ProviderOverview
-            api={api}
-            providerLinks={providerLinks}
+  return (
+    <>
+      <Box>
+        <Flex
+          ref={containerRef}
+          alignItems={'flex-start'}
+          flexDirection={'row'}
+          flexGrow={'initial'}
+          flexWrap={'wrap'}
+          maxW={1000}>
+          <Box>
+            <ProviderListSidebar
+              variant={variants?.navigation ?? SidebarVariant.DRAWER}
+              currentProvider={currentProvider}
+              allProviders={allProviders}
+            />
+          </Box>
+          <Box
             width={containerSize?.width}
-            provider={allProviders?.find(x => x.name === currentProvider as string)} />
-        </Box>
-        <Spacer />
-      </Flex>
-    </Box>
-  </>
+            sx={{
+              marginLeft:
+                variants?.navigation === SidebarVariant.SIDEBAR
+                  ? '350px'
+                  : '0px',
+              marginRight:
+                variants?.navigation === SidebarVariant.SIDEBAR ? '50px' : '0px'
+            }}
+            overflow={'scroll'}>
+            <ProviderOverview
+              api={api}
+              providerLinks={providerLinks}
+              width={containerSize?.width}
+              provider={allProviders?.find(
+                (x) => x.name === (currentProvider as string)
+              )}
+            />
+          </Box>
+          <Spacer />
+        </Flex>
+      </Box>
+    </>
+  )
 }
-

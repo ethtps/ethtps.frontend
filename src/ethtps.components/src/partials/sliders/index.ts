@@ -1,1 +1,1 @@
-export * from './IntervalSlider';
+export * from './IntervalSlider'

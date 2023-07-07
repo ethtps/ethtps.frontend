@@ -1,10 +1,13 @@
-import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsDataPointsDataPoint } from 'ethtps.api'
+import {
+	ETHTPSDataCoreDataType,
+	ETHTPSDataCoreModelsDataPointsDataPoint,
+} from 'ethtps.api'
 import {
 	AppState,
 	DataPointDictionary,
 	IDataModel,
 	getMaxDataFor,
-	useAppSelector
+	useAppSelector,
 } from '..'
 
 export function useGetMaxDataFromAppStore() {

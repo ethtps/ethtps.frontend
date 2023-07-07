@@ -16,15 +16,14 @@
 	"dependencies": {
 		"@reduxjs/toolkit": "^1.9.1",
 		"@types/node": "^18.14.0",
-		"ethtps.api": "../../../ethtps.api.clients/typescript/ethtps.api",
-		"ethtps.data": "link:",
+		"ethtps.api": "link:ethtps.api",
 		"moment": "^2.29.4",
 		"next-redux-wrapper": "^8.1.0",
 		"react-dom": "^18.2.0",
 		"react-query": "^3.39.3",
 		"react-redux": "^8.0.5",
 		"reconnecting-websocket": "^4.4.0",
-		"typescript": "^4.9.4"
+		"typescript": "^5.1.6"
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -32,7 +31,9 @@
 		"lint": "npx eslint ",
 		"lint:fix": "npm run eslint -- --fix",
 		"prettier": "npx prettier src test --check",
-		"prettier:fix": "npm run prettier -- --write"
+		"prettier:fix": "npm run prettier -- --write",
+		"relink": "npx yarn unlink && npx yarn link",
+		"relink-deps": "npx yarn unlink ethtps.api && npx yarn link ethtps.api && npx yarn unlink ethtps.admin.api && npx yarn link ethtps.admin.api"
 	},
 	"include": [
 		"src/**/*.ts",

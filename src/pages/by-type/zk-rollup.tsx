@@ -1,5 +1,3 @@
 export default function ZKRollupDescriptionPage() {
-    return <>
-        ZK
-    </>
+  return <>ZK</>
 }

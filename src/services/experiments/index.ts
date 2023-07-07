@@ -1,1 +1,1 @@
-export * from './OrderProviders';
+export * from './OrderProviders'

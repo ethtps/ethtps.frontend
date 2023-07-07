@@ -1,2 +1,2 @@
-export * from './StreamingComponent';
-export * from './StreamingTest.jsx';
+export * from './StreamingComponent'
+export * from './StreamingTest.jsx'

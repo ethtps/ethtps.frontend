@@ -54,8 +54,6 @@
 		"dotenv": "^16.0.3",
 		"embla-carousel-react": "^7.1.0",
 		"eslint-config-next": "^13.4.3",
-		"ethtps.api": "../../../ethtps.api.clients/typescript/ethtps.api",
-		"ethtps.components": "link:",
 		"events": "^3.3.0",
 		"framer-motion": "^10.12.16",
 		"groupby-js": "^1.1.9",

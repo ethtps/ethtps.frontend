@@ -1,27 +1,27 @@
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 // eslint-disable-next-line import/no-internal-modules
-import { useState } from "react"
+import { useState } from 'react'
 
 interface ICustomNavbarProps {
-    opened: boolean,
-    allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
-    currentProvider?: string
+  opened: boolean
+  allProviders?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+  currentProvider?: string
 }
 
 export default function CustomNavbar({
-    opened,
-    allProviders,
-    currentProvider
+  opened,
+  allProviders,
+  currentProvider
 }: ICustomNavbarProps) {
-    const [filteredProviders, setFilteredProviders] = useState(allProviders)
-    const hideSidechainsChanged = (e: any) => {
-        if (e.target.checked) {
-            setFilteredProviders(allProviders?.filter(x => x.type !== 'Sidechain'))
-        } else {
-            setFilteredProviders(allProviders)
-        }
+  const [filteredProviders, setFilteredProviders] = useState(allProviders)
+  const hideSidechainsChanged = (e: any) => {
+    if (e.target.checked) {
+      setFilteredProviders(allProviders?.filter((x) => x.type !== 'Sidechain'))
+    } else {
+      setFilteredProviders(allProviders)
     }
-    return <></>
+  }
+  return <></>
 }
 /*
 return <>

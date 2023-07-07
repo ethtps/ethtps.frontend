@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
-const initialState: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[] = []
+const initialState: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[] =
+	[]
 
 const providersSlice = createSlice({
 	name: 'providers',
@@ -15,7 +16,10 @@ const providersSlice = createSlice({
 		},
 		setProviders(
 			state: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[],
-			action: PayloadAction<ETHTPSDataCoreModelsResponseModelsProviderResponseModel[] | undefined>
+			action: PayloadAction<
+				| ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+				| undefined
+			>
 		) {
 			localStorage?.setItem('providers', JSON.stringify(action.payload))
 			return action.payload

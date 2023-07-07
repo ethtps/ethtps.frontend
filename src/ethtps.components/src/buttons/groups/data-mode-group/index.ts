@@ -1,2 +1,2 @@
-export * from './DataModeButtonGroup';
-export * from './IDataModeButtonGroupConfiguration';
+export * from './DataModeButtonGroup'
+export * from './IDataModeButtonGroupConfiguration'

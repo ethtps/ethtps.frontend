@@ -14,33 +14,34 @@ export const getStaticProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default function MainLayout(props: Partial<{
-  component: JSX.Element,
-  providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
-}>) {
+export default function MainLayout(
+  props: Partial<{
+    component: JSX.Element
+    providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+  }>
+) {
   return (
     <>
       <Navbar allProviders={props.providerData} />
       <Divider />
-      <Flex direction={'column'}
-        flex={{ base: '0', 'md': '1' }}
-        display={{ base: 'flex', 'md': 'flex' }}
+      <Flex
+        direction={'column'}
+        flex={{ base: '0', md: '1' }}
+        display={{ base: 'flex', md: 'flex' }}
         justifyContent={{ md: 'center' }}
         px={{ base: 0, md: 2 }}
         w={'100%'}>
         <Box
           alignSelf={{ md: 'center' }}
-          w={{ base: '100%', 'md': '80%' }}
+          w={{ base: '100%', md: '80%' }}
           maxW={950}
           sx={{
             paddingTop: '1rem',
             paddingBottom: '1rem'
           }}>
-          <Box>
-            {props.component}
-          </Box>
-        </Box >
-      </Flex >
+          <Box>{props.component}</Box>
+        </Box>
+      </Flex>
     </>
   )
 }

@@ -1,1 +1,1 @@
-export * from './RecaptchaTokenLoader';
+export * from './RecaptchaTokenLoader'

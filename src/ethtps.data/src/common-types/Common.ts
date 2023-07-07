@@ -1,5 +1,9 @@
 import { Dictionary } from '@reduxjs/toolkit'
-import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsDataPointsDataPoint, ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint } from 'ethtps.api'
+import {
+	ETHTPSDataCoreDataType,
+	ETHTPSDataCoreModelsDataPointsDataPoint,
+	ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint,
+} from 'ethtps.api'
 import moment, { Moment } from 'moment'
 import { m_toShortString, toShortString_2 } from '..'
 import {
@@ -116,10 +120,8 @@ export const inline = {
 	display: 'inline-block',
 }
 
-
 export interface AllData {
 	tps: Dictionary<ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
 	gps: Dictionary<ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
 	gtps: Dictionary<ETHTPSDataCoreModelsDataPointsXYPointsNumericXYDataPoint[]>
 }
-

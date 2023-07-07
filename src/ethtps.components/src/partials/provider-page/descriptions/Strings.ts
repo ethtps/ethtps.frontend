@@ -1,9 +1,7 @@
 import { StringDictionary } from '../../../../../ethtps.data/src'
 
-
 export enum DefaultStrings {
-    pageSummary = 'Page Summary',
+	pageSummary = 'Page Summary',
 }
 
-export const AnalysisTabStrings: StringDictionary = {
-}
+export const AnalysisTabStrings: StringDictionary = {}

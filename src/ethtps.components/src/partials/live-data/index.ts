@@ -1,1 +1,1 @@
-export * from './LivePSPartial';
+export * from './LivePSPartial'

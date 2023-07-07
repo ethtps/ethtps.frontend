@@ -1,1 +1,1 @@
-export * from './ChartActions';
+export * from './ChartActions'

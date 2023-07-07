@@ -4,7 +4,7 @@ import { DataPointDictionary, IDataModel } from '..'
 const initialState: IDataModel = {
 	tpsData: {},
 	gpsData: {},
-	gtpsData: {}
+	gtpsData: {},
 }
 
 function modifyMaxDataState(
@@ -37,33 +37,21 @@ const dataSlice = createSlice({
 			action: PayloadAction<DataPointDictionary | undefined>
 		) {
 			localStorage?.setItem('maxTPSData', JSON.stringify(action.payload))
-			return modifyMaxDataState(
-				state,
-				action.payload,
-				(s) => s.tpsData
-			)
+			return modifyMaxDataState(state, action.payload, (s) => s.tpsData)
 		},
 		setMaxGPSData(
 			state: IDataModel,
 			action: PayloadAction<DataPointDictionary | undefined>
 		) {
 			localStorage?.setItem('maxGPSData', JSON.stringify(action.payload))
-			return modifyMaxDataState(
-				state,
-				action.payload,
-				(s) => s.gpsData
-			)
+			return modifyMaxDataState(state, action.payload, (s) => s.gpsData)
 		},
 		setMaxGTPSData(
 			state: IDataModel,
 			action: PayloadAction<DataPointDictionary | undefined>
 		) {
 			localStorage?.setItem('maxGTPSData', JSON.stringify(action.payload))
-			return modifyMaxDataState(
-				state,
-				action.payload,
-				(s) => s.gtpsData
-			)
+			return modifyMaxDataState(state, action.payload, (s) => s.gtpsData)
 		},
 	},
 })

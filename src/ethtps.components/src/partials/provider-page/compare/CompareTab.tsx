@@ -1,10 +1,9 @@
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 
 interface ICompareTabProps {
-    provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
+	provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 }
 
 export function CompareTab(props: Partial<ICompareTabProps>): JSX.Element {
-    return <>
-    </>
+	return <></>
 }

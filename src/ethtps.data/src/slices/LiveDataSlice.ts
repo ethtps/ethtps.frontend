@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 import {
 	DataResponseModelDictionary,
-	InstantDataResponseModel
+	InstantDataResponseModel,
 } from '../common-types'
 import { ILiveDataModeModel } from '../models'
 

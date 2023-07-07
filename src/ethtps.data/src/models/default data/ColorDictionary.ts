@@ -1,4 +1,3 @@
-
 import { StringDictionary } from '../../common-types'
 
 export const defaultColorDictionary = {

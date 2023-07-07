@@ -6,7 +6,7 @@ import MarkdownEditor from './MarkdownEditor'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 type MarkdownPageModel = {
-  markdown?: string | null,
+  markdown?: string | null
   fileName?: string | null
 }
 
@@ -24,10 +24,14 @@ const getStaticProps: GetStaticProps<{ model: MarkdownPageModel }> = async (
   }
 }
 
-export default function ReactFileMarkdown(props: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function ReactFileMarkdown(
+  props: InferGetStaticPropsType<typeof getStaticProps>
+) {
   return (
     <>
-      <MarkdownEditor markdown={props?.model?.markdown ?? "Error loading page"} />
+      <MarkdownEditor
+        markdown={props?.model?.markdown ?? 'Error loading page'}
+      />
     </>
   )
 }
