@@ -119,13 +119,10 @@ export function StreamingComponent({
 					sx={{
 						padding: '5px',
 					}}>
-					<TimeIntervalButtonGroup
-						onChange={(v: ExtendedTimeInterval) => setInterval(v)}
-					/>
+					<TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
 					<Tooltip
-						title={`Sidechains ${
-							showSidechains ? 'shown' : 'hidden'
-						}. Click to toggle`}>
+						title={`Sidechains ${showSidechains ? 'shown' : 'hidden'
+							}. Click to toggle`}>
 						<Button
 							iconSpacing={0}
 							leftIcon={

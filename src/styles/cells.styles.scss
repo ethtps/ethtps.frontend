@@ -1,14 +1,17 @@
 .animated-cell {
     animation: text-shadow 0.5s;
 }
+
 .boldcell {
     font-weight: bold;
-    font-size: 1rem;cursor: pointer;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 .cell {
     font-size: 1rem;
 }
+
 @keyframes rotate {
     0% {
         transform: rotate(0deg);

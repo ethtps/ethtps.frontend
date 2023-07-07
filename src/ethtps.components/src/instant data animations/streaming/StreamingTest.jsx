@@ -104,8 +104,8 @@ export function StreamingTest({
 				}) // Store the updated last values
 				// We don't really need to remove old data points, since we're using a 'realtime' x-axis
 				/*
-                if (dataPoints.length > 2 * maxEntries * newColumns.length)
-                    dataPoints = dataPoints.slice(-maxEntries * newColumns.length)*/
+				if (dataPoints.length > 2 * maxEntries * newColumns.length)
+					dataPoints = dataPoints.slice(-maxEntries * newColumns.length)*/
 				return dataPoints // This replaces the old liveData with the new dataPoints, including the newly added points
 			})
 			return newColumns
@@ -135,7 +135,7 @@ export function StreamingTest({
 							backgroundColor: pattern.draw(
 								getPattern(i * 4),
 								providerData.find((p) => p.name === c)?.color ??
-									'black'
+								'black'
 							),
 							borderColor:
 								providerData.find((p) => p.name === c)?.color ??
@@ -164,44 +164,44 @@ export function StreamingTest({
 					scales: {
 						x: !isLeaving
 							? {
-									type: 'realtime',
-									realtime: {
-										delay: refreshInterval * 3,
-										refresh: refreshInterval,
-										duration: duration,
-										pause: !connected || paused,
-										onRefresh: (chart) => {
-											const now =
-												Date.now() + refreshInterval
-											chart.data.datasets.forEach(
-												(dataset) => {
-													const e = {
-														x: now,
-														y:
-															dataSelector(
-																lastValues[
-																	dataset
-																		.label
-																] ??
-																	lastValues[
-																		dataset
-																			.label
-																	],
-																dataType
-															) ?? 0,
-													}
-													dataset.data.push(e)
+								type: 'realtime',
+								realtime: {
+									delay: refreshInterval * 3,
+									refresh: refreshInterval,
+									duration: duration,
+									pause: !connected || paused,
+									onRefresh: (chart) => {
+										const now =
+											Date.now() + refreshInterval
+										chart.data.datasets.forEach(
+											(dataset) => {
+												const e = {
+													x: now,
+													y:
+														dataSelector(
+															lastValues[
+															dataset
+																.label
+															] ??
+															lastValues[
+															dataset
+																.label
+															],
+															dataType
+														) ?? 0,
 												}
-											)
-										},
+												dataset.data.push(e)
+											}
+										)
 									},
-									ticks: {
-										color: colors.text,
-									},
-									grid: {
-										color: colors.grid,
-									},
-							  }
+								},
+								ticks: {
+									color: colors.text,
+								},
+								grid: {
+									color: colors.grid,
+								},
+							}
 							: {},
 						y: {
 							stacked: true,
@@ -214,20 +214,20 @@ export function StreamingTest({
 								callback:
 									!paused && connected
 										? function (label, index, labels) {
-												if (label >= 1000000)
-													return (
-														Math.round(
-															label / 1000000
-														) + 'M'
-													)
-												if (label >= 1000)
-													return (
-														Math.round(label) /
-															1000 +
-														'k'
-													)
-												return Math.round(label)
-										  }
+											if (label >= 1000000)
+												return (
+													Math.round(
+														label / 1000000
+													) + 'M'
+												)
+											if (label >= 1000)
+												return (
+													Math.round(label) /
+													1000 +
+													'k'
+												)
+											return Math.round(label)
+										}
 										: undefined,
 							},
 							grid: {
@@ -298,7 +298,7 @@ export function StreamingTest({
 					style={{
 						position: 'absolute',
 						marginTop: (height ?? 250) / 2 - 18,
-						marginLeft: width / 2 - 8,
+						marginLeft: (width ?? 0) / 2 - 8,
 					}}
 				/>,
 				!connected || liveData.length < 2

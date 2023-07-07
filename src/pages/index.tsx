@@ -1,4 +1,3 @@
-/* eslint-disable import/no-internal-modules */
 import { Box } from '@chakra-ui/react'
 import {
   ETHTPSDataCoreDataType,
@@ -99,7 +98,7 @@ export default function Index({
   const noSidechainAggregator = new LiveDataAggregator()
   const [copiedAggregator, setCopiedAggregator] = useState<LiveDataAggregator>() // [0_1] We use this in order to trigger a re-render when new data arrives
   const modeHandler = createHandlerFromCallback<ETHTPSDataCoreDataType>(
-    (newValue) => {}
+    (newValue) => { }
   )
   const [showSidechains, setShowSidechains] =
     useQueryStringAndLocalStorageBoundState(false, 'showSidechains')

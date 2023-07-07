@@ -1,11 +1,11 @@
-/* eslint-disable import/no-internal-modules */
-
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react/lib'
 import { Provider as ReduxProvider } from 'react-redux'
 import { AppPropsWithLayout } from '../ethtps.components'
 import { wrapper } from '../ethtps.data'
+import '../styles/cells.styles.scss'
+import '../styles/globals.css'
 import MainLayout from './components/Layout/MainLayout'
 import { components } from './markdown'
 
