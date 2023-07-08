@@ -46,7 +46,8 @@
     "next.config.mjs",
     "src/pages/components/Layout",
     "src/components/partials/provider-page/overview/WithTooltip.jsx",
-    "src/components/instant data animations/d3-stream/D3Stream.tsx"
+    "src/components/instant data animations/d3-stream/D3Stream.tsx",
+    "src/pages/humanity-proof.tsx"
   ],
   "exclude": [
     "node_modules",
