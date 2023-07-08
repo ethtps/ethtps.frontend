@@ -37,7 +37,7 @@ export class ETHTPSApi {
 	public externalWebsiteCategoriesAPI: ExternalWebsiteCategoriesApi =
 		new ExternalWebsiteCategoriesApi()
 	public chartDataAPI: ChartDataApi = new ChartDataApi()
-	public apiKeyAPI: APIKeyApi
+	public apiKeyAPI: APIKeyApi = new APIKeyApi()
 	public apiKey?: string
 
 	constructor(apiURL: string, apiKey: string) {
@@ -49,6 +49,10 @@ export class ETHTPSApi {
 			})
 		)
 		this.resetConfig()
+	}
+
+	public async validateKeyAsync() {
+		return fetch(`${this._apiURL}/api/v3/APIKeys/ValidateKey`).then((res) => { return true }).catch((err) => { return false })
 	}
 
 	private _genConfig(url: string) {
@@ -70,11 +74,7 @@ export class ETHTPSApi {
 			this._genConfig(this._apiURL)
 		)
 
-		this.apiKeyAPI = new APIKeyApi(
-			new Configuration({
-				basePath: this._apiURL,
-			})
-		)
+		this.apiKeyAPI = new APIKeyApi(this._genConfig(this._apiURL))
 
 		this.chartDataAPI = new ChartDataApi(this._genConfig(this._apiURL))
 		this.l2DataApi = new L2DataApi(this._genConfig(this._apiURL))
@@ -85,11 +85,11 @@ export class ETHTPSApi {
 			this._genConfig(this._apiURL)
 		)
 		/*
-    this.statusAPI = new StatusApi(
-      new Configuration({
-        basePath: this._statusAPIEndpoint,
-      }),
-    )*/
+	this.statusAPI = new StatusApi(
+	  new Configuration({
+		basePath: this._statusAPIEndpoint,
+	  }),
+	)*/
 	}
 
 	public async getProvidersAsync() {

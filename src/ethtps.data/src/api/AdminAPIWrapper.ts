@@ -20,7 +20,7 @@ const throwExceptionIfNotOk = async (response: Response) => {
     return res
 }
 
-export class AdminAPI {
+export class AdminAPIWrapper {
     private _experimentAPI = new ExperimentApi()
     private providersAPI = new ProvidersApi()
     private _externalWebsiteCategoriesAPI = new ExternalWebsiteCategoriesApi()

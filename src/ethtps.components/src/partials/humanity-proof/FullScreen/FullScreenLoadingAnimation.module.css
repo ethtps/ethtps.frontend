@@ -1,5 +1,5 @@
 .anicontainer {
-    --fg: #17181c;
+    --fg: rgb(143, 54, 216);
     --dur: 8s;
     font-size: calc(20px + (30 - 20) * (100vw - 320px) / (1280 - 320));
     background: var(--bg);

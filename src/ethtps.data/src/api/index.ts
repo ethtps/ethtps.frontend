@@ -1,4 +1,4 @@
 export * from './APIKeyMiddleware'
-export * from './AdminAPI'
+export * from './AdminAPIWrapper'
 export * from './ETHTPSAPI'
 export * from './HTTPHelper'
