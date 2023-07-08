@@ -5,12 +5,11 @@ import { APIKeyMiddleware } from '.'
 
 const API_URL = "http://localhost:10202/api/v3"
 const ADMIN_URL = "http://localhost:33018/api/v3"
-const ADMIN_KEY = "rXRBBrUKkW3WAWLqAsO6lCVJUbOBM8Dntc9BIJRYo6dGwRpSkyGiSpX3OxDhLFKW"
-const API_KEY = "rXRBBrUKkW3WAWLqAsO6lCVJUbOBM8Dntc9BIJRYo6dGwRpSkyGiSpX3OxDhLFKW"
 
 const throwException = async (response: Response) => {
     throw new Error(`Error ${response.status}: ${response.statusText}`)
 }
+
 
 const throwExceptionIfNotOk = async (response: Response) => {
     const res = await response
@@ -21,6 +20,9 @@ const throwExceptionIfNotOk = async (response: Response) => {
 }
 
 export class AdminAPIWrapper {
+
+    public static DEFAULT = new AdminAPIWrapper(ADMIN_URL, (typeof window === 'undefined') ? (process.env.REACT_APP_FRONTEND_API_KEY ?? '') : localStorage?.getItem('apiKey') ?? '', API_URL, (typeof window === 'undefined') ? (process.env.REACT_APP_FRONTEND_API_KEY ?? '') : localStorage?.getItem('apiKey') ?? '')
+
     private _experimentAPI = new ExperimentApi()
     private providersAPI = new ProvidersApi()
     private _externalWebsiteCategoriesAPI = new ExternalWebsiteCategoriesApi()
@@ -30,14 +32,14 @@ export class AdminAPIWrapper {
     private _configurationAPI = new ConfigurationAPI()
     private _generalAPI = new GeneralApi();
     private _adminAPIURL: string
-    private _generalAPIKey: string
+    private _generalAPIKey: string = ''
     private _generalAPIURL: string
-    private _adminAPIKey?: string
+    private _adminAPIKey: string = ''
 
     private _genAPIConfig(url: string) {
         let config = new APIConfiguration({
             basePath: url,
-            middleware: [new APIKeyMiddleware()]
+            middleware: [new APIKeyMiddleware(this._generalAPIKey)]
         })
 
         return config
@@ -46,16 +48,16 @@ export class AdminAPIWrapper {
     private _genAdminAPIConfig(url: string) {
         let config = new AdminAPIConfiguration({
             basePath: url,
-            middleware: [new APIKeyMiddleware()]
+            middleware: [new APIKeyMiddleware(this._adminAPIKey)]
         })
 
         return config
     }
 
     constructor(adminAPIURL: string = ADMIN_URL,
-        _adminAPIKey: string = ADMIN_KEY,
+        _adminAPIKey: string,
         _generalAPIURL: string = API_URL,
-        _generalAPIKey: string = API_KEY) {
+        _generalAPIKey: string) {
         this._adminAPIURL = adminAPIURL
         this._adminAPIKey = _adminAPIKey
         this._generalAPIKey = _generalAPIKey

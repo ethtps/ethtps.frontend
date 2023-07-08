@@ -9,6 +9,9 @@ export const useExistingKeyValidator = (key: string | undefined, apiEndpoint: st
         if (!pending && key && key.length > 0) {
             setPending(true)
             validateKeyAsync(key, apiEndpoint).then((r) => {
+                if (r) {
+                    localStorage.setItem('apiKey', key)
+                }
                 setValid(r)
             }).catch(() => {
                 setValid(false)

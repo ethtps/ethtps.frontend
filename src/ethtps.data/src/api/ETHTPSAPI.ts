@@ -38,7 +38,7 @@ export class ETHTPSApi {
 		new ExternalWebsiteCategoriesApi()
 	public chartDataAPI: ChartDataApi = new ChartDataApi()
 	public apiKeyAPI: APIKeyApi = new APIKeyApi()
-	public apiKey?: string
+	public apiKey: string
 
 	constructor(apiURL: string, apiKey: string) {
 		this._apiURL = apiURL
@@ -58,7 +58,7 @@ export class ETHTPSApi {
 	private _genConfig(url: string) {
 		let config = new Configuration({
 			basePath: url,
-			middleware: [new APIKeyMiddleware()],
+			middleware: [new APIKeyMiddleware(this.apiKey)],
 		})
 
 		return config

@@ -1,6 +1,6 @@
 
 import NonSSRWrapper from '@/ethtps.components/src/NonSSRWrapper'
-import { apiURL } from '@/services/DependenciesIOC'
+import { api, apiURL } from '@/services/DependenciesIOC'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react/lib'
@@ -26,6 +26,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     }
     console.log(`visitType: ${visitType}`)
   }, [])
+  const apiKeyHandler = (key: string) => {
+    api.apiKey = key
+    api.resetConfig()
+  }
   const humanHandler = (isHuman?: boolean) => {
     setOpacity(isHuman ? 1 : 0)
     setIsHuman(isHuman ?? false)
@@ -60,6 +64,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                 <NonSSRWrapper>
                   {conditionalRender(<RecaptchaTokenLoader
                     apiEndpoint={apiURL}
+                    onKeyLoaded={apiKeyHandler}
                     onIsHuman={humanHandler} />, visitType === VisitType.InitialOrOld)}
                 </NonSSRWrapper>
               </motion.div>
