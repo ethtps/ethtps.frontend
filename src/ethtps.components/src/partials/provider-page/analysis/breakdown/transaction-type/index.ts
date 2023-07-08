@@ -1,1 +1,1 @@
-export * from './HeatmapTab'
+export * from './HeatmapTab';

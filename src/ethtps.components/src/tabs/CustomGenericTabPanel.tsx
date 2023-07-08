@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
-
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 
 export interface TabPanelItem {
 	title: string

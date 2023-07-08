@@ -1,1 +1,1 @@
-export * from './StatusTab'
+export * from './StatusTab';

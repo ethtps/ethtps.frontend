@@ -53,13 +53,13 @@ export const conditionalRender = (
 	return renderIf
 		? component
 		: React.createElement('div', {
-				className: 'placeholder',
-		  })
+			className: 'placeholder',
+		})
 }
 
 export const binaryConditionalRender = (
-	componentIf: JSX.Element,
-	componentIfNot: JSX.Element,
+	componentIf?: JSX.Element,
+	componentIfNot?: JSX.Element,
 	renderIf?: boolean
 ) => {
 	return renderIf ? componentIf : componentIfNot
@@ -81,9 +81,9 @@ export type IconType = (props: IconTypeProps) => JSX.Element
 
 export type DropdownOptionWithIcon<T> =
 	| {
-			value: T
-			icon?: IconType
-	  }
+		value: T
+		icon?: IconType
+	}
 	| undefined
 
 export function createDropdownOptionWithIcon<T>(

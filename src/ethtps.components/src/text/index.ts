@@ -1,1 +1,1 @@
-export * from './AnimatedTypography'
+export * from './AnimatedTypography';

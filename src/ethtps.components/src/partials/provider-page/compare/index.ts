@@ -1,1 +1,1 @@
-export * from './CompareTab'
+export * from './CompareTab';

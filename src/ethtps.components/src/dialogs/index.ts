@@ -1,2 +1,2 @@
-export * from './DataIssueDialog'
-export * from './ProviderRequestDialog'
+export * from './DataIssueDialog';
+export * from './ProviderRequestDialog';

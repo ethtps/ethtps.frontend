@@ -1,1 +1,1 @@
-export * from './PeriodTab'
+export * from './PeriodTab';

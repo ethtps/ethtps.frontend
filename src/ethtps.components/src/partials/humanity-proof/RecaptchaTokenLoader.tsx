@@ -29,7 +29,7 @@ export function RecaptchaTokenLoader(props: {
 		if (isHuman?.callback) isHuman?.setter(false)
 	}
 	return (
-		//We use recaptcha only for getting an API key, if the user comes back later we don't let google know that
+		// We only use recaptcha for getting an API key, if the user comes back later we won't let google know that
 		<>
 			{conditionalRender(
 				<GoogleReCaptchaProvider

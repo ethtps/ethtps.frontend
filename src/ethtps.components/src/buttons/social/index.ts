@@ -1,2 +1,2 @@
-export * from './ProviderLinks'
-export * from './SocialButtons'
+export * from './ProviderLinks';
+export * from './SocialButtons';

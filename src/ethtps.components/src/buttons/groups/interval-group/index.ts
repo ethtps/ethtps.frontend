@@ -1,1 +1,1 @@
-export * from './TimeIntervalButtonGroup'
+export * from './TimeIntervalButtonGroup';

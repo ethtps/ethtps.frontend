@@ -1,2 +1,2 @@
-export * from './StorageHooks'
-export * from './ThemeHooks'
+export * from './StorageHooks';
+export * from './ThemeHooks';

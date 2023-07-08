@@ -1,2 +1,2 @@
-export * from './ISidechainToggleButtonConfiguration'
-export * from './SidechainToggleButton'
+export * from './ISidechainToggleButtonConfiguration';
+export * from './SidechainToggleButton';

@@ -1,1 +1,1 @@
-export * from './SimpleBarStat'
+export * from './SimpleBarStat';

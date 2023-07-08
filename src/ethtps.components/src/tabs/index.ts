@@ -1,1 +1,1 @@
-export * from './CustomGenericTabPanel'
+export * from './CustomGenericTabPanel';
