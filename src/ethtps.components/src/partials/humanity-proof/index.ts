@@ -1,2 +1,1 @@
-export * from './RecaptchaTokenLoader';
-export * from './WavyWaves';
+export * from './RecaptchaTokenLoader'

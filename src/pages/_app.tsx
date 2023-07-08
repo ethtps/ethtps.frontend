@@ -1,8 +1,6 @@
-import { AdminAPI } from '@/services'
 import { CacheProvider } from '@chakra-ui/next-js'
-import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
+import { ChakraProvider, ColorModeScript, Image, theme } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react/lib'
-import { createContext } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { AppPropsWithLayout, RecaptchaTokenLoader, useQueryStringAndLocalStorageBoundState } from '../ethtps.components'
 import { createHandlerFromCallback, wrapper } from '../ethtps.data'
@@ -30,7 +28,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
               <ColorModeScript initialColorMode={theme.config.initialColorMode} />
               <RecaptchaTokenLoader onKeyLoaded={keyHandler} onIsHuman={humanHandler} />
               {key === undefined ? <>
-                Get key
+                <Image sx={{
+                  width: '100%',
+                  height: '100%',
+                }} src={'wavez.svg'} />
               </> : <MainLayout component={<Component {...pageProps} />} />}
             </ChakraProvider>
           </CacheProvider>
