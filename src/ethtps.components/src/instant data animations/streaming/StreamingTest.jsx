@@ -253,7 +253,7 @@ export function StreamingTest({
 					},
 					elements: {
 						point: {
-							hitRadius: 10,
+							hitRadius: 0,
 						}
 					},
 					interaction: {
