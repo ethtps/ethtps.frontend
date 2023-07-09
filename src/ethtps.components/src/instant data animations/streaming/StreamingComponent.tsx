@@ -126,7 +126,7 @@ export function StreamingComponent({
 					}}>
 					<TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
 					<Tooltip
-						title={`Sidechains ${showSidechains ? 'shown' : 'hidden'
+						label={`Sidechains ${showSidechains ? 'shown' : 'hidden'
 							}. Click to toggle`}>
 						<Button
 							iconSpacing={0}
@@ -137,7 +137,7 @@ export function StreamingComponent({
 							onClick={showSidechainsToggled}
 						/>
 					</Tooltip>
-					<Tooltip title={`Click to ${paused ? 'play' : 'pause'}`}>
+					<Tooltip label={`Click to ${paused ? 'resume' : 'pause'}`}>
 						<Button
 							disabled={!connected}
 							iconSpacing={0}

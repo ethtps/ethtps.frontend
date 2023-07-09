@@ -19,7 +19,7 @@ export function ChartActions(props: Partial<IChartActionsProps>): JSX.Element {
 					display: 'flex',
 				}}>
 				{conditionalRender(
-					<Tooltip title="Download .png">
+					<Tooltip label="Download .png">
 						<IconDownload
 							onClick={() => {
 								if (props.onDownload) props.onDownload()
@@ -30,7 +30,7 @@ export function ChartActions(props: Partial<IChartActionsProps>): JSX.Element {
 					props.showDownload
 				)}
 				{conditionalRender(
-					<Tooltip title="Maximize">
+					<Tooltip label="Maximize">
 						<IconMaximize
 							onClick={() => {
 								if (props.onMaximize) props.onMaximize()

@@ -22,7 +22,7 @@ export function DataModeButtonGroup(
 				<Tooltip
 					hasArrow
 					placement={'auto'}
-					title={'Display transactions per second'}>
+					label={'Display transactions per second'}>
 					<Button
 						variant={'ghost'}
 						sx={{

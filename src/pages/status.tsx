@@ -5,13 +5,17 @@ import {
   Flex,
   Heading,
   Text,
-  useBoolean
+  useBoolean,
+  useToast
 } from '@chakra-ui/react'
+import { IconEye } from '@tabler/icons-react'
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { GetServerSideProps } from 'next'
+import { useEffect } from 'react'
 import {
   AllProvidersStatusTable,
   ProviderRequestDialog,
+  openNewTab,
   useColors
 } from '../ethtps.components'
 import { api } from '../services'
@@ -31,6 +35,24 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 
 export default function Status({ providerData }: IStatusProps) {
   const colors = useColors()
+  const toast = useToast()
+  useEffect(() => {
+    toast({
+      title: <>
+        <Text
+          onClick={() => openNewTab('https://github.com/ethtps/ethtps.backend/blob/dev/ETHTPS.Services.Ethereum/README.md')}
+          sx={{
+            cursor: 'pointer',
+            _hover: {
+              textDecoration: 'underline'
+            }
+          }}>Want to help?</Text>
+      </>,
+      position: 'bottom-right',
+      icon: <IconEye></IconEye>,
+      duration: 60000,
+    })
+  }, [])
   const showSubmissionDialog = useBoolean(false)
   return (
     <>

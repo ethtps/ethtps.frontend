@@ -23,7 +23,7 @@ export function SkeletonWithTooltip(
 						title={message}>
 						<>
 							<Box sx={{ width: '90%' }}>
-								<Tooltip title={'Not available'}>-</Tooltip>
+								<Tooltip label={'Not available'}>-</Tooltip>
 							</Box>
 						</>
 					</Tooltip>,

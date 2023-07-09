@@ -40,7 +40,7 @@ export function SimpleStat(
 	const transform = props.isSelected ?? false ? 'scale(1)' : 'scale(0.95)' // Added
 	return (
 		<>
-			<Tooltip hasArrow title={props.alt ?? ''}>
+			<Tooltip hasArrow label={props.alt ?? ''}>
 				<Stat
 					sx={{
 						cursor: 'pointer',
@@ -58,9 +58,8 @@ export function SimpleStat(
 						{binaryConditionalRender(
 							<AnimatedTypography
 								animationClassName="animated-cell unselectable"
-								child={`${
-									props.isEstimated ? '~' : ''
-								}${numberFormat(props.data.value)}`}
+								child={`${props.isEstimated ? '~' : ''
+									}${numberFormat(props.data.value)}`}
 								durationMs={800}
 							/>,
 							<>

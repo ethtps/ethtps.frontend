@@ -46,7 +46,7 @@ export default function StatusIndicator(): JSX.Element {
 			flexDir="column"
 			overflow="hidden">
 			{/* Ideally, only the box should be used. The <Flex /> is used to style the preview. */}
-			<Tooltip title={`Status: Active`} textTransform="capitalize">
+			<Tooltip label={`Status: Active`} textTransform="capitalize">
 				<Box
 					as="div"
 					h="24px"
@@ -73,7 +73,7 @@ export default function StatusIndicator(): JSX.Element {
 					}}
 				/>
 			</Tooltip>
-			<Tooltip title={`Status: Inactive`} textTransform="capitalize">
+			<Tooltip label={`Status: Inactive`} textTransform="capitalize">
 				<Box
 					as="div"
 					h="24px"

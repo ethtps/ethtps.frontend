@@ -6,13 +6,13 @@ import {
 import moment from 'moment'
 import { useColors } from '../../../..'
 import {
-	getMaxDataFor,
 	IDataModel,
+	getMaxDataFor,
 	numberFormat,
 } from '../../../../../ethtps.data/src'
 import {
-	buildClassNames,
 	ICustomCellConfiguration,
+	buildClassNames,
 } from './ICustomCellConfiguration'
 import { tableCellTypographyStandard } from './Typography.types'
 
@@ -64,9 +64,9 @@ export function MaxValueCell(config: Partial<IMaxValueCellProps>): JSX.Element {
 				onClick={() =>
 					config.clickCallback !== undefined
 						? config.clickCallback(config.provider, 'MaxValue')
-						: () => {}
+						: () => { }
 				}>
-				<Tooltip hasArrow title={tooltipTypography}>
+				<Tooltip hasArrow label={tooltipTypography}>
 					<Text
 						className={'boldcell'}
 						{...tableCellTypographyStandard}

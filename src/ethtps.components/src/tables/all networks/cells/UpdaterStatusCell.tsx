@@ -11,13 +11,15 @@ interface IUpdaterStatusCellProps extends ICustomCellConfiguration {
 
 export function UpdaterStatusCell(props: IUpdaterStatusCellProps): JSX.Element {
 	const colors = useColors()
-	const [tooltipMessage, setTooltipMessage] = useState<string | undefined>(
+	const [tooltipMessage, setTooltipMessage] = useState<string | React.ReactNode | undefined>(
 		undefined
 	)
 	useEffect(() => {
 		if (props.status?.isUnreliable) {
 			setTooltipMessage(
-				`Live data is currently not available for ${props.provider?.name}`
+				<>
+					Live data is currently not available for {props.provider?.name}
+				</>
 			)
 		} else if (props.status?.isProbablyDown) {
 			setTooltipMessage(
@@ -29,15 +31,15 @@ export function UpdaterStatusCell(props: IUpdaterStatusCellProps): JSX.Element {
 		<>
 			<Td>
 				<Tooltip
-					bgColor={colors.gray1}
+					shouldWrapChildren
 					placement={'top'}
-					title={tooltipMessage}>
+					label={tooltipMessage}>
 					<HStack alignContent={'center'}>
 						{binaryConditionalRender(
 							<>
 								<>
 									<IconCheck aria-label="ok" />
-									<Text color={colors.text}>Ok</Text>
+									<Text className={'unselectable'} color={colors.text}>Ok</Text>
 								</>
 							</>,
 							binaryConditionalRender(

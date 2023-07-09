@@ -5,7 +5,7 @@ import { IconButton } from './IconButton'
 export function CurrentViewersIcon(): JSX.Element {
 	return (
 		<>
-			<Tooltip hasArrow title={'Nobody&aposs here'}>
+			<Tooltip hasArrow label={'Nobody&aposs here'}>
 				<IconButton icon={<IconEye />}></IconButton>
 			</Tooltip>
 		</>

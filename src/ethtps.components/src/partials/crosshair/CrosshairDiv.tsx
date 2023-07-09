@@ -19,13 +19,11 @@ export function CrosshairDiv(props:
             <NonSSRWrapper>
                 <div
                     style={{
-                        width: props.width,
-                        height: props.height,
                         position: 'absolute',
                     }}
                     onMouseLeave={() => setMousePos(undefined)}
                     onMouseMove={(e) => setMousePos(getRelativeMousePosition(e))}>
-                    <Stage width={props.width} height={props.height}>
+                    <Stage width={props.width} height={props.height - props.verticalPadding}>
                         <Layer>
                             {mousePos && <>
                                 <Line
@@ -33,13 +31,13 @@ export function CrosshairDiv(props:
                                     y={0}
                                     points={[0, mousePos.y,
                                         props.width, mousePos.y]}
-                                    stroke={colors.text} />
+                                    stroke={colors.textContrast} />
                                 <Line
                                     x={0}
                                     y={0}
                                     points={[mousePos.x, 0,
                                     mousePos.x, props.height - props.verticalPadding]}
-                                    stroke={colors.text} />
+                                    stroke={colors.textContrast} />
                             </>}
                         </Layer>
                     </Stage>

@@ -17,7 +17,7 @@ export function IconButton(props: {
 			disabled={!props.visible ?? false}
 			leftIcon={
 				<>
-					<Tooltip title={props.text}>{props.icon}</Tooltip>
+					<Tooltip label={props.text}>{props.icon}</Tooltip>
 				</>
 			}
 			iconSpacing={'auto'}

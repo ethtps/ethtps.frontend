@@ -5,7 +5,7 @@ import { IconCloudOff, IconTriangleOff } from '@tabler/icons-react'
 import NextLink from 'next/link'
 import { conditionalRender, useColors } from '../../../..'
 import { ICustomCellConfiguration } from './ICustomCellConfiguration'
-export interface INameCellProps extends ICustomCellConfiguration {}
+export interface INameCellProps extends ICustomCellConfiguration { }
 
 export function NameCell(config: INameCellProps): JSX.Element {
 	const name = config.provider?.name ?? ''
@@ -21,7 +21,7 @@ export function NameCell(config: INameCellProps): JSX.Element {
 				onClick={() =>
 					config.clickCallback !== undefined
 						? config.clickCallback(config.provider, 'Name')
-						: () => {}
+						: () => { }
 				}>
 				<Tooltip
 					hasArrow
@@ -54,8 +54,7 @@ export function NameCell(config: INameCellProps): JSX.Element {
 							<>
 								<Tooltip
 									hasArrow
-									placement={'bottom'}
-									title={`There are issues getting data for ${config.provider?.name} :/`}>
+									label={`There are issues getting data for ${config.provider?.name} :/`}>
 									<>
 										<IconCloudOff className="inline small centered-vertically" />
 									</>
@@ -67,8 +66,7 @@ export function NameCell(config: INameCellProps): JSX.Element {
 							<>
 								<Tooltip
 									hasArrow
-									placement={'bottom'}
-									title={`There is no data provider for ${config.provider?.name} :/`}>
+									label={`There is no data provider for ${config.provider?.name} :/`}>
 									<>
 										<IconTriangleOff className="spaced-horizontally" />
 									</>
