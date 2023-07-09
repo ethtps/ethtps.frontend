@@ -13,7 +13,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { TimeIntervalButtonGroup, useColors } from '../../..'
+import { CrosshairDiv, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
 	L2DataUpdateModel,
@@ -96,20 +96,22 @@ export function StreamingComponent({
 						sx={{
 							paddingTop: pad,
 						}}>
-						<StreamingTest
-							isLeaving={isLeaving}
-							dataType={hoveredDataMode ?? dataMode}
-							newestData={newestData}
-							connected={connected}
-							providerData={providerData}
-							width={sizeRef?.width}
-							maxEntries={streamConfig.limit}
-							duration={streamConfig.duration}
-							refreshInterval={streamConfig.refreshInterval}
-							height={sizeRef?.height}
-							showSidechains={showSidechains}
-							paused={paused}
-						/>
+						<CrosshairDiv>
+							<StreamingTest
+								isLeaving={isLeaving}
+								dataType={hoveredDataMode ?? dataMode}
+								newestData={newestData}
+								connected={connected}
+								providerData={providerData}
+								width={sizeRef?.width}
+								maxEntries={streamConfig.limit}
+								duration={streamConfig.duration}
+								refreshInterval={streamConfig.refreshInterval}
+								height={sizeRef?.height}
+								showSidechains={showSidechains}
+								paused={paused}
+							/>
+						</CrosshairDiv>
 					</Box>
 				</Box>
 				<Box

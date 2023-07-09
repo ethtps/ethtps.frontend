@@ -31,7 +31,7 @@ interface IProviderLinksProps {
 const createLinks = (
 	providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[],
 	websites?: ETHTPSDataIntegrationsMSSQLExternalWebsite[]
-) => {}
+) => { }
 /* Cases:
 1 - Loading (&& no error) (x)
 2 - Error (x)

@@ -1,3 +1,4 @@
+'use client'
 import { createSignalRContext } from 'react-signalr'
 import { GenericDictionary, L2DataUpdateModel } from '../../../ethtps.data/src'
 const { useSignalREffect, Provider } = createSignalRContext()

@@ -1,9 +1,7 @@
 // eslint-disable-next-line import/no-internal-modules
-import * as mdx from 'mdx/types'
-import { useEffect, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import MarkdownEditor from './MarkdownEditor'
+// import * as mdx from 'mdx/types'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import MarkdownEditor from './MarkdownEditor'
 
 type MarkdownPageModel = {
   markdown?: string | null

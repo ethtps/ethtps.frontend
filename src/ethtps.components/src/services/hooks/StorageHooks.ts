@@ -5,43 +5,47 @@ export function useQueryStringAndLocalStorageBoundState<T>(
 	paramName: string
 ): [T | undefined, (newValue: T) => void] {
 	const [state, setState] = useState<T | undefined>(undefined)
+	try {
 
-	useEffect(() => {
-		// If window is not defined (e.g., on server-side), use initialState.
-		if (typeof window === 'undefined') {
-			setState(initialState)
-			return
-		}
-
-		// Get initial value from query string or local storage, falling back to provided initial state.
-		const params = new URLSearchParams(window.location.search)
-		const paramValue = params.get(paramName)
-		let value: T = initialState
-
-		if (paramValue !== null) {
-			value = JSON.parse(paramValue)
-		} else {
-			const storedValue = localStorage.getItem(paramName)
-			if (storedValue !== null) {
-				value = JSON.parse(storedValue)
+		useEffect(() => {
+			// If window is not defined (e.g., on server-side), use initialState.
+			if (typeof window === 'undefined') {
+				setState(initialState)
+				return
 			}
-		}
 
-		setState(value)
-	}, [paramName, initialState])
+			// Get initial value from query string or local storage, falling back to provided initial state.
+			const params = new URLSearchParams(window.location.search)
+			const paramValue = params.get(paramName)
+			let value: T = initialState
 
-	useEffect(() => {
-		if (typeof window === 'undefined' || state === undefined) {
-			return
-		}
+			if (paramValue !== null) {
+				value = JSON.parse(paramValue)
+			} else {
+				const storedValue = localStorage.getItem(paramName)
+				if (storedValue !== null) {
+					value = JSON.parse(storedValue)
+				}
+			}
 
-		// Sync state with local storage and query string whenever it changes.
-		localStorage.setItem(paramName, JSON.stringify(state))
+			setState(value)
+		}, [paramName, initialState])
 
-		const params = new URLSearchParams(window.location.search)
-		params.set(paramName, JSON.stringify(state))
-		window.history.replaceState(null, '', '?' + params.toString())
-	}, [state, paramName])
+		useEffect(() => {
+			if (typeof window === 'undefined' || state === undefined) {
+				return
+			}
 
+			// Sync state with local storage and query string whenever it changes.
+			localStorage.setItem(paramName, JSON.stringify(state))
+
+			const params = new URLSearchParams(window.location.search)
+			params.set(paramName, JSON.stringify(state))
+			window.history.replaceState(null, '', '?' + params.toString())
+		}, [state, paramName])
+	}
+	catch (err) {
+		console.log(err)
+	}
 	return [state, setState]
 }

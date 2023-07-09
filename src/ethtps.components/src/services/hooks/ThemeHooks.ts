@@ -1,5 +1,6 @@
 import { useColorMode } from '@chakra-ui/system'
 
+
 export interface Theme {
 	primary: string
 	primaryContrast: string
@@ -65,6 +66,13 @@ const darkTheme: Theme = {
  * @returns an object with the current theme colors
  */
 export const useColors = () => {
-	const { colorMode, toggleColorMode } = useColorMode()
-	return colorMode === 'light' ? lightTheme : darkTheme
+	let result = lightTheme
+	try {
+		const { colorMode, toggleColorMode } = useColorMode()
+		result = colorMode === 'light' ? lightTheme : darkTheme
+	}
+	catch (e) {
+		console.log(e)
+	}
+	return result
 }

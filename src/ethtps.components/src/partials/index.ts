@@ -1,3 +1,4 @@
+export * from './crosshair';
 export * from './humanity-proof';
 export * from './live-data';
 export * from './provider-page';

@@ -22,7 +22,6 @@ import {
 	VStack,
 } from '@chakra-ui/react'
 import { ReactNode, ReactText } from 'react'
-import { IconType } from 'react-icons'
 import {
 	FiBell,
 	FiChevronDown,
@@ -33,6 +32,7 @@ import {
 	FiStar,
 	FiTrendingUp,
 } from 'react-icons/fi'
+import { IconType } from '../../..'
 
 interface LinkItemProps {
 	name: string

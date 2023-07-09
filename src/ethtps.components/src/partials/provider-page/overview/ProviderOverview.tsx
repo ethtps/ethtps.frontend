@@ -8,12 +8,7 @@ import {
 	Image,
 	SimpleGrid,
 	Skeleton,
-	Tab,
-	TabList,
-	TabPanel,
-	TabPanels,
-	Tabs,
-	Text,
+	Text
 } from '@chakra-ui/react'
 import {
 	ETHTPSDataCoreModelsResponseModelsProviderResponseModel,
@@ -25,6 +20,7 @@ import {
 	AnalysisTab,
 	binaryConditionalRender,
 	CompareTab,
+	CustomGenericTabPanel,
 	DetailsTab,
 	IComponentSize,
 	ProviderChartSection,
@@ -41,8 +37,8 @@ const iconSize = 65
 export function ProviderOverview(
 	props: {
 		provider:
-			| ETHTPSDataCoreModelsResponseModelsProviderResponseModel
-			| undefined
+		| ETHTPSDataCoreModelsResponseModelsProviderResponseModel
+		| undefined
 		api: ETHTPSApi
 		providerLinks?: ETHTPSDataIntegrationsMSSQLProviderLink[]
 	} & IComponentSize
@@ -128,44 +124,18 @@ export function ProviderOverview(
 				</SimpleGrid>
 			</SimpleGrid>
 			<Box>
-				<Tabs
-					index={currentTab ? parseInt(currentTab) : 0}
-					onChange={(v) => setCurrentTab(v?.toString())}>
-					<TabList>
-						<Tab>Overview</Tab>
-						<Tab>Details</Tab>
-						<Tab>Analysis</Tab>
-						<Tab>Compare</Tab>
-						<Tab>Status and data</Tab>
-					</TabList>
-					<TabPanels>
-						<TabPanel pt="md" tabIndex={0}>
-							<ProviderChartSection
-								api={props.api}
-								provider={provider?.name ?? undefined}
-							/>
-						</TabPanel>
-
-						<TabPanel pt="md" tabIndex={1}>
-							<DetailsTab
-								providerLinks={props.providerLinks}
-								provider={provider}
-							/>
-						</TabPanel>
-
-						<TabPanel pt="md" tabIndex={2}>
-							<AnalysisTab provider={provider} />
-						</TabPanel>
-
-						<TabPanel pt="md" tabIndex={3}>
-							<CompareTab provider={provider} />
-						</TabPanel>
-
-						<TabPanel pt="xs" tabIndex={4}>
-							<StatusTab provider={provider} />
-						</TabPanel>
-					</TabPanels>
-				</Tabs>
+				<CustomGenericTabPanel localStorageKey={'providerTab'} items={[
+					{
+						title: 'Overview', content: <ProviderChartSection
+							api={props.api}
+							provider={provider?.name ?? undefined}
+						/>
+					},
+					{ title: 'Details', content: <DetailsTab api={props.api} provider={provider} /> },
+					{ title: 'Analysis', content: <AnalysisTab provider={provider} /> },
+					{ title: 'Compare', content: <CompareTab provider={provider} /> },
+					{ title: 'Status and data', content: <StatusTab provider={provider} /> },
+				]} />
 			</Box>
 		</>
 	)

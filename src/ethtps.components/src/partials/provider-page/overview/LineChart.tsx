@@ -223,14 +223,13 @@ export function LineChart(props: ILineChartProps): JSX.Element {
 							},
 							ticks: {
 								color: colors.text,
-								callback: !loading
-									? function (label, index, labels) {
-											const v = parseInt(label.toString())
-											if (v >= 1000000)
-												return v / 1000000 + 'M'
-											if (v >= 1000) return v / 1000 + 'k'
-											return label
-									  }
+								callback: !loading ? function (label: any, index: any, labels: any) {
+									const v = parseInt(label.toString())
+									if (v >= 1000000)
+										return v / 1000000 + 'M'
+									if (v >= 1000) return v / 1000 + 'k'
+									return label
+								}
 									: undefined,
 							},
 							grid: {
