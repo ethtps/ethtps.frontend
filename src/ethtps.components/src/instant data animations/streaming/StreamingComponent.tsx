@@ -95,6 +95,7 @@ export function StreamingComponent({
 						height={sizeRef?.height ?? 0 - pad * 2}
 						sx={{
 							paddingTop: pad,
+							overflow: 'hidden',
 						}}>
 						<CrosshairDiv
 							verticalPadding={pad}

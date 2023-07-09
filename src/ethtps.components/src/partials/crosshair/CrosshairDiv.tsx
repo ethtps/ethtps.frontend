@@ -43,9 +43,9 @@ export function CrosshairDiv(props:
                         </>}
                     </Layer>
                 </Stage>
-                {props.children}
             </div>
         </NonSSRWrapper>
+            {props.children}
         </>
     )
 }
