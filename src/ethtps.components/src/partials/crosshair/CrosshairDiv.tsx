@@ -1,35 +1,47 @@
-import { Circle, Layer, Line, Rect, Stage, Text } from 'react-konva'
+import { useToast } from '@chakra-ui/react'
+import { useState } from 'react'
+import { Layer, Line, Stage } from 'react-konva'
+import { getRelativeMousePosition } from '../../..'
 import NonSSRWrapper from '../../NonSSRWrapper'
 
-export function CrosshairDiv(props: { children: JSX.Element }) {
-    return (
+export function CrosshairDiv(props:
+    {
+        children: JSX.Element
+        width: number,
+        height: number
+    }) {
+    const toast = useToast()
+    const [mousePos, setMousePos] = useState<{ x: number, y: number } | undefined>()
+    return ( // we're drawing this client-side
         <>
             <NonSSRWrapper>
-                <Stage width={window.innerWidth} height={window.innerHeight}>
-                    <Layer>
-                        <Text text="Some text on canvas" fontSize={15} />
-                        <Rect
-                            x={20}
-                            y={50}
-                            width={100}
-                            height={100}
-                            fill="red"
-                            shadowBlur={10}
-                        />
-                        <Circle x={200} y={100} radius={50} fill="green" />
-                        <Line
-                            x={20}
-                            y={200}
-                            points={[0, 0, 100, 0, 100, 100]}
-                            tension={0.5}
-                            closed
-                            stroke="black"
-                            fillLinearGradientStartPoint={{ x: -50, y: -50 }}
-                            fillLinearGradientEndPoint={{ x: 50, y: 50 }}
-                            fillLinearGradientColorStops={[0, 'red', 1, 'yellow']}
-                        />
-                    </Layer>
-                </Stage>
+                <div
+                    style={{
+                        width: props.width,
+                        height: props.height,
+                        position: 'absolute',
+                    }}
+                    onMouseLeave={() => setMousePos(undefined)}
+                    onMouseMove={(e) => setMousePos(getRelativeMousePosition(e))}>
+                    <Stage width={props.width} height={props.height}>
+                        <Layer>
+                            {mousePos && <>
+                                <Line
+                                    x={0}
+                                    y={0}
+                                    points={[0, mousePos.y,
+                                        props.width, mousePos.y]}
+                                    stroke="black" />
+                                <Line
+                                    x={0}
+                                    y={0}
+                                    points={[mousePos.x, 0,
+                                    mousePos.x, props.height]}
+                                    stroke="black" />
+                            </>}
+                        </Layer>
+                    </Stage>
+                </div>
             </NonSSRWrapper>
             {props.children}
         </>

@@ -103,3 +103,11 @@ export function capitalizeFirstLetter(str?: string | null) {
 
 export { darkenColorIfNecessary, setQueryParams }
 export type { IQueryParams }
+
+export function getRelativeMousePosition(e: any) {
+	const parentRect = e.currentTarget.getBoundingClientRect()
+	return {
+		x: e.clientX - parentRect.left,
+		y: e.clientY - parentRect.top,
+	}
+}

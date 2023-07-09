@@ -96,7 +96,9 @@ export function StreamingComponent({
 						sx={{
 							paddingTop: pad,
 						}}>
-						<CrosshairDiv>
+						<CrosshairDiv
+							width={sizeRef?.width ?? 0}
+							height={sizeRef?.height ?? 0}>
 							<StreamingTest
 								isLeaving={isLeaving}
 								dataType={hoveredDataMode ?? dataMode}
