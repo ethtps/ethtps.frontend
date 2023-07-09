@@ -97,6 +97,7 @@ export function StreamingComponent({
 							paddingTop: pad,
 						}}>
 						<CrosshairDiv
+							verticalPadding={pad}
 							width={sizeRef?.width ?? 0}
 							height={sizeRef?.height ?? 0}>
 							<StreamingTest
