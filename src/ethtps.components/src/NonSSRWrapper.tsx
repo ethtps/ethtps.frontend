@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-internal-modules
 import dynamic from 'next/dynamic'
 import React from 'react'
+
 const NonSSRWrapper = (props: any) => (
 	<React.Fragment>{props.children}</React.Fragment>
 )

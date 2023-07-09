@@ -6,7 +6,7 @@ export interface InstantDataAnimationProps {
     width?: number
     height?: number
     dataType: ETHTPSDataCoreDataType
-    newestData: Dictionary<L2DataUpdateModel>
+    newestData?: Dictionary<L2DataUpdateModel>
     connected: boolean
     providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
     maxEntries: number

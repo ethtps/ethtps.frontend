@@ -22,6 +22,7 @@ const config = {
 module.exports = withTM(withMDX({
   experimental: {
     appDir: true,
+    cpus: 8,
     swcPlugins: [
       [
         'next-superjson-plugin',

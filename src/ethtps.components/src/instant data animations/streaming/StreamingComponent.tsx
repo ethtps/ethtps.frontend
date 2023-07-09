@@ -13,7 +13,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CrosshairDiv, TimeIntervalButtonGroup, useColors } from '../../..'
+import { CrosshairDiv, InstantFunnel, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
 	L2DataUpdateModel,
@@ -100,7 +100,7 @@ export function StreamingComponent({
 							verticalPadding={pad}
 							width={sizeRef?.width ?? 0}
 							height={sizeRef?.height ?? 0}>
-							<StreamingTest
+							<InstantFunnel
 								width={sizeRef?.width}
 								height={sizeRef?.height}
 								isLeaving={isLeaving}
