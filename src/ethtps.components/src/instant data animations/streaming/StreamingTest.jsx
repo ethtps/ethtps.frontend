@@ -251,6 +251,20 @@ export function StreamingTest({
 							display: false,
 						},
 					},
+					elements: {
+						point: {
+							hitRadius: 10,
+						}
+					},
+					interaction: {
+						mode: 'nearest',
+						hover: {
+							mode: 'nearest',
+							onHover: function (e) {
+								console.log(e)
+							}
+						}
+					},
 					tooltip: {
 						enabled: false,
 						mode: 'nearest',

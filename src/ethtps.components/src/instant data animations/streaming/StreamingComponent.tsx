@@ -1,4 +1,4 @@
-import { Box, Button, Container, Tooltip } from '@chakra-ui/react'
+import { Box, Button, Container, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { useSize } from '@chakra-ui/react-use-size'
 import { Dictionary } from '@reduxjs/toolkit'
 import {
@@ -101,16 +101,16 @@ export function StreamingComponent({
 							width={sizeRef?.width ?? 0}
 							height={sizeRef?.height ?? 0}>
 							<StreamingTest
+								width={sizeRef?.width}
+								height={sizeRef?.height}
 								isLeaving={isLeaving}
 								dataType={hoveredDataMode ?? dataMode}
 								newestData={newestData}
 								connected={connected}
 								providerData={providerData}
-								width={sizeRef?.width}
 								maxEntries={streamConfig.limit}
 								duration={streamConfig.duration}
 								refreshInterval={streamConfig.refreshInterval}
-								height={sizeRef?.height}
 								showSidechains={showSidechains}
 								paused={paused}
 							/>
@@ -175,7 +175,9 @@ export function StreamingComponent({
 	])
 	return (
 		<>
-			<Box ref={containerRef}>{liveStat}</Box>
+			<Box ref={containerRef}>
+				{liveStat}
+			</Box>
 		</>
 	)
 }

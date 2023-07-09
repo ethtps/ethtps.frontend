@@ -12,6 +12,7 @@ export interface Theme {
 	textContrast: string
 	muted: string
 	highlight: string
+	crosshair: string
 	gray: string
 	gray1: string
 	gray2: string
@@ -31,6 +32,7 @@ const lightTheme: Theme = {
 	textContrast: 'gray.900',
 	muted: 'pink.50',
 	highlight: '#D0F5BE',
+	crosshair: '#1d5169',
 	gray: 'gray.900',
 	gray1: 'gray.50',
 	gray2: 'gray.100',
@@ -51,6 +53,7 @@ const darkTheme: Theme = {
 	textContrast: '#B799FF',
 	muted: 'gray.750',
 	highlight: '#D0F5BE',
+	crosshair: '#FFFFFF',
 	gray: 'gray.900',
 	gray1: 'gray.800',
 	gray2: 'gray.800',
