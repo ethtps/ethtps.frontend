@@ -11,6 +11,7 @@ export function CrosshairDiv(props:
         width: number,
         height: number,
         verticalPadding: number
+        ssr?: boolean
     }) {
     const toast = useToast()
     const [mousePos, setMousePos] = useState<{ x: number, y: number } | undefined>()
@@ -42,10 +43,11 @@ export function CrosshairDiv(props:
                                 strokeWidth={1} />
                         </>}
                     </Layer>
+                    {!props.ssr && props.children}
                 </Stage>
             </div>
         </NonSSRWrapper>
-            {props.children}
+            {!!props.ssr && props.children}
         </>
     )
 }

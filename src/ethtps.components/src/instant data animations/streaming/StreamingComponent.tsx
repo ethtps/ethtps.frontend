@@ -13,7 +13,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CrosshairDiv, InstantFunnel, TimeIntervalButtonGroup, useColors } from '../../..'
+import { CrosshairDiv, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
 	L2DataUpdateModel,
@@ -21,7 +21,7 @@ import {
 } from '../../../../ethtps.data/src'
 import { SimpleLiveDataPoint, SimpleLiveDataStat } from '../simple stat'
 import { MouseOverDataTypesEvents } from '../types'
-import { StreamingTest } from './StreamingTest'
+import { CustomStreamchart } from './custom/CustomStreamchart'
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents {
 	connected: boolean
@@ -98,10 +98,11 @@ export function StreamingComponent({
 							overflow: 'hidden',
 						}}>
 						<CrosshairDiv
+							ssr={false}
 							verticalPadding={pad}
 							width={sizeRef?.width ?? 0}
 							height={sizeRef?.height ?? 0}>
-							<InstantFunnel
+							<CustomStreamchart
 								width={sizeRef?.width}
 								height={sizeRef?.height}
 								isLeaving={isLeaving}

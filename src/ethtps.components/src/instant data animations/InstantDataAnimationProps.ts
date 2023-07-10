@@ -15,4 +15,5 @@ export interface InstantDataAnimationProps {
     showSidechains: boolean
     paused: boolean
     isLeaving?: boolean
+    verticalPadding?: number
 }
