@@ -10,13 +10,16 @@ import {
 	Stack,
 	Text,
 	Textarea,
+	useToast,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { useColors } from '..'
+import { conditionalRender, useColors } from '..'
+import { ETHTPSApi } from '../../../ethtps.data/src'
 
 interface IDataIssueDialogDialogProps {
 	isOpen: boolean
 	onClose: () => void
+	api: ETHTPSApi
 }
 
 export function DataIssueDialog(props: IDataIssueDialogDialogProps) {
@@ -32,7 +35,7 @@ export function DataIssueDialog(props: IDataIssueDialogDialogProps) {
 	useEffect(() => {
 		const validateInput = () => {
 			let isValid = true
-			if (!description) {
+			if (description?.length < 10) {
 				isValid = false
 				setDescriptionValid(false)
 			}
@@ -46,7 +49,40 @@ export function DataIssueDialog(props: IDataIssueDialogDialogProps) {
 	const handleClose = () => {
 		onClose()
 	}
-
+	const toast = useToast()
+	const submit = async () => {
+		setSubmitEnabled(false)
+		try {
+			await props.api.reportIssueAsync({
+				eTHTPSDataCoreModelsIssueModel: {
+					text: description
+				}
+			})
+			toast({
+				title: 'Success',
+				description: 'We have received your message',
+				status: 'success',
+				duration: 9000,
+				isClosable: true,
+			})
+			setTimeout(() => {
+				handleClose()
+			}, 500)
+		}
+		catch (e) {
+			toast({
+				title: 'Error',
+				description: 'There was an error processing your request',
+				status: 'error',
+				duration: 9000,
+				isClosable: true,
+			})
+			console.error(e)
+		}
+		finally {
+			setSubmitEnabled(true)
+		}
+	}
 	return (
 		<AlertDialog
 			motionPreset="slideInBottom"
@@ -65,9 +101,11 @@ export function DataIssueDialog(props: IDataIssueDialogDialogProps) {
 							this page?
 						</Text>
 						<Textarea
+							isInvalid={!descriptionValid}
 							onChange={(e) => setDescription(e.target.value)}
 							placeholder="Describe the issue"
 						/>
+						{conditionalRender(<Text>{description?.length}/10</Text>, description?.length < 10)}
 					</Stack>
 				</AlertDialogBody>
 				<AlertDialogFooter>
@@ -75,6 +113,7 @@ export function DataIssueDialog(props: IDataIssueDialogDialogProps) {
 						Cancel
 					</Button>
 					<Button
+						onClick={submit}
 						isDisabled={!submitEnabled}
 						colorScheme="green"
 						ml={3}>

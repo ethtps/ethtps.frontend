@@ -18,9 +18,9 @@ import { IconExclamationCircle } from '@tabler/icons-react'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import React, { useState } from 'react'
 import {
-	conditionalRender,
 	DataIssueDialog,
 	SeeMoreButton,
+	conditionalRender,
 	useColors,
 } from '../../../..'
 import { IProviderTableModel } from '../../../../../ethtps.data/src'
@@ -34,6 +34,7 @@ export default function AllProvidersTable({
 	instantData,
 	dataType,
 	showSidechains,
+	api,
 	maxRowsBeforeShowingExpand = 25,
 }: Partial<IProviderTableModel>): JSX.Element {
 	const oldShowRowCountValue = maxRowsBeforeShowingExpand as number
@@ -75,6 +76,7 @@ export default function AllProvidersTable({
 								/>
 							</Tooltip>
 							<DataIssueDialog
+								api={api!}
 								isOpen={issueOpen}
 								onClose={() => setIssueOpen(false)}
 							/>
@@ -107,7 +109,7 @@ export default function AllProvidersTable({
 				/>,
 
 				showRowCount > 0 &&
-					(providerData?.length as number) > showRowCount
+				(providerData?.length as number) > showRowCount
 			)}
 			{conditionalRender(
 				<Alert status="error">

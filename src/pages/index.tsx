@@ -167,6 +167,7 @@ export default function Index({
             <Box overflow={'scroll'}>
               <AllProvidersTable
                 maxData={maxData}
+                api={api}
                 instantData={instantData}
                 providerData={getFilteredProviderData()}
                 aggregator={copiedAggregator}
