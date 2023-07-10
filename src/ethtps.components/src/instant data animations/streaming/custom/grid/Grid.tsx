@@ -49,7 +49,7 @@ export function Grid(props: Partial<IGridProps>) {
     const gridLayerRef0 = useRef<Konva.Layer>(new Konva.Layer())
     const gridLayerRef1 = useRef<Konva.Layer>(new Konva.Layer())
     const animationConstructor = useCallback(() => {
-        console.info('animation instantiation callback')
+        //console.info('animation instantiation callback')
         return new Konva.Animation((frame) => {
             if (frame?.timeDiff && props.speed && props.height && !props.paused) {
                 const delta = (frame?.timeDiff / 1000) * props.speed
@@ -86,12 +86,12 @@ export function Grid(props: Partial<IGridProps>) {
     }, [animation])
     animation?.start()
     const getFirstGrid = useMemo(() => {
-        console.info('getFirstGrid callback')
+        //console.info('getFirstGrid callback')
         return createGrid(xLines, yLines, xDivisionSize, yDivisionSize, colors, props.width, props.height)
     }, [xLines, yLines, xDivisionSize, yDivisionSize, colors, props.connected])
 
     const getSecondGrid = useMemo(() => {
-        console.info('getSecondGrid callback')
+        //console.info('getSecondGrid callback')
         return createGrid(xLines, yLines, xDivisionSize, yDivisionSize, colors, props.width, props.height)
     }, [xLines, yLines, xDivisionSize, yDivisionSize, colors, props.connected])
 

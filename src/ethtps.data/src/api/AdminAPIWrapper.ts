@@ -3,8 +3,8 @@ import { Configuration as AdminAPIConfiguration, AdminApi as ConfigurationAPI, E
 import { Configuration as APIConfiguration, ExperimentApi, ExternalWebsiteCategoriesApi, ExternalWebsitesApi, GeneralApi, ProviderLinksApi } from 'ethtps.api'
 import { APIKeyMiddleware } from '.'
 
-const API_URL = "http://localhost:10202/api/v3"
-const ADMIN_URL = "http://localhost:33018/api/v3"
+const API_URL = "http://localhost:10202"
+const ADMIN_URL = "http://localhost:33018"
 
 const throwException = async (response: Response) => {
     throw new Error(`Error ${response.status}: ${response.statusText}`)
@@ -21,7 +21,16 @@ const throwExceptionIfNotOk = async (response: Response) => {
 
 export class AdminAPIWrapper {
 
-    public static DEFAULT = new AdminAPIWrapper(ADMIN_URL, (typeof window === 'undefined') ? (process.env.REACT_APP_FRONTEND_API_KEY ?? '') : localStorage?.getItem('apiKey') ?? '', API_URL, (typeof window === 'undefined') ? (process.env.REACT_APP_FRONTEND_API_KEY ?? '') : localStorage?.getItem('apiKey') ?? '')
+    public static DEFAULT =
+        new AdminAPIWrapper(
+            ADMIN_URL,
+            (typeof window === 'undefined') ?
+                (process.env.REACT_APP_FRONTEND_API_KEY ?? '')
+                : localStorage?.getItem('apiKey') ?? '',
+            API_URL,
+            (typeof window === 'undefined') ?
+                (process.env.REACT_APP_FRONTEND_API_KEY ?? '')
+                : localStorage?.getItem('apiKey') ?? '')
 
     private _experimentAPI = new ExperimentApi()
     private providersAPI = new ProvidersApi()

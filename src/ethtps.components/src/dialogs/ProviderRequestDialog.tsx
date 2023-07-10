@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from 'react'
 import {
-	Button,
 	AlertDialog,
-	AlertDialogOverlay,
-	AlertDialogContent,
-	AlertDialogHeader,
-	AlertDialogCloseButton,
 	AlertDialogBody,
+	AlertDialogCloseButton,
+	AlertDialogContent,
 	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogOverlay,
+	Button,
 	Input,
 	Stack,
+	Tooltip,
 } from '@chakra-ui/react'
+import { ETHTPSDataIntegrationsMSSQLProviderType } from 'ethtps.api'
+import React, { useEffect, useState } from 'react'
+import { CustomDropdown, useColors } from '..'
 
 interface IProviderRequestDialogProps {
 	isOpen: boolean
 	onClose: () => void
+	networkTypes: ETHTPSDataIntegrationsMSSQLProviderType[]
 }
 
-export function ProviderRequestDialog(props: IProviderRequestDialogProps) {
+export function ProviderRequestDialog({
+	...props
+}: IProviderRequestDialogProps) {
 	const { isOpen, onClose } = props
 	const cancelRef = React.useRef<any>(null)
 
@@ -30,9 +36,9 @@ export function ProviderRequestDialog(props: IProviderRequestDialogProps) {
 	const [isNetworkNameValid, setIsNetworkNameValid] = useState(true)
 	const [isNetworkTypeValid, setIsNetworkTypeValid] = useState(true)
 	const [isWebsiteValid, setIsWebsiteValid] = useState(true)
-
 	const [submitEnabled, setSubmitEnabled] = useState(false)
-
+	const colors = useColors()
+	const [dropdownOption, setDropdownOption] = useState<string>()
 	useEffect(() => {
 		const validateInput = () => {
 			let isValid = true
@@ -69,6 +75,7 @@ export function ProviderRequestDialog(props: IProviderRequestDialogProps) {
 
 	return (
 		<AlertDialog
+			closeOnOverlayClick={false} // Whoever opens this probably means to do so - but might accidentally click outside of the dialog and close it so we make sure they *want* to close it useGellMannEffect(()=>{},[]) lol
 			motionPreset="slideInBottom"
 			leastDestructiveRef={cancelRef}
 			onClose={handleClose}
@@ -76,18 +83,43 @@ export function ProviderRequestDialog(props: IProviderRequestDialogProps) {
 			isCentered>
 			<AlertDialogOverlay />
 			<AlertDialogContent>
-				<AlertDialogHeader>L2 addition request</AlertDialogHeader>
-				<AlertDialogCloseButton />
+				<AlertDialogHeader>Request to include an L2</AlertDialogHeader>
+				<Tooltip label={'Close'}>
+					<AlertDialogCloseButton />
+				</Tooltip>
 				<AlertDialogBody>
 					<Stack spacing={3}>
 						<Input
+							_placeholder={{
+								color: colors.text,
+							}}
 							size="md"
 							placeholder="Network name (required)"
 							value={networkName}
 							onChange={(e) => setNetworkName(e.target.value)}
 							isInvalid={!isNetworkNameValid}
 						/>
+						<CustomDropdown
+							onChange={(o, k) => {
+								if (o?.name) {
+									setDropdownOption(o.name)
+									if (o.name !== 'Something else...') {
+										setNetworkType(o.name)
+									}
+									else {
+										setNetworkType('')
+									}
+								}
+							}}
+							displayedKey={'name'}
+							disabledOptions={props.networkTypes.filter(o => o.name === 'Mainnet')}
+							extraOptions={[{ name: 'Not sure' }, { name: 'Something else...' }]}
+							options={props.networkTypes} />
 						<Input
+							hidden={dropdownOption !== 'Something else...'}
+							_placeholder={{
+								color: colors.text,
+							}}
 							size="md"
 							placeholder="Network type (required)"
 							value={networkType}
@@ -95,6 +127,9 @@ export function ProviderRequestDialog(props: IProviderRequestDialogProps) {
 							isInvalid={!isNetworkTypeValid}
 						/>
 						<Input
+							_placeholder={{
+								color: colors.text,
+							}}
 							size="md"
 							placeholder="Project website (required)"
 							value={website}
@@ -102,12 +137,18 @@ export function ProviderRequestDialog(props: IProviderRequestDialogProps) {
 							isInvalid={!isWebsiteValid}
 						/>
 						<Input
+							_placeholder={{
+								color: colors.text,
+							}}
 							size="md"
 							placeholder="Short description (optional)"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
 						/>
 						<Input
+							_placeholder={{
+								color: colors.text,
+							}}
 							size="md"
 							placeholder="Block explorer URL (optional)"
 							value={explorerUrl}

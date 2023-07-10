@@ -1,3 +1,5 @@
+
+import { AdminAPIWrapper } from '@/ethtps.data'
 import { Link } from '@chakra-ui/next-js'
 import {
   Button,
@@ -9,7 +11,7 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { IconEye } from '@tabler/icons-react'
-import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel, ETHTPSDataIntegrationsMSSQLProviderType } from 'ethtps.api'
 import { GetServerSideProps } from 'next'
 import { useEffect } from 'react'
 import {
@@ -22,18 +24,21 @@ import { api } from '../services'
 
 interface IStatusProps {
   providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+  providerTypes: ETHTPSDataIntegrationsMSSQLProviderType[]
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
+  const types = await AdminAPIWrapper.DEFAULT.getAllProviderTypesAsync()
   const providers = await api.getProvidersAsync()
   return {
     props: {
-      providerData: providers
+      providerData: providers,
+      providerTypes: types
     }
   }
 }
 
-export default function Status({ providerData }: IStatusProps) {
+export default function Status({ providerData, providerTypes }: IStatusProps) {
   const colors = useColors()
   const toast = useToast()
   useEffect(() => {
@@ -117,6 +122,7 @@ export default function Status({ providerData }: IStatusProps) {
             submit a request
           </Button>
           <ProviderRequestDialog
+            networkTypes={providerTypes}
             isOpen={showSubmissionDialog[0]}
             onClose={() => showSubmissionDialog[1].off()}
           />
