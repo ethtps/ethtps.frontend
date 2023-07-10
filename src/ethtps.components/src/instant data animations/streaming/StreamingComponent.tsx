@@ -54,109 +54,15 @@ export function StreamingComponent({
 	const colors = useColors()
 	const containerRef = useRef<any>(null)
 	const sizeRef = useSize(containerRef)
-	const [interval, setInterval] = useState<ExtendedTimeInterval>(
-		ETHTPSDataCoreTimeInterval.ONE_MINUTE
-	)
-	const [streamConfig, setStreamConfig] = useState(
-		TimeIntervalToStreamProps(interval)
-	)
+	const [interval, setInterval] = useState<ExtendedTimeInterval>(ETHTPSDataCoreTimeInterval.ONE_MINUTE)
+	const [streamConfig, setStreamConfig] = useState(TimeIntervalToStreamProps(interval))
 	useEffect(() => {
 		setStreamConfig(TimeIntervalToStreamProps(interval))
 	}, [interval])
 	const [paused, setPaused] = useState(false)
 	const liveStat = useMemo(() => {
 		return (
-			<Container
-				h={600}
-				w={sizeRef?.width}
-				sx={{
-					margin: 0,
-					padding: 0,
-				}}>
-				<SimpleLiveDataStat
-					absolute
-					fillWidth
-					connected={connected}
-					onClick={onClick}
-					onMouseLeave={onMouseLeave}
-					onMouseOver={onMouseOver}
-					currentDataType={hoveredDataMode ?? dataMode}
-					data={data}
-					w={sizeRef?.width}
-				/>
-				<Box
-					w={sizeRef?.width}
-					h={sizeRef?.height ?? 0 + pad * 2}
-					bg={colors.tertiary}
-					borderRadius="lg"
-					overflow="scroll">
-					<Box
-						width={sizeRef?.width}
-						height={sizeRef?.height ?? 0 - pad * 2}
-						sx={{
-							paddingTop: pad,
-							overflow: 'hidden',
-						}}>
-						<CrosshairDiv
-							ssr={false}
-							verticalPadding={pad}
-							width={sizeRef?.width ?? 0}
-							height={sizeRef?.height ?? 0}>
-							<CustomStreamchart
-								width={sizeRef?.width}
-								height={sizeRef?.height}
-								isLeaving={isLeaving}
-								dataType={hoveredDataMode ?? dataMode}
-								newestData={newestData}
-								connected={connected}
-								providerData={providerData}
-								maxEntries={streamConfig.limit}
-								duration={streamConfig.duration}
-								refreshInterval={streamConfig.refreshInterval}
-								showSidechains={showSidechains}
-								paused={paused}
-							/>
-						</CrosshairDiv>
-					</Box>
-				</Box>
-				<Box
-					w={sizeRef?.width}
-					bg={colors.tertiary}
-					borderRadius="lg"
-					sx={{
-						padding: '5px',
-					}}>
-					<TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
-					<Tooltip
-						label={`Sidechains ${showSidechains ? 'shown' : 'hidden'
-							}. Click to toggle`}>
-						<Button
-							iconSpacing={0}
-							leftIcon={
-								showSidechains ? <IconLink /> : <IconLinkOff />
-							}
-							variant={'ghost'}
-							onClick={showSidechainsToggled}
-						/>
-					</Tooltip>
-					<Tooltip label={`Click to ${paused ? 'resume' : 'pause'}`}>
-						<Button
-							disabled={!connected}
-							iconSpacing={0}
-							leftIcon={
-								paused ? (
-									<IconPlayerPlay />
-								) : (
-									<IconPlayerPause />
-								)
-							}
-							variant={'ghost'}
-							onClick={() => setPaused(!paused)}
-						/>
-					</Tooltip>
-				</Box>
-			</Container>
-		)
+			<></>)
 	}, [
 		connected,
 		newestData,
@@ -170,15 +76,105 @@ export function StreamingComponent({
 		onMouseLeave,
 		onMouseOver,
 		data,
-		streamConfig,
+		isLeaving,
 		showSidechains,
 		showSidechainsToggled,
 		paused,
+		interval
 	])
 	return (
 		<>
 			<Box ref={containerRef}>
-				{liveStat}
+				<Container
+					h={600}
+					w={sizeRef?.width}
+					sx={{
+						margin: 0,
+						padding: 0,
+					}}>
+					<SimpleLiveDataStat
+						absolute
+						fillWidth
+						connected={connected}
+						onClick={onClick}
+						onMouseLeave={onMouseLeave}
+						onMouseOver={onMouseOver}
+						currentDataType={hoveredDataMode ?? dataMode}
+						data={data}
+						w={sizeRef?.width}
+					/>
+					<Box
+						w={sizeRef?.width}
+						h={sizeRef?.height ?? 0 + pad * 2}
+						bg={colors.tertiary}
+						borderRadius="lg"
+						overflow="scroll">
+						<Box
+							width={sizeRef?.width}
+							height={sizeRef?.height ?? 0 - pad * 2}
+							sx={{
+								paddingTop: pad,
+								overflow: 'hidden',
+							}}>
+							<CrosshairDiv
+								ssr={false}
+								verticalPadding={pad}
+								width={sizeRef?.width ?? 0}
+								height={sizeRef?.height ?? 0}>
+								<CustomStreamchart
+									width={sizeRef?.width}
+									height={sizeRef?.height}
+									isLeaving={isLeaving}
+									dataType={hoveredDataMode ?? dataMode}
+									newestData={newestData}
+									connected={connected}
+									providerData={providerData}
+									maxEntries={streamConfig.limit}
+									duration={streamConfig.duration}
+									refreshInterval={streamConfig.refreshInterval}
+									showSidechains={showSidechains}
+									paused={paused}
+								/>
+							</CrosshairDiv>
+						</Box>
+					</Box>
+					<Box
+						w={sizeRef?.width}
+						bg={colors.tertiary}
+						borderRadius="lg"
+						sx={{
+							padding: '5px',
+						}}>
+						<TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
+						<Tooltip
+							label={`Sidechains ${showSidechains ? 'shown' : 'hidden'
+								}. Click to toggle`}>
+							<Button
+								iconSpacing={0}
+								leftIcon={
+									showSidechains ? <IconLink /> : <IconLinkOff />
+								}
+								variant={'ghost'}
+								onClick={showSidechainsToggled}
+							/>
+						</Tooltip>
+						<Tooltip label={`Click to ${paused ? 'resume' : 'pause'}`}>
+							<Button
+								disabled={!connected}
+								iconSpacing={0}
+								leftIcon={
+									paused ? (
+										<IconPlayerPlay />
+									) : (
+										<IconPlayerPause />
+									)
+								}
+								variant={'ghost'}
+								onClick={() => setPaused(!paused)}
+							/>
+						</Tooltip>
+					</Box>
+				</Container>
 			</Box>
 		</>
 	)

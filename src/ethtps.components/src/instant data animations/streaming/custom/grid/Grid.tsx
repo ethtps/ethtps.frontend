@@ -1,5 +1,5 @@
 import Konva from "konva"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Group, Layer, Line } from "react-konva"
 import { InstantDataAnimationProps, Theme, range, useColors } from "../../../../.."
 
@@ -9,14 +9,14 @@ interface IGridProps extends InstantDataAnimationProps {
     speed?: number // pixels per second
 }
 
-function createGrid(xLines: number, yLines: number, xDivisionSize: number, yDivisionSize: number, colors: Theme, props: Partial<IGridProps>) {
-    return <Group width={props.width} height={props.height} visible>
+function createGrid(xLines: number, yLines: number, xDivisionSize: number, yDivisionSize: number, colors: Theme, width?: number, height?: number) {
+    return <Group width={width} height={height} visible>
         {range(xLines).map((i) => {// vertical lines
             return <Line
                 key={`${i}x`}
                 x={0}
                 y={0}
-                points={[i * xDivisionSize, 0, i * xDivisionSize, props.height ?? 0]}
+                points={[i * xDivisionSize, 0, i * xDivisionSize, height ?? 0]}
                 stroke={colors.grid}
                 strokeEnabled
                 strokeWidth={1} />
@@ -27,7 +27,7 @@ function createGrid(xLines: number, yLines: number, xDivisionSize: number, yDivi
                 key={`${i}y`}
                 x={0}
                 y={0}
-                points={[0, i * yDivisionSize, props.width ?? 0, i * yDivisionSize]}
+                points={[0, i * yDivisionSize, width ?? 0, i * yDivisionSize]}
                 stroke={colors.grid}
                 strokeEnabled
                 strokeWidth={1} />
@@ -48,53 +48,62 @@ export function Grid(props: Partial<IGridProps>) {
     }, [props.width, props.height, xLines, yLines])
     const gridLayerRef0 = useRef<Konva.Layer>(new Konva.Layer())
     const gridLayerRef1 = useRef<Konva.Layer>(new Konva.Layer())
-    const animation = new Konva.Animation((frame) => {
-        if (frame?.timeDiff && props.speed && props.height) {
-            const delta = (frame?.timeDiff / 1000) * props.speed
-            gridLayerRef0?.current?.move({ x: 0, y: -delta })
-            if (gridLayerRef0?.current?.y() <= -props.height) {
-                gridLayerRef0?.current?.move({ x: 0, y: 2 * props.height })
+    const animationConstructor = useCallback(() => {
+        console.info('animation instantiation callback')
+        return new Konva.Animation((frame) => {
+            if (frame?.timeDiff && props.speed && props.height && !props.paused) {
+                const delta = (frame?.timeDiff / 1000) * props.speed
+                gridLayerRef0?.current?.move({ x: 0, y: -delta })
+                if (gridLayerRef0?.current?.y() <= -props.height) {
+                    gridLayerRef0?.current?.move({ x: 0, y: 2 * props.height })
+                }
+                gridLayerRef1?.current?.move({ x: 0, y: -delta })
+                if (gridLayerRef1?.current?.y() <= -props.height) {
+                    gridLayerRef1?.current?.move({ x: 0, y: 2 * props.height })
+                }
             }
-            gridLayerRef1?.current?.move({ x: 0, y: -delta })
-            if (gridLayerRef1?.current?.y() <= -props.height) {
-                gridLayerRef1?.current?.move({ x: 0, y: 2 * props.height })
-            }
-        }
-    }, [gridLayerRef0.current])
+        }, [gridLayerRef0.current, gridLayerRef1.current])
+    }, [props.height, props.speed, props.paused])
+    const [animation, setAnimation] = useState<Konva.Animation | undefined>()
+    useEffect(() => {
+        setAnimation(animationConstructor())
+    }, [animationConstructor])
     useEffect(() => {
         if (!props.paused) {
-            animation.start()
+            animation?.start()
         }
         else {
-            animation.stop()
+            animation?.stop()
         }
         return () => {
-            animation.stop()
+            animation?.stop()
         }
-    }, [props.paused])
+    }, [props.paused, animation])
     useEffect(() => {
         if (!props.paused) {
-            animation.start()
+            animation?.start()
         }
-    }, [])
-    animation.start()
-    const getFirstGrid = useCallback(() => {
-        return createGrid(xLines, yLines, xDivisionSize, yDivisionSize, colors, props)
-    }, [xLines, yLines, xDivisionSize, yDivisionSize, colors, props])
+    }, [animation])
+    animation?.start()
+    const getFirstGrid = useMemo(() => {
+        console.info('getFirstGrid callback')
+        return createGrid(xLines, yLines, xDivisionSize, yDivisionSize, colors, props.width, props.height)
+    }, [xLines, yLines, xDivisionSize, yDivisionSize, colors, props.connected])
 
-    const getSecondGrid = useCallback(() => {
-        return createGrid(xLines, yLines, xDivisionSize, yDivisionSize, colors, props)
-    }, [xLines, yLines, xDivisionSize, yDivisionSize, colors, props])
+    const getSecondGrid = useMemo(() => {
+        console.info('getSecondGrid callback')
+        return createGrid(xLines, yLines, xDivisionSize, yDivisionSize, colors, props.width, props.height)
+    }, [xLines, yLines, xDivisionSize, yDivisionSize, colors, props.connected])
 
 
     return <>
         <Layer ref={gridLayerRef0}>
-            {getFirstGrid()}
+            {getFirstGrid}
         </Layer>
         <Layer
             y={props.height ?? 0}
             ref={gridLayerRef1}>
-            {getSecondGrid()}
+            {getSecondGrid}
         </Layer>
     </>
 }
