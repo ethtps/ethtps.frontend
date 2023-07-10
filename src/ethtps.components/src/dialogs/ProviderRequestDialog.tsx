@@ -10,15 +10,18 @@ import {
 	Input,
 	Stack,
 	Tooltip,
+	useToast,
 } from '@chakra-ui/react'
 import { ETHTPSDataIntegrationsMSSQLProviderType } from 'ethtps.api'
 import React, { useEffect, useState } from 'react'
 import { CustomDropdown, useColors } from '..'
+import { ETHTPSApi } from '../../../ethtps.data/src'
 
 interface IProviderRequestDialogProps {
 	isOpen: boolean
 	onClose: () => void
 	networkTypes: ETHTPSDataIntegrationsMSSQLProviderType[]
+	api: ETHTPSApi
 }
 
 export function ProviderRequestDialog({
@@ -39,6 +42,44 @@ export function ProviderRequestDialog({
 	const [submitEnabled, setSubmitEnabled] = useState(false)
 	const colors = useColors()
 	const [dropdownOption, setDropdownOption] = useState<string>()
+	const toast = useToast()
+	const submit = async () => {
+		setSubmitEnabled(false)
+		try {
+			await props.api.createProviderRequestAsync({
+				eTHTPSDataCoreModelsQueriesDataRequestsL2AdditionRequestModel: {
+					networkName,
+					type: networkType,
+					projectWebsite: website,
+					shortDescription: description,
+					blockExplorerURL: explorerUrl
+				}
+			})
+			toast({
+				title: 'Success',
+				description: 'We have received your request',
+				status: 'success',
+				duration: 9000,
+				isClosable: true,
+			})
+			setTimeout(() => {
+				handleClose()
+			}, 500)
+		}
+		catch (e) {
+			toast({
+				title: 'Error',
+				description: 'There was an error processing your request',
+				status: 'error',
+				duration: 9000,
+				isClosable: true,
+			})
+			console.error(e)
+		}
+		finally {
+			setSubmitEnabled(true)
+		}
+	}
 	useEffect(() => {
 		const validateInput = () => {
 			let isValid = true
@@ -60,7 +101,10 @@ export function ProviderRequestDialog({
 				isValid = false
 				setIsWebsiteValid(false)
 			} else {
-				setIsWebsiteValid(true)
+				const re1 = /^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/
+				const re2 = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
+				if (re1.test(website) || re2.test(website)) setIsWebsiteValid(true)
+				else isValid = false
 			}
 
 			setSubmitEnabled(isValid)
@@ -100,6 +144,7 @@ export function ProviderRequestDialog({
 							isInvalid={!isNetworkNameValid}
 						/>
 						<CustomDropdown
+							required
 							onChange={(o, k) => {
 								if (o?.name) {
 									setDropdownOption(o.name)
@@ -112,6 +157,7 @@ export function ProviderRequestDialog({
 								}
 							}}
 							displayedKey={'name'}
+							placeholder='Network type (required)'
 							disabledOptions={props.networkTypes.filter(o => o.name === 'Mainnet')}
 							extraOptions={[{ name: 'Not sure' }, { name: 'Something else...' }]}
 							options={props.networkTypes} />
@@ -161,6 +207,7 @@ export function ProviderRequestDialog({
 						Cancel
 					</Button>
 					<Button
+						onClick={submit}
 						isDisabled={!submitEnabled}
 						colorScheme="green"
 						ml={3}>

@@ -2,6 +2,8 @@ import {
 	APIKeyApi,
 	ApiV3ChartDataGetStackedChartDataGetRequest,
 	ApiV3ChartDataGetStreamchartDataGetRequest,
+	ApiV3FeedbackReportIssuePostRequest,
+	ApiV3FeedbackRequestNewL2PostRequest,
 	ApiV3L2DataGetPostRequest,
 	ChartDataApi,
 	Configuration,
@@ -10,6 +12,7 @@ import {
 	ExperimentApi,
 	ExternalWebsiteCategoriesApi,
 	ExternalWebsitesApi,
+	FeedbackApi,
 	GPSApi,
 	GasAdjustedTPSApi,
 	GeneralApi,
@@ -38,6 +41,7 @@ export class ETHTPSApi {
 		new ExternalWebsiteCategoriesApi()
 	public chartDataAPI: ChartDataApi = new ChartDataApi()
 	public apiKeyAPI: APIKeyApi = new APIKeyApi()
+	public feedbackApi: FeedbackApi = new FeedbackApi()
 	public apiKey: string
 
 	constructor(apiURL: string, apiKey: string) {
@@ -82,6 +86,9 @@ export class ETHTPSApi {
 			this._genConfig(this._apiURL)
 		)
 		this.providerLinksAPI = new ProviderLinksApi(
+			this._genConfig(this._apiURL)
+		)
+		this.feedbackApi = new FeedbackApi(
 			this._genConfig(this._apiURL)
 		)
 		/*
@@ -263,5 +270,13 @@ export class ETHTPSApi {
 
 	public async getAllExternalWebsiteCategories() {
 		return await this.externalWebsiteCategoriesAPI.apiV3ExternalWebsiteCategoriesGetAllGet()
+	}
+
+	public async createProviderRequestAsync(params: ApiV3FeedbackRequestNewL2PostRequest) {
+		return await this.feedbackApi.apiV3FeedbackRequestNewL2Post(params)
+	}
+
+	public async reportIssueAsync(params: ApiV3FeedbackReportIssuePostRequest) {
+		return await this.feedbackApi.apiV3FeedbackReportIssuePost(params)
 	}
 }

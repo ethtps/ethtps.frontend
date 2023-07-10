@@ -1,6 +1,5 @@
 
 import { AdminAPIWrapper } from '@/ethtps.data'
-import { Link } from '@chakra-ui/next-js'
 import {
   Button,
   Container,
@@ -42,21 +41,24 @@ export default function Status({ providerData, providerTypes }: IStatusProps) {
   const colors = useColors()
   const toast = useToast()
   useEffect(() => {
-    toast({
-      title: <>
-        <Text
-          onClick={() => openNewTab('https://github.com/ethtps/ethtps.backend/blob/dev/ETHTPS.Services.Ethereum/README.md')}
-          sx={{
-            cursor: 'pointer',
-            _hover: {
-              textDecoration: 'underline'
-            }
-          }}>Want to help?</Text>
-      </>,
-      position: 'bottom-right',
-      icon: <IconEye></IconEye>,
-      duration: 60000,
-    })
+    setTimeout(() => {
+      toast({
+        title: <>
+          <Text
+            onClick={() => openNewTab('https://github.com/ethtps/ethtps.backend/blob/dev/ETHTPS.Services.Ethereum/README.md')}
+            sx={{
+              cursor: 'pointer',
+              _hover: {
+                textDecoration: 'underline'
+              }
+            }}>Want to help?</Text>
+        </>,
+        position: 'bottom-right',
+        icon: <IconEye></IconEye>,
+        duration: 60000,
+        isClosable: true,
+      })
+    }, 10000)
   }, [])
   const showSubmissionDialog = useBoolean(false)
   return (
@@ -74,27 +76,16 @@ export default function Status({ providerData, providerTypes }: IStatusProps) {
         </Text>
         <Text textIndent={'1rem'} color={colors.text}>
           If you want to help the project and the community, take a look at
-          <Link
-            sx={{
-              textDecoration: 'underline',
-              borderRadius: 'md',
-              padding: '1px',
-              bgColor: colors.gray1,
-              color: colors.textContrast,
-              marginLeft: '0.2rem',
-              _visited: {
-                color: colors.textContrast,
-                textDecoration: 'underline'
-              },
-              _hover: {
-                bgColor: colors.gray1
-              }
-            }}
-            href={
-              'https://github.com/ethtps/ethtps.backend/tree/dev/ETHTPS.Services.Ethereum'
-            }>
-            this page
-          </Link>
+
+          <a style={{
+            textDecoration: 'underline',
+            borderRadius: 'md',
+            padding: '1px',
+            color: colors.text,
+            marginLeft: '0.2rem',
+          }} href={
+            'https://github.com/ethtps/ethtps.backend/tree/dev/ETHTPS.Services.Ethereum'
+          }>this page</a>
           . Any help is greatly appreciated :)
         </Text>
         <br />
@@ -122,6 +113,7 @@ export default function Status({ providerData, providerTypes }: IStatusProps) {
             submit a request
           </Button>
           <ProviderRequestDialog
+            api={api}
             networkTypes={providerTypes}
             isOpen={showSubmissionDialog[0]}
             onClose={() => showSubmissionDialog[1].off()}
