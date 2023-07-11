@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import Konva from 'konva'
+import { IFrame } from 'konva/lib/types'
+import { useCallback, useEffect, useState } from 'react'
 
 /**
  * Returns a hook representing the speed in px/s for a vertical scrolling animation

@@ -8,6 +8,7 @@ interface IGridProps extends InstantDataAnimationProps {
     minYLines: number
     speed?: number // pixels per second
     withLabels?: boolean
+    children?: JSX.Element
 }
 
 function createGrid(xLines: number, yLines: number, xDivisionSize: number, yDivisionSize: number, colors: Theme, width?: number, height?: number) {
@@ -49,11 +50,13 @@ export function RollingGrid(props: Partial<IGridProps>) {
     }, [props.width, props.height, xLines, yLines])
     const gridLayerRef0 = useRef<Konva.Layer>(new Konva.Layer())
     const gridLayerRef1 = useRef<Konva.Layer>(new Konva.Layer())
+    const chartLayerRef = useRef<Konva.Layer>(new Konva.Layer())
     const animationConstructor = useCallback(() => {
         //console.info('animation instantiation callback')
         return new Konva.Animation((frame) => {
             if (frame?.timeDiff && props.speed && props.height && !props.paused) {
                 const delta = (frame?.timeDiff / 1000) * props.speed
+                chartLayerRef?.current?.move({ x: 0, y: -delta })
                 gridLayerRef0?.current?.move({ x: 0, y: -delta })
                 if (gridLayerRef0?.current?.y() <= -props.height) {
                     gridLayerRef0?.current?.move({ x: 0, y: 2 * props.height })
@@ -63,7 +66,7 @@ export function RollingGrid(props: Partial<IGridProps>) {
                     gridLayerRef1?.current?.move({ x: 0, y: 2 * props.height })
                 }
             }
-        }, [gridLayerRef0.current, gridLayerRef1.current])
+        }, [gridLayerRef0.current, gridLayerRef1.current, chartLayerRef.current])
     }, [props.height, props.speed, props.paused])
     const [animation, setAnimation] = useState<Konva.Animation | undefined>()
     useEffect(() => {
@@ -105,6 +108,9 @@ export function RollingGrid(props: Partial<IGridProps>) {
             y={props.height ?? 0}
             ref={gridLayerRef1}>
             {getSecondGrid}
+        </Layer>
+        <Layer ref={chartLayerRef}>
+            {props.children}
         </Layer>
     </>
 }

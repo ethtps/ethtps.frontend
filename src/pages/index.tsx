@@ -163,8 +163,11 @@ export default function Index({
                 showSidechainsToggled={() => setShowSidechains(!showSidechains)}
               />
             </Box>
-            <br />
-            <Box overflow={'scroll'}>
+            <Box
+              sx={{
+                marginTop: '5rem',
+              }}
+              overflowX={'scroll'}>
               <AllProvidersTable
                 maxData={maxData}
                 api={api}
