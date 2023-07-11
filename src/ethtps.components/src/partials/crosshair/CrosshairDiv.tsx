@@ -60,6 +60,8 @@ export function CrosshairDiv(props:
         setIsDragging(false)
     }
     const dragMove = (e: KonvaEventObject<DragEvent>) => {
+        e.target.x(0)
+        e.target.y(Math.max(e.target.y(), -props.verticalPadding))
         setCurrentViewOffset({ x: e.target.x(), y: e.target.y() })
     }
     return ( // we're drawing this client-side
@@ -98,7 +100,7 @@ export function CrosshairDiv(props:
                                 {props.timeScale && <Text
                                     x={12 - currentViewOffset.x}
                                     y={(mousePos.y - currentViewOffset.y - 24)}
-                                    text={`${Math.round(linearMap(adjustedMousePos.y, 0, props.height, props.timeScale.end, props.timeScale.start) / (timeLabel?.demultiplier ?? 1))} ${timeLabel?.unit}`}
+                                    text={`${Math.round(linearMap(mousePos.y - currentViewOffset.y, 0, props.height, props.timeScale.end, props.timeScale.start) / (timeLabel?.demultiplier ?? 1))} ${timeLabel?.unit}`}
                                     fill={colors.crosshair}
                                     fontSize={12}
                                     fontFamily={'monospace'}
