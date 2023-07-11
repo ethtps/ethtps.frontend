@@ -7,6 +7,7 @@ interface IGridProps extends InstantDataAnimationProps {
     minXLines: number
     minYLines: number
     speed?: number // pixels per second
+    withLabels?: boolean
 }
 
 function createGrid(xLines: number, yLines: number, xDivisionSize: number, yDivisionSize: number, colors: Theme, width?: number, height?: number) {
@@ -36,7 +37,7 @@ function createGrid(xLines: number, yLines: number, xDivisionSize: number, yDivi
     </Group>
 }
 
-export function Grid(props: Partial<IGridProps>) {
+export function RollingGrid(props: Partial<IGridProps>) {
     const colors = useColors()
     const xLines = props.minXLines ?? 10
     const yLines = props.minYLines ?? 10

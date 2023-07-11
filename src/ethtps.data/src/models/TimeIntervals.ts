@@ -32,6 +32,36 @@ export function toShortString(interval: ETHTPSDataCoreTimeInterval) {
 	}
 }
 
+export type CrosshairLabelOptions = {
+	demultiplier: number
+	unit: string
+}
+
+const kd = -1000
+
+export function toCrosshairLabel(interval: ExtendedTimeInterval): CrosshairLabelOptions {
+	switch (interval) {
+		case 'Instant':
+			return { demultiplier: kd, unit: 'second' }
+		case 'OneDay':
+			return { demultiplier: kd * 60, unit: 'hours ago' }
+		case ExtraIntervals.FifteenMinutes:
+			return { demultiplier: kd * 60, unit: 'minutes ago' }
+		case 'OneHour':
+			return { demultiplier: kd * 60, unit: 'minutes ago' }
+		case 'OneMinute':
+			return { demultiplier: kd, unit: 'seconds ago' }
+		case 'OneWeek':
+			return { demultiplier: kd * 60 * 24, unit: 'days ago' }
+		case 'OneMonth':
+			return { demultiplier: kd * 60 * 24, unit: 'days ago' }
+		case 'OneYear':
+			return { demultiplier: kd * 60 * 24, unit: 'days ago' }
+		default:
+			return { demultiplier: kd * 60 * 24 * 365 * 10, unit: 'years ago' }
+	}
+}
+
 export function toMoment(interval: ExtendedTimeInterval): {
 	amount: number
 	unit: unitOfTime.DurationConstructor

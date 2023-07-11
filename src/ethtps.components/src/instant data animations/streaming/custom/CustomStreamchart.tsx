@@ -1,13 +1,13 @@
 import { InstantDataAnimationProps, useVerticalScrolling } from "../../../.."
-import { Grid } from "./grid"
+import { RollingGrid } from "./grid"
 
 export function CustomStreamchart(props: InstantDataAnimationProps) {
     const speed = useVerticalScrolling(props.duration, props.height)
     return <>
-        <Grid
+        <RollingGrid
             speed={speed}
             minXLines={10}
-            minYLines={10}
+            minYLines={12}
             width={props.width}
             height={props.height}
             paused={props.paused}

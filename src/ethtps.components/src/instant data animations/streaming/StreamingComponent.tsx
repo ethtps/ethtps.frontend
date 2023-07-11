@@ -2,8 +2,12 @@ import { Box, Button, Container, Tooltip } from '@chakra-ui/react'
 import { useSize } from '@chakra-ui/react-use-size'
 import { Dictionary } from '@reduxjs/toolkit'
 import {
+	IconBadgeHd,
+	IconBadgeSd,
 	IconLink,
 	IconLinkOff,
+	IconMaximize,
+	IconMinimize,
 	IconPlayerPause,
 	IconPlayerPlay,
 } from '@tabler/icons-react'
@@ -17,7 +21,7 @@ import { CrosshairDiv, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
 	L2DataUpdateModel,
-	TimeIntervalToStreamProps,
+	TimeIntervalToStreamProps
 } from '../../../../ethtps.data/src'
 import { SimpleLiveDataPoint, SimpleLiveDataStat } from '../simple stat'
 import { MouseOverDataTypesEvents } from '../types'
@@ -60,6 +64,12 @@ export function StreamingComponent({
 		setStreamConfig(TimeIntervalToStreamProps(interval))
 	}, [interval])
 	const [paused, setPaused] = useState(false)
+	const [isMaximized, setIsMaximized] = useState(false)
+	const [isLowRes, setIsLowRes] = useState(false)
+	const [resMultiplier, setResMultiplier] = useState(1)
+	useEffect(() => {
+		setResMultiplier(isLowRes ? 0.5 : 1)
+	}, [isLowRes])
 	const liveStat = useMemo(() => {
 		return (
 			<></>)
@@ -108,7 +118,7 @@ export function StreamingComponent({
 						h={sizeRef?.height ?? 0 + pad * 2}
 						bg={colors.tertiary}
 						borderRadius="lg"
-						overflow="scroll">
+						overflow="hidden">
 						<Box
 							width={sizeRef?.width}
 							height={sizeRef?.height ?? 0 - pad * 2}
@@ -118,6 +128,11 @@ export function StreamingComponent({
 							}}>
 							<CrosshairDiv
 								ssr={false}
+								timeScale={{
+									interval,
+									start: 0,
+									end: -streamConfig.duration,
+								}}
 								verticalPadding={pad}
 								width={sizeRef?.width ?? 0}
 								height={sizeRef?.height ?? 0}>
@@ -171,6 +186,35 @@ export function StreamingComponent({
 								}
 								variant={'ghost'}
 								onClick={() => setPaused(!paused)}
+							/>
+						</Tooltip>
+						<Tooltip label={`Click to ${isMaximized ? 'minimize' : 'maximize'}`}>
+							<Button
+								iconSpacing={0}
+								leftIcon={
+									!isMaximized ? (
+										<IconMaximize />
+									) : (
+										<IconMinimize />
+									)
+								}
+								variant={'ghost'}
+								onClick={() => setIsMaximized(!isMaximized)}
+							/>
+						</Tooltip>
+						<Tooltip isDisabled label={`Change to ${isLowRes ? 'high-res' : 'low-res'}`}>
+							<Button
+								isDisabled
+								iconSpacing={0}
+								leftIcon={
+									!isLowRes ? (
+										<IconBadgeHd />
+									) : (
+										<IconBadgeSd />
+									)
+								}
+								variant={'ghost'}
+								onClick={() => setIsLowRes(!isLowRes)}
 							/>
 						</Tooltip>
 					</Box>

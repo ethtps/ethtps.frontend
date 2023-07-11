@@ -11,7 +11,7 @@ export const groupBy = <T>(
 ) =>
 	array?.reduce(
 		(acc, value, index, array) => {
-			;(acc[predicate(value, index, array)] ||= []).push(value)
+			; (acc[predicate(value, index, array)] ||= []).push(value)
 			return acc
 		},
 		{} as { [key: string]: T[] }
@@ -37,4 +37,14 @@ export function getMaxDataFor(
 		case ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS:
 			if (model.gtpsData) return model.gtpsData[provider]
 	}
+}
+
+export function linearMap(
+	value: number,
+	in_min: number,
+	in_max: number,
+	out_min: number,
+	out_max: number
+) {
+	return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
 }
