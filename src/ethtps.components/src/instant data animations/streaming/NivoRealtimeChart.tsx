@@ -3,7 +3,7 @@ import dynamic from "next/dynamic"
 import { useToast } from "@chakra-ui/react"
 import { ETHTPSDataCoreDataType } from "ethtps.api"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
-import { InstantDataAnimationProps } from ".."
+import { InstantDataAnimationProps, LiveDataPoint } from ".."
 import { useColors } from "../../.."
 import { GenericDictionary, MinimalDataPoint, groupBy } from "../../../../ethtps.data/src"
 const dataExtractor = (data: MinimalDataPoint, dataType: ETHTPSDataCoreDataType) => {
@@ -19,8 +19,6 @@ const dataSelector = (data: MinimalDataPoint, dataType: ETHTPSDataCoreDataType) 
     if (dataType === ETHTPSDataCoreDataType.GPS) return data?.gps
     return data?.gps ?? 0 / 21000
 }
-
-type LiveDataPoint = { x: number; y: { tps: number | undefined; gps: number | undefined; gtps: number }; z: string }
 
 export function NivoRealtimeChart({
     width,

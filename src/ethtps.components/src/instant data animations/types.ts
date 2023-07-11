@@ -25,3 +25,5 @@ export type DataPoint = {
 }
 
 export const range = (n: number) => Array.from(new Array(n), (_, i) => i)
+
+export type LiveDataPoint = { x: number; y: { tps: number | undefined; gps: number | undefined; gtps: number }; z: string }

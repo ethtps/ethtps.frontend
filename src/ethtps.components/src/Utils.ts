@@ -111,3 +111,13 @@ export function getRelativeMousePosition(e: any) {
 		y: e.clientY - parentRect.top,
 	}
 }
+
+export function adjustForOffset(
+	position: { x: number; y: number },
+	offset: { x: number; y: number }
+) {
+	return {
+		x: position.x - offset.x,
+		y: position.y - offset.y,
+	}
+}

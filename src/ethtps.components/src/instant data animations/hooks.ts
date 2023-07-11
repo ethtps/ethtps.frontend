@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from 'react'
 import {
 	DataResponseModelDictionary,
+	MinimalDataPoint,
 	dataTypeToString,
 	extractData,
 	getModeData,
@@ -18,6 +19,7 @@ import {
 	useGetProvidersFromAppStore,
 	useGetSidechainsIncludedFromAppStore,
 } from '../../../ethtps.data/src'
+import { LiveDataPoint } from './types'
 
 export type InstantBarChartDataset = {
 	label: string
@@ -31,7 +33,7 @@ export type InstantBarChartData = {
 	datasets: InstantBarChartDataset[]
 }
 
-export type LiveDataPoint = {
+export type LiveDataPoint2 = {
 	providerName: string
 	providerColor: string
 	value: number
@@ -40,7 +42,7 @@ export type LiveDataPoint = {
 export type LiveData = {
 	mode: string
 	total: number
-	data: LiveDataPoint[]
+	data: LiveDataPoint2[]
 	sidechainsIncluded: boolean
 }
 
@@ -54,7 +56,7 @@ export const createDataPoint = (
 		providerName: provider.name,
 		providerColor: color,
 		value,
-	} as LiveDataPoint
+	} as LiveDataPoint2
 }
 
 export function useGet1mTPS() {
@@ -85,13 +87,13 @@ export function useStreamchartData(interval: string) {
 	/*
   const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
   const { data, status, refetch } = useQuery("get streamchart data", () =>
-    api.getStreamChartData({
-      interval: ETHTPSDataCoreTimeIntervalFromJSON(`"${interval}"`),
-      includeSidechains: sidechainsIncluded,
-    }),
+	api.getStreamChartData({
+	  interval: ETHTPSDataCoreTimeIntervalFromJSON(`"${interval}"`),
+	  includeSidechains: sidechainsIncluded,
+	}),
   )
   useEffect(() => {
-    refetch()
+	refetch()
   }, [sidechainsIncluded])*/
 	//return { data, status }
 }
@@ -118,7 +120,7 @@ export function useLiveData() {
 					createDataPoint(data, provider, provider.color as string)
 				)
 				.filter((x) => x !== undefined)
-				.map((x) => x as LiveDataPoint)
+				.map((x) => x as LiveDataPoint2)
 			if (
 				d_possiblyUndefined !== undefined &&
 				d_possiblyUndefined?.length > 0
@@ -138,4 +140,32 @@ export function useLiveData() {
 		}
 	}, [mode, smoothing, data, colors, providers, sidechainsIncluded])
 	return processedData
+}
+
+export const dataExtractor = (data: MinimalDataPoint | undefined, dataType: ETHTPSDataCoreDataType | undefined) => {
+	if (!data || !dataType) return undefined
+	switch (dataType) {
+		case ETHTPSDataCoreDataType.TPS:
+			return data.tps
+		case ETHTPSDataCoreDataType.GPS:
+			return data.gps
+		default:
+			return (data?.gps ?? 0) / 21000
+	}
+}
+
+export const liveDataPointExtractor = (data: LiveDataPoint | undefined, dataType: ETHTPSDataCoreDataType | undefined) => {
+	return dataExtractor(data?.y, dataType)
+}
+
+export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefined, z: string): LiveDataPoint => {
+	return {
+		x: (new Date()).getTime(),
+		y: {
+			tps: data?.tps ?? 0,
+			gps: data?.gps ?? 0,
+			gtps: data?.gps ? data.gps / 21000 : 0,
+		},
+		z: z
+	}
 }
