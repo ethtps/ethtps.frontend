@@ -1,3 +1,4 @@
+import { interpolateCividis } from 'd3-scale-chromatic'
 import Konva from "konva"
 import React, { Key, useEffect, useState } from "react"
 import { Shape } from "react-konva"
@@ -12,7 +13,8 @@ interface IAreaSerieProps extends Partial<InstantDataAnimationProps> {
     lineTension?: number
     fill?: string
     customKey: Key
-
+    offsetBy?: number
+    index?: number
 }
 
 type L2DataUpdateModelWithTimestamp = L2DataUpdateModel & { timestamp: number }
@@ -25,6 +27,7 @@ export function AreaSerie(props: IAreaSerieProps) {
         setData([])
     }, [])
     const shapeRef = React.useRef<Konva.Shape>(new Konva.Shape())
+    const offset = props.offsetBy ?? 0
     useEffect(() => {
         const d = props.newestData?.[props.providerName]
         if (d && dataExtractor(d.data, props.dataType)) {
@@ -43,8 +46,9 @@ export function AreaSerie(props: IAreaSerieProps) {
             })
         }
     }, [props.newestData])
-    const xAt = (t: number) => linearMap(dataExtractor(allData[t]?.data, props.dataType) ?? 0, 0, 50, 0, (props.width ?? 0) / 2)
-    const yAt = (timestamp: number) => ((timestamp - props.mountTime!) / (props.duration ?? 1)) * (props.height ?? 0)
+    const xMap = (t?: number) => linearMap(offset + (t ?? 0), 0, 50, 0, (props.width ?? 0) / 2)
+    const xAt = (t: number) => xMap(dataExtractor(allData[t]?.data, props.dataType))
+    const yMap = (timestamp: number) => ((timestamp - props.mountTime!) / (props.duration ?? 1)) * (props.height ?? 0)
     return (
         <Shape
             ref={shapeRef}
@@ -52,31 +56,28 @@ export function AreaSerie(props: IAreaSerieProps) {
             x={(props.width ?? 0) / 2}
             y={(props.height ?? 0) - (props.verticalPadding ?? 0)}
             sceneFunc={(context, shape) => {
-                if (!data || data.length === 0) {
+                if (!allData || allData.length === 0) {
                     return
                 }
 
                 context.beginPath()
-                context.moveTo(0, 0)
-
-                allData.forEach((d, i) => {
+                const y0 = yMap(props.mountTime!)
+                const ynow = yMap(Date.now())
+                const lastX = xAt(allData.length - 1)
+                context.moveTo(xMap(0), 0)
+                for (let i = 0; i < allData.length; i++) {
+                    const d = allData[i]
                     const x = xAt(i)
-                    const y = ((allData[i].timestamp - props.mountTime!) / (props.duration ?? 1)) * (props.height ?? 0)
+                    const y = yMap(d.timestamp)
                     context.lineTo(x, y)
-                })
-
-                for (let i = allData.length - 1; i >= 0; i--) {
-                    const x = xAt(i)
-                    const y = ((allData[i].timestamp - props.mountTime!) / (props.duration ?? 1)) * (props.height ?? 0)
-                    context.lineTo(-x, y)
                 }
-
+                context.lineTo(xMap(0), ynow)
                 context.closePath()
                 context.fillStrokeShape(shape)
             }}
-            stroke={props.lineColor ?? colors.text}
+            stroke={props.lineColor ?? (!!props.index ? interpolateCividis((props.index % 10) / 15) : undefined)}
             strokeEnabled
-            fill={props.fill}
+            fill={props.fill ?? (!!props.index ? interpolateCividis((props.index % 10) / 20) : undefined)}
             strokeWidth={props.lineStrokeWidth}
             tension={props.lineTension} />
     )

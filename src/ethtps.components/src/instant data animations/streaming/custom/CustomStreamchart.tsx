@@ -12,7 +12,9 @@ export function CustomStreamchart(props: InstantDataAnimationProps) {
             height={props.height}
             paused={props.paused}
             connected={props.connected} >
-            <CustomSeries {...props} />
+            <CustomSeries
+                {...props}
+                stacked />
         </RollingGrid>
     </>
 }

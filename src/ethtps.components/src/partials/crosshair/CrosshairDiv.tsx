@@ -1,4 +1,5 @@
 import { useToast } from '@chakra-ui/react'
+import Konva from 'konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { useEffect, useState } from 'react'
 import { Layer, Line, Stage, Text } from 'react-konva'
@@ -64,6 +65,14 @@ export function CrosshairDiv(props:
         e.target.y(Math.max(e.target.y(), -props.verticalPadding))
         setCurrentViewOffset({ x: e.target.x(), y: e.target.y() })
     }
+    const crosshairOptions: Konva.LineConfig = {
+        stroke: colors.crosshair,
+        shadowForStrokeEnabled: true,
+        shadowColor: 'white',
+        shadowBlur: 4,
+        strokeWidth: 1,
+        dash: [6, 6]
+    }
     return ( // we're drawing this client-side
         <>
             <NonSSRWrapper>
@@ -83,28 +92,24 @@ export function CrosshairDiv(props:
                         {!props.ssr && props.children}
                         <Layer>
                             {mousePos && <>
-                                <Line
+                                <Line {...crosshairOptions}
                                     x={-currentViewOffset.x}
                                     y={0}
                                     points={[0, mousePos.y - currentViewOffset.y,
-                                        props.width, mousePos.y - currentViewOffset.y]}
-                                    stroke={colors.crosshair}
-                                    strokeWidth={1} />
-                                <Line
+                                        props.width, mousePos.y - currentViewOffset.y]} />
+                                <Line {...crosshairOptions}
                                     x={0}
                                     y={-currentViewOffset.y}
                                     points={[mousePos.x - currentViewOffset.x, 0,
-                                    mousePos.x - currentViewOffset.x, props.height - props.verticalPadding]}
-                                    stroke={colors.crosshair}
-                                    strokeWidth={1} />
+                                    mousePos.x - currentViewOffset.x, props.height - props.verticalPadding]} />
                                 {props.timeScale && <Text
                                     x={12 - currentViewOffset.x}
                                     y={(mousePos.y - currentViewOffset.y - 24)}
                                     text={`${Math.round(linearMap(mousePos.y - currentViewOffset.y, 0, props.height, props.timeScale.end, props.timeScale.start) / (timeLabel?.demultiplier ?? 1))} ${timeLabel?.unit}`}
                                     fill={colors.crosshair}
                                     fontSize={12}
+                                    fillEnabled
                                     fontFamily={'monospace'}
-                                    fontStyle={'bold'}
                                     align={'center'}
                                     verticalAlign={'middle'}
                                     padding={2}
