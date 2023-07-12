@@ -1,6 +1,6 @@
 import { Dictionary } from '@reduxjs/toolkit'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
-import { L2DataUpdateModel } from '../../../ethtps.data/src'
+import { ExtendedTimeInterval, L2DataUpdateModel } from '../../../ethtps.data/src'
 
 export interface InstantDataAnimationProps {
     width?: number
@@ -16,4 +16,6 @@ export interface InstantDataAnimationProps {
     paused: boolean
     isLeaving?: boolean
     verticalPadding?: number
+    horizontalPadding?: number
+    timeInterval?: ExtendedTimeInterval
 }

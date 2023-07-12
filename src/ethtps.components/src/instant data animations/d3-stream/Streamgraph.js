@@ -11,6 +11,7 @@ import * as d3 from 'd3'
  */
 export function Streamgraph(
 	data,
+	totals,
 	{
 		x = ([x]) => x, // given d in data, returns the (ordinal) x-value
 		y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
@@ -28,12 +29,12 @@ export function Streamgraph(
 		yDomain, // [ymin, ymax]
 		yRange = [height - marginBottom, marginTop], // [bottom, top]
 		zDomain, // array of z-values
-		offset = d3.stackOffsetWiggle, // stack offset method
-		order = d3.stackOrderAppearance, // stack order method
+		offset = d3.stackOffsetSilhouette, // stack offset method
+		order = d3.stackOrderNone, // stack order method
 		xFormat, // a format specifier string for the x-axis
 		yFormat, // a format specifier string for the y-axis
 		yLabel, // a label for the y-axis
-		colors = d3.schemeTableau10,
+		colors = d3.schemePaired,
 	} = {}
 ) {
 	if (typeof window === 'undefined') return

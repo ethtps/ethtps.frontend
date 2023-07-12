@@ -2,7 +2,7 @@ import dynamic from "next/dynamic"
 
 import { useToast } from "@chakra-ui/react"
 import { ETHTPSDataCoreDataType } from "ethtps.api"
-import { Suspense, useCallback, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { InstantDataAnimationProps } from ".."
 import { useColors } from "../../.."
 import { GenericDictionary, MinimalDataPoint } from "../../../../ethtps.data/src"
@@ -96,8 +96,8 @@ export function NivoStreamChart({
             return newColumns
         })
     }, [newestData, maxEntries, dataType, providerData, refreshInterval])
-    const ref = useRef(null)
-    const fun = useCallback(() => {
+    const ref = useRef<any>(null)
+    const fun = useMemo(() => {
         if (columns.length === 0) return <></>
         if (liveData.length === 0) return <></>
         return <Stream
@@ -129,9 +129,9 @@ export function NivoStreamChart({
             }}
             enableGridX={true}
             curve="cardinal"
-            offsetType="silhouette"
-            order="descending"
-            colors={{ scheme: 'purple_orange' }}
+            offsetType='wiggle'
+            order="insideOut"
+            colors={{ scheme: 'pink_yellowGreen' }}
             fillOpacity={0.85}
             defs={[
                 {
@@ -141,7 +141,7 @@ export function NivoStreamChart({
                     color: '#2c998f',
                     size: 4,
                     padding: 2,
-                    stagger: true
+                    stagger: true,
                 },
                 {
                     id: 'squares',
@@ -171,6 +171,7 @@ export function NivoStreamChart({
             dotSize={8}
             dotColor={{ from: 'color' }}
             dotBorderWidth={2}
+            animate
             dotBorderColor={{
                 from: 'color',
                 modifiers: [
@@ -220,13 +221,14 @@ export function NivoStreamChart({
         isLeaving,
         streamData
     ])
+    const [transitionState, setTransitionState] = useState(false)
     return <>
         <div style={{
             width: '100%',
             height: '100%',
         }} className="chartContainer">
             <Suspense fallback={<div>Loading...</div>}>
-                {fun()}
+                {fun}
             </Suspense>
         </div>
     </>

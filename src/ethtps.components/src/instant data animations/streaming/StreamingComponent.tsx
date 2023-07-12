@@ -17,7 +17,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CrosshairDiv, TimeIntervalButtonGroup, useColors } from '../../..'
+import { CrosshairDiv, CustomD3Animation, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
 	L2DataUpdateModel,
@@ -25,7 +25,6 @@ import {
 } from '../../../../ethtps.data/src'
 import { SimpleLiveDataPoint, SimpleLiveDataStat } from '../simple stat'
 import { MouseOverDataTypesEvents } from '../types'
-import { CustomStreamchart } from './custom/CustomStreamchart'
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents {
 	connected: boolean
@@ -128,29 +127,31 @@ export function StreamingComponent({
 							}}>
 							<CrosshairDiv
 								ssr={false}
-								timeScale={{
+								/*timeScale={{
 									interval,
 									start: 0,
 									end: -streamConfig.duration,
-								}}
+								}}*/
 								verticalPadding={pad}
 								width={sizeRef?.width ?? 0}
 								height={sizeRef?.height ?? 0}>
-								<CustomStreamchart
-									width={sizeRef?.width}
-									height={sizeRef?.height}
-									isLeaving={isLeaving}
-									dataType={hoveredDataMode ?? dataMode}
-									newestData={newestData}
-									connected={connected}
-									providerData={providerData}
-									maxEntries={streamConfig.limit}
-									duration={streamConfig.duration}
-									refreshInterval={streamConfig.refreshInterval}
-									showSidechains={showSidechains}
-									paused={paused}
-								/>
+								<></>
 							</CrosshairDiv>
+							<CustomD3Animation
+								width={sizeRef?.width}
+								height={sizeRef?.height}
+								isLeaving={isLeaving}
+								dataType={hoveredDataMode ?? dataMode}
+								newestData={newestData}
+								connected={connected}
+								providerData={providerData}
+								maxEntries={streamConfig.limit}
+								duration={streamConfig.duration}
+								refreshInterval={streamConfig.refreshInterval}
+								timeInterval={interval}
+								showSidechains={showSidechains}
+								paused={paused}
+							/>
 						</Box>
 					</Box>
 					<Box

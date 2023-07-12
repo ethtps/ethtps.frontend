@@ -1,3 +1,4 @@
+export * from './d3-custom';
 export * from './d3-stream';
 export * from './framer bar';
 export * from './funnel';

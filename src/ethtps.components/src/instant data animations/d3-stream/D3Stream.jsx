@@ -2,9 +2,9 @@ import { Container, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { BeatLoader } from 'react-spinners'
+import { liveDataPointExtractor, useAccumulator } from '../'
 import { binaryConditionalRender } from '../../../'
 import { Streamgraph } from './'
-
 const Tooltip = ({ opacity, text, x, y }) => {
 	return (
 		<text
@@ -17,100 +17,51 @@ const Tooltip = ({ opacity, text, x, y }) => {
 }
 
 export const D3Stream = ({
-	data,
 	width,
 	height,
+	dataType,
 	newestData,
 	connected,
-	maxEntries = 10,
+	providerData,
+	maxEntries,
+	duration,
+	refreshInterval,
+	showSidechains,
+	paused,
+	isLeaving,
 }) => {
 	const [opacity, setOpacity] = useState(0)
 	const [text, setText] = useState('initialState')
 	const [stacks, setStacks] = useState([])
-	const [liveData, setLiveData] = useState([])
-	const [cumulatedLiveData, setCumulatedLiveData] = useState([])
-	const [columns, setColumns] = useState([])
-	const [totals, setTotals] = useState([])
-	useEffect(() => {
-		if (!newestData) return
+	const [liveData, columns, lastValues, totals] = useAccumulator(newestData, maxEntries ?? 30, dataType ?? ETHTPSDataCoreDataType.TPS, providerData, refreshInterval)
 
-		setColumns((c) => {
-			const keys = Object.keys(newestData)
-			if (keys?.length === 0) return c
-
-			const newColumns = [...c, ...keys.filter((k) => !c.includes(k))]
-			setLiveData((l) => {
-				const dataPoint = {}
-				newColumns.forEach(
-					(c) => (dataPoint[c] = newestData[c]?.data.tps)
-				)
-				let lastValues = {}
-
-				setTotals((m) =>
-					[
-						...m,
-						Object.keys(dataPoint)
-							.map((x) => {
-								// If the current value is not defined, use the last value if it exists, otherwise use 0.
-								let value =
-									dataPoint[x] !== undefined
-										? dataPoint[x]
-										: lastValues[x] !== undefined
-										? lastValues[x]
-										: 0
-								// Update the last value for this key.
-								lastValues[x] = value
-								return value
-							})
-							.reduce((a, b) => a + b, 0),
-					].slice(-maxEntries)
-				)
-
-				setCumulatedLiveData((cd) => {
-					let accumulatedLiveData = 0
-					let newDataPoint = {}
-					for (let key in newestData) {
-						newDataPoint[key] =
-							newestData[key]?.data.tps ?? 0 + accumulatedLiveData
-						accumulatedLiveData += newestData[key] ?? 0
-					}
-					return [...cd, newDataPoint].slice(-maxEntries)
-				})
-
-				return [...l, dataPoint].slice(-maxEntries)
-			})
-			return newColumns
-		})
-	}, [newestData, maxEntries])
-	let lastValues = {}
-
-	const processed = liveData.flatMap((d, i) =>
-		Object.keys(d).map((x) => {
-			// If the current value is not defined, use the last value if it exists, otherwise use 0.
-			let value =
-				d[x] !== undefined
-					? d[x]
-					: lastValues[x] !== undefined
-					? lastValues[x]
+	const processed = liveData.flatMap((d, i) => {
+		let value =
+			d !== undefined
+				? liveDataPointExtractor(d, dataType)
+				: lastValues[d.z] !== undefined
+					? lastValues[d.z]
 					: 0
-			// Update the last value for this key.
-			lastValues[x] = value
-			return {
-				x: i,
-				y: value,
-				z: x,
-			}
-		})
+		// Update the last value for this key.
+		lastValues[d.z] = value
+		return {
+			x: d.x,
+			y: value,
+			z: d.z,
+		}
+	}
 	)
-	const stream = Streamgraph(processed, {
-		width: width,
-		height: height,
-		x: (d) => d.x,
-		y: (d) => d.y,
-		z: (d) => d.z,
-		yLabel: 'TPS',
-		yDomain: [-Math.max(...totals), Math.max(...totals)],
-	})
+	const stream = Streamgraph(processed,
+		totals,
+		{
+			width: width,
+			height: height,
+			x: (d) => d.x,
+			y: (d) => d.y,
+			z: (d) => d.z,
+			yLabel: 'TPS',
+			//yDomain: [-Math.max(...totals), Math.max(...totals)],
+		})
 
 	const ref = useRef(null)
 	useEffect(() => {
