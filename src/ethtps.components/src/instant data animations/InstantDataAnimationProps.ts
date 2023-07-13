@@ -1,21 +1,26 @@
-import { Dictionary } from '@reduxjs/toolkit'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
-import { ExtendedTimeInterval, L2DataUpdateModel } from '../../../ethtps.data/src'
+import { XYDimensions } from '../../'
+import { ExtendedTimeInterval, GenericDictionary, L2DataUpdateModel } from '../../../ethtps.data/src'
 
-export interface InstantDataAnimationProps {
-    width?: number
-    height?: number
-    dataType: ETHTPSDataCoreDataType
-    newestData?: Dictionary<L2DataUpdateModel>
-    connected: boolean
+export interface IInstantDataAnimationProps extends
+    ETHTPSAnimation {
     providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+    showSidechains: boolean
+    timeInterval?: ExtendedTimeInterval
+}
+
+export type ETHTPSAnimation = DataAnimationProps<ETHTPSDataCoreDataType, L2DataUpdateModel> & XYDimensions
+
+export type DataAnimationProps<TDataType, TNewestData> = Animation & {
+    dataType: TDataType
+    newestData?: GenericDictionary<TNewestData>
     maxEntries: number
+}
+
+export type Animation = {
+    connected: boolean
     duration: number
     refreshInterval: number
-    showSidechains: boolean
     paused: boolean
     isLeaving?: boolean
-    verticalPadding?: number
-    horizontalPadding?: number
-    timeInterval?: ExtendedTimeInterval
 }

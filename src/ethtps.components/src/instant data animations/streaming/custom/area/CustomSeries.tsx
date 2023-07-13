@@ -1,8 +1,8 @@
 import { ETHTPSDataCoreDataType } from "ethtps.api"
 import { useEffect, useState } from "react"
-import { AreaSerie, InstantDataAnimationProps, useAccumulator } from "../../../../.."
+import { AreaSerie, IInstantDataAnimationProps, useAccumulator } from "../../../../.."
 
-interface ICustomSeriesProps extends InstantDataAnimationProps {
+interface ICustomSeriesProps extends IInstantDataAnimationProps {
     stacked?: boolean
 }
 

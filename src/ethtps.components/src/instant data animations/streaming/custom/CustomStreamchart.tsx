@@ -1,7 +1,7 @@
-import { CustomSeries, InstantDataAnimationProps, useVerticalScrolling } from "../../../.."
+import { CustomSeries, IInstantDataAnimationProps, useVerticalScrolling } from "../../../.."
 import { RollingGrid } from "./grid"
 
-export function CustomStreamchart(props: InstantDataAnimationProps) {
+export function CustomStreamchart(props: IInstantDataAnimationProps) {
     const speed = useVerticalScrolling(props.duration, props.height)
     return <>
         <RollingGrid

@@ -1,36 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
-import { ETHTPSDataCoreDataType } from 'ethtps.api'
-import { LiveDataPoint, liveDataPointExtractor } from '..'
-
-export function useHorizontalScale(data: LiveDataPoint[] | undefined,
-    dataType: ETHTPSDataCoreDataType | undefined,
-    chartWidth: number,
-    chartHeight: number,
-    marginBottom: number = 0) {
-    const [xDomain, setXDomain] = useState<[number, number]>()
-    const xScale = useLinearScale(xDomain, [0, chartWidth])
-    const xScaleRef = useRef<any>()
-    useEffect(() => {
-        if (!data || !xDomain) return
-        const xd =
-            d3.extent(data, (d) => liveDataPointExtractor(d, dataType))
-        if (xd[0] !== xDomain[0] || xd[1] !== xDomain[1]) {
-            if (!!xd[0] && !!xd[1]) {
-                setXDomain(xd)
-            }
-        }
-    }, [data, chartHeight, marginBottom, dataType])
-    useEffect(() => {
-        if (!xScaleRef.current || !xScale) return
-        d3.select(xScaleRef.current).call(d3.axisBottom(xScale))
-    }, [xScaleRef.current, xScale])
-    return {
-        ref: xScaleRef,
-        scale: xScale,
-    }
-}
+import { Extent, SelectedSVG, ViewBoxDimensions } from '../../..'
 
 export function useLinearScale(d?: [min: number, max: number], range?: [min: number, max: number]) {
     const [xScale, setXScale] = useState<any>()
@@ -41,4 +12,40 @@ export function useLinearScale(d?: [min: number, max: number], range?: [min: num
         setXScale(xs)
     }, [d, range])
     return xScale
+}
+
+export function addZoom(svg: SelectedSVG,
+    viewBox: ViewBoxDimensions,
+    scaleExtent: Extent,
+    onZoom?: (transform: d3.ZoomTransform) => void) {
+    function zoomed(p: { transform: any }) {
+        svg.attr("transform", p.transform)
+        onZoom?.(p.transform)
+    }
+    svg.call(d3.zoom()
+        .extent(viewBox)
+        .scaleExtent(scaleExtent)
+        .on("zoom", zoomed))
+}
+
+export function addDrag(svg: SelectedSVG,
+    onDrag?: () => void,
+    onDragStarted?: (() => void),
+    onDragEnded?: (() => void)) {
+    function dragged(this: Element, event: any, d: unknown) {
+        d3.select(this).attr("cx", event.x).attr("cy", event.y)
+        onDrag?.()
+    }
+    function dragStarted() {
+        svg.attr("cursor", "grabbing")
+        onDragStarted?.()
+    }
+    function dragEnded() {
+        svg.attr("cursor", "grab")
+        onDragEnded?.()
+    }
+    svg.call(d3.drag()
+        .on("drag", dragged)
+        .on("start", dragStarted)
+        .on("end", dragEnded))
 }

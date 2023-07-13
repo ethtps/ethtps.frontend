@@ -1,9 +1,9 @@
 import Konva from "konva"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Group, Layer, Line } from "react-konva"
-import { InstantDataAnimationProps, Theme, range, useColors } from "../../../../.."
+import { IInstantDataAnimationProps, Theme, range, useColors } from "../../../../.."
 
-interface IGridProps extends InstantDataAnimationProps {
+interface IGridProps extends IInstantDataAnimationProps {
     minXLines: number
     minYLines: number
     speed?: number // pixels per second

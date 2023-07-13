@@ -1,12 +1,12 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { useEffect, useRef, useState } from "react"
-import { makeInteractive } from '../../'
+import { makeInteractive } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { liveDataPointExtractor } from '../hooks'
 import { useAccumulator } from '../streaming'
 
-export function CustomD3Animation(props: IInstantDataAnimationProps) {
+export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const {
         newestData,
         providerData,
@@ -25,7 +25,7 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
         innerHeight
     } = makeInteractive(props, {
         marginLeft: 10,
-        marginRight: 10,
+        marginRight: 20,
         marginTop: 10,
         marginBottom: 10
     }, {
@@ -62,21 +62,19 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
                 }
             })
         }
-        const overlap = 1
         const xe = d3.extent(data.dates)
         if (!xe[0] || !xe[1]) return
         const x = d3.scaleTime()
-            .domain([xe[0], xe[1]])
+            .domain([xe[1], xe[0]])
             .range([(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0), innerWidth])
-        const y = d3.scalePoint()
-            .domain(data.series.map(d => d.name))
-            .range([0, innerHeight - ((padding?.paddingBottom ?? 0) + (margins?.marginBottom ?? 0))])
-        const z = d3.scaleLinear()
-            .domain([0, d3.max(data.series, d => d3.max(d.values, q => q[1])!)!]).nice()
-            .range([0, -overlap * y.step()])
+        const overlap = 0.1
+        const max = d3.max(data.series, d => d3.max(d.values, q => q[1])!)! * (1 + overlap)
+        const y = d3.scaleLinear()
+            .domain([-max, max]).nice()
+            .range([0, innerHeight])
 
         const xAxis = (g: any) => g
-            .attr("transform", `translate(${bounds[0]},${innerHeight - margins?.marginBottom! - padding?.paddingBottom! - 50})`)
+            .attr("transform", `translate(${bounds[0]},${innerHeight - 15 - (margins?.marginTop ?? 0) - (margins?.marginBottom ?? 0) - (padding?.paddingTop ?? 0) - (padding?.paddingBottom ?? 0)})`)
             .call(d3.axisBottom(x)
                 .ticks(10)
                 .tickSize(12))
@@ -92,36 +90,28 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
         s.append("g")
             .call(yAxis)
 
-        const group = s.append("g")
-            .selectAll("g")
-            .data(data.series)
-            .join("g")
-            .attr("transform", (d, i) => `translate(0,${y(d.name)! + 1})`)
-            .attr("cursor", "grab")
-
         const area = d3.area<T>()
-            .curve(d3.curveBasis)
             .defined(d => !isNaN(d[1]))
-            .x((d, i) => x(data.dates[i]))
-            .y0(0)
-            .y1(d => z(d[1]))
+            .x(d => x(d[0]))
+            .y0(d => y(-d[1]))
+            .y1(d => y(d[1]))
+            .curve(d3.curveCatmullRom)
+
         const getColor = (i: number) => {
             let c = d3.color(d3.schemePiYG[11][i % 11])
             if (c) c.opacity = 0.2
             return c?.formatHex8() ?? '#ddd'
         }
-        group.append("path")
+
+        const group = s.append("g")
+            .selectAll('path')
+            .data(data.series)
+            .join('path')
             .attr("fill", (d, i) => getColor(i))
             .attr("d", d => area(d.values))
 
-        const line = area.lineY1()
-
-        group.append("path")
-            .attr("fill", 'none')
-            .attr("stroke", 'black')
-            .attr("d", d => line(d.values))
-
     }, [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime])
+
     useEffect(() => {
         const svg = svgRef.current
         if (!svgRef.current || !svg) return

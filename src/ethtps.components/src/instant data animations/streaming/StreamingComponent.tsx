@@ -1,6 +1,5 @@
 import { Box, Button, Container, Tooltip } from '@chakra-ui/react'
 import { useSize } from '@chakra-ui/react-use-size'
-import { Dictionary } from '@reduxjs/toolkit'
 import {
 	IconBadgeHd,
 	IconBadgeSd,
@@ -17,19 +16,17 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CrosshairDiv, CustomD3Animation, TimeIntervalButtonGroup, useColors } from '../../..'
+import { CustomD3Stream, ETHTPSAnimation, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
-	L2DataUpdateModel,
 	TimeIntervalToStreamProps
 } from '../../../../ethtps.data/src'
 import { SimpleLiveDataPoint, SimpleLiveDataStat } from '../simple stat'
 import { MouseOverDataTypesEvents } from '../types'
 
-interface IStreamingComponentProps extends MouseOverDataTypesEvents {
+interface IStreamingComponentProps extends MouseOverDataTypesEvents, Partial<ETHTPSAnimation> {
 	connected: boolean
 	data: SimpleLiveDataPoint
-	newestData?: Dictionary<L2DataUpdateModel>
 	providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
 	dataMode: ETHTPSDataCoreDataType
 	hoveredDataMode?: ETHTPSDataCoreDataType
@@ -115,31 +112,19 @@ export function StreamingComponent({
 					<Box
 						w={sizeRef?.width}
 						h={sizeRef?.height ?? 0 + pad * 2}
-						bg={colors.tertiary}
+
 						borderRadius="lg"
 						overflow="hidden">
 						<Box
 							width={sizeRef?.width}
-							height={sizeRef?.height ?? 0 - pad * 2}
+							height={sizeRef?.height ?? 0 - pad * 1}
 							sx={{
 								paddingTop: pad,
 								overflow: 'hidden',
 							}}>
-							<CrosshairDiv
-								ssr={false}
-								/*timeScale={{
-									interval,
-									start: 0,
-									end: -streamConfig.duration,
-								}}*/
-								verticalPadding={pad}
-								width={sizeRef?.width ?? 0}
-								height={sizeRef?.height ?? 0}>
-								<></>
-							</CrosshairDiv>
-							<CustomD3Animation
-								width={sizeRef?.width}
-								height={sizeRef?.height}
+							<CustomD3Stream
+								width={sizeRef?.width ?? 500}
+								height={(sizeRef?.height ?? 500) - pad * 1}
 								isLeaving={isLeaving}
 								dataType={hoveredDataMode ?? dataMode}
 								newestData={newestData}
@@ -224,3 +209,19 @@ export function StreamingComponent({
 		</>
 	)
 }
+
+/*
+
+							<CrosshairDiv
+								ssr={false}
+								timeScale={{
+									interval,
+									start: 0,
+									end: -streamConfig.duration,
+								}}
+								verticalPadding={pad}
+								width={sizeRef?.width ?? 0}
+								height={sizeRef?.height ?? 0}>
+								<></>
+							</CrosshairDiv>
+*/

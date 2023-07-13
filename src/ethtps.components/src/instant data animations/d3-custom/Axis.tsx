@@ -1,5 +1,5 @@
 import * as d3 from "d3"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export enum AxisPosition {
     Top = 'top',
@@ -18,6 +18,8 @@ export function getAxisGenerator(position: AxisPosition) {
             return d3.axisLeft
         case AxisPosition.Right:
             return d3.axisRight
+        default:
+            return d3.axisLeft
     }
 }
 
@@ -46,6 +48,7 @@ export function getTranslation(position: AxisPosition, width: number, height: nu
 }
 
 interface IAxisProps {
+    axis?: d3.ScaleLinear<number, number, never>
     width: number
     height?: number
     min: number
@@ -63,6 +66,7 @@ interface IAxisProps {
 }
 
 export function Axis({
+    axis,
     width,
     height = 50,
     min,
@@ -79,11 +83,12 @@ export function Axis({
     labelPosition = 'bottom'
 }: IAxisProps): JSX.Element {
     const ref1 = useRef<any>()
+    const [scale, setScale] = useState<d3.ScaleLinear<number, number, never>>(axis ?? d3.scaleLinear()
+        .domain([min, max])
+        .range([0, getRangeMax(position, width, height, padding, marginLeft)]))
     useEffect(() => {
-        if (!ref1?.current) return
-        const scale = d3.scaleLinear()
-            .domain([min, max])
-            .range([0, getRangeMax(position, width, height, padding, marginLeft)])
+        if (!ref1?.current || !scale) return
+
         const svgElement = d3.select(ref1.current)
         svgElement.select('g').remove()
         svgElement
@@ -92,7 +97,7 @@ export function Axis({
             .attr('height', height - 2 * padding)
             .attr('transform', getTranslation(position, width, height, padding, marginLeft))
             .call(getAxisGenerator(position)(scale).ticks(tickCount))
-    }, [min, max, width, height, padding, marginLeft, position, labelPosition])
+    }, [min, max, width, height, padding, marginLeft, position, labelPosition, scale])
     return (
         <>
             <svg ref={ref1} />

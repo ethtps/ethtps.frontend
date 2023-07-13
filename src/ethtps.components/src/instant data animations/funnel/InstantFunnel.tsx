@@ -3,7 +3,7 @@ import dynamic from "next/dynamic"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { useColors } from "../../.."
 import { MinimalDataPoint } from "../../../../ethtps.data/src"
-import { InstantDataAnimationProps } from "../InstantDataAnimationProps"
+import { IInstantDataAnimationProps } from "../InstantDataAnimationProps"
 
 const data = [
     {
@@ -60,7 +60,7 @@ export function InstantFunnel({
     showSidechains,
     paused,
     isLeaving,
-}: InstantDataAnimationProps) {
+}: IInstantDataAnimationProps) {
     const Funn = dynamic(() => import('@nivo/funnel').then((mod) => mod.Funnel), { ssr: false })
     const colors = useColors()
     const [liveData, setLiveData] = useState<any[]>([])

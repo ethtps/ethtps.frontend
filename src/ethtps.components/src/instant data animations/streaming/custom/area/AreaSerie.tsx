@@ -1,11 +1,12 @@
+import { makeInteractive } from "../../../../"
 import Konva from "konva"
 import { Vector2d } from "konva/lib/types"
 import React, { Key, useEffect, useRef, useState } from "react"
 import { Shape } from "react-konva"
-import { InstantDataAnimationProps, LiveDataPoint, dataExtractor, liveDataPointExtractor, useColors } from "../../../../.."
+import { IInstantDataAnimationProps, LiveDataPoint, dataExtractor, liveDataPointExtractor, useColors } from "../../../../.."
 import { GenericDictionary, L2DataUpdateModel, linearMap } from "../../../../../../ethtps.data/src"
 
-interface IAreaSerieProps extends Partial<InstantDataAnimationProps> {
+interface IAreaSerieProps extends Partial<IInstantDataAnimationProps> {
     mountTime: number
     providerName: string
     lineColor?: string | null
@@ -36,6 +37,7 @@ function invert(x: Vector2d): Vector2d {
 }
 
 export function AreaSerie(props: IAreaSerieProps) {
+    const interactions = makeInteractive(props)
     const xMap = (t?: number) => linearMap(offset + (t ?? 0), 0, 50, 0, (props.width ?? 0) / 2)
     const xAt = (t: number) => xMap(dataExtractor(allData[t]?.data, props.dataType))
     const yMap = (timestamp: number) => ((timestamp - props.mountTime!) / (props.duration ?? 1)) * (props.height ?? 0)
@@ -95,8 +97,8 @@ export function AreaSerie(props: IAreaSerieProps) {
         <Shape
             ref={ref}
             key={props.customKey}
-            x={(props.width ?? 0) / 2}
-            y={(props.height ?? 0) - (props.verticalPadding ?? 0)}
+            x={interactions.position.x + (props.width ?? 0) / 2}
+            y={interactions.position.y + (props.height ?? 0) - (interactions.padding?.verticalPadding ?? 0) - (interactions.margins?.verticalMargin ?? 0)}
             stroke={props.lineColor ?? colors.text}
             strokeEnabled
             sceneFunc={sceneFunc}
