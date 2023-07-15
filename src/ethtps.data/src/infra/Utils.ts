@@ -17,6 +17,8 @@ export const groupBy = <T>(
 		{} as { [key: string]: T[] }
 	)
 
+export const DEBUG = true // will be changed to false in production
+
 export const generatePath = (
 	provider?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel
 ) => {

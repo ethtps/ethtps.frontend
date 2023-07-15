@@ -16,8 +16,9 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CustomD3Stream, DebugOverlay, ETHTPSAnimation, TimeIntervalButtonGroup, useColors } from '../../..'
+import { CustomD3Stream, DebugOverlay, ETHTPSAnimation, TimeIntervalButtonGroup, conditionalRender, useColors } from '../../..'
 import {
+	DEBUG,
 	ExtendedTimeInterval,
 	TimeIntervalToStreamProps
 } from '../../../../ethtps.data/src'
@@ -206,11 +207,11 @@ export function StreamingComponent({
 					</Box>
 				</Container>
 			</Box>
-			<Box sx={{
+			{conditionalRender(<Box sx={{
 				position: 'absolute',
 			}}>
-				<DebugOverlay />
-			</Box>
+				<DebugOverlay show />
+			</Box>, DEBUG)}
 		</>
 	)
 }

@@ -14,8 +14,9 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { IconBug, IconBugOff } from '@tabler/icons-react'
+import { useEffect } from 'react'
 import { useColors } from '../../../ethtps.components/'
-import { AppStore, toggleDebugMode, useAppSelector } from '../../../ethtps.data'
+import { AppStore, DEBUG, enableDebugMode, toggleDebugMode, useAppSelector } from '../../../ethtps.data'
 import styles from '../../../styles/app.module.scss'
 import { DesktopNav } from './DesktopNav'
 import { MobileNav } from './MobileNav'
@@ -30,8 +31,12 @@ export default function Navbar({ allProviders, store }: INavbarProps) {
   const { colorMode, toggleColorMode } = useColorMode()
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
   const colors = useColors()
+  useEffect(() => {
+    if (DEBUG) {
+      store?.dispatch(enableDebugMode())
+    }
+  }, [])
   const debugOn = useAppSelector(s => s.debugging.enabled)
-
   return (
     <Box>
       <Flex

@@ -5,7 +5,7 @@ import { DebugModel } from '../'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 const initialState: DebugModel = {
-    enabled: (typeof window === 'undefined' ? false : localStorage?.getItem('debugMode')) === 'true' ? true : false,
+    enabled: (typeof window === 'undefined' ? true : localStorage?.getItem('debugMode')) === 'true' ? true : false,
     effects: {}
 }
 
@@ -19,16 +19,16 @@ const debugSlice = createSlice({
             action: PayloadAction<DebugModel | undefined>
         ) {
             localStorage?.setItem('debugMode', JSON.stringify(action.payload))
-            if (action.payload) action.payload.enabled = true
-            return action.payload
+            state.enabled = true
+            return state
         },
         disableDebugMode(
             state: DebugModel,
             action: PayloadAction<DebugModel | undefined>
         ) {
             localStorage?.setItem('debugMode', JSON.stringify(action.payload))
-            if (action.payload) action.payload.enabled = false
-            return action.payload
+            state.enabled = false
+            return state
         },
         toggleDebugMode(state: DebugModel,
             action: PayloadAction<DebugModel | undefined>) {
