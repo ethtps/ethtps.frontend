@@ -1,4 +1,4 @@
-import { DebugModel } from '../'
+import { DebugModel, EffectDetails } from '../'
 
 
 
@@ -38,9 +38,15 @@ const debugSlice = createSlice({
             }
             localStorage?.setItem('debugMode', JSON.stringify(state))
             return state
+        },
+        setEffect(state: DebugModel, action: PayloadAction<Partial<EffectDetails>>) {
+            if (action.payload.name) {
+                state.effects[action.payload.name] = action.payload
+            }
+            return state
         }
     },
 })
 
-export const { enableDebugMode, disableDebugMode, toggleDebugMode } = debugSlice.actions
+export const { enableDebugMode, disableDebugMode, toggleDebugMode, setEffect } = debugSlice.actions
 export const debugReducer = debugSlice.reducer

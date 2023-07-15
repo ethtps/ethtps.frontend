@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { useEffect, useRef, useState } from "react"
-import { makeInteractive, useMeasuredEffect } from '../..'
+import { makeInteractive, useDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { liveDataPointExtractor } from '../hooks'
 import { useAccumulator } from '../streaming'
@@ -45,7 +45,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const [liveData, columns] = useAccumulator(newestData, maxEntries ?? 10, dataType, providerData, refreshInterval)
     const [mountTime, setMountTime] = useState<number>(Date.now())
 
-    const chartRenderTime = useMeasuredEffect(() => {
+    useDebugMeasuredEffect(() => {
         const svg = svgRef.current
         if (!svgRef.current) return
         const s = d3.select(svg)
@@ -133,7 +133,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             .attr("d", d => area(data.series.filter(x => x.name === d.name)))
 
 
-    }, [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime])
+    }, 'new stream point', [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime])
 
     useEffect(() => {
         const svg = svgRef.current
@@ -142,9 +142,6 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         //addZoom(s, viewBox, [1.25, 0.75])
         //addDrag(s)
     }, svgRef.current)
-    useEffect(() => {
-        console.info(`${Math.round(chartRenderTime)}ms`)
-    }, [chartRenderTime])
     return <>
         <svg
             ref={svgRef}
