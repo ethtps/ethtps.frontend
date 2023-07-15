@@ -1,8 +1,7 @@
-import { DependencyList, EffectCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
 import { Extent, SelectedSVG, ViewBoxDimensions } from '../../..'
-import { setEffectDetails } from '../../../../ethtps.data/src'
 
 export function useLinearScale(d?: [min: number, max: number], range?: [min: number, max: number]) {
     const [xScale, setXScale] = useState<any>()
@@ -49,26 +48,4 @@ export function addDrag(svg: SelectedSVG,
         .on("drag", dragged)
         .on("start", dragStarted)
         .on("end", dragEnded))
-}
-
-export function useMeasuredEffect(effect: EffectCallback, deps?: DependencyList | undefined) {
-    let time = 0
-    useEffect(() => {
-        const now = Date.now()
-        try {
-            effect()
-        }
-        finally {
-            time = (Date.now() - now)
-        }
-    }, deps)
-    return time
-}
-
-export function useDebugMeasuredEffect(effect: EffectCallback, effectName: string, deps?: DependencyList | undefined) {
-    const time = useMeasuredEffect(effect, deps)
-    setEffectDetails({
-        timeMs: time,
-        name: effectName
-    })
 }

@@ -3,9 +3,9 @@ import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { useEffect, useRef, useState } from "react"
 import { makeInteractive, useDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
+import { FrequencyLimiter } from '../../../../ethtps.data/src'
 import { liveDataPointExtractor } from '../hooks'
 import { useAccumulator } from '../streaming'
-import { FrequencyLimiter } from '../../../../ethtps.data/src'
 
 export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const {

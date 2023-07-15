@@ -15,4 +15,18 @@ export class FrequencyLimiter {
         FrequencyLimiter._lastCalls[name] = now
         return true
     }
+    /**
+     * Same as canExecute but doesn't set the last call time
+     * @param name
+     * @param frequency
+     * @returns
+     */
+    public static willExecute(name: string, frequency: number = FrequencyLimiter.maxFrequency): boolean {
+        const now = Date.now()
+        const lastCall = FrequencyLimiter._lastCalls[name]
+        if (lastCall && (now - lastCall) < frequency) {
+            return false
+        }
+        return true
+    }
 }

@@ -4,13 +4,15 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 
-import { useEffect, useState } from 'react'
+import { DependencyList, EffectCallback, useEffect, useState } from 'react'
 import {
 	DataResponseModelDictionary,
+	FrequencyLimiter,
 	MinimalDataPoint,
 	dataTypeToString,
 	extractData,
 	getModeData,
+	setEffectDetails,
 	useAppSelector,
 	useGetLiveDataFromAppStore,
 	useGetLiveDataModeFromAppStore,
@@ -168,4 +170,27 @@ export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefin
 		},
 		z: z
 	}
+}
+
+export function useMeasuredEffect(effect: EffectCallback, deps?: DependencyList | undefined) {
+	const [time, setTime] = useState(0)
+	useEffect(() => {
+		const now = Date.now()
+		try {
+			effect()
+		}
+		finally {
+			setTime(Date.now() - now)
+		}
+	}, deps)
+	return time
+}
+
+export function useDebugMeasuredEffect(effect: EffectCallback, effectName: string, deps?: DependencyList | undefined) {
+	const willRun = FrequencyLimiter.willExecute(effectName)
+	const time = useMeasuredEffect(effect, deps)
+	if (willRun && time > 0) setEffectDetails({
+		timeMs: time,
+		name: effectName
+	})
 }

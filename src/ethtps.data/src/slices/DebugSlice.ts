@@ -44,8 +44,9 @@ const debugSlice = createSlice({
                 // increment total calls if this effect has been called before
                 state.effects[action.payload.name] = {
                     ...action.payload,
-                    totalCalls: state.effects[action.payload.name]?.totalCalls ? state.effects[action.payload.name]?.totalCalls! + 1 : 1
+                    totalCalls: state.effects[action.payload.name]?.totalCalls ? state.effects[action.payload.name]?.totalCalls! + 1 : 1,
                 }
+                state.effects[action.payload.name].totalTimeMs = state.effects[action.payload.name].totalTimeMs ? state.effects[action.payload.name].totalTimeMs! + action.payload.timeMs! : action.payload.timeMs!
             }
             return state
         }
