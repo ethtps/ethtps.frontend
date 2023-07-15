@@ -1,5 +1,7 @@
 import * as d3 from "d3"
 import { useEffect, useRef, useState } from "react"
+import { useDebugMeasuredEffect } from "../hooks"
+import { FrequencyLimiter } from "../../../../ethtps.data/src"
 
 export enum AxisPosition {
     Top = 'top',
@@ -26,9 +28,11 @@ export function getAxisGenerator(position: AxisPosition) {
 export function getRangeMax(position: AxisPosition, width: number, height: number, padding: number = 0, marginLeft: number = 0) {
     switch (position) {
         case AxisPosition.Top:
+            return height + (2 * padding + marginLeft)
         case AxisPosition.Bottom:
             return width - (2 * padding + marginLeft)
         case AxisPosition.Left:
+            return height - 2 * padding
         case AxisPosition.Right:
             return height - 2 * padding
     }
@@ -66,7 +70,6 @@ interface IAxisProps {
 }
 
 export function Axis({
-    axis,
     width,
     height = 50,
     min,
@@ -83,12 +86,20 @@ export function Axis({
     labelPosition = 'bottom'
 }: IAxisProps): JSX.Element {
     const ref1 = useRef<any>()
-    const [scale, setScale] = useState<d3.ScaleLinear<number, number, never>>(axis ?? d3.scaleLinear()
-        .domain([min, max])
-        .range([0, getRangeMax(position, width, height, padding, marginLeft)]))
-    useEffect(() => {
+    const [scale, setScale] = useState<d3.AxisScale<number>>()
+    useDebugMeasuredEffect(() => {
+        setScale(d3.scaleLinear()
+            .domain([min, max])
+            .range([0, getRangeMax(position, width, height, padding, marginLeft)]))
+    }, `${position} scale`, [])
+    const action = `${position} axis`
+    useDebugMeasuredEffect(() => {
+        if (!FrequencyLimiter.canExecute(action)) return
         if (!ref1?.current || !scale) return
 
+        setScale(d3.scaleLinear()
+            .domain([min, max])
+            .range([0, getRangeMax(position, width, height, padding, marginLeft)]))
         const svgElement = d3.select(ref1.current)
         svgElement.select('g').remove()
         svgElement
@@ -97,9 +108,13 @@ export function Axis({
             .attr('height', height - 2 * padding)
             .attr('transform', getTranslation(position, width, height, padding, marginLeft))
             .call(getAxisGenerator(position)(scale).ticks(tickCount))
-    }, [min, max, width, height, padding, marginLeft, position, labelPosition, scale])
+    }, action, [min, max, width, height, padding, marginLeft, position, labelPosition, scale])
     return (
         <>
-            <svg ref={ref1} />
+            <svg ref={ref1} width={width} height={height} style={{
+                padding,
+                marginLeft,
+                position: 'absolute',
+            }} />
         </>)
 }

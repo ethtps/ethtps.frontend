@@ -6,13 +6,13 @@ import {
 
 import { DependencyList, EffectCallback, useEffect, useState } from 'react'
 import {
+	BasicEffectBehavior,
 	DataResponseModelDictionary,
 	FrequencyLimiter,
 	MinimalDataPoint,
 	dataTypeToString,
 	extractData,
 	getModeData,
-	setEffectDetails,
 	useAppSelector,
 	useGetLiveDataFromAppStore,
 	useGetLiveDataModeFromAppStore,
@@ -186,11 +186,14 @@ export function useMeasuredEffect(effect: EffectCallback, deps?: DependencyList 
 	return time
 }
 
+
 export function useDebugMeasuredEffect(effect: EffectCallback, effectName: string, deps?: DependencyList | undefined) {
-	const willRun = FrequencyLimiter.willExecute(effectName)
+	const willExecute = FrequencyLimiter.willExecute(effectName)
 	const time = useMeasuredEffect(effect, deps)
-	if (willRun && time > 0) setEffectDetails({
-		timeMs: time,
-		name: effectName
-	})
+	const debug = useAppSelector(state => state.debugging)
+	if (debug.enabled && willExecute)
+		BasicEffectBehavior.add?.({
+			timeMs: time,
+			name: effectName
+		})
 }

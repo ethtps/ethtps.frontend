@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
 import { Extent, SelectedSVG, ViewBoxDimensions } from '../../..'
+import { ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 
 export function useLinearScale(d?: [min: number, max: number], range?: [min: number, max: number]) {
     const [xScale, setXScale] = useState<any>()

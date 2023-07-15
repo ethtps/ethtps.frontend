@@ -54,8 +54,7 @@ export class ApplicationState implements IApplicationState {
 		this.networks ??= defaultNetworks
 		this.providers ??= defaultProviders
 		this.debugModel ??= {
-			enabled: true,
-			effects: {},
+			enabled: true
 		}
 	}
 }

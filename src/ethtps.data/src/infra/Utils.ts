@@ -50,3 +50,15 @@ export function linearMap(
 ) {
 	return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
 }
+
+export function debounce(fn: (...args: any[]) => void, delay: number) {
+	let timeoutID: string | number | NodeJS.Timeout
+	return function (...args: []) {
+		if (timeoutID) {
+			clearTimeout(timeoutID)
+		}
+		timeoutID = setTimeout(() => {
+			fn(...args)
+		}, delay)
+	}
+}

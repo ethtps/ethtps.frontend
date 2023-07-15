@@ -1,4 +1,4 @@
-import { GenericDictionary } from '../'
+import { GenericDictionary, debounce } from '../'
 
 /**
  * A class that can be used to limit a function call. GREATLY improves performance though it shouldn't be needed - Mister Eth's still learning...
@@ -28,5 +28,9 @@ export class FrequencyLimiter {
             return false
         }
         return true
+    }
+
+    public static debounce(name: string, callback: () => void, frequency: number = FrequencyLimiter.maxFrequency) {
+        debounce(callback, frequency)()
     }
 }
