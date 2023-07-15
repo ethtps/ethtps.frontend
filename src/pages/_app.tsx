@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                 transition={{
                   duration: 1
                 }}>
-                <MainLayout component={<Component {...pageProps} />} />
+                <MainLayout store={store} component={<Component {...pageProps} />} />
               </motion.div>, isHuman)}
               <motion.div initial={{
                 opacity: 1

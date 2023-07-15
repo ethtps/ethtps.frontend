@@ -1,4 +1,5 @@
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
+import { DebugModel } from '../admin'
 import {
 	defaultColorDictionary,
 	defaultNetworks,
@@ -24,6 +25,7 @@ export interface IApplicationState extends IDataLoadingModel {
 	experiments?: number[]
 	intervals?: Array<string>
 	networks?: Array<string>
+	debugModel?: DebugModel
 	providers?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
 }
 
@@ -42,7 +44,8 @@ export class ApplicationState implements IApplicationState {
 		public experiments?: number[],
 		public intervals?: Array<string>,
 		public networks?: Array<string>,
-		public providers?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
+		public providers?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[],
+		public debugModel?: DebugModel
 	) {
 		this.colorDictionaries ??= {
 			providerColorDictionary: defaultColorDictionary,
@@ -50,5 +53,9 @@ export class ApplicationState implements IApplicationState {
 		}
 		this.networks ??= defaultNetworks
 		this.providers ??= defaultProviders
+		this.debugModel ??= {
+			enabled: true,
+			effects: {},
+		}
 	}
 }

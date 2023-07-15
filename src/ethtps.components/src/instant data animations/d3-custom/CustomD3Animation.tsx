@@ -42,7 +42,7 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
     useEffect(() => {
         setMountTime(Date.now())
     }, [])
-    const [liveData, columns, lastValues] = useAccumulator(newestData, maxEntries ?? 10, dataType, providerData, refreshInterval)
+    const [liveData, columns] = useAccumulator(newestData, maxEntries ?? 10, dataType, providerData, refreshInterval)
     const [mountTime, setMountTime] = useState<number>(Date.now())
 
     useEffect(() => {

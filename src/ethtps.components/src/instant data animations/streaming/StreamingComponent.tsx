@@ -8,7 +8,7 @@ import {
 	IconMaximize,
 	IconMinimize,
 	IconPlayerPause,
-	IconPlayerPlay,
+	IconPlayerPlay
 } from '@tabler/icons-react'
 import {
 	ETHTPSDataCoreDataType,
@@ -16,7 +16,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CustomD3Stream, ETHTPSAnimation, TimeIntervalButtonGroup, useColors } from '../../..'
+import { CustomD3Stream, DebugOverlay, ETHTPSAnimation, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
 	ExtendedTimeInterval,
 	TimeIntervalToStreamProps
@@ -205,6 +205,11 @@ export function StreamingComponent({
 						</Tooltip>
 					</Box>
 				</Container>
+			</Box>
+			<Box sx={{
+				position: 'absolute',
+			}}>
+				<DebugOverlay />
 			</Box>
 		</>
 	)

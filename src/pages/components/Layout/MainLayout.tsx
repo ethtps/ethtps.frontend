@@ -1,7 +1,7 @@
-// eslint-disable-next-line import/no-internal-modules
 import { Box, Divider, Flex } from '@chakra-ui/react'
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api/dist/models'
 import { GetServerSideProps } from 'next'
+import { AppStore } from '../../../ethtps.data'
 import { api } from '../../../services/'
 import Navbar from './Navbar'
 
@@ -17,12 +17,13 @@ export const getStaticProps: GetServerSideProps = async (context) => {
 export default function MainLayout(
   props: Partial<{
     component: JSX.Element
+    store: AppStore
     providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
   }>
 ) {
   return (
     <>
-      <Navbar allProviders={props.providerData} />
+      <Navbar store={props.store} allProviders={props.providerData} />
       <Divider />
       <Flex
         direction={'column'}

@@ -1,7 +1,7 @@
 import { Dictionary } from '@reduxjs/toolkit'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { useEffect, useState } from 'react'
-import { LiveDataPoint, liveDataPointExtractor, minimalDataPointToLiveDataPoint } from '../../../..'
+import { LiveDataPoint, minimalDataPointToLiveDataPoint } from '../../../..'
 import { GenericDictionary, L2DataUpdateModel } from '../../../../../ethtps.data/src'
 
 /**
@@ -19,10 +19,8 @@ export function useVerticalScrolling(duration: number, height?: number) {
 }
 
 export function useAccumulator(newestData: Dictionary<L2DataUpdateModel> | undefined, maxEntries: number, dataType: ETHTPSDataCoreDataType | undefined, providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[] | undefined, refreshInterval?: number) {
-    const [liveData, setLiveData] = useState<LiveDataPoint[]>([])
-    const [columns, setColumns] = useState<string[]>([])
-    const [lastValues, setLastValues] = useState<GenericDictionary<LiveDataPoint>>({})
-    const [totals, setTotals] = useState<number[]>([])
+    const [liveData, setLiveData] = useState<LiveDataPoint[]>(JSON.parse(localStorage.getItem('liveData') ?? '[]'))
+    const [columns, setColumns] = useState<string[]>(JSON.parse(localStorage.getItem('liveDataColumns') ?? '[]'))
     useEffect(() => {
         if (!newestData) return
 
@@ -30,41 +28,15 @@ export function useAccumulator(newestData: Dictionary<L2DataUpdateModel> | undef
             const keys = Object.keys(newestData)
             if (keys?.length === 0) return c
             const newColumns = [...c, ...keys.filter((k) => !c.includes(k))]
-
-            setLiveData((l) => {
-                let dataPoints = l // Take the last 'maxEntries' data points
-                setLastValues((oldValues) => {
-                    const newLastValues = { ...oldValues } // Make a copy of the last values
-
-                    // Add new data point for each column
-                    newColumns.forEach((c) => {
-                        const value =
-                            minimalDataPointToLiveDataPoint(newestData[c]?.data, c) ?? newLastValues[c]
-                            ?? {
-                                tps: 0,
-                                gps: 0,
-                                gtps: 0,
-                            }
-
-                        dataPoints.push(value)
-
-                        newLastValues[c] = value // Update the last value
-                    })
-                    setTotals((t) => [...t, dataPoints.reduce((a, b) => a + (liveDataPointExtractor(b, dataType) ?? 0), 0)])
-                    return newLastValues
-                }) // Store the updated last values
-                // We don't really need to remove old data points, since we're using a 'realtime' x-axis
-                /*
-                if (dataPoints.length > 2 * maxEntries * newColumns.length)
-                    dataPoints = dataPoints.slice(-maxEntries * newColumns.length)*/
-                return [...l, dataPoints.findLast(x => true)!] // This replaces the old liveData with the new dataPoints, including the newly added points
-            })
+            localStorage.setItem('liveDataColumns', JSON.stringify(newColumns))
             return newColumns
         })
-    }, [newestData, maxEntries, dataType, providerData, refreshInterval])
-    useEffect(() => {
-        setTotals([])
-
-    }, [dataType])
-    return [liveData, columns, lastValues, totals] as const
+        setLiveData((ld) => {
+            const d: LiveDataPoint[] = Object.keys(newestData).filter(x => !!newestData[x]).map((k) => minimalDataPointToLiveDataPoint(newestData[k]?.data, k))
+            const result = [...ld, ...d]
+            localStorage.setItem('liveData', JSON.stringify(result))
+            return result
+        })
+    }, [newestData, dataType, providerData, refreshInterval])
+    return [liveData, columns] as const
 }

@@ -1,25 +1,25 @@
-import { createWrapper } from 'next-redux-wrapper'
-import { EqualityFn, useDispatch, useSelector } from 'react-redux'
 import {
 	Action,
 	AnyAction,
 	Dispatch,
-	PayloadAction,
 	ThunkAction,
 	ThunkDispatch,
-	configureStore,
+	configureStore
 } from '@reduxjs/toolkit'
+import { createWrapper } from 'next-redux-wrapper'
+import { EqualityFn, useDispatch, useSelector } from 'react-redux'
 import { ApplicationState, IApplicationState } from './models'
 import {
-	providersReducer,
-	networksReducer,
-	intervalsReducer,
-	dataReducer,
-	liveDataReducer,
-	colorReducer,
-	experimentReducer,
 	applicationStateReducer,
+	colorReducer,
+	dataReducer,
+	experimentReducer,
+	intervalsReducer,
+	liveDataReducer,
+	networksReducer,
+	providersReducer,
 } from './slices'
+import { debugReducer } from './slices/DebugSlice'
 
 const preloadedState = new ApplicationState(false, false)
 const makeStore = () =>
@@ -33,6 +33,7 @@ const makeStore = () =>
 			colors: colorReducer,
 			experiments: experimentReducer,
 			applicationState: applicationStateReducer,
+			debugging: debugReducer
 		},
 		...(preloadedState as IApplicationState),
 		middleware: (getDefaultMiddleware) =>
@@ -62,3 +63,5 @@ export function useAppSelector<T>(
 	return useSelector<AppState, T>(selector)
 }
 export const useAppDispatch = (action: AnyAction) => useDispatch()(action)
+
+export const useDispatcher = useDispatch

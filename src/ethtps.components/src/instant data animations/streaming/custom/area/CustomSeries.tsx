@@ -11,7 +11,7 @@ export function CustomSeries(props: Partial<ICustomSeriesProps>) {
     useEffect(() => {
         setMountTime(Date.now())
     }, [])
-    const [liveData, columns, lastValues] = useAccumulator(props.newestData, props.maxEntries ?? 30, props.dataType ?? ETHTPSDataCoreDataType.TPS, props.providerData, props.refreshInterval)
+    const [liveData, columns] = useAccumulator(props.newestData, props.maxEntries ?? 30, props.dataType ?? ETHTPSDataCoreDataType.TPS, props.providerData, props.refreshInterval)
     let stackOffset = 0
     return <>
         {columns.filter(x => x === "Polygon").map((providerName, i) => {
@@ -25,7 +25,6 @@ export function CustomSeries(props: Partial<ICustomSeriesProps>) {
                 lineColor={props.providerData?.find(p => p.name === providerName)?.color}
                 mountTime={mountTime}
                 liveData={liveData}
-                lastValues={lastValues}
                 offsetBy={props.stacked ? stackOffset : 0} />
         })}
     </>

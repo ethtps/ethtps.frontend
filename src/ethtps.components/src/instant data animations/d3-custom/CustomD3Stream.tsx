@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { useEffect, useRef, useState } from "react"
-import { makeInteractive } from '../..'
+import { makeInteractive, useMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { liveDataPointExtractor } from '../hooks'
 import { useAccumulator } from '../streaming'
@@ -42,24 +42,29 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     useEffect(() => {
         setMountTime(Date.now())
     }, [])
-    const [liveData, columns, lastValues] = useAccumulator(newestData, maxEntries ?? 10, dataType, providerData, refreshInterval)
+    const [liveData, columns] = useAccumulator(newestData, maxEntries ?? 10, dataType, providerData, refreshInterval)
     const [mountTime, setMountTime] = useState<number>(Date.now())
 
-    useEffect(() => {
+    const chartRenderTime = useMeasuredEffect(() => {
         const svg = svgRef.current
         if (!svgRef.current) return
         const s = d3.select(svg)
         s.selectChildren().remove()
 
         const dates = Array.from(d3.group(liveData.map(x => x.x), d => d).keys()).map(x => new Date(x))
-        type T = [Date, number]
+        type T = {
+            name: string,
+            date: Date,
+            value: number
+        }
         const data = {
             dates,
-            series: columns.map((providerName, i) => {
-                return {
+            series: columns.flatMap((providerName, i) => {
+                return liveData.filter(x => x.z === providerName).map(x => ({
                     name: providerName,
-                    values: liveData.filter(x => x.z === providerName).map(x => [new Date(x.x), liveDataPointExtractor(x, dataType ?? ETHTPSDataCoreDataType.TPS) ?? 0] as T)
-                }
+                    date: new Date(x.x),
+                    value: liveDataPointExtractor(x, dataType ?? ETHTPSDataCoreDataType.TPS) ?? 0
+                }) as T)
             })
         }
         const xe = d3.extent(data.dates)
@@ -68,7 +73,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             .domain([xe[1], xe[0]])
             .range([(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0), innerWidth])
         const overlap = 0.1
-        const max = d3.max(data.series, d => d3.max(d.values, q => q[1])!)! * (1 + overlap)
+        const max = (d3.max(data.series, d => d.value) ?? 0) * (1 + overlap)
         const y = d3.scaleLinear()
             .domain([-max, max]).nice()
             .range([0, innerHeight])
@@ -91,24 +96,42 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             .call(yAxis)
 
         const area = d3.area<T>()
-            .defined(d => !isNaN(d[1]))
-            .x(d => x(d[0]))
-            .y0(d => y(-d[1]))
-            .y1(d => y(d[1]))
+            .defined(d => !isNaN(d.value))
+            .x(d => x(d.date))
+            .y0(d => y(-d.value))
+            .y1(d => y(d.value))
             .curve(d3.curveCatmullRom)
 
         const getColor = (i: number) => {
-            let c = d3.color(d3.schemePiYG[11][i % 11])
+            let c = d3.color(d3.schemePuBuGn[5][i % 5])
             if (c) c.opacity = 0.2
             return c?.formatHex8() ?? '#ddd'
         }
+        /*
+                const q = d3.rollup(
+                    d3.range(data.dates.length),
+                    (i: number[]) => i,
+                    (i: number) => x(data.dates[i]),
+                    (i: number) => 1)
+        */
+        const stacks = d3.stack<T>()
+            .keys(d3.union(data.series.map(d => d.name)))
+            .value((g, k) => g.value)
+            .order(d3.stackOrderInsideOut)
+            .offset(d3.stackOffsetWiggle)
+            (data.series)
+
+        console.clear()
+        console.log(stacks)
+        console.log(data.series)
 
         const group = s.append("g")
             .selectAll('path')
             .data(data.series)
             .join('path')
             .attr("fill", (d, i) => getColor(i))
-            .attr("d", d => area(d.values))
+            .attr("d", d => area(data.series.filter(x => x.name === d.name)))
+
 
     }, [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime])
 
@@ -119,6 +142,9 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         //addZoom(s, viewBox, [1.25, 0.75])
         //addDrag(s)
     }, svgRef.current)
+    useEffect(() => {
+        console.info(`${Math.round(chartRenderTime)}ms`)
+    }, [chartRenderTime])
     return <>
         <svg
             ref={svgRef}

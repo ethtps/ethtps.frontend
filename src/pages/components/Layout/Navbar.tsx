@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -10,10 +9,13 @@ import {
   Link,
   Spacer,
   Text,
+  Tooltip,
   useColorMode,
   useDisclosure
 } from '@chakra-ui/react'
+import { IconBug, IconBugOff } from '@tabler/icons-react'
 import { useColors } from '../../../ethtps.components/'
+import { AppStore, toggleDebugMode, useAppSelector } from '../../../ethtps.data'
 import styles from '../../../styles/app.module.scss'
 import { DesktopNav } from './DesktopNav'
 import { MobileNav } from './MobileNav'
@@ -21,12 +23,15 @@ import { ThreeLinks } from './ThreeLinks'
 
 export interface INavbarProps {
   allProviders?: any[]
+  store?: AppStore
 }
 
-export default function Navbar({ allProviders }: INavbarProps) {
+export default function Navbar({ allProviders, store }: INavbarProps) {
   const { colorMode, toggleColorMode } = useColorMode()
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
   const colors = useColors()
+  const debugOn = useAppSelector(s => s.debugging.enabled)
+
   return (
     <Box>
       <Flex
@@ -47,6 +52,22 @@ export default function Navbar({ allProviders }: INavbarProps) {
           <Link href='/'>
             <Text className={styles.logoish}>ETHTPS.info</Text>
           </Link>
+        </Box>
+        <Box>
+          <Tooltip label={`Debug mode is ${debugOn ? 'on' : 'off'}. Click to turn it  ${debugOn ? 'off' : 'on'}.`}>
+            <Button
+              iconSpacing={0}
+              leftIcon={
+                !debugOn ? (
+                  <IconBugOff />
+                ) : (
+                  <IconBug />
+                )
+              }
+              variant={'ghost'}
+              onClick={() => store?.dispatch(toggleDebugMode())}
+            />
+          </Tooltip>
         </Box>
         <Spacer />
         <HStack
