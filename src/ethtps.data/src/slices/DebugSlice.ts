@@ -41,7 +41,11 @@ const debugSlice = createSlice({
         },
         setEffect(state: DebugModel, action: PayloadAction<Partial<EffectDetails>>) {
             if (action.payload.name) {
-                state.effects[action.payload.name] = action.payload
+                // increment total calls if this effect has been called before
+                state.effects[action.payload.name] = {
+                    ...action.payload,
+                    totalCalls: state.effects[action.payload.name]?.totalCalls ? state.effects[action.payload.name]?.totalCalls! + 1 : 1
+                }
             }
             return state
         }

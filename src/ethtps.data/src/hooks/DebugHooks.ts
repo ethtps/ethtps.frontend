@@ -1,6 +1,7 @@
-import { EffectDetails, setEffect, useAppDispatch } from '../'
+import { EffectDetails, FrequencyLimiter, setEffect, useAppDispatch } from '../'
 
 
 export function setEffectDetails(details: Partial<EffectDetails>) {
-    useAppDispatch(setEffect(details))
+    FrequencyLimiter.canExecute('setEffectDetails') &&
+        useAppDispatch(setEffect(details))
 }

@@ -5,6 +5,7 @@ import { makeInteractive, useDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { liveDataPointExtractor } from '../hooks'
 import { useAccumulator } from '../streaming'
+import { FrequencyLimiter } from '../../../../ethtps.data/src'
 
 export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const {
@@ -44,8 +45,8 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     }, [])
     const [liveData, columns] = useAccumulator(newestData, maxEntries ?? 10, dataType, providerData, refreshInterval)
     const [mountTime, setMountTime] = useState<number>(Date.now())
-
     useDebugMeasuredEffect(() => {
+        if (!FrequencyLimiter.canExecute('d3 stream update')) return
         const svg = svgRef.current
         if (!svgRef.current) return
         const s = d3.select(svg)
@@ -133,7 +134,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             .attr("d", d => area(data.series.filter(x => x.name === d.name)))
 
 
-    }, 'new stream point', [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime])
+    }, 'new stream point', [liveData, columns, dataType, providerData, refreshInterval, mountTime])
 
     useEffect(() => {
         const svg = svgRef.current

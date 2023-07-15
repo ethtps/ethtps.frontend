@@ -1,1 +1,2 @@
-export * from './Utils'
+export * from './FrequencyLimiter';
+export * from './Utils';
