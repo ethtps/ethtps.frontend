@@ -1,8 +1,7 @@
 import * as d3 from 'd3'
 import { useEffect, useRef, useState } from "react"
-import { makeInteractive, useD3Scale, useDebugMeasuredEffect, useXAxisBounds, useYAxisBounds } from '../..'
+import { Axis, makeInteractive, useD3Axis, useD3Scale, useXAxisBounds, useYAxisBounds } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
-import { FrequencyLimiter } from "../../../../ethtps.data/src"
 
 
 export function CustomD3Stream(props: IInstantDataAnimationProps) {
@@ -38,6 +37,8 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         verticalPadding
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
+    const xRef = useRef<any>(null)
+    const yRef = useRef<any>(null)
     const [mountTime, setMountTime] = useState<number>()
     useEffect(() => {
         setMountTime(Date.now())
@@ -45,33 +46,10 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     }, [])
 
     const xBounds = useXAxisBounds(props.timeInterval)
-    const yBounds = useYAxisBounds(newestData ?? {}, dataType)
+    const yBounds = useYAxisBounds(newestData, dataType)
     const xAxis = useD3Scale(xBounds, [0, innerWidth])
-
-    useDebugMeasuredEffect(() => {
-        if (!FrequencyLimiter.canExecute('x axis')) return
-        const node = svgRef.current
-        if (!node || !xAxis) return
-        const s = d3.select(node)
-            .append('g')
-        s.call(d3.axisTop(xAxis))
-    }, 'x axis', [svgRef.current, xAxis])
-
-    const yAxis = useD3Scale(yBounds, [innerHeight, 0])
-
-    useEffect(() => {
-        if (!FrequencyLimiter.canExecute('y axis')) return
-        const svg = svgRef.current
-        if (!svgRef.current || !yAxis) return
-        const s = d3.select(svg)
-        s.select('g').remove()
-        s.append('g')
-            .attr('transform', `translate(${horizontalPadding ?? 0}, ${verticalPadding ?? 0})`)
-            .attr('width', innerWidth)
-            .attr('height', innerHeight)
-        s.call(d3.axisLeft(yAxis).ticks(10))
-
-    }, [svgRef.current, yAxis])
+    const yAxis = useD3Scale(yBounds, [0, innerHeight])
+    const y = useD3Axis(yAxis, d3.axisRight, yRef, padding, margins, 'y')
 
     return <>
         <svg
@@ -80,8 +58,28 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                 ...margins,
                 ...padding
             }}
-            width={innerWidth}
-            height={innerHeight}>
+            width={width}
+            height={height}>
+            <Axis
+                sx={{
+                    transform: `translateX(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px)`
+                }}
+                orientation={d3.axisBottom}
+                axis={xAxis}
+                name={'x'}
+                padding={padding}
+                margins={margins}
+            />
+            <Axis
+                sx={{
+                    transform: `translate(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px, ${(padding?.paddingTop ?? 0) + (margins?.marginTop ?? 0)}px)`
+                }}
+                orientation={d3.axisRight}
+                axis={yAxis}
+                name={'y'}
+                padding={padding}
+                margins={margins}
+            />
         </svg>
     </>
 }
