@@ -51,18 +51,8 @@ export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientati
         if (!node || !axis) return
         const s = d3.select(node)
         s.append('g').call(orientation(axis))
-        logToOverlay({
-            name: `d3-${name}-delta`,
-            details: `[${axis?.domain()}] @ ` + new Date().toLocaleTimeString(),
-            level: 'info'
-        })
     }, `Δ`, `${name} axis`)
     measure(() => {
-        logToOverlay({
-            name: `d3-${name}-change`,
-            details: `[${axis?.domain()}] @ ` + new Date().toLocaleTimeString(),
-            level: 'info'
-        })
         if (!FrequencyLimiter.canExecute(`${name} axis change`)) {
             return
         }

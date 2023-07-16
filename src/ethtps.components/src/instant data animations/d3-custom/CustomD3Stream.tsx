@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 import { Axis, getD3Scale, getXAxisBounds, getYAxisBounds, makeInteractive } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 
@@ -25,7 +25,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         marginLeft: 10,
         marginRight: 20,
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 30
     }, {
         paddingLeft: 10,
         paddingRight: 10,
@@ -37,10 +37,10 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         verticalPadding
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
-    const xBounds = getXAxisBounds(props.timeInterval)
-    const yBounds = getYAxisBounds(newestData, dataType)
-    const xAxis = getD3Scale(xBounds, [0, innerWidth])
-    const yAxis = getD3Scale(yBounds, [0, innerHeight])
+    const xBounds = useMemo(() => getXAxisBounds(props.timeInterval), [props.timeInterval])
+    const yBounds = useMemo(() => getYAxisBounds(newestData, dataType), [newestData, dataType])
+    const xAxis = useMemo(() => getD3Scale(xBounds, [0, innerWidth]), [xBounds, innerWidth])
+    const yAxis = useMemo(() => getD3Scale(yBounds, [0, innerHeight]), [yBounds, innerHeight])
     return <>
         <svg
             ref={svgRef}

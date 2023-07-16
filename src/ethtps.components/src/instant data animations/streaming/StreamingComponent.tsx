@@ -207,11 +207,6 @@ export function StreamingComponent({
 					</Box>
 				</Container>
 			</Box>
-			{conditionalRender(<Box sx={{
-				position: 'absolute',
-			}}>
-				<DebugOverlay show />
-			</Box>, DEBUG)}
 		</>
 	)
 }

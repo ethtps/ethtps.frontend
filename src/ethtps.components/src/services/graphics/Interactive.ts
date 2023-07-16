@@ -14,8 +14,8 @@ export class Interactive<T extends Partial<XYDimensions>> implements Interactibl
     public get viewBox(): [[number, number], [number, number]] { return [[0, 0], [0, 0]] }
     public padding?: Partial<Padded> | undefined
     public margins?: Partial<WithMargins> | undefined
-    public get innerWidth(): number { return this.width - (this.padding?.horizontalPadding ?? 0) - (this.margins?.horizontalMargin ?? 0) }
-    public get innerHeight(): number { return this.height - (this.padding?.verticalPadding ?? 0) - (this.margins?.verticalMargin ?? 0) }
+    public get innerWidth(): number { return this.width - (this.margins?.marginLeft ?? 0) - (this.margins?.marginRight ?? 0) - (this.padding?.paddingLeft ?? 0) - (this.padding?.paddingRight ?? 0) }
+    public get innerHeight(): number { return this.height - (this.margins?.marginTop ?? 0) - (this.margins?.marginBottom ?? 0) - (this.padding?.paddingTop ?? 0) - (this.padding?.paddingBottom ?? 0) }
     constructor(public element: T | undefined,
         margin?: Partial<WithMargins>,
         pad?: Partial<Padded>,
