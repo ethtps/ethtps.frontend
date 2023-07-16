@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
-import { useEffect, useRef, useState } from "react"
-import { Axis, makeInteractive, useD3Axis, useD3Scale, useXAxisBounds, useYAxisBounds } from '../..'
+import { useRef } from "react"
+import { Axis, getD3Scale, getXAxisBounds, getYAxisBounds, makeInteractive } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 
 
@@ -37,20 +37,10 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         verticalPadding
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
-    const xRef = useRef<any>(null)
-    const yRef = useRef<any>(null)
-    const [mountTime, setMountTime] = useState<number>()
-    useEffect(() => {
-        setMountTime(Date.now())
-        console.clear()
-    }, [])
-
-    const xBounds = useXAxisBounds(props.timeInterval)
-    const yBounds = useYAxisBounds(newestData, dataType)
-    const xAxis = useD3Scale(xBounds, [0, innerWidth])
-    const yAxis = useD3Scale(yBounds, [0, innerHeight])
-    const y = useD3Axis(yAxis, d3.axisRight, yRef, padding, margins, 'y')
-
+    const xBounds = getXAxisBounds(props.timeInterval)
+    const yBounds = getYAxisBounds(newestData, dataType)
+    const xAxis = getD3Scale(xBounds, [0, innerWidth])
+    const yAxis = getD3Scale(yBounds, [0, innerHeight])
     return <>
         <svg
             ref={svgRef}

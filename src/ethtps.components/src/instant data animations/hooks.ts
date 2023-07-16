@@ -6,8 +6,8 @@ import {
 
 import { DependencyList, EffectCallback, useEffect, useState } from 'react'
 import {
-	BasicEffectBehavior,
 	DataResponseModelDictionary,
+	DebugBehaviors,
 	FrequencyLimiter,
 	MinimalDataPoint,
 	dataTypeToString,
@@ -19,7 +19,7 @@ import {
 	useGetLiveDataSmoothingFromAppStore,
 	useGetProviderColorDictionaryFromAppStore,
 	useGetProvidersFromAppStore,
-	useGetSidechainsIncludedFromAppStore,
+	useGetSidechainsIncludedFromAppStore
 } from '../../../ethtps.data/src'
 import { LiveDataPoint } from './types'
 
@@ -173,27 +173,53 @@ export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefin
 }
 
 export function useMeasuredEffect(effect: EffectCallback, deps?: DependencyList | undefined) {
-	const [time, setTime] = useState(0)
+	let time = 0
+	const now = Date.now()
+	useEffect(effect, deps)
+	time = (Date.now() - now)
+	/*
 	useEffect(() => {
 		const now = Date.now()
 		try {
-			effect()
+			return effect()
+		}
+		catch (e) {
+			console.error(e)
 		}
 		finally {
 			setTime(Date.now() - now)
 		}
-	}, deps)
+	}, deps)*/
 	return time
 }
 
+export function useDebugMeasuredEffect(effect: () => void, effectName: string, deps?: DependencyList | undefined) {
+	return useGroupedDebugMeasuredEffect(effect, effectName, undefined, deps)
+}
 
-export function useDebugMeasuredEffect(effect: EffectCallback, effectName: string, deps?: DependencyList | undefined) {
+export function useGroupedDebugMeasuredEffect(effect: EffectCallback, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
 	const willExecute = FrequencyLimiter.willExecute(effectName)
 	const time = useMeasuredEffect(effect, deps)
 	const debug = useAppSelector(state => state.debugging)
 	if (debug.enabled && willExecute)
-		BasicEffectBehavior.add?.({
+		DebugBehaviors.effectBehavior.add?.({
 			timeMs: time,
+			group: groupName,
 			name: effectName
 		})
+}
+
+export function measure(action: () => void, effectName: string, groupName?: string) {
+	const willExecute = FrequencyLimiter.willExecute(effectName)
+	const now = Date.now()
+	action()
+	const time = (Date.now() - now)
+	const debug = useAppSelector(state => state.debugging)
+	if (debug.enabled && willExecute) {
+		DebugBehaviors.effectBehavior.add?.({
+			timeMs: time,
+			group: groupName,
+			name: effectName
+		})
+	}
 }

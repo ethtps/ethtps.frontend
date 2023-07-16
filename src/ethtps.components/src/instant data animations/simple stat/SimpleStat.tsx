@@ -75,7 +75,7 @@ export function SimpleStat(
 								sx={{
 									textColor: color,
 								}}
-								animationClassName="animated-cell inline unselectable"
+								baseClass="inline unselectable"
 								child={numberFormat(props.data.delta.value)}
 								durationMs={800}
 							/>
