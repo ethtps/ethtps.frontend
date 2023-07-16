@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
-import { measure } from '..'
+import { measure, useDebugMeasuredEffect, useGroupedDebugMeasuredEffect } from '..'
 import { Padded, WithMargins } from '../../..'
 import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, TimeIntervalToStreamProps, extractData, logToOverlay } from '../../../../ethtps.data/src'
 import { NumericInterval } from './Types'
@@ -43,16 +43,16 @@ export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientati
     padding?: Partial<Padded>,
     margins?: Partial<WithMargins>,
     name?: string) {
-    measure(() => {
+    useGroupedDebugMeasuredEffect(() => {
         if (!FrequencyLimiter.canExecute(`${name} axis delta`)) {
             return
         }
         const node = svgRef.current
         if (!node || !axis) return
         const s = d3.select(node)
-        s.append('g').call(orientation(axis))
-    }, `Δ`, `${name} axis`)
-    measure(() => {
+        s.call(orientation(axis))
+    }, `Δ`, `${name} axis`, [axis, orientation, svgRef, padding, margins, name])
+    useGroupedDebugMeasuredEffect(() => {
         if (!FrequencyLimiter.canExecute(`${name} axis change`)) {
             return
         }

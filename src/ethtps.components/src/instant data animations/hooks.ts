@@ -209,7 +209,7 @@ export function useGroupedDebugMeasuredEffect(effect: EffectCallback, effectName
 		})
 }
 
-export function measure(action: () => void, effectName: string, groupName?: string) {
+export function measure(action: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
 	const willExecute = FrequencyLimiter.willExecute(effectName)
 	const now = Date.now()
 	action()
