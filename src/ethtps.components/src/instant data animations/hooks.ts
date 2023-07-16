@@ -4,7 +4,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 
-import { DependencyList, EffectCallback, useEffect, useState } from 'react'
+import { DependencyList, useEffect, useLayoutEffect, useState } from 'react'
 import {
 	DataResponseModelDictionary,
 	DebugBehaviors,
@@ -169,11 +169,11 @@ export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefin
 	return res
 }
 
-export function useMeasuredEffect(effect: EffectCallback, deps?: DependencyList | undefined) {
+export function useMeasuredEffect(effect: () => void, deps?: DependencyList | undefined) {
 	let time = 0
 	const now = performance.now()
-	useEffect(() => {
-		return effect()
+	useLayoutEffect(() => {
+		effect()
 	}, deps)
 	time = (performance.now() - now)
 	/*
@@ -196,7 +196,7 @@ export function useDebugMeasuredEffect(effect: () => void, effectName: string, d
 	return useGroupedDebugMeasuredEffect(effect, effectName, undefined, deps)
 }
 
-export function useGroupedDebugMeasuredEffect(effect: EffectCallback, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
+export function useGroupedDebugMeasuredEffect(effect: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
 	const willExecute = FrequencyLimiter.willExecute(effectName)
 	const time = useMeasuredEffect(effect, deps)
 	const debug = useAppSelector(state => state.debugging)

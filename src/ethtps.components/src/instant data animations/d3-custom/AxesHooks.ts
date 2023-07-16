@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useDebugMeasuredEffect, useGroupedDebugMeasuredEffect } from '..'
 import { Padded, WithMargins } from '../../..'
-import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, TimeIntervalToStreamProps, extractData, logToOverlay } from '../../../../ethtps.data/src'
+import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, LiveDataPoint, TimeIntervalToStreamProps, extractData, logToOverlay } from '../../../../ethtps.data/src'
 import { NumericInterval } from './Types'
 import { useState, useEffect } from 'react'
 
@@ -13,6 +13,12 @@ import { useState, useEffect } from 'react'
 export function getXAxisBounds(timeInterval?: ETHTPSDataCoreTimeInterval | ExtendedTimeInterval): NumericInterval {
     const i = (timeInterval ?? ETHTPSDataCoreTimeInterval.ONE_MINUTE) as ExtendedTimeInterval
     return [-TimeIntervalToStreamProps(i).duration / 1000, 0]
+}
+
+export function getDataXAxisBounds(data: GenericDictionary<LiveDataPoint>[]): NumericInterval {
+    const now = Date.now()
+    const oldest = Math.min(...data.flatMap(d => Object.keys(d ?? {}).map(y => d[y].x ?? now)))
+    return [oldest, now]
 }
 
 function getRange(newestData: GenericDictionary<L2DataUpdateModel> | undefined, dataType: ETHTPSDataCoreDataType): NumericInterval {

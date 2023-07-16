@@ -1,7 +1,7 @@
 import * as d3 from "d3"
-import { CSSProperties, useEffect, useRef } from "react"
-import { Padded, WithMargins, addD3Axis, useGroupedDebugMeasuredEffect } from "../../.."
-import { FrequencyLimiter, logToOverlay } from "../../../../ethtps.data/src"
+import { CSSProperties, useRef } from "react"
+import { Padded, WithMargins, useGroupedDebugMeasuredEffect } from "../../.."
+import { FrequencyLimiter } from "../../../../ethtps.data/src"
 
 
 export function Axis({
