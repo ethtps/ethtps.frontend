@@ -1,8 +1,11 @@
 import * as d3 from 'd3'
-import { useMemo, useRef } from "react"
-import { Axis, getD3Scale, getXAxisBounds, getYAxisBounds, makeInteractive } from '../..'
+import { ETHTPSDataCoreDataType } from 'ethtps.api'
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Axis, dataExtractor, getD3Scale, getXAxisBounds, liveDataPointExtractor, makeInteractive } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
+import { LiveDataAggregator, LiveDataPoint, logToOverlay } from '../../../../ethtps.data/src'
 
+const aggregator = new LiveDataAggregator()
 
 export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const {
@@ -38,9 +41,36 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
     const xBounds = useMemo(() => getXAxisBounds(props.timeInterval), [props.timeInterval])
-    const yBounds = useMemo(() => getYAxisBounds(newestData, dataType), [newestData, dataType])
     const xAxis = useMemo(() => getD3Scale(xBounds, [0, innerWidth]), [xBounds, innerWidth])
-    const yAxis = useMemo(() => getD3Scale(yBounds, [0, innerHeight]), [yBounds, innerHeight])
+    const [max, setMax] = useState<Partial<LiveDataPoint>>()
+    const yGen = useCallback(() => d3.scaleLinear().domain([-(liveDataPointExtractor(max, dataType) ?? 0), liveDataPointExtractor(max, dataType) ?? 1]).nice().range([0, innerHeight]), [dataType, innerHeight, max])
+    const yAxis = yGen()
+    useEffect(() => {
+        if (newestData) {
+            aggregator.updateMultiple(newestData)
+        }
+        setMax(m => {
+            if (!m) {
+                const cpy = new LiveDataPoint()
+                cpy.tps = aggregator.maxTotal.tps
+                cpy.gps = aggregator.maxTotal.gps
+                return cpy
+            }
+            if (!m.compare!(aggregator.maxTotal)) {
+                if (m.tps !== aggregator.maxTotal.tps) {
+                    m.tps = aggregator.maxTotal.tps
+                }
+                if (m.gps !== aggregator.maxTotal.gps) {
+                    m.gps = aggregator.maxTotal.gps
+                }
+            }
+            logToOverlay({
+                name: 'max',
+                details: JSON.stringify(m)
+            })
+            return m
+        })
+    }, [dataType, newestData])
     return <>
         <svg
             ref={svgRef}

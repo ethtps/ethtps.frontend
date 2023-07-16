@@ -3,9 +3,9 @@ import dynamic from "next/dynamic"
 import { useToast } from "@chakra-ui/react"
 import { ETHTPSDataCoreDataType } from "ethtps.api"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
-import { IInstantDataAnimationProps, LiveDataPoint } from ".."
+import { IInstantDataAnimationProps, } from ".."
 import { useColors } from "../../.."
-import { GenericDictionary, MinimalDataPoint, groupBy } from "../../../../ethtps.data/src"
+import { GenericDictionary, LiveDataPoint, MinimalDataPoint, groupBy } from "../../../../ethtps.data/src"
 const dataExtractor = (data: MinimalDataPoint, dataType: ETHTPSDataCoreDataType) => {
     return {
         tps: data?.tps,
@@ -89,7 +89,7 @@ export function NivoRealtimeChart({
                     /*
                     if (dataPoints.length > 2 * maxEntries * newColumns.length)
                         dataPoints = dataPoints.slice(-maxEntries * newColumns.length)*/
-                    setLineData(groupBy(liveData, b => b.z)!)
+                    setLineData(groupBy(liveData, b => b.z!)!)
                     return dataPoints
                 })
                 return oldStreamData

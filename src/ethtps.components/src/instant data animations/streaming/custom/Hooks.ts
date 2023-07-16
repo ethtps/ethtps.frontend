@@ -1,8 +1,8 @@
 import { Dictionary } from '@reduxjs/toolkit'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { useEffect, useState } from 'react'
-import { LiveDataPoint, minimalDataPointToLiveDataPoint } from '../../../..'
-import { GenericDictionary, L2DataUpdateModel } from '../../../../../ethtps.data/src'
+import { minimalDataPointToLiveDataPoint } from '../../../..'
+import { L2DataUpdateModel, LiveDataPoint } from '../../../../../ethtps.data/src'
 
 /**
  * Returns a hook representing the speed in px/s for a vertical scrolling animation

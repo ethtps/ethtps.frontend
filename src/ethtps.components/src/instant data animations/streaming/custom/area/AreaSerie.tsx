@@ -1,10 +1,10 @@
-import { makeInteractive } from "../../../../"
 import Konva from "konva"
 import { Vector2d } from "konva/lib/types"
 import React, { Key, useEffect, useRef, useState } from "react"
 import { Shape } from "react-konva"
-import { IInstantDataAnimationProps, LiveDataPoint, dataExtractor, liveDataPointExtractor, useColors } from "../../../../.."
-import { GenericDictionary, L2DataUpdateModel, linearMap } from "../../../../../../ethtps.data/src"
+import { makeInteractive } from "../../../../"
+import { IInstantDataAnimationProps, dataExtractor, liveDataPointExtractor, useColors } from "../../../../.."
+import { GenericDictionary, L2DataUpdateModel, LiveDataPoint, linearMap } from "../../../../../../ethtps.data/src"
 
 interface IAreaSerieProps extends Partial<IInstantDataAnimationProps> {
     mountTime: number
@@ -59,7 +59,7 @@ export function AreaSerie(props: IAreaSerieProps) {
         })) ?? []
 
         setData(values.flatMap(d => {
-            return { x: xMap(d.value), y: yMap(d.timestamp) }
+            return { x: xMap(d.value), y: yMap(d.timestamp ?? 0) }
         }))
 
     }, [props.liveData])

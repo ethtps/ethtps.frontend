@@ -67,28 +67,6 @@ export function StreamingComponent({
 	useEffect(() => {
 		setResMultiplier(isLowRes ? 0.5 : 1)
 	}, [isLowRes])
-	const liveStat = useMemo(() => {
-		return (
-			<></>)
-	}, [
-		connected,
-		newestData,
-		sizeRef?.width,
-		sizeRef?.height,
-		providerData,
-		colors,
-		hoveredDataMode,
-		dataMode,
-		onClick,
-		onMouseLeave,
-		onMouseOver,
-		data,
-		isLeaving,
-		showSidechains,
-		showSidechainsToggled,
-		paused,
-		interval
-	])
 	return (
 		<>
 			<Box ref={containerRef}>

@@ -1,9 +1,10 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
-import { measure, useDebugMeasuredEffect, useGroupedDebugMeasuredEffect } from '..'
+import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useDebugMeasuredEffect, useGroupedDebugMeasuredEffect } from '..'
 import { Padded, WithMargins } from '../../..'
 import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, TimeIntervalToStreamProps, extractData, logToOverlay } from '../../../../ethtps.data/src'
 import { NumericInterval } from './Types'
+import { useState, useEffect } from 'react'
 
 /**
  * Returns the bounds of the x-axis in unix milliseconds
@@ -20,9 +21,24 @@ function getRange(newestData: GenericDictionary<L2DataUpdateModel> | undefined, 
     return [Math.min(...values), Math.max(...values)] as NumericInterval
 }
 
-export function getYAxisBounds(newestData: GenericDictionary<L2DataUpdateModel> | undefined,
+export function useYAxisBounds(newestData: GenericDictionary<L2DataUpdateModel> | undefined,
     dataType: ETHTPSDataCoreDataType) {
-    return getRange(newestData, dataType)
+    const action = 'y bounds'
+    const t = dataType ?? ETHTPSDataCoreDataType.TPS
+    const [yBounds, setYBounds] = useState(getRange(newestData, t))
+    useEffect(() => {
+        if (!newestData) return
+        if (!FrequencyLimiter.canExecute(action)) return
+        const values = Object.keys(newestData).map(k => liveDataPointExtractor(minimalDataPointToLiveDataPoint(newestData[k].data, k), t) ?? 0)
+        const min = Math.min(...values)
+        if (min < yBounds[0]) setYBounds([min, yBounds[1]])
+        const max = Math.max(...values)
+        if (max > yBounds[1]) setYBounds([yBounds[0], max])
+    }, [newestData, dataType])
+    useEffect(() => {
+        setYBounds(getRange(newestData, t))
+    }, [dataType])
+    return yBounds
 }
 
 export function getD3Scale(bounds: NumericInterval, range: NumericInterval): d3.ScaleLinear<number, number, never> {

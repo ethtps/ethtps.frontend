@@ -9,6 +9,7 @@ import {
 	DataResponseModelDictionary,
 	DebugBehaviors,
 	FrequencyLimiter,
+	LiveDataPoint,
 	MinimalDataPoint,
 	dataTypeToString,
 	extractData,
@@ -21,7 +22,6 @@ import {
 	useGetProvidersFromAppStore,
 	useGetSidechainsIncludedFromAppStore
 } from '../../../ethtps.data/src'
-import { LiveDataPoint } from './types'
 
 export type InstantBarChartDataset = {
 	label: string
@@ -156,7 +156,7 @@ export const dataExtractor = (data: MinimalDataPoint | undefined, dataType: ETHT
 	}
 }
 
-export const liveDataPointExtractor = (data: LiveDataPoint | undefined, dataType: ETHTPSDataCoreDataType | undefined) => {
+export const liveDataPointExtractor = (data: Partial<LiveDataPoint> | undefined, dataType: ETHTPSDataCoreDataType | undefined) => {
 	return dataExtractor(data?.y, dataType)
 }
 
@@ -166,7 +166,6 @@ export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefin
 		y: {
 			tps: data?.tps ?? 0,
 			gps: data?.gps ?? 0,
-			gtps: data?.gps ? data.gps / 21000 : 0,
 		},
 		z: z
 	}

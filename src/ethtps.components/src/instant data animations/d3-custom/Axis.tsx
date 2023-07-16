@@ -27,15 +27,11 @@ export function Axis({
         if (!node || !axis) return
         const s = d3.select(node)
         s.transition(`d3-${name}-change`)
-            .delay(1000)
+            .call(orientation(axis))
             .duration(750)
             .selection()
-            .call(orientation(axis))
-            .style("fill", "red")
             .transition()
-            .style('fill', 'transparent')
-            .transition()
-    }, `Δv`, `${name} axis`, [axis, orientation, svgRef, padding, margins, name])
+    }, `Δv`, `${name} axis`, [axis, orientation, name])
     return <>
         <g ref={svgRef} style={{ ...sx }} />
     </>

@@ -51,14 +51,14 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
         const s = d3.select(svg)
         s.selectChildren().remove()
 
-        const dates = Array.from(d3.group(liveData.map(x => x.x), d => d).keys()).map(x => new Date(x))
+        const dates = Array.from(d3.group(liveData.map(x => x.x), d => d).keys()).map(x => new Date(x as number))
         type T = [Date, number]
         const data = {
             dates,
             series: columns.map((providerName, i) => {
                 return {
                     name: providerName,
-                    values: liveData.filter(x => x.z === providerName).map(x => [new Date(x.x), liveDataPointExtractor(x, dataType ?? ETHTPSDataCoreDataType.TPS) ?? 0] as T)
+                    values: liveData.filter(x => x.z === providerName).map(x => [new Date(x.x!), liveDataPointExtractor(x, dataType ?? ETHTPSDataCoreDataType.TPS) ?? 0] as T)
                 }
             })
         }
