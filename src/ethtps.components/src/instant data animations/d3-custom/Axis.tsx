@@ -28,7 +28,7 @@ export function Axis({
         const s = d3.select(node)
         s.transition(`d3-${name}-change`)
             .call(orientation(axis))
-            .duration(750)
+            .duration(1200)
             .selection()
             .transition()
     }, `Δv`, `${name} axis`, [axis, orientation, name])

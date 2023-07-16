@@ -7,6 +7,7 @@ export interface IInstantDataAnimationProps extends
     providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
     showSidechains: boolean
     timeInterval?: ExtendedTimeInterval
+    dataPoints?: number
 }
 
 export type ETHTPSAnimation = DataAnimationProps<ETHTPSDataCoreDataType, L2DataUpdateModel> & XYDimensions

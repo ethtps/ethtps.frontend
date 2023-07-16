@@ -73,7 +73,7 @@ export function NivoRealtimeChart({
                                 x: newPointX,
                                 y: value,
                                 z: c,
-                            })
+                            } as LiveDataPoint)
 
                             const e = value
                             if (e) newStreamPoint[c] = e

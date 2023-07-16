@@ -161,21 +161,21 @@ export const liveDataPointExtractor = (data: Partial<LiveDataPoint> | undefined,
 }
 
 export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefined, z: string): LiveDataPoint => {
-	return {
-		x: (new Date()).getTime(),
-		y: {
-			tps: data?.tps ?? 0,
-			gps: data?.gps ?? 0,
-		},
-		z: z
-	}
+	const res = new LiveDataPoint()
+	res.x = (new Date()).getTime()
+	res.tps = data?.tps ?? 0
+	res.gps = data?.gps ?? 0
+	res.z = z
+	return res
 }
 
 export function useMeasuredEffect(effect: EffectCallback, deps?: DependencyList | undefined) {
 	let time = 0
-	const now = Date.now()
-	useEffect(effect, deps)
-	time = (Date.now() - now)
+	const now = performance.now()
+	useEffect(() => {
+		return effect()
+	}, deps)
+	time = (performance.now() - now)
 	/*
 	useEffect(() => {
 		const now = Date.now()
@@ -208,11 +208,18 @@ export function useGroupedDebugMeasuredEffect(effect: EffectCallback, effectName
 		})
 }
 
-export function measure(action: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
+/**
+ * Measures the time it takes for an effect to execute and adds it to the debug store.
+ * @param effect The effect to measure, provided as a function.
+ * @param effectName
+ * @param groupName
+ * @param deps Not used, but provided so that the method can be easily used in a useEffect debug hook.
+ */
+export function measure(effect: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
 	const willExecute = FrequencyLimiter.willExecute(effectName)
-	const now = Date.now()
-	action()
-	const time = (Date.now() - now)
+	const now = performance.now()
+	effect()
+	const time = performance.now() - now
 	const debug = useAppSelector(state => state.debugging)
 	if (debug.enabled && willExecute) {
 		DebugBehaviors.effectBehavior.add?.({
