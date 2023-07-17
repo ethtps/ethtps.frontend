@@ -2,8 +2,7 @@ import * as d3 from 'd3'
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Axis, Vector2D, dataExtractor, getD3Scale, getDataXAxisBounds, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
-import { GenericDictionary, LiveDataAggregator, LiveDataPoint, logToOverlay } from '../../../../ethtps.data/src'
-import { transition } from '@chakra-ui/system'
+import { FrequencyLimiter, GenericDictionary, LiveDataAggregator, LiveDataPoint, logToOverlay } from '../../../../ethtps.data/src'
 
 const aggregator = new LiveDataAggregator()
 
@@ -12,7 +11,7 @@ const aggregator = new LiveDataAggregator()
  */
 const f = (x: number): number => 0// Math.sin(x / 10 + Math.random())
 
-const duration = 2000
+const duration = 5000
 
 export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const {
@@ -61,10 +60,14 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
 
     const yGen = useCallback(() => d3.scaleLinear().domain([-(liveDataPointExtractor(aggregator.maxTotal, dataType) ?? 0), liveDataPointExtractor(aggregator.maxTotal, dataType) ?? 1]).nice().range([0, innerHeight]), [dataType, innerHeight, aggregator.maxTotal])
     const yAxis = yGen()
+    logToOverlay({
+        name: 'y axis info',
+        details: `Domain: [${yAxis?.domain()}]; Range: [${yAxis?.range()}]`
+    })
     useGroupedDebugMeasuredEffect(() => {
-        if (newestData) {
-            aggregator.updateMultiple(newestData)
-        }
+        if (!newestData) return
+
+        aggregator.updateMultiple(newestData)
         setData((d) => {
             let dict: GenericDictionary<LiveDataPoint> = {}
             const k = [...Object.keys(aggregator.all)]
@@ -89,8 +92,9 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             details: `N=${testData?.length}; [${extent?.[0]?.toFixed(2)}, ${extent?.[1]?.toFixed(2)}]`,
             level: testData?.length > 0 ? 'info' : 'warn'
         })
-        const yScale = d3.scaleLinear().domain(extent as [number, number]).nice().range([0, innerHeight])
-
+        const yScale = d3.scaleLinear().domain(extent as [number, number])
+            .nice()
+            .range([0, innerHeight])
         const area = d3.area<LiveDataPoint>()
             .x((d: LiveDataPoint) => xAxis(d?.x!))
             .y0((d: LiveDataPoint) => yScale(-liveDataPointExtractor(d, dataType)!))
@@ -163,8 +167,8 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             selectArea().append('path')
                 .transition()
                 .duration(duration)
-                .ease(d3.easeExpIn)
-                .attrTween('fill-opacity', () => (t) => d3.interpolateNumber(0.2, 0.5)(t).toString())
+                .ease(d3.easeQuad)
+                .attrTween('fill-opacity', () => (t) => d3.interpolateNumber(0.3, 0.5)(t).toString())
                 .attrTween('d', () => (t) => a([
                     {
                         initial: p2Top,
@@ -209,35 +213,10 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         }
         //after transition
         selectArea()
+            .attr('stroke-width', 0)
             .attr('fill', 'blue')
             .attr('fill-opacity', 0.5)
-            .attr('stroke', 'steelblue')
-    }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, yAxis, areaRef.current, pixelsPerPoint, aggregator.all, aggregator.maxTotal])
-    /*
-    const addJunkPoint = useCallback(() => {
-        setData(d => {
-            const target: GenericDictionary<LiveDataPoint> = {}
-            target['Polygon'] = {
-                tps: (aggregator.max.tps ?? 10) * Math.random(),
-                gps: (aggregator.max.gps ?? 10) * Math.random(),
-                x: Date.now()
-            } as LiveDataPoint
-            if (!d) return [target]
-            aggregator.update({
-                ...target['Polygon'],
-                data: target['Polygon'].y,
-                provider: 'Polygon'
-            })
-            return [...d, target]
-        })
-    }, [aggregator, setData])
-
-    useEffect(() => {
-        const id = setInterval(() => {
-            addJunkPoint()
-        }, duration * 2)
-        return () => clearInterval(id)
-    }, [addJunkPoint])*/
+    }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, areaRef.current, pixelsPerPoint, aggregator.all, aggregator.maxTotal])
     return <>
         <svg
             ref={svgRef}
