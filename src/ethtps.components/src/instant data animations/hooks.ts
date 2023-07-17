@@ -169,11 +169,13 @@ export const minimalDataPointToLiveDataPoint = (data: MinimalDataPoint | undefin
 	return res
 }
 
-export function useMeasuredEffect(effect: () => void, deps?: DependencyList | undefined) {
+export function useMeasuredEffect(effect: () => void, deps?: DependencyList | undefined, frequencyLimit: boolean = true, effectName?: string) {
+	const executeImmediately = FrequencyLimiter.canExecute(effectName ?? 'effect')
 	let time = 0
 	const now = performance.now()
-	useLayoutEffect(() => {
-		effect()
+	useEffect(() => {
+		if (executeImmediately) effect()
+		else FrequencyLimiter.debounce(effectName ?? 'effect', effect)
 	}, deps)
 	time = (performance.now() - now)
 	/*
@@ -192,13 +194,13 @@ export function useMeasuredEffect(effect: () => void, deps?: DependencyList | un
 	return time
 }
 
-export function useDebugMeasuredEffect(effect: () => void, effectName: string, deps?: DependencyList | undefined) {
-	return useGroupedDebugMeasuredEffect(effect, effectName, undefined, deps)
+export function useDebugMeasuredEffect(effect: () => void, effectName: string, deps?: DependencyList | undefined, frequencyLimit: boolean = true) {
+	return useGroupedDebugMeasuredEffect(effect, effectName, undefined, deps, frequencyLimit)
 }
 
-export function useGroupedDebugMeasuredEffect(effect: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
+export function useGroupedDebugMeasuredEffect(effect: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined, frequencyLimit: boolean = true) {
 	const willExecute = FrequencyLimiter.willExecute(effectName)
-	const time = useMeasuredEffect(effect, deps)
+	const time = useMeasuredEffect(effect, deps, frequencyLimit, `${groupName ?? 'default'}-${effectName}}`)
 	const debug = useAppSelector(state => state.debugging)
 	if (debug.enabled && willExecute)
 		DebugBehaviors.effectBehavior.add?.({

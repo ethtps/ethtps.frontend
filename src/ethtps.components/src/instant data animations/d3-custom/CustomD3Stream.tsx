@@ -1,8 +1,9 @@
 import * as d3 from 'd3'
+import { ZoomTransform } from 'd3'
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Axis, Vector2D, dataExtractor, getD3Scale, getDataXAxisBounds, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
+import { Axis, Vector2D, addGrid, dataExtractor, getD3Scale, getXAxisBounds, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
-import { FrequencyLimiter, GenericDictionary, LiveDataAggregator, LiveDataPoint, logToOverlay } from '../../../../ethtps.data/src'
+import { GenericDictionary, LiveDataAggregator, LiveDataPoint, logToOverlay } from '../../../../ethtps.data/src'
 
 const aggregator = new LiveDataAggregator()
 
@@ -12,6 +13,7 @@ const aggregator = new LiveDataAggregator()
 const f = (x: number): number => 0// Math.sin(x / 10 + Math.random())
 
 const duration = 5000
+let xOffset = 0
 
 export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const {
@@ -19,6 +21,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         providerData,
         dataType,
         refreshInterval,
+        timeInterval,
         maxEntries,
         dataPoints = 250
     } = props
@@ -48,10 +51,10 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
+    const gridRef = useRef<any>(null)
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
-
     const [data, setData] = useState<GenericDictionary<LiveDataPoint>[]>(new Array<GenericDictionary<LiveDataPoint>>(maxEntries))
-    const xBounds = useMemo(() => getDataXAxisBounds(data), [data])
+    const xBounds = useMemo(() => getXAxisBounds(timeInterval), [timeInterval])
 
     const xAxis = useMemo(() =>
         getD3Scale(xBounds,
@@ -185,9 +188,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                         } as Vector2D,
                     }
                 ]) ?? '')
-                .on('end', (d, i, g) => {
 
-                })
             /*
                         selectArea().append('path')
                             .transition()
@@ -211,12 +212,34 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                         ]) ?? '')*/
 
         }
+        const yCSS = `${(padding?.paddingTop ?? 0) + (margins?.marginTop ?? 0)}px`
+        const genCSS = (x: number) => `translate(${x + (padding?.paddingLeft ?? 0)}px,${yCSS})`
+        const interpolator = d3.interpolateTransformCss(genCSS(xOffset), genCSS(xOffset - pixelsPerPoint))
+        /*
+        const transform = d3.zoom()
+            .duration(duration / 2)
+            .call(selectArea())
+            .translateBy(selectArea(), xOffset, 0)*/
+        // .transform(selectArea(), new ZoomTransform(1, -xOffset, 0))
+        selectArea().call(d3.zoom(), new ZoomTransform(1, -xOffset, 0))
+        // transform()
+
+        logToOverlay({
+            name: 'xOffset',
+            details: xOffset,
+            level: 'info'
+        })
         //after transition
         selectArea()
             .attr('stroke-width', 0)
             .attr('fill', 'blue')
             .attr('fill-opacity', 0.5)
     }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, areaRef.current, pixelsPerPoint, aggregator.all, aggregator.maxTotal])
+    measure(() => {
+        if (!gridRef.current) return
+
+        addGrid(d3.select(gridRef.current), xAxis, yAxis, innerHeight, innerWidth, 12, padding, margins)
+    }, 'update', 'grid', [innerWidth, innerHeight, xAxis, yAxis, gridRef.current, padding, margins])
     return <>
         <svg
             ref={svgRef}
@@ -226,10 +249,11 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             }}
             width={width}
             height={height}>
-            <g ref={areaRef}
+            <g ref={gridRef}
                 style={{
                     transform: `translate(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px,${(padding?.paddingTop ?? 0) + (margins?.marginTop ?? 0)}px)`
                 }}></g>
+            <svg ref={areaRef}></svg>
             <Axis
                 sx={{
                     transform: `translateX(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px)`

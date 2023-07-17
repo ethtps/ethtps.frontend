@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react'
  */
 export function getXAxisBounds(timeInterval?: ETHTPSDataCoreTimeInterval | ExtendedTimeInterval): NumericInterval {
     const i = (timeInterval ?? ETHTPSDataCoreTimeInterval.ONE_MINUTE) as ExtendedTimeInterval
-    return [-TimeIntervalToStreamProps(i).duration / 1000, 0]
+    return [Date.now() - TimeIntervalToStreamProps(i).duration, Date.now()]
 }
 
 export function getDataXAxisBounds(data: GenericDictionary<LiveDataPoint>[]): NumericInterval {
@@ -72,7 +72,7 @@ export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientati
         const node = svgRef.current
         if (!node || !axis) return
         const s = d3.select(node)
-        s.call(orientation(axis))
+        s.call(orientation(axis).ticks(12))
     }, `Δ`, `${name} axis`, [axis, orientation, svgRef, padding, margins, name])
     useGroupedDebugMeasuredEffect(() => {
         if (!FrequencyLimiter.canExecute(`${name} axis change`)) {
@@ -82,7 +82,7 @@ export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientati
         if (!node || !axis) return
         const s = d3.select(node)
         s.transition(`d3-${name}-change`)
-            .duration(750)
+            .duration(1000)
             .selection()
             .call(orientation(axis))
             .on('start', () => {

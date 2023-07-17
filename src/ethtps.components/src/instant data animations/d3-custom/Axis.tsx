@@ -1,6 +1,6 @@
 import * as d3 from "d3"
 import { CSSProperties, useRef } from "react"
-import { Padded, WithMargins, useGroupedDebugMeasuredEffect } from "../../.."
+import { Padded, WithMargins, measure, useGroupedDebugMeasuredEffect } from "../../.."
 import { FrequencyLimiter } from "../../../../ethtps.data/src"
 
 
@@ -19,7 +19,7 @@ export function Axis({
     margins?: Partial<WithMargins>, name?: string
 }) {
     const svgRef = useRef<any>()
-    useGroupedDebugMeasuredEffect(() => {
+    measure(() => {
         if (!FrequencyLimiter.canExecute(`${name} axis change`)) {
             return
         }

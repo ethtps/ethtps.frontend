@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import * as d3 from 'd3'
-import { Extent, SelectedSVG, ViewBoxDimensions } from '../../..'
+import { Extent, Padded, SelectedSVG, ViewBoxDimensions, WithMargins } from '../../..'
 import { ETHTPSDataCoreTimeInterval } from 'ethtps.api'
 
 export function useLinearScale(d?: [min: number, max: number], range?: [min: number, max: number]) {
@@ -49,4 +49,34 @@ export function addDrag(svg: SelectedSVG,
         .on("drag", dragged)
         .on("start", dragStarted)
         .on("end", dragEnded))
+}
+
+export function addGrid(svgNode: SelectedSVG, x: d3.ScaleLinear<number, number>, y: d3.ScaleLinear<number, number>, height: number, width: number, k: number, padding?: Partial<Padded>, margins?: Partial<WithMargins>) {
+    //svgNode.enter().selectAll().remove()
+    const dx = (margins?.marginLeft ?? 0) + (padding?.paddingLeft ?? 0)
+    const dy = (margins?.marginTop ?? 0) + (padding?.paddingTop ?? 0)
+    svgNode
+        .attr("stroke", "currentColor")
+        .attr("stroke-opacity", 0.1)
+        .call(g => g
+            .selectAll(".x")
+            .data(x.ticks(12))
+            .join( // Vertical lines
+                enter => enter.append("line").attr("class", "x").attr("y2", height)
+                    .attr('y1', 0),
+                update => update,
+                exit => exit.remove()
+            )
+            .attr("x1", d => x(d))
+            .attr("x2", d => x(d)))
+        .call(g => g
+            .selectAll(".y")
+            .data(y.ticks(k))
+            .join( // Horizontal lines
+                enter => enter.append("line").attr("class", "y").attr("x2", width),
+                update => update,
+                exit => exit.remove()
+            )
+            .attr("y1", d => y(d))
+            .attr("y2", d => y(d)))
 }
