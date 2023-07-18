@@ -1,11 +1,12 @@
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { L2DataUpdateModel, LiveDataPoint } from '.'
 import { GenericDictionary } from '../../'
+import { ILiveDataPointOperator } from './DataOperators'
 
 /**
  * Aggregates live data from multiple providers
  */
-export class LiveDataAggregator {
+export class LiveDataAggregator implements ILiveDataPointOperator {
 	private data: GenericDictionary<L2DataUpdateModel> = {}
 	private tpsSum: number = 0
 	private gpsSum: number = 0
@@ -13,8 +14,8 @@ export class LiveDataAggregator {
 	private maxGps: number = 0
 	private maxTotalTps: number = 0
 	private maxTotalGps: number = 0
-	constructor(data?: GenericDictionary<L2DataUpdateModel>) {
-		if (data) this.data = data
+	constructor(initialData?: GenericDictionary<L2DataUpdateModel>) {
+		if (initialData) this.data = initialData
 	}
 
 	public update(entry: L2DataUpdateModel) {
@@ -36,7 +37,7 @@ export class LiveDataAggregator {
 		return this.data[provider]
 	}
 
-	public get all() {
+	public get lastEntry() {
 		return this.data
 	}
 
@@ -66,7 +67,7 @@ export class LiveDataAggregator {
 		return sum
 	}
 
-	public get max(): LiveDataPoint {
+	public get maxSingle(): LiveDataPoint {
 		const max = new LiveDataPoint()
 		max.gps = this.maxGps
 		max.tps = this.maxTps
@@ -87,6 +88,6 @@ export class LiveDataAggregator {
 		return {
 			tps: count > 0 ? this.tpsSum / count : 0,
 			gps: count > 0 ? this.gpsSum / count : 0,
-		}
+		} as LiveDataPoint
 	}
 }

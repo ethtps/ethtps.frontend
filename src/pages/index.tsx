@@ -6,18 +6,15 @@ import {
 } from 'ethtps.api'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState, createContext } from 'react'
+import { useEffect, useState } from 'react'
 import {
   AllProvidersTable,
-  DebugOverlay,
   LiveDataContainer,
   StreamingComponent,
-  conditionalRender,
   useLiveDataWithDelta,
   useQueryStringAndLocalStorageBoundState
 } from '../ethtps.components'
 import {
-  DEBUG,
   GenericDictionary,
   IDataModel,
   L2DataUpdateModel,
@@ -112,11 +109,11 @@ export default function Index({
   const onDataReceived = (liveData: GenericDictionary<L2DataUpdateModel>) => {
     aggregator.updateMultiple(liveData)
     const average = aggregator.average
-    setTPS(average.tps)
-    setGPS(average.gps)
+    setTPS(average.tps!)
+    setGPS(average.gps!)
     noSidechainAggregator.updateMultiple(liveData, true, providerData)
-    noSidechainData.setTPS(noSidechainAggregator.average.tps)
-    noSidechainData.setGPS(noSidechainAggregator.average.gps)
+    noSidechainData.setTPS(noSidechainAggregator.average.tps!)
+    noSidechainData.setGPS(noSidechainAggregator.average.gps!)
     setNewestData(liveData)
     setCopiedAggregator(aggregator) // [0_2] Trigger
   }

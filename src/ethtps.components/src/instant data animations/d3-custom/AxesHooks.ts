@@ -1,10 +1,10 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreTimeInterval } from 'ethtps.api'
-import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useDebugMeasuredEffect, useGroupedDebugMeasuredEffect } from '..'
+import { useEffect, useState } from 'react'
+import { liveDataPointExtractor, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '..'
 import { Padded, WithMargins } from '../../..'
-import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, LiveDataPoint, TimeIntervalToStreamProps, extractData, logToOverlay } from '../../../../ethtps.data/src'
+import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, LiveDataPoint, TimeIntervalToStreamProps, extractData } from '../../../../ethtps.data/src'
 import { NumericInterval } from './Types'
-import { useState, useEffect } from 'react'
 
 /**
  * Returns the bounds of the x-axis in unix milliseconds
@@ -15,10 +15,23 @@ export function getXAxisBounds(timeInterval?: ETHTPSDataCoreTimeInterval | Exten
     return [Date.now() - TimeIntervalToStreamProps(i).duration, Date.now()]
 }
 
-export function getDataXAxisBounds(data: GenericDictionary<LiveDataPoint>[]): NumericInterval {
+/**
+ * Gets the bounds of the x-axis for a given set of data.
+ * @param data The data to get the bounds of
+ * @param leftTimePadding  The amount of padding to add to the left of the x-axis, as a fraction of the total time range
+ * @param rightTimePadding  The amount of padding to add to the right of the x-axis, as a fraction of the total time range
+ * @returns A time range in unix milliseconds
+ */
+export function getDataXAxisBounds(data: GenericDictionary<LiveDataPoint>[], leftTimePadding = 0.1, rightTimePadding = 0.1): NumericInterval {
     const now = Date.now()
     const oldest = Math.min(...data.flatMap(d => Object.keys(d ?? {}).map(y => d[y].x ?? now)))
-    return [oldest, now]
+    const dt = now - oldest
+    return [oldest - dt * leftTimePadding, now + dt * rightTimePadding]
+}
+
+export function getDataXAxisBoundsFromArray(data: LiveDataPoint[], leftTimePadding = 0.1, rightTimePadding = 0.1): NumericInterval {
+    if (data.length === 0) return [Date.now(), Date.now()]
+    return [data[0].x ?? Date.now(), data[data.length - 1].x ?? Date.now()]
 }
 
 function getRange(newestData: GenericDictionary<L2DataUpdateModel> | undefined, dataType: ETHTPSDataCoreDataType): NumericInterval {
@@ -72,7 +85,8 @@ export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientati
         const node = svgRef.current
         if (!node || !axis) return
         const s = d3.select(node)
-        s.call(orientation(axis).ticks(12))
+        s.call(orientation(axis)
+            .ticks(12))
     }, `Δ`, `${name} axis`, [axis, orientation, svgRef, padding, margins, name])
     useGroupedDebugMeasuredEffect(() => {
         if (!FrequencyLimiter.canExecute(`${name} axis change`)) {
@@ -85,20 +99,5 @@ export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientati
             .duration(1000)
             .selection()
             .call(orientation(axis))
-            .on('start', () => {
-                logToOverlay({
-                    name: `d3-${axis}-change`,
-                    details: 'running',
-                    level: 'info'
-                })
-            }
-            )
-            .on('end', () => {
-                logToOverlay({
-                    name: `d3-${name}-change`,
-                    details: 'ended',
-                    level: 'info'
-                })
-            })
     }, `Δv`, `${name} axis`)
 }

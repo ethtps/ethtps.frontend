@@ -1,11 +1,12 @@
 import * as d3 from 'd3'
 import { ZoomTransform } from 'd3'
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Axis, Vector2D, addGrid, dataExtractor, getD3Scale, getXAxisBounds, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
+import { Axis, InteractiveSVG, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
-import { GenericDictionary, LiveDataAggregator, LiveDataPoint, logToOverlay } from '../../../../ethtps.data/src'
+import { LiveDataAccumulator, LiveDataPoint } from '../../../../ethtps.data/src'
+import { D3Helper } from './D3Helper'
 
-const aggregator = new LiveDataAggregator()
+const accumulator = new LiveDataAccumulator()
 
 /**
  * Junk data generator function
@@ -51,50 +52,35 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
-    const gridRef = useRef<any>(null)
+    const [data, setData] = useState<LiveDataPoint[]>([])
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
-    const [data, setData] = useState<GenericDictionary<LiveDataPoint>[]>(new Array<GenericDictionary<LiveDataPoint>>(maxEntries))
-    const xBounds = useMemo(() => getXAxisBounds(timeInterval), [timeInterval])
+    const [dx, setDx] = useState<number>(0)
+    const xBounds = useMemo(() => accumulator.timeRange, [data])//To remove after implementing scrolling
 
     const xAxis = useMemo(() =>
         getD3Scale(xBounds,
-            [0, innerWidth]),
-        [xBounds, innerWidth])
+            [0 + dx, innerWidth + dx]),
+        [xBounds, innerWidth, dx])
 
-    const yGen = useCallback(() => d3.scaleLinear().domain([-(liveDataPointExtractor(aggregator.maxTotal, dataType) ?? 0), liveDataPointExtractor(aggregator.maxTotal, dataType) ?? 1]).nice().range([0, innerHeight]), [dataType, innerHeight, aggregator.maxTotal])
+    const yGen = useCallback(() => d3.scaleLinear().domain([-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 0), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1]).nice().range([0, innerHeight]), [dataType, innerHeight, accumulator.maxTotal])
     const yAxis = yGen()
-    logToOverlay({
-        name: 'y axis info',
-        details: `Domain: [${yAxis?.domain()}]; Range: [${yAxis?.range()}]`
-    })
     useGroupedDebugMeasuredEffect(() => {
         if (!newestData) return
-
-        aggregator.updateMultiple(newestData)
-        setData((d) => {
-            let dict: GenericDictionary<LiveDataPoint> = {}
-            const k = [...Object.keys(aggregator.all)]
-            for (let i = 0; i < k.length; i++) {
-                const x = aggregator.all[k[i]]
-                if (x?.data) dict = Object.assign(dict, { [k[i]]: minimalDataPointToLiveDataPoint(x.data, k[i]) })
-            }
-            const c = d.length < maxEntries ? [...d] : [...d.slice(maxEntries)]
-            localStorage.setItem('customd3streamdata', JSON.stringify([...c, { ...dict }]))
-            return [...c, { ...dict }]
+        minimalDataPointToLiveDataPoint
+        accumulator.insert(newestData)
+        setData(d => {
+            return [...accumulator.getDataPointsFor('Polygon') ?? []]
         })
-    }, 'update', 'data', [newestData, aggregator, maxEntries])
+        setDx((d) => d + pixelsPerPoint)
+    }, 'update', 'data', [newestData, pixelsPerPoint, accumulator])
     measure(() => {
         if (!areaRef.current || !data) return
 
-        const testData = data.map(d => d?.['Polygon']).filter(x => !!x?.x).sort((a, b) => a.x! - b.x!)
+        const testData = [...data]
 
-        const extent = d3.extent(testData, (d: LiveDataPoint) => liveDataPointExtractor(d, dataType) ?? 0)
+        const extent = d3.extent(testData, (d) => liveDataPointExtractor(d, dataType) ?? 0)
         extent[0] = -extent[1]!
-        logToOverlay({
-            name: 'test data info',
-            details: `N=${testData?.length}; [${extent?.[0]?.toFixed(2)}, ${extent?.[1]?.toFixed(2)}]`,
-            level: testData?.length > 0 ? 'info' : 'warn'
-        })
+
         const yScale = d3.scaleLinear().domain(extent as [number, number])
             .nice()
             .range([0, innerHeight])
@@ -108,138 +94,19 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         selectArea().selectAll('*').remove()
         selectArea().append('path')
             .attr('d', area(testData.slice(0, testData.length - 1)))
-
-        if (testData.length >= 2) {
-            const p2 = testData[testData.length - 2] //p[n-2]
-            const p1 = testData[testData.length - 1] //p[n-1]
-
-            if (!dataExtractor(p1?.y, dataType) || !dataExtractor(p2?.y, dataType)) return
-            const getCoordinates = (d: LiveDataPoint) => ({ x: xAxis(d.x!), y: yScale(liveDataPointExtractor(d, dataType)!) }) as Vector2D
-            const getInverseCoordinates = (d: LiveDataPoint) => ({ x: xAxis(d.x!), y: yScale(-liveDataPointExtractor(d, dataType)!) }) as Vector2D // y scale is not somethingmorphic - y(-x) != -y(x) because we're drawing the chart relative to the vertical midpoint
-            const p2Top = getCoordinates(p2)
-            const p1Top = getCoordinates(p1)
-            const p2Bottom = getInverseCoordinates(p2)
-            const p1Bottom = getInverseCoordinates(p1)
-            const d3interpolator = d3.interpolateNumber
-            const interpolator = {
-                top: {
-                    x: d3interpolator(p2Top.x, p1Top.x),
-                    y: d3interpolator(p2Top.y, p1Top.y)
-                },
-                bottom: {
-                    x: d3interpolator(p2Bottom.x, p1Bottom.x),
-                    y: d3interpolator(p2Bottom.y, p1Bottom.y)
-                }
-            }
-            function toPoint(v: Vector2D) {
-                return { x: v.x, y: v.y } as Vector2D
-            }
-
-            const areaPoints = {
-                top: [p2Top, p1Top].map(toPoint),
-                bottom: [p2Bottom, p1Bottom].map(toPoint)
-            }
-            const line = d3.line<Vector2D>()
-                .x((d: any) => d.x)
-                .y((d: any) => d.y)
-                .curve(d3.curveCatmullRom.alpha(0.5))
-
-            type AreaPointPair = {
-                initial: Vector2D,
-                final: Vector2D
-            }
-            // interpolate area between p2 and p_i
-            const a = d3.area<AreaPointPair>()
-                .x0((d, i) => d.initial.x)
-                .y0((d, i) => d.initial.y)
-                .x1((d, i) => d.final.x)
-                .y1((d, i) => d.final.y)
-                .curve(d3.curveCatmullRom.alpha(0.5))
-
-            logToOverlay({
-                name: 'i_top(0.5)',
-                details: `[x: ${interpolator.top.x(0.5)}, y: ${interpolator.top.y(0.5)}]`,
-                level: 'info'
-            })
-            logToOverlay({
-                name: 'i_bottom(0.5)',
-                details: `[x: ${interpolator.bottom.x(0.5)}, y: ${interpolator.bottom.y(0.5)}]`,
-                level: 'info'
-            })
-
-            selectArea().append('path')
-                .transition()
-                .duration(duration)
-                .ease(d3.easeQuad)
-                .attrTween('fill-opacity', () => (t) => d3.interpolateNumber(0.3, 0.5)(t).toString())
-                .attrTween('d', () => (t) => a([
-                    {
-                        initial: p2Top,
-                        final: {
-                            x: interpolator.top.x(t),
-                            y: interpolator.top.y(t)
-                        } as Vector2D,
-                    },
-                    {
-                        initial: p2Bottom,
-                        final: {
-                            x: interpolator.bottom.x(t),
-                            y: interpolator.bottom.y(t)
-                        } as Vector2D,
-                    }
-                ]) ?? '')
-
-            /*
-                        selectArea().append('path')
-                            .transition()
-                            .attr('stroke', 'red')
-                            .attr('stroke-width', 5)
-                            .attr('fill', 'red')
-                            .attr('fill-opacity', 0.5)
-                            .duration(duration)
-                            .attrTween('d', () => (t) => line([
-                                p2Top, {
-                                    x: interpolator.top.x(t),
-                                    y: interpolator.top.y(t)
-                                } as Vector2D
-                            ]) ?? '')
-                        /*
-                        .attrTween('d', () => (t) => line([
-                            p2Bottom, {
-                                x: interpolator.bottom.x(t),
-                                y: interpolator.bottom.y(t)
-                            } as Vector2D
-                        ]) ?? '')*/
-
+        const interpolator = D3Helper.getLastPointPairInterpolator(xAxis, yScale, dataType, testData)
+        if (!!interpolator) {
+            selectArea().call(D3Helper.lastPointPairAnimation(interpolator))
         }
-        const yCSS = `${(padding?.paddingTop ?? 0) + (margins?.marginTop ?? 0)}px`
-        const genCSS = (x: number) => `translate(${x + (padding?.paddingLeft ?? 0)}px,${yCSS})`
-        const interpolator = d3.interpolateTransformCss(genCSS(xOffset), genCSS(xOffset - pixelsPerPoint))
-        /*
-        const transform = d3.zoom()
-            .duration(duration / 2)
-            .call(selectArea())
-            .translateBy(selectArea(), xOffset, 0)*/
-        // .transform(selectArea(), new ZoomTransform(1, -xOffset, 0))
         selectArea().call(d3.zoom(), new ZoomTransform(1, -xOffset, 0))
         // transform()
-
-        logToOverlay({
-            name: 'xOffset',
-            details: xOffset,
-            level: 'info'
-        })
         //after transition
         selectArea()
             .attr('stroke-width', 0)
             .attr('fill', 'blue')
             .attr('fill-opacity', 0.5)
-    }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, areaRef.current, pixelsPerPoint, aggregator.all, aggregator.maxTotal])
-    measure(() => {
-        if (!gridRef.current) return
+    }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, areaRef.current, pixelsPerPoint, accumulator.lastEntry, accumulator.maxTotal])
 
-        addGrid(d3.select(gridRef.current), xAxis, yAxis, innerHeight, innerWidth, 12, padding, margins)
-    }, 'update', 'grid', [innerWidth, innerHeight, xAxis, yAxis, gridRef.current, padding, margins])
     return <>
         <svg
             ref={svgRef}
@@ -249,11 +116,6 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             }}
             width={width}
             height={height}>
-            <g ref={gridRef}
-                style={{
-                    transform: `translate(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px,${(padding?.paddingTop ?? 0) + (margins?.marginTop ?? 0)}px)`
-                }}></g>
-            <svg ref={areaRef}></svg>
             <Axis
                 sx={{
                     transform: `translateX(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px)`
@@ -261,6 +123,9 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                 orientation={d3.axisBottom}
                 axis={xAxis}
                 name={'x'}
+                gridLines
+                parentWidth={width}
+                parentHeight={height}
                 padding={padding}
                 margins={margins}
             />
@@ -271,9 +136,17 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                 orientation={d3.axisRight}
                 axis={yAxis}
                 name={'y'}
+                gridLines
+                parentWidth={width}
+                parentHeight={height}
                 padding={padding}
                 margins={margins}
             />
+            <svg ref={areaRef}>
+
+            </svg>
+            <InteractiveSVG minX={dx} minY={0} width={innerWidth} height={innerHeight}>
+            </InteractiveSVG>
         </svg>
     </>
 }
