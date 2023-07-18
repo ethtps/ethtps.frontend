@@ -3,11 +3,8 @@ import { Area } from 'd3'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { SelectedSVG, Vector2D, dataExtractor, liveDataPointExtractor } from '../../..'
 import { GenericDictionary, LiveDataAccumulator, LiveDataPoint } from '../../../../ethtps.data/src'
+import { LiveDataPointKey, StackKey } from '../../../../ethtps.data/src/models/StackKey'
 
-export type StackKeyType = {
-    provider: string,
-    x: number
-}
 
 export type AreaPointPair = {
     initial: Vector2D,
@@ -135,15 +132,34 @@ export class D3Helper {
         return (pair.final.y - pair.initial.y)
     }
 
-    public static generateStack(accumulator: LiveDataAccumulator) {
-        const keys = accumulator.distinctProviders
-        console.log(keys)
-        const index = d3.index(accumulator.all.flatMap(x => Object.keys(x).map(k => ({
-            provider: k,
-            x: x[k]?.x!,
-        } as StackKeyType))), d => d)
-        const stack = d3.stack<GenericDictionary<LiveDataPoint>, StackKeyType>().keys(index.keys())
-            .value((d, k, i, arr) => d[k.provider]?.y?.tps ?? 0)(accumulator.all)
+    public static barsFrom = (accumulator: LiveDataAccumulator, dataType: ETHTPSDataCoreDataType, xScale: LinScale, yScale: LinScale, barWidth: number, colorScheme: readonly string[] = d3.schemeCategory10, opacity: number = 0.5) => (
+        selection: SelectedSVG
+    ) => {
+        const stack = D3Helper.stack(accumulator, dataType)
+        selection
+            .append('g')
+            .selectAll('g')
+            .data(stack)
+            .join("g")
+            .attr("fill", d => d3.schemeCategory10[d.index % 10])
+            .selectAll("rect")
+            .data(D => D)
+            .join("rect")
+            .attr("x", (d, k, i) => xScale(d.data[Object.keys(d.data)[k]]?.x ?? 0))
+            .attr("y0", d => yScale(Math.min(d[0], d[1]) ?? 0))
+            .attr("y1", d => yScale(Math.max(d[0], d[1]) ?? 0))
+            .attr("width", barWidth)
+            .attr("height", d => Math.abs(yScale(d[0]) - yScale(d[1])))
+    }
+
+    public static stack<T>(accumulator: LiveDataAccumulator, dataType: ETHTPSDataCoreDataType) {
+        return this.generateStack(accumulator.all, (d) => liveDataPointExtractor(d, dataType) ?? 0)
+    }
+
+    private static generateStack<T extends StackKey<TK>, TK extends LiveDataPointKey>(collection: GenericDictionary<T>[], valueExtractor: (d: T) => number) {
+        const index = d3.index(collection.flatMap(x => Object.keys(x).map(k => (x[k].key))), d => d)
+        const stack = d3.stack<GenericDictionary<T>, TK>().keys(index.keys())
+            .value((d, k, i, arr) => valueExtractor(d[k.provider]))(collection)
         return stack
     }
 }

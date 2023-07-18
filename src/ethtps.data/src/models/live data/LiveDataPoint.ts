@@ -1,6 +1,9 @@
 import { MinimalDataPoint, TransactionMetadata } from '.'
+import { LiveDataPointKey, StackKey } from '../StackKey'
 
-export class LiveDataPoint implements MinimalDataPoint {
+
+
+export class LiveDataPoint implements MinimalDataPoint, StackKey<LiveDataPointKey> {
     /**
      * Unix timestamp in milliseconds
      */
@@ -25,5 +28,13 @@ export class LiveDataPoint implements MinimalDataPoint {
     }
     public toString(): string {
         return `${this.z}@${this.x}`
+    }
+
+    public get key(): LiveDataPointKey {
+        return {
+            provider: this.z ?? '',
+            x: this.x ?? 0,
+            value: `${this.z}@${this.x}`
+        }
     }
 }

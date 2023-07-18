@@ -89,22 +89,9 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
 
         const area = D3Helper.getPointAreaGenerator(d3.curveCatmullRom, xAxis, yScale, dataType)
 
-        const stack = D3Helper.generateStack(accumulator)
-        console.log(stack)
-        selectArea()
-            .append('g')
-            .selectAll('g')
-            .data(stack)
-            .join("g")
-            .attr("fill", d => d3.schemeCategory10[d.index])
-            .selectAll("rect")
-            .data(D => D)
-            .join("rect")
-            .attr("x", (d, i) => xAxis(dataExtractor(d.data.x!, dataType) ?? 0))
-            .attr("y0", d => yScale(d[0]) ?? 0)
-            .attr("y1", d => yScale(d[1]) ?? 0)
-            .attr("width", pixelsPerPoint)
-            .attr("height", d => Math.abs(yScale(d[0]) - yScale(d[1])) ?? 0)
+        const stack = D3Helper.stack(accumulator, dataType)
+        const w = innerWidth / stack.length
+        selectArea().call(D3Helper.barsFrom(accumulator, dataType, xAxis, yScale, w))
         /*
 
 
