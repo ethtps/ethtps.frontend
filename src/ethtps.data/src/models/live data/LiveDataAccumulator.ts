@@ -1,3 +1,4 @@
+import { unique } from 'next/dist/build/utils'
 import { L2DataUpdateModel } from '.'
 import { GenericDictionary, logToOverlay } from '../../'
 import { ILiveDataCollectionOperator, InsertionType } from './DataOperators'
@@ -12,8 +13,8 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
     private _aggregator: LiveDataAggregator = new LiveDataAggregator()
     public get distinctProviders() {
         const result = new Array<string>()
-        for (let entry in this._all) {
-            for (let k in Object.keys(entry)) {
+        for (let entry of this._all) {
+            for (let k of Object.keys(entry)) {
                 if (!result.includes(k)) result.push(k)
             }
         }
@@ -22,6 +23,10 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
 
     public get all() {
         return this._all
+    }
+
+    public get allFlat() {
+        return this.distinctProviders.flatMap(p => this.getDataPointsFor(p)!)
     }
 
     constructor(initialData?: GenericDictionary<L2DataUpdateModel>) {

@@ -2,7 +2,12 @@ import * as d3 from 'd3'
 import { Area } from 'd3'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { SelectedSVG, Vector2D, dataExtractor, liveDataPointExtractor } from '../../..'
-import { LiveDataPoint } from '../../../../ethtps.data/src'
+import { GenericDictionary, LiveDataAccumulator, LiveDataPoint } from '../../../../ethtps.data/src'
+
+export type StackKeyType = {
+    provider: string,
+    x: number
+}
 
 export type AreaPointPair = {
     initial: Vector2D,
@@ -105,6 +110,12 @@ export class D3Helper {
         .y1((d, i) => d.final.y)
         .curve(curve)
 
+    public static getPointAreaGenerator = (curve: d3.CurveFactory, xScale: LinScale, yScale: LinScale, dataType: ETHTPSDataCoreDataType) => d3.area<LiveDataPoint>()
+        .x((d: LiveDataPoint) => xScale(d?.x!))
+        .y0((d: LiveDataPoint) => yScale(-liveDataPointExtractor(d, dataType)!))
+        .y1((d: LiveDataPoint) => yScale(liveDataPointExtractor(d, dataType)!))
+        .curve(curve)
+
     public static lineGenerator = (curve: (d3.CurveFactory | d3.CurveFactoryLineOnly)) => d3.line<Vector2D>()
         .x((d: any) => d.x)
         .y((d: any) => d.y)
@@ -118,8 +129,21 @@ export class D3Helper {
         if (!pair?.initial?.x || !pair?.final?.x) return NaN
         return (pair.final.x - pair.initial.x)
     }
+
     public static dy = (pair?: Partial<PointPair>) => {
         if (!pair?.initial?.y || !pair?.final?.y) return NaN
         return (pair.final.y - pair.initial.y)
+    }
+
+    public static generateStack(accumulator: LiveDataAccumulator) {
+        const keys = accumulator.distinctProviders
+        console.log(keys)
+        const index = d3.index(accumulator.all.flatMap(x => Object.keys(x).map(k => ({
+            provider: k,
+            x: x[k]?.x!,
+        } as StackKeyType))), d => d)
+        const stack = d3.stack<GenericDictionary<LiveDataPoint>, StackKeyType>().keys(index.keys())
+            .value((d, k, i, arr) => d[k.provider]?.y?.tps ?? 0)(accumulator.all)
+        return stack
     }
 }

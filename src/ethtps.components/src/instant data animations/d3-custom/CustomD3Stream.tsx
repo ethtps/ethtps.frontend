@@ -1,7 +1,6 @@
 import * as d3 from 'd3'
-import { ZoomTransform } from 'd3'
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Axis, InteractiveSVG, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
+import { Axis, InteractiveSVG, dataExtractor, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { LiveDataAccumulator, LiveDataPoint } from '../../../../ethtps.data/src'
 import { D3Helper } from './D3Helper'
@@ -84,27 +83,46 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         const yScale = d3.scaleLinear().domain(extent as [number, number])
             .nice()
             .range([0, innerHeight])
-        const area = d3.area<LiveDataPoint>()
-            .x((d: LiveDataPoint) => xAxis(d?.x!))
-            .y0((d: LiveDataPoint) => yScale(-liveDataPointExtractor(d, dataType)!))
-            .y1((d: LiveDataPoint) => yScale(liveDataPointExtractor(d, dataType)!))
-            .curve(d3.curveCatmullRom.alpha(0.5))
 
         const selectArea = () => d3.select(areaRef?.current)
         selectArea().selectAll('*').remove()
-        selectArea().append('path')
-            .attr('d', area(testData.slice(0, testData.length - 1)))
-        const interpolator = D3Helper.getLastPointPairInterpolator(xAxis, yScale, dataType, testData)
-        if (!!interpolator) {
-            selectArea().call(D3Helper.lastPointPairAnimation(interpolator))
-        }
-        selectArea().call(d3.zoom(), new ZoomTransform(1, -xOffset, 0))
-        // transform()
-        //after transition
+
+        const area = D3Helper.getPointAreaGenerator(d3.curveCatmullRom, xAxis, yScale, dataType)
+
+        const stack = D3Helper.generateStack(accumulator)
+        console.log(stack)
         selectArea()
-            .attr('stroke-width', 0)
-            .attr('fill', 'blue')
-            .attr('fill-opacity', 0.5)
+            .append('g')
+            .selectAll('g')
+            .data(stack)
+            .join("g")
+            .attr("fill", d => d3.schemeCategory10[d.index])
+            .selectAll("rect")
+            .data(D => D)
+            .join("rect")
+            .attr("x", (d, i) => xAxis(dataExtractor(d.data.x!, dataType) ?? 0))
+            .attr("y0", d => yScale(d[0]) ?? 0)
+            .attr("y1", d => yScale(d[1]) ?? 0)
+            .attr("width", pixelsPerPoint)
+            .attr("height", d => Math.abs(yScale(d[0]) - yScale(d[1])) ?? 0)
+        /*
+
+
+    const selectArea = () => d3.select(areaRef?.current)
+    selectArea().selectAll('*').remove()
+    selectArea().append('path')
+        .attr('d', area(testData.slice(0, testData.length - 1)))
+    const interpolator = D3Helper.getLastPointPairInterpolator(xAxis, yScale, dataType, testData)
+    if (!!interpolator) {
+        selectArea().call(D3Helper.lastPointPairAnimation(interpolator))
+    }
+    selectArea().call(d3.zoom(), new ZoomTransform(1, -xOffset, 0))
+    // transform()
+    //after transition
+    selectArea()
+        .attr('stroke-width', 0)
+        .attr('fill', 'blue')
+        .attr('fill-opacity', 0.5)*/
     }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, areaRef.current, pixelsPerPoint, accumulator.lastEntry, accumulator.maxTotal])
 
     return <>
@@ -145,8 +163,6 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             <svg ref={areaRef}>
 
             </svg>
-            <InteractiveSVG minX={dx} minY={0} width={innerWidth} height={innerHeight}>
-            </InteractiveSVG>
         </svg>
     </>
 }

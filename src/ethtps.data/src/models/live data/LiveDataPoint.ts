@@ -1,6 +1,9 @@
 import { MinimalDataPoint, TransactionMetadata } from '.'
 
 export class LiveDataPoint implements MinimalDataPoint {
+    /**
+     * Unix timestamp in milliseconds
+     */
     public x?: number
     public get y(): Partial<MinimalDataPoint> {
         return {
@@ -9,7 +12,9 @@ export class LiveDataPoint implements MinimalDataPoint {
             gtps: this.gtps,
         }
     }
-
+    /**
+     * Usually the provider name
+     */
     public z?: string
     public tps?: number
     public gps?: number
@@ -17,5 +22,8 @@ export class LiveDataPoint implements MinimalDataPoint {
     public transactions?: TransactionMetadata[]
     public compare(other: LiveDataPoint): boolean {
         return this.tps === other.tps && this.gps === other.gps
+    }
+    public toString(): string {
+        return `${this.z}@${this.x}`
     }
 }

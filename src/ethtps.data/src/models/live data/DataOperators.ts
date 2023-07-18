@@ -12,10 +12,12 @@ export interface ILiveDataPointOperator {
 
 export interface ILiveDataCollectionOperator extends ILiveDataPointOperator {
     readonly all: GenericDictionary<LiveDataPoint>[]
+    readonly allFlat: LiveDataPoint[]
     readonly lastEntryAsDataPoints: LiveDataPoint[]
     readonly distinctProviders: string[]
     insert(entry: GenericDictionary<L2DataUpdateModel>, mode: InsertionType): void
     getDataPointsFor(provider?: string | null): LiveDataPoint[] | undefined
+    readonly timeRange: [number, number]
 }
 
 export enum InsertionType {
