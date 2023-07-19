@@ -1,6 +1,5 @@
-import { unique } from 'next/dist/build/utils'
 import { L2DataUpdateModel } from '.'
-import { GenericDictionary, logToOverlay } from '../../'
+import { GenericDictionary } from '../../'
 import { ILiveDataCollectionOperator, InsertionType } from './DataOperators'
 import { LiveDataAggregator } from './LiveDataAggregator'
 import { LiveDataPoint } from './LiveDataPoint'
@@ -11,6 +10,47 @@ import { LiveDataPoint } from './LiveDataPoint'
 export class LiveDataAccumulator implements ILiveDataCollectionOperator {
     private _all: GenericDictionary<LiveDataPoint>[] = []
     private _aggregator: LiveDataAggregator = new LiveDataAggregator()
+    private _maxValuePoints: number = 100 // (?) not sure how many to keep r/n
+    private _cacheLoaded: boolean | undefined = undefined
+    public get loadedCache(): boolean | undefined {
+        if (!this._cacheLoaded) {
+            if (!this.allFlat.some(x => !x.key)) {
+                this._cacheLoaded = true
+            }
+        }
+        return this._cacheLoaded
+    }
+
+    constructor(initialData?: GenericDictionary<L2DataUpdateModel>) {
+        if (!!initialData) this._aggregator = new LiveDataAggregator(initialData)
+        if (typeof window !== 'undefined') {
+            try { // Retrieve from cache
+                const cached = localStorage.getItem('live-data-accumulator')
+                if (!!cached) {
+                    (JSON.parse(cached) as []).forEach((x: GenericDictionary<LiveDataPoint>) => {
+                        const p: GenericDictionary<LiveDataPoint> = {}
+                        Object.keys(x).forEach(k => p[k] = {
+                            ...x[k]
+                        } as LiveDataPoint)
+                        this._all.push(p)
+                        setTimeout(() => {
+                            if (!this.loadedCache) {
+                                this._cacheLoaded = true
+                            }
+                        }, 2000)
+                    })
+                }
+            } catch (e) {
+                this._cacheLoaded = true
+                console.error('Cache retrieval failed', e)
+            }
+        }
+        this._ny = this.allFlat.length
+        setInterval(() => {
+            localStorage.setItem('live-data-accumulator', JSON.stringify(this._all))
+        }, 30000)
+    }
+
     public get distinctProviders() {
         const result = new Array<string>()
         for (let entry of this._all) {
@@ -29,9 +69,6 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
         return this.distinctProviders.flatMap(p => this.getDataPointsFor(p)!)
     }
 
-    constructor(initialData?: GenericDictionary<L2DataUpdateModel>) {
-        if (!!initialData) this._aggregator = new LiveDataAggregator(initialData)
-    }
     public get lastEntry(): GenericDictionary<L2DataUpdateModel> {
         return this._aggregator.lastEntry
     }
@@ -55,6 +92,14 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
             result.push(x.data as LiveDataPoint)
         }
         return result
+    }
+    private _ny: number
+    public get valuePoints(): number {
+        return this._ny
+    }
+
+    public get timePoints(): number {
+        return this._all.length
     }
 
     public get maxTotal(): LiveDataPoint {
@@ -92,6 +137,7 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
             dict = Object.assign(dict, {
                 [k]: p
             })
+            this._ny++
         }
         if (mode === InsertionType.Prepend) {
             this._all.unshift(dict)
@@ -99,6 +145,10 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
             this._all.push(dict)
         } else {
             this._all.push(dict)
+        }
+        if (this._ny >= this._maxValuePoints) {
+            const removed = this._all.shift()
+            this._ny -= Object.keys(removed!).length
         }
     }
 

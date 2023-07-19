@@ -18,6 +18,9 @@ export interface ILiveDataCollectionOperator extends ILiveDataPointOperator {
     insert(entry: GenericDictionary<L2DataUpdateModel>, mode: InsertionType): void
     getDataPointsFor(provider?: string | null): LiveDataPoint[] | undefined
     readonly timeRange: [number, number]
+    readonly timePoints: number
+    readonly valuePoints: number
+    readonly loadedCache: boolean | undefined
 }
 
 export enum InsertionType {

@@ -3,7 +3,7 @@ export interface StackKey<T extends SimpleStackKey> {
 }
 
 export interface SimpleStackKey {
-    readonly value: string
+
 }
 
 export interface LiveDataPointKey extends SimpleStackKey {

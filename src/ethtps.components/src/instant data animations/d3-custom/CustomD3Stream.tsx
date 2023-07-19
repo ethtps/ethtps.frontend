@@ -1,11 +1,9 @@
 import * as d3 from 'd3'
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Axis, InteractiveSVG, dataExtractor, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
+import { Axis, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
-import { LiveDataAccumulator, LiveDataPoint } from '../../../../ethtps.data/src'
-import { D3Helper } from './D3Helper'
-
-const accumulator = new LiveDataAccumulator()
+import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
+import { default as Viz } from './helpers/D3Visual'
 
 /**
  * Junk data generator function
@@ -51,11 +49,10 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
-    const [data, setData] = useState<LiveDataPoint[]>([])
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
     const [dx, setDx] = useState<number>(0)
-    const xBounds = useMemo(() => accumulator.timeRange, [data])//To remove after implementing scrolling
-
+    const [xBounds, setXBounds] = useState<[number, number]>([0, 0])
+    const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator())
     const xAxis = useMemo(() =>
         getD3Scale(xBounds,
             [0 + dx, innerWidth + dx]),
@@ -67,50 +64,24 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         if (!newestData) return
         minimalDataPointToLiveDataPoint
         accumulator.insert(newestData)
-        setData(d => {
-            return [...accumulator.getDataPointsFor('Polygon') ?? []]
-        })
+        setXBounds([...accumulator.timeRange])
         setDx((d) => d + pixelsPerPoint)
     }, 'update', 'data', [newestData, pixelsPerPoint, accumulator])
     measure(() => {
-        if (!areaRef.current || !data) return
-
-        const testData = [...data]
-
-        const extent = d3.extent(testData, (d) => liveDataPointExtractor(d, dataType) ?? 0)
-        extent[0] = -extent[1]!
-
-        const yScale = d3.scaleLinear().domain(extent as [number, number])
-            .nice()
-            .range([0, innerHeight])
+        logToOverlay({
+            name: `[Nx, Ny]`,
+            details: `[${accumulator.timePoints}, ${accumulator.valuePoints}]`,
+            level: accumulator.loadedCache ? 'info' : 'warn'
+        })
+        if (!areaRef.current) return
 
         const selectArea = () => d3.select(areaRef?.current)
         selectArea().selectAll('*').remove()
-
-        const area = D3Helper.getPointAreaGenerator(d3.curveCatmullRom, xAxis, yScale, dataType)
-
-        const stack = D3Helper.stack(accumulator, dataType)
-        const w = innerWidth / stack.length
-        selectArea().call(D3Helper.barsFrom(accumulator, dataType, xAxis, yScale, w))
-        /*
+        //const stack = DataTransformHelper.stack(accumulator, dataType)
+        selectArea().call(Viz.areaFrom(accumulator, dataType, { x: xAxis, y: yAxis }))
 
 
-    const selectArea = () => d3.select(areaRef?.current)
-    selectArea().selectAll('*').remove()
-    selectArea().append('path')
-        .attr('d', area(testData.slice(0, testData.length - 1)))
-    const interpolator = D3Helper.getLastPointPairInterpolator(xAxis, yScale, dataType, testData)
-    if (!!interpolator) {
-        selectArea().call(D3Helper.lastPointPairAnimation(interpolator))
-    }
-    selectArea().call(d3.zoom(), new ZoomTransform(1, -xOffset, 0))
-    // transform()
-    //after transition
-    selectArea()
-        .attr('stroke-width', 0)
-        .attr('fill', 'blue')
-        .attr('fill-opacity', 0.5)*/
-    }, 'transform', 'data', [data, dataType, innerWidth, innerHeight, xAxis, areaRef.current, pixelsPerPoint, accumulator.lastEntry, accumulator.maxTotal])
+    }, `transform`, 'data', [dataType, innerWidth, innerHeight, xAxis, yAxis, areaRef.current, pixelsPerPoint, accumulator])
 
     return <>
         <svg
@@ -121,6 +92,9 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             }}
             width={width}
             height={height}>
+            <svg ref={areaRef}>
+
+            </svg>
             <Axis
                 sx={{
                     transform: `translateX(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px)`
@@ -147,9 +121,6 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                 padding={padding}
                 margins={margins}
             />
-            <svg ref={areaRef}>
-
-            </svg>
         </svg>
     </>
 }

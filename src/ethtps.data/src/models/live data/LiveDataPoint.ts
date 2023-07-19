@@ -31,10 +31,11 @@ export class LiveDataPoint implements MinimalDataPoint, StackKey<LiveDataPointKe
     }
 
     public get key(): LiveDataPointKey {
-        return {
+        this._key ??= {
             provider: this.z ?? '',
-            x: this.x ?? 0,
-            value: `${this.z}@${this.x}`
+            x: this.x ?? 0
         }
+        return this._key!
     }
+    private _key?: LiveDataPointKey
 }

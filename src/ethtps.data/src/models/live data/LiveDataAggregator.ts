@@ -16,6 +16,21 @@ export class LiveDataAggregator implements ILiveDataPointOperator {
 	private maxTotalGps: number = 0
 	constructor(initialData?: GenericDictionary<L2DataUpdateModel>) {
 		if (initialData) this.data = initialData
+		else {
+			if (typeof window !== 'undefined') {
+				try { // Retrieve from cache
+					const cached = localStorage.getItem('live-data-aggregator')
+					if (!!cached) {
+						this.data = JSON.parse(cached)
+						setInterval(() => {
+							localStorage.setItem('live-data-aggregator', JSON.stringify(this.data))
+						}, 30000)
+					}
+				} catch (e) {
+					console.error('Cache retrieval failed', e)
+				}
+			}
+		}
 	}
 
 	public update(entry: L2DataUpdateModel) {
