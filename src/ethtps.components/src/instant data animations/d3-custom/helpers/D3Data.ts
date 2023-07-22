@@ -2,7 +2,7 @@
 import * as d3 from 'd3'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { Vector2D, dataExtractor, liveDataPointExtractor } from '../../../..'
-import { GenericDictionary, LiveDataAccumulator, LiveDataPoint } from '../../../../../ethtps.data/src'
+import { GenericDictionary, LiveDataAccumulator, LiveDataPoint, XYZDataPoint } from '../../../../../ethtps.data/src'
 import { LiveDataPointKey, StackKey } from '../../../../../ethtps.data/src/models/StackKey'
 import { LinScale, PointPair, PointPairInterpolator } from './Types'
 
@@ -60,6 +60,25 @@ export namespace D3Helpers.DataTransformation {
         return (pair.final.y - pair.initial.y)
     }
 
+    export function stackAndGroup(collection: LiveDataPoint[],
+        valueExtractor: (d: LiveDataPoint) => number,
+        offset: ((series: d3.Series<any, any>, order: Iterable<number>) => void) = d3.stackOffsetExpand) {
+        const mapped = collection.map(x => {
+            return {
+                x: x.x ?? 0,
+                z: x.z ?? 'unknown',
+                y: valueExtractor(x)
+            } as XYZDataPoint
+        })
+        const groups = d3.groups(mapped, x => x.z!)
+        const stacks = d3.stack<XYZDataPoint, string>()
+            .keys(groups.map(x => x[0]))
+            .order(d3.stackOrderInsideOut)
+            .value((d, k, i, arr) => d.y)
+            .offset(offset)
+            (mapped)
+        return stacks
+    }
     export const stack = (accumulator: LiveDataAccumulator, dataType: ETHTPSDataCoreDataType) => {
         return generateStack<LiveDataPoint, LiveDataPointKey>(
             accumulator.all,
@@ -78,11 +97,12 @@ export namespace D3Helpers.DataTransformation {
         const index = d3.index(
             collection.flatMap(x =>
                 Object.keys(x).map(k => keyExtractor(x[k]))),
-            d => d)
+            d => d, d => d.provider, d => d.x)
         const stack = d3.stack<GenericDictionary<T>, TK>()
             .offset(offset)
             .keys(index.keys())
             .value((d, k, i, arr) => valueExtractor(d[k.provider]))(collection)
+
         return stack
     }
     /*

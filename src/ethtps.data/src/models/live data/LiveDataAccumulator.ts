@@ -1,4 +1,4 @@
-import { L2DataUpdateModel } from '.'
+import { L2DataUpdateModel, MinimalDataPoint } from '.'
 import { GenericDictionary } from '../../'
 import { ILiveDataCollectionOperator, InsertionType } from './DataOperators'
 import { LiveDataAggregator } from './LiveDataAggregator'
@@ -23,7 +23,7 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
 
     constructor(initialData?: GenericDictionary<L2DataUpdateModel>) {
         if (!!initialData) this._aggregator = new LiveDataAggregator(initialData)
-        if (typeof window !== 'undefined') {
+        else if (typeof window !== 'undefined') {
             try { // Retrieve from cache
                 const cached = localStorage.getItem('live-data-accumulator')
                 if (!!cached) {
@@ -69,19 +69,47 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
         return this.distinctProviders.flatMap(p => this.getDataPointsFor(p)!)
     }
 
+    public get allStacked() {
+        const keys = this.distinctProviders
+        const result = new Array<GenericDictionary<LiveDataPointWithPrevious>>()
+        for (let i = 0; i < this.all.length; i++) {
+            let entry = this._all[i]
+            let dict: GenericDictionary<LiveDataPointWithPrevious> = {}
+            let tpssum = 0
+            let gpssum = 0
+            for (let j = 0; j < keys.length; j++) {
+                const k = keys[j]
+                const p = new LiveDataPoint() as LiveDataPointWithPrevious
+                p.previous = {
+                    tps: tpssum,
+                    gps: gpssum
+                } as MinimalDataPoint
+                tpssum += (entry[k]?.tps ?? 0)
+                gpssum += (entry[k]?.gps ?? 0)
+                p.x = entry[k]?.x ?? 0
+                p.z = k
+                p.tps = tpssum
+                p.gps = gpssum
+                dict = Object.assign(dict, ({ [k]: p }) as GenericDictionary<LiveDataPointWithPrevious>)
+            }
+            result.push(dict)
+        }
+        return result
+    }
+
     public get lastEntry(): GenericDictionary<L2DataUpdateModel> {
         return this._aggregator.lastEntry
     }
 
     public get timeRange(): [number, number] {
-        if (this._all.length === 0) return [Date.now(), Date.now()]
+        if (this._all.length === 0) return [0, 0]
         const first = this._all[0]
         const last = this._all[this._all.length - 1]
         const firstKey = Object.keys(first)[0]
         const lastKey = Object.keys(last)[0]
         const firstEntry = first[firstKey]
         const lastEntry = last[lastKey]
-        return [firstEntry.x ?? Date.now(), lastEntry.x ?? Date.now()]
+        return [firstEntry.x! ?? 0, lastEntry.x! ?? 0]
     }
 
     public get lastEntryAsDataPoints(): LiveDataPoint[] {
@@ -126,11 +154,13 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
     public insert(entry: GenericDictionary<L2DataUpdateModel>, mode: InsertionType = InsertionType.Append) {
         this._aggregator.updateMultiple(entry)
         let dict: GenericDictionary<LiveDataPoint> = {}
+        const xnow = Date.now()
+        entry = this._aggregator.lastEntry
         for (let k of Object.keys(entry)) {
             const x = entry[k]
             if (!x) continue
             const p = new LiveDataPoint()
-            p.x = Date.now()
+            p.x = xnow
             p.z = k
             p.tps = x.data?.tps
             p.gps = x.data?.gps
@@ -158,4 +188,7 @@ export class LiveDataAccumulator implements ILiveDataCollectionOperator {
         this._all.filter(x => !!x[provider]).forEach(x => result.push(x[provider] as LiveDataPoint))
         return result
     }
+}
+export type LiveDataPointWithPrevious = LiveDataPoint & {
+    previous: MinimalDataPoint | undefined
 }

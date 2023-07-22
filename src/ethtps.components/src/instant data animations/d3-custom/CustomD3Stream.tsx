@@ -3,8 +3,8 @@ import { useCallback, useMemo, useRef, useState } from "react"
 import { Axis, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
+import { default as VizLines } from './helpers/D3VisualLines'
 import { default as Viz } from './helpers/D3Visual'
-
 /**
  * Junk data generator function
  */
@@ -51,8 +51,8 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const areaRef = useRef<any>(null)
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
     const [dx, setDx] = useState<number>(0)
-    const [xBounds, setXBounds] = useState<[number, number]>([0, 0])
-    const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator())
+    const [xBounds, setXBounds] = useState<[number, number]>(() => [0, 0])
+    const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
     const xAxis = useMemo(() =>
         getD3Scale(xBounds,
             [0 + dx, innerWidth + dx]),
@@ -78,7 +78,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         const selectArea = () => d3.select(areaRef?.current)
         selectArea().selectAll('*').remove()
         //const stack = DataTransformHelper.stack(accumulator, dataType)
-        selectArea().call(Viz.areaFrom(accumulator, dataType, { x: xAxis, y: yAxis }))
+        selectArea().call(Viz.streamAreaFrom(accumulator, dataType, { x: xAxis, y: yAxis }, d3.schemeRdBu[Math.min(11, accumulator.distinctProviders.length)], 0.8))
 
 
     }, `transform`, 'data', [dataType, innerWidth, innerHeight, xAxis, yAxis, areaRef.current, pixelsPerPoint, accumulator])
@@ -92,9 +92,6 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
             }}
             width={width}
             height={height}>
-            <svg ref={areaRef}>
-
-            </svg>
             <Axis
                 sx={{
                     transform: `translateX(${(padding?.paddingLeft ?? 0) + (margins?.marginLeft ?? 0)}px)`
@@ -121,6 +118,9 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                 padding={padding}
                 margins={margins}
             />
+            <svg ref={areaRef}>
+
+            </svg>
         </svg>
     </>
 }

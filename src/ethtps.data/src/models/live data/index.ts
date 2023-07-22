@@ -5,3 +5,4 @@ export * from './LiveDataAggregator';
 export * from './LiveDataPoint';
 export * from './MinimalDataPoint';
 export * from './TransactionMetadata';
+export * from './XYZDataPoint';

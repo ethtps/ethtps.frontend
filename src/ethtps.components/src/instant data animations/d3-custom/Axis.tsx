@@ -1,5 +1,5 @@
 import * as d3 from "d3"
-import { CSSProperties, useEffect, useRef } from "react"
+import { CSSProperties, useRef } from "react"
 import { Padded, WithMargins, addGrid, measure, useGroupedDebugMeasuredEffect } from "../../.."
 import { FrequencyLimiter } from "../../../../ethtps.data/src"
 
@@ -17,7 +17,7 @@ export function Axis({
     children,
     interactive
 }: {
-    axis: d3.ScaleLinear<number, number, never>,
+    axis: d3.ScaleLinear<number, number, never> | d3.ScaleTime<number, number, never>,
     orientation: (scale: d3.AxisScale<d3.NumberValue>) => d3.Axis<d3.NumberValue>,
     sx: CSSProperties | undefined,
     padding?: Partial<Padded>,
@@ -52,8 +52,10 @@ export function Axis({
                 parentHeight ?? svgRef.current?.height?.baseVal?.value,
                 parentWidth ?? svgRef.current?.width?.baseVal?.value,
                 12,
-                (orientation === d3.axisTop || orientation === d3.axisBottom) ? axis : undefined,
-                (orientation === d3.axisLeft || orientation === d3.axisRight) ? axis : undefined,
+                (orientation === d3.axisTop || orientation === d3.axisBottom) ? d3.scaleLinear()
+                    .domain(axis.domain())
+                    .range(axis.range()) : undefined,
+                (orientation === d3.axisLeft || orientation === d3.axisRight) ? axis as d3.ScaleLinear<number, number, never> : undefined,
                 padding,
                 margins)
         }

@@ -12,6 +12,7 @@ export interface ILiveDataPointOperator {
 
 export interface ILiveDataCollectionOperator extends ILiveDataPointOperator {
     readonly all: GenericDictionary<LiveDataPoint>[]
+    readonly allStacked: GenericDictionary<LiveDataPoint>[]
     readonly allFlat: LiveDataPoint[]
     readonly lastEntryAsDataPoints: LiveDataPoint[]
     readonly distinctProviders: string[]

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { liveDataPointExtractor, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '..'
 import { Padded, WithMargins } from '../../..'
 import { ExtendedTimeInterval, FrequencyLimiter, GenericDictionary, L2DataUpdateModel, LiveDataPoint, TimeIntervalToStreamProps, extractData } from '../../../../ethtps.data/src'
-import { NumericInterval } from './Types'
+import { NumericInterval, TimeInterval } from './Types'
 
 /**
  * Returns the bounds of the x-axis in unix milliseconds
@@ -62,6 +62,10 @@ export function useYAxisBounds(newestData: GenericDictionary<L2DataUpdateModel> 
 
 export function getD3Scale(bounds: NumericInterval, range: NumericInterval): d3.ScaleLinear<number, number, never> {
     return d3.scaleLinear().domain(bounds).nice().range(range)
+}
+
+export function getD3TimeScale(bounds: TimeInterval, range: NumericInterval): d3.ScaleTime<number, number, never> {
+    return d3.scaleTime().domain(bounds).nice().range(range)
 }
 
 /**

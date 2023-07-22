@@ -54,6 +54,7 @@
     "@types/d3": "^7.4.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.53.0",
+    "@visx/visx": "^3.3.0",
     "buffer": "^6.0.3",
     "canvas": "^2.11.2",
     "chart.js": "^4.3.0",

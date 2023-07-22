@@ -24,6 +24,7 @@ import {
 } from '../../../../ethtps.data/src'
 import { SimpleLiveDataPoint, SimpleLiveDataStat } from '../simple stat'
 import { MouseOverDataTypesEvents } from '../types'
+import { VisStream } from '../vis/VisStream'
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents, Partial<ETHTPSAnimation> {
 	connected: boolean
@@ -101,7 +102,7 @@ export function StreamingComponent({
 								paddingTop: pad,
 								overflow: 'hidden',
 							}}>
-							<CustomD3Stream
+							<VisStream
 								width={sizeRef?.width ?? 500}
 								height={(sizeRef?.height ?? 500) - pad * 1}
 								isLeaving={isLeaving}

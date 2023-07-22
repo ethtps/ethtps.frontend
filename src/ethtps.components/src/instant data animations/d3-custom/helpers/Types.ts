@@ -8,9 +8,10 @@ export type AreaPointPair = {
 }
 
 export type LinScale = d3.ScaleLinear<number, number>
+export type TimeScale = d3.ScaleTime<number, number>
 
 export type LinXYScale = {
-    x: LinScale
+    x: TimeScale | LinScale
     y: LinScale
 }
 
