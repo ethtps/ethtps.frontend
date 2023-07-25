@@ -9,11 +9,11 @@ import { makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
+import { VisAxes } from './VisAxes'
 import { VisTooltip } from './VisTooltip'
 
-const MAX_LAYERS = 20
+const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
-// utils
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
 
 const keys = range(MAX_LAYERS)
@@ -60,7 +60,7 @@ export function VisStream(props: StreamGraphProps) {
         refreshInterval,
         timeInterval,
         maxEntries,
-        dataPoints = 25,
+        dataPoints = 100,
         animate = true
     } = props
     const {
@@ -177,6 +177,9 @@ export function VisStream(props: StreamGraphProps) {
                             })
                         }
                     </Stack>
+                </g>
+                <g>
+                    <VisAxes {...{ width, height }} />
                 </g>
             </svg>
         </VisTooltip>}
