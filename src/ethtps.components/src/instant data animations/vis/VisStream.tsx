@@ -100,11 +100,6 @@ export function VisStream(props: StreamGraphProps) {
             nx)
 
         ))
-    const svgRef = useRef<any>(null)
-    const areaRef = useRef<any>(null)
-    const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
-    const [dx, setDx] = useState<number>(0)
-    const [xBounds, setXBounds] = useState<[number, number]>(() => [0, 0])
     const xAxis = useMemo(() => scaleLinear<number>({
         domain: [0, nx - 1],
         range: [0, innerWidth]
@@ -113,30 +108,18 @@ export function VisStream(props: StreamGraphProps) {
         domain: [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
         range: [innerHeight, 0]
     }), [innerHeight, dataType, accumulator.maxTotal])
-
-    const yGen = useCallback(() => d3.scaleLinear().domain([-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 0), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1]).nice().range([0, innerHeight]), [dataType, innerHeight, accumulator.maxTotal])
-    const yAxis = yGen()
     useGroupedDebugMeasuredEffect(() => {
         if (!newestData) return
         minimalDataPointToLiveDataPoint
         accumulator.insert(newestData)
-        setXBounds([...accumulator.timeRange])
-        setDx((d) => d + pixelsPerPoint)
-    }, 'update', 'data', [newestData, pixelsPerPoint, accumulator])
+    }, 'update', 'data', [newestData, accumulator])
     measure(() => {
         logToOverlay({
             name: `[Nx, Ny]`,
             details: `[${accumulator.timePoints}, ${accumulator.valuePoints}]`,
             level: accumulator.loadedCache ? 'info' : 'warn'
         })
-        if (!areaRef.current) return
-
-        const selectArea = () => d3.select(areaRef?.current)
-        selectArea().selectAll('*').remove()
-
-
-
-    }, `transform`, 'data', [dataType, innerWidth, innerHeight, xAxis, yAxis, areaRef.current, pixelsPerPoint, accumulator])
+    }, `transform`, 'data', [dataType, innerWidth, innerHeight, accumulator])
     const handlePress = () => {
     }
     logToOverlay({
