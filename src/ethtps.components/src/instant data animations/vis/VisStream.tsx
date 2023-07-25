@@ -102,12 +102,12 @@ export function VisStream(props: StreamGraphProps) {
         ))
     const xAxis = useMemo(() => scaleLinear<number>({
         domain: [0, nx - 1],
-        range: [0, innerWidth]
-    }), [innerWidth, nx])
+        range: [0, width]
+    }), [width, nx])
     const absY = useMemo(() => scaleLinear<number>({
         domain: [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
-        range: [innerHeight, 0]
-    }), [innerHeight, dataType, accumulator.maxTotal])
+        range: [height, 0]
+    }), [height, dataType, accumulator.maxTotal])
     useGroupedDebugMeasuredEffect(() => {
         if (!newestData) return
         minimalDataPointToLiveDataPoint
