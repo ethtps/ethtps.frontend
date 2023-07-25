@@ -1,21 +1,22 @@
 import { animated, useSpring } from '@react-spring/web'
 import { PatternCircles, PatternWaves } from '@visx/pattern'
+import ParentSize from '@visx/responsive/lib/components/ParentSize'
 import { scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Stack } from '@visx/shape'
 import * as d3 from 'd3'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
-import { getD3Scale } from '../d3-custom'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
+import { VisTooltip } from './VisTooltip'
 
-const NUM_LAYERS = 20
+const MAX_LAYERS = 20
 
 // utils
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
 
-const keys = range(NUM_LAYERS)
+const keys = range(MAX_LAYERS)
 const yScale = scaleLinear<number>({
     domain: [-30, 50],
 })
@@ -126,56 +127,59 @@ export function VisStream(props: StreamGraphProps) {
         details: `Rendered in ${(performance.now() - begin).toFixed(2)}ms`,
         level: 'info'
     })
-    return (
-        <svg width={width} height={height}>
-            <PatternCircles id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
-            <PatternWaves
-                id="cherry"
-                height={12}
-                width={12}
-                fill="transparent"
-                stroke="#232493"
-                strokeWidth={1}
-            />
-            <PatternCircles id="navy" height={60} width={60} radius={10} fill="white" complement />
-            <PatternCircles
-                complement
-                id="circles"
-                height={60}
-                width={60}
-                radius={10}
-                fill="transparent"
-            />
+    return <>
+        <ParentSize>{({ width, height }) => <VisTooltip width={width} height={height} >
+            <svg width={width} height={height}>
+                <PatternCircles id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
+                <PatternWaves
+                    id="cherry"
+                    height={12}
+                    width={12}
+                    fill="transparent"
+                    stroke="#232493"
+                    strokeWidth={1}
+                />
+                <PatternCircles id="navy" height={60} width={60} radius={10} fill="white" complement />
+                <PatternCircles
+                    complement
+                    id="circles"
+                    height={60}
+                    width={60}
+                    radius={10}
+                    fill="transparent"
+                />
 
-            <g onClick={handlePress} onTouchStart={handlePress}>
-                <rect x={0} y={0} width={width} height={height} fill={colors.chartBackground} rx={14} />
-                <Stack<number[], number>
-                    data={layers}
-                    keys={keys}
-                    color={colorScale}
-                    offset={'wiggle'}
-                    curve={d3.curveCatmullRom.alpha(0.3)}
-                    x={(_, i) => xAxis(i) ?? 0}
-                    y0={d => absY(d[0])}
-                    y1={d => absY(d[1])}
-                >
-                    {({ stacks, path }) =>
-                        stacks.map((stack) => {
-                            // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                            const pathString = path(stack) || ''
-                            const tweened = animate ? useSpring({ pathString }) : { pathString }
-                            const color = colorScale(stack.key)
-                            const pattern = patternScale(stack.key)
-                            return (
-                                <g key={`series-${stack.key}`}>
-                                    <animated.path d={tweened.pathString} fill={color} />
-                                    <animated.path d={tweened.pathString} fill={`url(#${pattern})`} />
-                                </g>
-                            )
-                        })
-                    }
-                </Stack>
-            </g>
-        </svg>
-    )
+                <g onClick={handlePress} onTouchStart={handlePress}>
+                    <rect x={0} y={0} width={width} height={height} fill={colors.chartBackground} rx={14} />
+                    <Stack<number[], number>
+                        data={layers}
+                        keys={keys}
+                        color={colorScale}
+                        offset={'wiggle'}
+                        curve={d3.curveCatmullRom.alpha(0.8)}
+                        x={(_, i) => xAxis(i) ?? 0}
+                        y0={d => absY(d[0])}
+                        y1={d => absY(d[1])}
+                    >
+                        {({ stacks, path }) =>
+                            stacks.map((stack) => {
+                                // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
+                                const pathString = path(stack) || ''
+                                const tweened = animate ? useSpring({ pathString }) : { pathString }
+                                const color = colorScale(stack.key)
+                                const pattern = patternScale(stack.key)
+                                return (
+                                    <g key={`series-${stack.key}`}>
+                                        <animated.path d={tweened.pathString} fill={color} />
+                                        <animated.path d={tweened.pathString} fill={`url(#${pattern})`} />
+                                    </g>
+                                )
+                            })
+                        }
+                    </Stack>
+                </g>
+            </svg>
+        </VisTooltip>}
+        </ParentSize>
+    </>
 }
