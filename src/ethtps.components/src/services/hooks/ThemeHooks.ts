@@ -39,7 +39,7 @@ const lightTheme: Theme = {
 	topBarGradient:
 		'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(87,99,111,1) 35%, rgba(59,47,80,1) 100%)',
 	grid: '#B799FF',
-	chartBackground: '#afe6ff',
+	chartBackground: '#ffdede',
 }
 
 const darkTheme: Theme = {
@@ -60,8 +60,7 @@ const darkTheme: Theme = {
 	topBarGradient:
 		'linear-gradient(0deg, #15141A 0%, #000706 50%, #15141A 100%)',
 	grid: '#B799FF',
-	chartBackground:
-		'linear-gradient(0deg, #385fb3 0%, #385fb3 45%,#2c3868 50%,#385fb3 60%, #385fb3 100%)',
+	chartBackground: '#385fb3'
 }
 
 /**

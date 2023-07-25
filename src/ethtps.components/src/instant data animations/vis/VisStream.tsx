@@ -4,14 +4,13 @@ import { scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Stack } from '@visx/shape'
 import * as d3 from 'd3'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { makeInteractive } from '../../..'
+import { makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { getD3Scale } from '../d3-custom'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 
 const NUM_LAYERS = 20
-export const BACKGROUND = '#ffdede'
 
 // utils
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
@@ -89,7 +88,7 @@ export function VisStream(props: StreamGraphProps) {
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const begin = performance.now()
     const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
-
+    const colors = useColors()
     const nx = useMemo(() => Math.min(dataPoints, Math.max(accumulator.timePoints, 1)), [dataPoints, accumulator.timePoints])
 
     const layers = d3.transpose(
@@ -149,13 +148,13 @@ export function VisStream(props: StreamGraphProps) {
             />
 
             <g onClick={handlePress} onTouchStart={handlePress}>
-                <rect x={0} y={0} width={width} height={height} fill={BACKGROUND} rx={14} />
+                <rect x={0} y={0} width={width} height={height} fill={colors.chartBackground} rx={14} />
                 <Stack<number[], number>
                     data={layers}
                     keys={keys}
                     color={colorScale}
-                    offset={"wiggle"}
-                    curve={d3.curveCatmullRom.alpha(0.5)}
+                    offset={'wiggle'}
+                    curve={d3.curveCatmullRom.alpha(0.3)}
                     x={(_, i) => xAxis(i) ?? 0}
                     y0={d => absY(d[0])}
                     y1={d => absY(d[1])}
