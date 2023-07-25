@@ -2,31 +2,21 @@ import { animated, useSpring } from '@react-spring/web'
 import { PatternCircles, PatternWaves } from '@visx/pattern'
 import { scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Stack } from '@visx/shape'
-import { transpose } from '@visx/vendor/d3-array'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
-import generateData from './TestData'
 import * as d3 from 'd3'
-import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
-import { getD3Scale } from '../d3-custom'
-import { Viz } from '../d3-custom/helpers'
-import { liveDataPointExtractor, useGroupedDebugMeasuredEffect, minimalDataPointToLiveDataPoint, measure } from '../hooks'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { makeInteractive } from '../../..'
+import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
+import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
+import { getD3Scale } from '../d3-custom'
+import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 
 const NUM_LAYERS = 20
-const SAMPLES_PER_LAYER = 200
-const BUMPS_PER_LAYER = 10
 export const BACKGROUND = '#ffdede'
 
 // utils
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
 
 const keys = range(NUM_LAYERS)
-
-// scales
-const xScale = scaleLinear<number>({
-    domain: [0, SAMPLES_PER_LAYER - 1],
-})
 const yScale = scaleLinear<number>({
     domain: [-30, 50],
 })
@@ -50,6 +40,18 @@ export type StreamGraphProps = IInstantDataAnimationProps & {
     animate?: boolean
 }
 
+function formatArray(arr: number[], length: number): number[] {
+    // If the provided array is longer than the specified length, return the last 'length' elements
+    if (arr.length >= length) {
+        return arr.slice(-length)
+    }
+
+    // If the provided array is shorter than the specified length, prepend it with zeroes
+    const zeros = Array(length - arr.length).fill(0)
+    return zeros.concat(arr)
+}
+
+
 export function VisStream(props: StreamGraphProps) {
     const {
         newestData,
@@ -58,7 +60,7 @@ export function VisStream(props: StreamGraphProps) {
         refreshInterval,
         timeInterval,
         maxEntries,
-        dataPoints = 250,
+        dataPoints = 25,
         animate = true
     } = props
     const {
@@ -85,24 +87,32 @@ export function VisStream(props: StreamGraphProps) {
         horizontalPadding,
         verticalPadding
     } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
+    const begin = performance.now()
+    const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
 
-    xScale.range([0, width])
-    yScale.range([height, 0])
+    const nx = useMemo(() => Math.min(dataPoints, Math.max(accumulator.timePoints, 1)), [dataPoints, accumulator.timePoints])
 
-    // generate layers in render to update on touch
-    const layers = transpose<number>(
-        keys.map(() => generateData(SAMPLES_PER_LAYER, BUMPS_PER_LAYER)),
-    )
+    const layers = d3.transpose(
+        (accumulator.distinctProviders.length > 0 ? accumulator.distinctProviders : ['nothing really']).map((p) => formatArray(
+            accumulator.getDataPointsFor(p)!
+                .map((d) =>
+                    liveDataPointExtractor(d, dataType) ?? 0),
+            nx)
+
+        ))
     const svgRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
     const [dx, setDx] = useState<number>(0)
     const [xBounds, setXBounds] = useState<[number, number]>(() => [0, 0])
-    const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
-    const xAxis = useMemo(() =>
-        getD3Scale(xBounds,
-            [0 + dx, innerWidth + dx]),
-        [xBounds, innerWidth, dx])
+    const xAxis = useMemo(() => scaleLinear<number>({
+        domain: [0, nx - 1],
+        range: [0, innerWidth]
+    }), [innerWidth, nx])
+    const absY = useMemo(() => scaleLinear<number>({
+        domain: [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
+        range: [innerHeight, 0]
+    }), [innerHeight, dataType, accumulator.maxTotal])
 
     const yGen = useCallback(() => d3.scaleLinear().domain([-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 0), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1]).nice().range([0, innerHeight]), [dataType, innerHeight, accumulator.maxTotal])
     const yAxis = yGen()
@@ -129,6 +139,11 @@ export function VisStream(props: StreamGraphProps) {
     }, `transform`, 'data', [dataType, innerWidth, innerHeight, xAxis, yAxis, areaRef.current, pixelsPerPoint, accumulator])
     const handlePress = () => {
     }
+    logToOverlay({
+        name: `VisStream`,
+        details: `Rendered in ${(performance.now() - begin).toFixed(2)}ms`,
+        level: 'info'
+    })
     return (
         <svg width={width} height={height}>
             <PatternCircles id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
@@ -155,11 +170,12 @@ export function VisStream(props: StreamGraphProps) {
                 <Stack<number[], number>
                     data={layers}
                     keys={keys}
-                    offset="wiggle"
                     color={colorScale}
-                    x={(_, i) => xScale(i) ?? 0}
-                    y0={getY0}
-                    y1={getY1}
+                    offset={"wiggle"}
+                    curve={d3.curveCatmullRom.alpha(0.5)}
+                    x={(_, i) => xAxis(i) ?? 0}
+                    y0={d => absY(d[0])}
+                    y1={d => absY(d[1])}
                 >
                     {({ stacks, path }) =>
                         stacks.map((stack) => {
