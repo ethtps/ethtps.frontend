@@ -11,7 +11,7 @@
 		"files.autoSave": "afterDelay",
 		"editor.tabSize": 2,
 		"editor.fontSize": 13,
-		"editor.fontFamily": "Hack, Fira Code, Consolas, 'Courier New', monospace",
+		"editor.fontFamily": "Fira Code, Hack, Consolas, 'Courier New', monospace",
 		"editor.wordWrap": "on",
 		"editor.cursorSmoothCaretAnimation": "on",
 		"editor.cursorWidth": 3,
@@ -19,6 +19,7 @@
 		"editor.formatOnSave": true,
 		"editor.formatOnType": true,
 		"diffEditor.diffAlgorithm": "advanced",
-		"diffEditor.experimental.collapseUnchangedRegions": true
+		"diffEditor.experimental.collapseUnchangedRegions": true,
+		"editor.snippetSuggestions": "top"
 	}
 }

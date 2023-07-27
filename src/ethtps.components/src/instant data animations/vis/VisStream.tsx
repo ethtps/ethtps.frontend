@@ -9,8 +9,8 @@ import { conditionalRender, makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
-import { VisAxes } from './VisAxes'
 import { VisTooltip } from './VisTooltip'
+import { VisAxes } from './axes/VisAxes'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
@@ -148,7 +148,6 @@ export function VisStream(props: StreamGraphProps) {
                     radius={10}
                     fill="transparent"
                 />
-
                 <g onClick={handlePress} onTouchStart={handlePress}>
                     <rect x={0} y={0} width={width} height={height} fill={colors.chartBackground} rx={14} />
                     <Stack<number[], number>
@@ -179,8 +178,10 @@ export function VisStream(props: StreamGraphProps) {
                             })
                         }
                     </Stack>
+                    <g >
+                        <VisAxes parentDimensions={{ ...props }} width={width} height={height} axisWidth={50} hScale={xAxis} vScale={absY} />
+                    </g>
                 </g>
-                <VisAxes parentDimensions={{ ...props }} width={width} height={50} vScale={absY} />
             </svg>
         </VisTooltip>}
         </ParentSize>
