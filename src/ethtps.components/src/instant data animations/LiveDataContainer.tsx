@@ -1,10 +1,13 @@
 'use client'
+import { useEffect } from 'react'
 import { createSignalRContext } from 'react-signalr'
 import { GenericDictionary, L2DataUpdateModel } from '../../../ethtps.data/src'
-const { useSignalREffect, Provider } = createSignalRContext()
+const { useSignalREffect, Provider } = createSignalRContext({
+	shareConnectionBetweenTab: true,
+})
 
 export interface LiveDataContainerProps {
-	component: JSX.Element
+	children?: React.ReactNode
 	onDataReceived?: (data: GenericDictionary<L2DataUpdateModel>) => void
 	onTotalChanged?: (total: number) => void
 	onConnected?: () => void
@@ -13,34 +16,39 @@ export interface LiveDataContainerProps {
 }
 
 export function LiveDataContainer(props: LiveDataContainerProps): JSX.Element {
-	useSignalREffect(
-		'ConnectionEstablished',
-		(data) => {
-			if (props.onConnected) {
-				props.onConnected()
-			}
-		},
-		[]
-	)
-	useSignalREffect(
-		'LiveDataChanged',
-		(data) => {
-			if (props.onDataReceived) {
-				props.onDataReceived(data)
-			}
-		},
-		[]
-	)
-	useSignalREffect(
-		'TotalChanged',
-		(data) => {
-			//console.log("TotalChanged")
-			if (props.onTotalChanged) {
-				props.onTotalChanged(data)
-			}
-		},
-		[]
-	)
+	try {
+		useSignalREffect(
+			'ConnectionEstablished',
+			(data) => {
+				if (props.onConnected) {
+					props.onConnected()
+				}
+			},
+			[]
+		)
+		useSignalREffect(
+			'LiveDataChanged',
+			(data) => {
+				if (props.onDataReceived) {
+					props.onDataReceived(data)
+				}
+			},
+			[]
+		)
+		useSignalREffect(
+			'TotalChanged',
+			(data) => {
+				//console.log("TotalChanged")
+				if (props.onTotalChanged) {
+					props.onTotalChanged(data)
+				}
+			},
+			[]
+		)
+	}
+	catch (e) {
+		console.error(e)
+	}
 	return (
 		<>
 			<Provider
@@ -50,7 +58,7 @@ export function LiveDataContainer(props: LiveDataContainerProps): JSX.Element {
 				}
 				connectEnabled={true}
 				withCredentials={false}>
-				{props.component}
+				{props.children}
 			</Provider>
 		</>
 	)

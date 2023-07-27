@@ -24,8 +24,6 @@ export type WithMargins = {
     marginBottom: number
     marginLeft: number
     marginRight: number
-    readonly verticalMargin: number
-    readonly horizontalMargin: number
 }
 
 

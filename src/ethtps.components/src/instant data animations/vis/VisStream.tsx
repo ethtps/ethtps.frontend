@@ -5,7 +5,7 @@ import { scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Stack } from '@visx/shape'
 import * as d3 from 'd3'
 import { useMemo, useState } from 'react'
-import { makeInteractive, useColors } from '../../..'
+import { conditionalRender, makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
@@ -164,25 +164,29 @@ export function VisStream(props: StreamGraphProps) {
                         {({ stacks, path }) =>
                             stacks.map((stack) => {
                                 // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                const pathString = path(stack) || ''
+                                const pathString = path(stack)?.replace('NaN', '0') ?? ''
                                 const tweened = animate ? useSpring({ pathString }) : { pathString }
+                                const clweeaned = {
+                                    ...tweened,
+                                    pathString: pathString.replace('NaN', '0')
+                                }
                                 const color = colorScale(stack.key)
                                 const pattern = patternScale(stack.key)
-                                return (
-                                    <g key={`series-${stack.key}`}>
-                                        <animated.path d={tweened.pathString} fill={color} />
-                                        <animated.path d={tweened.pathString} fill={`url(#${pattern})`} />
-                                    </g>
-                                )
+                                return conditionalRender(<g key={`series-${stack.key}`}>
+                                    <animated.path d={clweeaned.pathString} fill={color} />
+                                    <animated.path d={clweeaned.pathString} fill={`url(#${pattern})`} />
+                                </g>, !!pathString)
                             })
                         }
                     </Stack>
                 </g>
-                <g>
-                    <VisAxes {...{ width, height }} />
-                </g>
+                <VisAxes parentDimensions={{ ...props }} width={width} height={50} vScale={absY} />
             </svg>
         </VisTooltip>}
         </ParentSize>
     </>
 }
+/*
+
+
+*/

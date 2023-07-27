@@ -1,15 +1,15 @@
-import React, { useState, useMemo } from 'react'
-import AreaClosed from '@visx/shape/lib/shapes/AreaClosed'
+import { Axis, AxisScale, Orientation, SharedAxisProps } from '@visx/axis'
 import { curveMonotoneX } from '@visx/curve'
-import { scaleUtc, scaleLinear, scaleLog, scaleBand, ScaleInput, coerceNumber } from '@visx/scale'
-import { Axis, Orientation, SharedAxisProps, AxisScale } from '@visx/axis'
-import { GridRows, GridColumns } from '@visx/grid'
-import { AnimatedAxis, AnimatedGridRows, AnimatedGridColumns } from '@visx/react-spring'
-import { getSeededRandom } from '@visx/mock-data'
 import { LinearGradient } from '@visx/gradient'
-import { timeFormat } from '@visx/vendor/d3-time-format'
-import { GridRowsProps } from '@visx/grid/lib/grids/GridRows'
+import { GridColumns, GridRows } from '@visx/grid'
 import { GridColumnsProps } from '@visx/grid/lib/grids/GridColumns'
+import { GridRowsProps } from '@visx/grid/lib/grids/GridRows'
+import { getSeededRandom } from '@visx/mock-data'
+import { AnimatedAxis, AnimatedGridColumns, AnimatedGridRows } from '@visx/react-spring'
+import { ScaleInput, coerceNumber, scaleLinear, scaleLog } from '@visx/scale'
+import AreaClosed from '@visx/shape/lib/shapes/AreaClosed'
+import React, { useMemo, useState } from 'react'
+import { IComponentSize, WithMargins } from '../../..'
 
 export const backgroundColor = '#da7cff'
 const axisColor = '#fff'
@@ -17,12 +17,6 @@ const tickLabelColor = '#fff'
 export const labelColor = '#340098'
 const gridColor = '#6e0fca'
 const seededRandom = getSeededRandom(0.5)
-const margin = {
-    top: 40,
-    right: 150,
-    bottom: 20,
-    left: 50,
-}
 
 const tickLabelProps = {
     fill: tickLabelColor,
@@ -36,11 +30,6 @@ const getMinMax = (vals: (number | { valueOf(): number })[]) => {
     return [Math.min(...numericVals), Math.max(...numericVals)]
 }
 
-export type AxisProps = {
-    width: number
-    height: number
-    showControls?: boolean
-}
 
 type AnimationTrajectory = 'outside' | 'center' | 'min' | 'max' | undefined
 
@@ -60,14 +49,26 @@ type GridColumnsComponentType = React.FC<
     }
 >
 
+export type IVisAxesProps = IComponentSize & Partial<WithMargins> & {
+    parentDimensions: IComponentSize
+    showControls?: boolean
+    vScale?: AxisScale<number>
+    hScale?: AxisScale<number>
+}
+
 /**
  * Component for visualizing XY axes
  */
 export function VisAxes({
-    width: outerWidth = 800,
-    height: outerHeight = 800,
+    width,
+    height,
+    parentDimensions,
     showControls = true,
-}: AxisProps) {
+    marginBottom = 10,
+    marginLeft = 0,
+    marginRight = 0,
+    marginTop = 0,
+}: IVisAxesProps) {
     // use non-animated components if prefers-reduced-motion is set
     const prefersReducedMotionQuery =
         typeof window === 'undefined' ? false : window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -75,8 +76,8 @@ export function VisAxes({
     const [useAnimatedComponents, setUseAnimatedComponents] = useState(!prefersReducedMotion)
 
     // in svg, margin is subtracted from total width/height
-    const width = outerWidth - margin.left - margin.right
-    const height = outerHeight - margin.top - margin.bottom
+    const w = outerWidth - marginLeft - marginRight
+    const h = outerHeight - marginBottom
     const [dataToggle, setDataToggle] = useState(true)
     const [animationTrajectory, setAnimationTrajectory] = useState<AnimationTrajectory>('center')
 
@@ -104,40 +105,9 @@ export function VisAxes({
 
         return [
             {
-                scale: scaleLinear({
-                    domain: getMinMax(linearValues),
-                    range: [0, width],
-                }),
-                values: linearValues,
-                tickFormat: (v: number, index: number, ticks: { value: number; index: number }[]) =>
-                    index === 0 ? 'first' : index === ticks[ticks.length - 1].index ? 'last' : `${v}`,
-                label: 'linear',
-            },
-            {
-                scale: scaleBand({
-                    domain: bandValues,
-                    range: [0, width],
-                    paddingOuter: 0,
-                    paddingInner: 1,
-                }),
-                values: bandValues,
-                tickFormat: (v: string) => v,
-                label: 'categories',
-            },
-            {
-                scale: scaleUtc({
-                    domain: getMinMax(timeValues),
-                    range: [0, width],
-                }),
-                values: timeValues,
-                tickFormat: (v: Date, i: number) =>
-                    i === 3 ? '🎉' : width > 400 || i % 2 === 0 ? timeFormat('%b %d')(v) : '',
-                label: 'time',
-            },
-            {
                 scale: scaleLog({
                     domain: getMinMax(logValues),
-                    range: [0, width],
+                    range: [0, w],
                 }),
                 values: logValues,
                 tickFormat: (v: number) => {
@@ -150,10 +120,10 @@ export function VisAxes({
         ]
     }, [dataToggle, width])
 
-    if (width < 10) return null
+    if (w < 10) return null
 
     const scalePadding = 40
-    const scaleHeight = height / axes.length - scalePadding
+    const scaleHeight = h / axes.length - scalePadding
 
     const yScale = scaleLinear({
         domain: [100, 0],
@@ -177,7 +147,7 @@ export function VisAxes({
                     fill={'url(#visx-axis-gradient)'}
                     rx={14}
                 />
-                <g transform={`translate(${margin.left},${margin.top})`}>
+                <g transform={`translate(${marginLeft},${outerHeight - 50})`}>
                     {axes.map(({ scale, values, label, tickFormat }, i) => (
                         <g key={`scale-${i}`} transform={`translate(0, ${i * (scaleHeight + scalePadding)})`}>
                             <GridRowsComponent
@@ -185,7 +155,7 @@ export function VisAxes({
                                 key={`gridrows-${animationTrajectory}`}
                                 scale={yScale}
                                 stroke={gridColor}
-                                width={width}
+                                width={w}
                                 numTicks={dataToggle ? 1 : 3}
                                 animationTrajectory={animationTrajectory}
                             />
@@ -226,7 +196,7 @@ export function VisAxes({
                                 numTicks={label === 'time' ? 6 : undefined}
                                 label={label}
                                 labelProps={{
-                                    x: width + 30,
+                                    x: parseFloat(width?.toString() ?? '50') + 30,
                                     y: -10,
                                     fill: labelColor,
                                     fontSize: 18,
@@ -252,7 +222,7 @@ export function VisAxes({
                                 checked={useAnimatedComponents}
                             />{' '}
                             enable animation
-                        </label>
+                        </label>d
                         &nbsp;&nbsp;&nbsp;
                         {useAnimatedComponents && (
                             <>

@@ -145,43 +145,42 @@ export default function Index({
         onDisconnected={() => setConnected(false)}
         onError={(error) => console.error(error)}
         onDataReceived={onDataReceived}
-        component={
-          <>
-            <Box>
-              <StreamingComponent
-                connected={connected}
-                data={showSidechains ? data : noSidechainData.data}
-                newestData={newestData}
-                providerData={providerData}
-                onClick={onClick}
-                onMouseOver={onMouseOver}
-                onMouseLeave={onMouseLeave}
-                isLeaving={isLeaving}
-                dataMode={dataMode ?? ETHTPSDataCoreDataType.TPS}
-                hoveredDataMode={hoveredDataMode}
-                showSidechains={showSidechains ?? false}
-                showSidechainsToggled={() => setShowSidechains(!showSidechains)}
-              />
-            </Box>
-            <Box
-              sx={{
-                marginTop: '5rem',
-              }}
-              overflowX={'scroll'}>
-              <AllProvidersTable
-                maxData={maxData}
-                api={api}
-                instantData={instantData}
-                providerData={getFilteredProviderData()}
-                aggregator={copiedAggregator}
-                dataType={hoveredDataMode ?? dataMode}
-                showSidechains={showSidechains}
-                maxRowsBeforeShowingExpand={25}
-              />
-            </Box>
-          </>
-        }
-      />
+      >
+        <>
+          <Box>
+            <StreamingComponent
+              connected={connected}
+              data={showSidechains ? data : noSidechainData.data}
+              newestData={newestData}
+              providerData={providerData}
+              onClick={onClick}
+              onMouseOver={onMouseOver}
+              onMouseLeave={onMouseLeave}
+              isLeaving={isLeaving}
+              dataMode={dataMode ?? ETHTPSDataCoreDataType.TPS}
+              hoveredDataMode={hoveredDataMode}
+              showSidechains={showSidechains ?? false}
+              showSidechainsToggled={() => setShowSidechains(!showSidechains)}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '5rem',
+            }}
+            overflowX={'scroll'}>
+            <AllProvidersTable
+              maxData={maxData}
+              api={api}
+              instantData={instantData}
+              providerData={getFilteredProviderData()}
+              aggregator={copiedAggregator}
+              dataType={hoveredDataMode ?? dataMode}
+              showSidechains={showSidechains}
+              maxRowsBeforeShowingExpand={25}
+            />
+          </Box>
+        </>
+      </LiveDataContainer>
     </>
   )
 }

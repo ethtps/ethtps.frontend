@@ -7,5 +7,18 @@
 			"path": "src/pages/admin"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"editor.tabSize": 2,
+		"editor.fontSize": 13,
+		"editor.fontFamily": "Hack, Fira Code, Consolas, 'Courier New', monospace",
+		"editor.wordWrap": "on",
+		"editor.cursorSmoothCaretAnimation": "on",
+		"editor.cursorWidth": 3,
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"diffEditor.diffAlgorithm": "advanced",
+		"diffEditor.experimental.collapseUnchangedRegions": true
+	}
 }
