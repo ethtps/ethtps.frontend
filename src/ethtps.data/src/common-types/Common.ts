@@ -110,8 +110,8 @@ export function uniform<T>(size: T) {
 	}
 }
 
-export const numberFormat = (value?: number) => {
-	if (!value) return 0
+export const numberFormat = (value?: number): string => {
+	if (!value) return '0'
 	if (value > 1000) value = Math.round(value)
 	return (Math.round(value * 100) / 100).toLocaleString()
 }

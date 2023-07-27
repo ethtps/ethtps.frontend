@@ -1,11 +1,9 @@
 import { Orientation } from '@visx/axis'
-import { LinearGradient } from '@visx/gradient'
 import { GridScale } from "@visx/grid/lib/types"
-import { AnimatedAxis, AnimatedGridColumns, AnimatedGridRows } from '@visx/react-spring/lib'
-import { scaleLinear } from 'd3'
+import { AnimatedAxis, AnimatedGridRows } from '@visx/react-spring/lib'
 import { useState } from 'react'
-import { range } from '../../../..'
-import { AnimationTrajectory, IVisVAxisProps, axisColor, backgroundColor, gridColor, labelColor, tickLabelProps } from './Types'
+import { AnimationTrajectory, Gradient, IVisVAxisProps, gridColor, tickLabelProps } from '.'
+import { useColors } from '../../../..'
 
 
 
@@ -19,6 +17,7 @@ export function VisVAxis({
   marginRight = 0,
   axisWidth = 0
 }: IVisVAxisProps) {
+  const colors = useColors()
   const prefersReducedMotionQuery =
     typeof window === 'undefined' ? false : window.matchMedia('(prefers-reduced-motion: reduce)')
   const [animationTrajectory, setAnimationTrajectory] = useState<AnimationTrajectory>('center')
@@ -27,53 +26,68 @@ export function VisVAxis({
     scale,
     label: 'y',
   } : undefined
-  console.info(axis)
   if (!axis) return <></>
   return <>
-    <LinearGradient
-      id="visx-axis-ygradient"
-      from={backgroundColor}
-      to={backgroundColor}
-      toOpacity={0.5}
-    />
+    <Gradient />
     <rect
       x={marginLeft}
       y={marginTop}
       width={axisWidth}
-      height={height}
-      fill={'url(#visx-axis-ygradient)'}
+      height={height - marginTop - marginBottom - axisWidth}
+      fill={'url(#visx-axis-gradient)'}
       rx={14}
     />
     <g >
       <AnimatedGridRows
         key={`gridrows-${animationTrajectory}`}
-        scale={scaleLinear().domain(scale!.domain()).range(scale!.range())}
+        scale={scale as GridScale}
         stroke={gridColor}
         width={axisWidth}
         top={marginTop}
         left={marginLeft}
-        tickValues={range(3).map((i) => i * 1)}
+
         animationTrajectory={animationTrajectory}
       />
       <AnimatedAxis
         key={`axis-${animationTrajectory}`}
-        orientation={Orientation.left}
+        orientation={Orientation.right}
         top={marginTop}
         scale={scale as GridScale}
-        stroke={axisColor}
-        tickStroke={axisColor}
-        tickLabelProps={tickLabelProps}
+        stroke={colors.chartBackground}
+        left={marginLeft + axisWidth}
+        tickStroke={colors.chartBackground}
+        tickFormat={(label: number, index) => {
+          label = Math.abs(label)
+          if (label >= 1000000)
+            return (
+              Math.round(
+                label / 1000000
+              ) + 'M'
+            )
+          if (label >= 1000)
+            return (
+              Math.round(label) /
+              1000 +
+              'k'
+            )
+          return Math.round(label).toString()
+        }}
+        tickLabelProps={{
+          ...tickLabelProps,
+          fill: colors.primaryContrast,
+          className: 'unselectable',
+        }}
         labelProps={{
-          x1: marginLeft + axisWidth,
-          x2: marginLeft + axisWidth,
-          y: marginTop,
-          fill: labelColor,
+          x: marginLeft + axisWidth + 2 * 18,
+          y1: marginTop,
+          y2: height - marginBottom - axisWidth,
           fontSize: 18,
           strokeWidth: 0,
           stroke: '#fff',
-          paintOrder: 'stroke',
+          paintOrder: 'fill',
           fontFamily: 'sans-serif',
-          textAnchor: 'start',
+          textAnchor: 'middle',
+          className: 'unselectable',
         }}
         animationTrajectory={animationTrajectory}
       />

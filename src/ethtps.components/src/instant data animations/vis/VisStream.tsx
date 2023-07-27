@@ -51,7 +51,6 @@ function formatArray(arr: number[], length: number): number[] {
     return zeros.concat(arr)
 }
 
-
 export function VisStream(props: StreamGraphProps) {
     const {
         newestData,
@@ -178,8 +177,14 @@ export function VisStream(props: StreamGraphProps) {
                             })
                         }
                     </Stack>
-                    <g >
-                        <VisAxes parentDimensions={{ ...props }} width={width} height={height} axisWidth={50} hScale={xAxis} vScale={absY} />
+                    <g style={{ position: 'absolute' }}>
+                        <VisAxes
+                            parentDimensions={{ ...props }}
+                            width={width}
+                            height={height}
+                            axisWidth={0}
+                            hScale={xAxis}
+                            vScale={absY} />
                     </g>
                 </g>
             </svg>

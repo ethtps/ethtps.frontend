@@ -1,5 +1,6 @@
 
 import NonSSRWrapper from '@/ethtps.components/src/NonSSRWrapper'
+import { binaryConditionalRender } from '@/services'
 import { api, apiURL } from '@/services/DependenciesIOC'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
@@ -50,7 +51,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                 transition={{
                   duration: 1
                 }}>
-                <MainLayout store={store} component={<Component {...pageProps} />} />
+                {binaryConditionalRender(Component.getLayout?.(<Component {...pageProps} />), <>
+                  <MainLayout store={store}>
+                    <Component {...pageProps} />
+                  </MainLayout>
+                </>, !!Component.getLayout)}
               </motion.div>, isHuman)}
               <motion.div initial={{
                 opacity: 1

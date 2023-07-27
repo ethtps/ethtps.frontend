@@ -1,12 +1,9 @@
-import { AxisScale, Orientation } from '@visx/axis'
-import { LinearGradient } from '@visx/gradient'
+import { Orientation } from '@visx/axis'
 import { GridScale } from "@visx/grid/lib/types"
-import { AnimatedAxis, AnimatedGridColumns, AnimatedGridRows } from '@visx/react-spring/lib'
+import { AnimatedAxis, AnimatedGridColumns } from '@visx/react-spring/lib'
 import { useState } from 'react'
-import { IComponentSize, WithMargins, range } from '../../../..'
-import { AnimationTrajectory, IVisVAxisProps, axisColor, backgroundColor, gridColor, labelColor, tickLabelProps } from './Types'
-import { scaleBand, scaleLinear } from 'd3'
-import * as d3 from 'd3'
+import { AnimationTrajectory, Gradient, IVisVAxisProps, gridColor, labelColor, tickLabelProps } from '.'
+import { useColors } from '../../../..'
 export function VisHAxis({
   scale,
   width = 0,
@@ -17,6 +14,7 @@ export function VisHAxis({
   marginRight = 0,
   axisWidth = 0
 }: IVisVAxisProps) {
+  const colors = useColors()
   const prefersReducedMotionQuery =
     typeof window === 'undefined' ? false : window.matchMedia('(prefers-reduced-motion: reduce)')
   const [animationTrajectory, setAnimationTrajectory] = useState<AnimationTrajectory>('min')
@@ -26,18 +24,13 @@ export function VisHAxis({
   } : undefined
   if (!axis) return <></>
   return <>
-    <LinearGradient
-      id="visx-axis-xgradient"
-      from={backgroundColor}
-      to={backgroundColor}
-      toOpacity={0.5}
-    />
+    <Gradient />
     <rect
       x={marginLeft}
       y={marginTop}
       width={width}
       height={axisWidth}
-      fill={'url(#visx-axis-xgradient)'}
+      fill={'url(#visx-axis-gradient)'}
       rx={14}
     />
     <g>
@@ -52,23 +45,26 @@ export function VisHAxis({
       />
       <AnimatedAxis
         key={`axis-${animationTrajectory}`}
-        orientation={Orientation.bottom}
+        orientation={Orientation.top}
         top={marginTop}
         scale={scale as GridScale}
-        stroke={axisColor}
-        tickStroke={axisColor}
-        tickLabelProps={tickLabelProps}
+        stroke={colors.chartBackground}
+        tickStroke={colors.chartBackground}
+        tickLabelProps={{
+          ...tickLabelProps,
+          fill: colors.primaryContrast,
+          className: 'unselectable',
+        }}
         labelProps={{
           x: marginLeft,
           y1: marginTop,
           y2: axisWidth + marginTop,
           fill: labelColor,
           fontSize: 18,
-          strokeWidth: 0,
-          stroke: '#fff',
           paintOrder: 'stroke',
           fontFamily: 'sans-serif',
           textAnchor: 'start',
+          className: 'unselectable',
         }}
         animationTrajectory={animationTrajectory}
       />

@@ -15,10 +15,9 @@ import {
 	ETHTPSDataCoreModelsResponseModelsProviderResponseModel,
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { CustomD3Stream, DebugOverlay, ETHTPSAnimation, TimeIntervalButtonGroup, conditionalRender, useColors } from '../../..'
+import { useEffect, useRef, useState } from 'react'
+import { ETHTPSAnimation, TimeIntervalButtonGroup, useColors } from '../../..'
 import {
-	DEBUG,
 	ExtendedTimeInterval,
 	TimeIntervalToStreamProps
 } from '../../../../ethtps.data/src'
@@ -52,6 +51,7 @@ export function StreamingComponent({
 	showSidechains,
 	showSidechainsToggled,
 	isLeaving,
+	height = 600
 }: IStreamingComponentProps): JSX.Element {
 	const colors = useColors()
 	const containerRef = useRef<any>(null)
@@ -68,11 +68,12 @@ export function StreamingComponent({
 	useEffect(() => {
 		setResMultiplier(isLowRes ? 0.5 : 1)
 	}, [isLowRes])
+
 	return (
 		<>
 			<Box ref={containerRef}>
 				<Container
-					h={600}
+					h={height}
 					w={sizeRef?.width}
 					sx={{
 						margin: 0,
@@ -121,7 +122,7 @@ export function StreamingComponent({
 					</Box>
 					<Box
 						w={sizeRef?.width}
-						bg={colors.tertiary}
+						bg={colors.chartScaleBackgroundGradient}
 						borderRadius="lg"
 						sx={{
 							padding: '5px',

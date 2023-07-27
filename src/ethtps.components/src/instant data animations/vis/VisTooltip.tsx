@@ -6,13 +6,14 @@ import {
     useTooltipInPortal,
 } from '@visx/tooltip'
 import React, { useCallback, useState } from 'react'
-import { conditionalRender } from '../../..'
+import { Vector2D, conditionalRender } from '../../..'
 
 export type TooltipProps = {
     width: number
     height: number
     showControls?: boolean
     children?: React.ReactNode
+    onMouseMove?: (e?:Vector2D)=>void
 }
 
 type TooltipData = string
@@ -28,7 +29,7 @@ const tooltipStyles = {
     padding: 12,
 }
 
-export function VisTooltip({ width, height, showControls = true, children }: TooltipProps) {
+export function VisTooltip({ width, height, showControls = true, children, onMouseMove }: TooltipProps) {
     const [tooltipShouldDetectBounds, setTooltipShouldDetectBounds] = useState(true)
     const [renderTooltipInPortal, setRenderTooltipInPortal] = useState(true)
 
@@ -62,6 +63,7 @@ export function VisTooltip({ width, height, showControls = true, children }: Too
                 tooltipTop: containerY,
                 tooltipData: 'hello'
             })
+            onMouseMove?.({ x: containerX, y: containerY } as Vector2D)
         },
         [showTooltip, tooltipShouldDetectBounds, containerBounds],
     )

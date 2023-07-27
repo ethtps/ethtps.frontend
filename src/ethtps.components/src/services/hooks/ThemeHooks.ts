@@ -19,6 +19,7 @@ export interface Theme {
 	topBarGradient: string
 	grid: string
 	chartBackground: string
+	chartScaleBackgroundGradient: string
 }
 
 const lightTheme: Theme = {
@@ -40,6 +41,7 @@ const lightTheme: Theme = {
 		'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(87,99,111,1) 35%, rgba(59,47,80,1) 100%)',
 	grid: '#B799FF',
 	chartBackground: '#ffdede',
+	chartScaleBackgroundGradient: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,222,222,0.4999482528023098) 18%, rgba(255,223,223,0.5030538428644216) 79%, rgba(255,223,223,0) 100%)'
 }
 
 const darkTheme: Theme = {
@@ -60,7 +62,8 @@ const darkTheme: Theme = {
 	topBarGradient:
 		'linear-gradient(0deg, #15141A 0%, #000706 50%, #15141A 100%)',
 	grid: '#B799FF',
-	chartBackground: '#385fb3'
+	chartBackground: '#385fb3',
+	chartScaleBackgroundGradient: 'radial-gradient(circle, rgba(56,95,179,1) 53%, rgba(255,255,179,0) 100%)'
 }
 
 /**

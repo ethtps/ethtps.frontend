@@ -17,15 +17,16 @@ export type IVisAxesProps = IComponentSize & Partial<WithMargins> & {
  */
 export function VisAxes(props: IVisAxesProps) {
     return <>
-        <VisHAxis {...props}
-            width={props.width}
-            height={props.axisWidth}
-            marginTop={props.height - props.axisWidth}
-            scale={props.hScale} />
         <VisVAxis {...props}
             width={props.axisWidth}
-            height={props.height - props.axisWidth}
+            height={props.height - (props.marginTop ?? 0) - (props.marginBottom ?? 0) - props.axisWidth}
+            marginLeft={Math.max(props.axisWidth ?? 0, 18) / 2}
             scale={props.vScale} />
+        <VisHAxis {...props}
+            width={props.width}
+            height={props.axisWidth - props.axisWidth}
+            marginTop={props.height - props.axisWidth}
+            scale={props.hScale} />
     </>
 }
 
