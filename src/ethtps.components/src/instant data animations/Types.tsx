@@ -41,7 +41,7 @@ export enum ExpandType {
  */
 export const expandRatios: GenericDictionary<number> = {
 	[ExpandType.None]: 1,
-	[ExpandType.Float]: 1.8,
+	[ExpandType.Float]: 3,
 	[ExpandType.ExpandVertically]: 1.8
 }
 

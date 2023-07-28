@@ -6,7 +6,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ETHTPSAnimation, useQueryStringAndLocalStorageBoundState } from '../../..'
+import { ETHTPSAnimation, Hook, useQueryStringAndLocalStorageBoundState } from '../../..'
 import {
 	ExtendedTimeInterval,
 	TimeIntervalToStreamProps
@@ -65,8 +65,7 @@ export function StreamingComponent({
 	})
 	const expansion = useChartControlExpansion()
 	const heightMultiplier = useMemo(() => isMaximized || !!floaty.isOpen ? expandRatios[expandType] : 1, [isMaximized, floaty.isOpen, expandType])
-	const [finalHeight, setFinalHeight] = useState(() => height * heightMultiplier)
-	console.log(heightMultiplier)
+	const finalHeight = useMemo(() => height * heightMultiplier, [height, heightMultiplier])
 	return <>
 		<Grid w={'inherit'}
 			sx={{
@@ -92,15 +91,14 @@ export function StreamingComponent({
 				overflow="visible">
 				<Box
 					width={sizeRef?.width}
-					height={finalHeight + (expandType === ExpandType.ExpandVertically ? 0 : pad)}
+					height={expandType === ExpandType.Float && floaty.isOpen ? '95vh' : finalHeight}
 					borderWidth={0}
 					sx={{
 						paddingTop: pad,
 						overflow: 'visible',
 					}}>
-					<VisStream
+					<VisStream // Height is inherited if not defined
 						width={sizeRef?.width ?? 500}
-						height={finalHeight}
 						isLeaving={isLeaving}
 						dataType={hoveredDataMode ?? dataMode}
 						newestData={newestData}
@@ -114,7 +112,7 @@ export function StreamingComponent({
 						showSidechains={showSidechains}
 					/>
 					<ChartControlCenter
-						isMaximizedHook={maxedHook}
+						isMaximizedHook={maxedHook as Hook<boolean>}
 						height={finalHeight}
 						floaty={floaty}
 						width={sizeRef?.width ?? 500}
@@ -123,7 +121,7 @@ export function StreamingComponent({
 						expandType={expandType}
 						expandedChanged={(e, s) => {
 							expandedChanged?.(expansion.state?.expanded ?? false, expansion.state?.expansionSize ?? { width: 0, height: 0 })
-							setFinalHeight(height + heightMultiplier * (!!!expansion.state?.expanded ? (expansion.state?.expansionSize?.height as number ?? 0) : 0))
+							//setFinalHeight(height + heightMultiplier * (!!!expansion.state?.expanded ? (expansion.state?.expansionSize?.height as number ?? 0) : 0))
 						}}
 						showSidechainsToggled={showSidechainsToggled}
 						showSidechains={showSidechains} />

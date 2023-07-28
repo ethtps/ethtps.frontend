@@ -36,7 +36,7 @@ const getY1 = (d: Datum) => yScale(d[1]) ?? 0
 
 export type StreamGraphProps = IInstantDataAnimationProps & {
     width: number
-    height: number
+    height?: number | undefined
     animate?: boolean
 }
 
@@ -51,7 +51,7 @@ function formatArray(arr: number[], length: number): number[] {
     return zeros.concat(arr)
 }
 
-export function VisStream(props: StreamGraphProps) {
+export function VisStream(props: Partial<StreamGraphProps>) {
     const {
         newestData,
         providerData,
