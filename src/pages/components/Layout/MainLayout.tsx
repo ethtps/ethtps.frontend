@@ -1,11 +1,10 @@
-import { DebugOverlay } from '@/ethtps.components'
 import { Box, Divider, Flex } from '@chakra-ui/react'
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api/dist/models'
 import { GetServerSideProps } from 'next'
-import { AppStore, DEBUG } from '../../../ethtps.data'
-import { api, conditionalRender } from '../../../services/'
+import React from 'react'
+import { AppStore } from '../../../ethtps.data'
+import { api } from '../../../services/'
 import Navbar from './Navbar'
-
 export const getStaticProps: GetServerSideProps = async (context) => {
   const providers = await api.getProvidersAsync()
   return {
@@ -21,6 +20,7 @@ export default function MainLayout(
     store: AppStore
     providerData: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
   }>
+
 ) {
   return (
     <>
@@ -44,10 +44,6 @@ export default function MainLayout(
           <Box>{props.children}</Box>
         </Box>
       </Flex>
-      {conditionalRender(<Box sx={{
-      }}>
-        <DebugOverlay show />
-      </Box>, DEBUG)}
     </>
   )
 }

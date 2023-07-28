@@ -15,7 +15,7 @@ import {
 	useColors,
 } from '../../..'
 import { numberFormat } from '../../../../ethtps.data/src'
-import { MouseOverEvents } from '../types'
+import { MouseOverEvents } from '../Types'
 
 export function SimpleStat(
 	props: {

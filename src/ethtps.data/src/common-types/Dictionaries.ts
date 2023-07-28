@@ -3,6 +3,9 @@ import {
 	ETHTPSDataCoreModelsDataPointsDataResponseModel,
 } from 'ethtps.api'
 
+/**
+ * A generic dictionary with a string key
+ */
 export type GenericDictionary<T> = { [key: string]: T }
 export type DataPointDictionary =
 	GenericDictionary<ETHTPSDataCoreModelsDataPointsDataPoint>

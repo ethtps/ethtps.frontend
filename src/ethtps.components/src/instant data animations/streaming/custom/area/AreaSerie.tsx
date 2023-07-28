@@ -22,13 +22,6 @@ interface IAreaSerieProps extends Partial<IInstantDataAnimationProps> {
 
 type L2DataUpdateModelWithTimestamp = L2DataUpdateModel & { timestamp: number }
 
-function gradient(a: Vector2d, b: Vector2d): Vector2d {
-    return {
-        x: (b.y - a.y) / (b.x - a.x),
-        y: (b.x - a.x) / (b.y - a.y)
-    }
-}
-
 function invert(x: Vector2d): Vector2d {
     return {
         x: x.y,
@@ -98,7 +91,7 @@ export function AreaSerie(props: IAreaSerieProps) {
             ref={ref}
             key={props.customKey}
             x={interactions.position.x + (props.width ?? 0) / 2}
-            y={interactions.position.y + (props.height ?? 0) - (interactions.padding?.verticalPadding ?? 0) - (interactions.margins?.verticalMargin ?? 0)}
+            y={interactions.position.y + (props.height ?? 0) - (interactions.padding?.verticalPadding ?? 0) - (interactions.margins?.marginTop ?? 0) - (interactions.margins?.marginBottom ?? 0)}
             stroke={props.lineColor ?? colors.text}
             strokeEnabled
             sceneFunc={sceneFunc}

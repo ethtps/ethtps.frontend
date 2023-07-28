@@ -8,16 +8,14 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {
-  DebugOverlay,
+  ExpandType,
   LiveDataContainer,
   StreamingComponent,
-  conditionalRender,
   useLiveDataWithDelta,
   useQueryStringAndLocalStorageBoundState
 } from '../ethtps.components'
 import {
   AppStore,
-  DEBUG,
   GenericDictionary,
   IDataModel,
   L2DataUpdateModel,
@@ -26,6 +24,7 @@ import {
 } from '../ethtps.data/src'
 import { OrderProvidersByMax, api } from '../services'
 import Navbar from './components/Layout/Navbar'
+
 
 export interface IIndexPageProps {
   providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
@@ -131,12 +130,9 @@ export default function Stream({
         onDataReceived={onDataReceived}
       >
         <>
-          <Box sx={{
-            marginBottom: '20px',
-            overflow: 'visible'
-          }}>
+          <Box>
             <StreamingComponent
-              controlsFloatOnExpand
+              expandType={ExpandType.Float}
               connected={connected}
               data={showSidechains ? data : noSidechainData.data}
               newestData={newestData}
@@ -151,10 +147,6 @@ export default function Stream({
               showSidechainsToggled={() => setShowSidechains(!showSidechains)}
             />
           </Box>
-          {conditionalRender(<Box sx={{
-          }}>
-            <DebugOverlay show />
-          </Box>, DEBUG)}
         </>
       </LiveDataContainer>
     </>

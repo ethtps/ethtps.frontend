@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {
   AllProvidersTable,
+  ExpansionEvent,
   LiveDataContainer,
   StreamingComponent,
   useLiveDataWithDelta,
@@ -28,6 +29,8 @@ export interface IIndexPageProps {
   maxData?: IDataModel
   instantData?: IDataModel
   defaultIntervalData?: IDataModel
+  // Used whenever the user expands a stream - we need to make the parent of the page aware of this so we don't get strange overlaps
+  expandedEventHandler?: ExpansionEvent
 }
 
 export const getStaticProps: GetServerSideProps = async (context) => {
@@ -79,6 +82,7 @@ export default function Index({
   providerData,
   maxData,
   instantData,
+  expandedEventHandler,
   defaultIntervalData
 }: IIndexPageProps) {
   // Listen for leave events in order to unmount the streaming component - otherwise we get an error
@@ -138,6 +142,7 @@ export default function Index({
     providerData?.filter((x) =>
       showSidechains ? true : x.type !== 'Sidechain'
     )
+
   return (
     <>
       <LiveDataContainer
@@ -147,27 +152,21 @@ export default function Index({
         onDataReceived={onDataReceived}
       >
         <>
-          <Box>
-            <StreamingComponent
-              controlsFloatOnExpand
-              connected={connected}
-              data={showSidechains ? data : noSidechainData.data}
-              newestData={newestData}
-              providerData={providerData}
-              onClick={onClick}
-              onMouseOver={onMouseOver}
-              onMouseLeave={onMouseLeave}
-              isLeaving={isLeaving}
-              dataMode={dataMode ?? ETHTPSDataCoreDataType.TPS}
-              hoveredDataMode={hoveredDataMode}
-              showSidechains={showSidechains ?? false}
-              showSidechainsToggled={() => setShowSidechains(!showSidechains)}
-            />
-          </Box>
+          <StreamingComponent
+            connected={connected}
+            data={showSidechains ? data : noSidechainData.data}
+            newestData={newestData}
+            providerData={providerData}
+            onClick={onClick}
+            onMouseOver={onMouseOver}
+            onMouseLeave={onMouseLeave}
+            isLeaving={isLeaving}
+            dataMode={dataMode ?? ETHTPSDataCoreDataType.TPS}
+            hoveredDataMode={hoveredDataMode}
+            showSidechains={showSidechains ?? false}
+            showSidechainsToggled={() => setShowSidechains(!showSidechains)}
+          />
           <Box
-            sx={{
-              marginTop: '5rem',
-            }}
             overflowX={'scroll'}>
             <AllProvidersTable
               maxData={maxData}
@@ -177,7 +176,7 @@ export default function Index({
               aggregator={copiedAggregator}
               dataType={hoveredDataMode ?? dataMode}
               showSidechains={showSidechains}
-              maxRowsBeforeShowingExpand={25}
+              maxRowsBeforeShowingExpand={50}
             />
           </Box>
         </>

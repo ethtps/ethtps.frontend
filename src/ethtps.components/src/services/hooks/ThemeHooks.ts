@@ -34,7 +34,7 @@ const lightTheme: Theme = {
 	textContrast: 'gray.900',
 	muted: 'pink.50',
 	highlight: '#D0F5BE',
-	crosshair: '#1d5169',
+	crosshair: '#000000',
 	gray: 'gray.900',
 	gray1: 'gray.50',
 	gray2: 'gray.100',

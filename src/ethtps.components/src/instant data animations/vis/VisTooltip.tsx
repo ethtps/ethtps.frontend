@@ -88,11 +88,11 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
                 {conditionalRender(<>
                     <div
                         className="crosshair horizontal"
-                        style={{ stroke: colors.crosshair, transform: `translateY(${tooltipTop}px)` }}
+                        style={{ borderColor: colors.crosshair, transform: `translateY(${tooltipTop}px)` }}
                     />
                     <div
                         className="crosshair vertical"
-                        style={{ stroke: colors.crosshair, transform: `translateX(${tooltipLeft}px)` }}
+                        style={{ borderColor: colors.crosshair, transform: `translateX(${tooltipLeft}px)` }}
                     />
                     <TooltipComponent
                         key={Math.random()} // needed for bounds to update correctly
@@ -109,6 +109,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
                     <div
                         className="position-indicator"
                         style={{
+                            backgroundColor: colors.crosshair,
                             transform: `translate(${tooltipLeft - positionIndicatorSize / 2}px, ${tooltipTop - positionIndicatorSize / 2}px)`,
                         }}
                     />
@@ -132,8 +133,8 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
           margin-right: 8px;
         }
         .position-indicator {
-          width: ${positionIndicatorSize}px;
-          height: ${positionIndicatorSize}px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
           background: #35477d;
           position: absolute;

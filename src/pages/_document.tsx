@@ -8,6 +8,7 @@ export default class _Document extends Document {
         <body>
           <StrictMode>
             <Main />
+            <div id="aliens" />
           </StrictMode>
           <NextScript />
         </body>

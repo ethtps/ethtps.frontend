@@ -3,13 +3,14 @@ import NonSSRWrapper from '@/ethtps.components/src/NonSSRWrapper'
 import { binaryConditionalRender } from '@/services'
 import { api, apiURL } from '@/services/DependenciesIOC'
 import { CacheProvider } from '@chakra-ui/next-js'
-import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
+import { Box, ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
 import { MDXProvider } from '@mdx-js/react/lib'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
-import { AppPropsWithLayout, RecaptchaTokenLoader, VisitType, conditionalRender, useVisitType } from '../ethtps.components'
-import { wrapper } from '../ethtps.data'
+import { AppPropsWithLayout, DebugOverlay, RecaptchaTokenLoader, VisitType, conditionalRender, useVisitType } from '../ethtps.components'
+import { DEBUG, wrapper } from '../ethtps.data'
 import '../styles/cells.styles.scss'
 import '../styles/globals.css'
 import MainLayout from './components/Layout/MainLayout'
@@ -34,6 +35,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const humanHandler = (isHuman?: boolean) => {
     setOpacity(isHuman ? 1 : 0)
     setIsHuman(isHuman ?? false)
+  }
+  let hasDoc = false
+  try {
+    if (!!document) {
+      hasDoc = true
+    }
+  }
+  catch {
+    hasDoc = false
   }
   return (
     <>
@@ -71,6 +81,12 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                     apiEndpoint={apiURL}
                     onKeyLoaded={apiKeyHandler}
                     onIsHuman={humanHandler} />, visitType === VisitType.InitialOrOld)}
+                  {hasDoc && (ReactDOM.createPortal(<>
+                    {conditionalRender(<Box sx={{
+                    }}>
+                      <DebugOverlay show />
+                    </Box>, DEBUG)}
+                  </>, document.getElementById('aliens')!))}
                 </NonSSRWrapper>
               </motion.div>
             </ChakraProvider>

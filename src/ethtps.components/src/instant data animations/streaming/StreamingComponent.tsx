@@ -1,21 +1,21 @@
-import { Box, Grid } from '@chakra-ui/react'
+import { Box, Grid, useDisclosure } from '@chakra-ui/react'
 import { useSize } from '@chakra-ui/react-use-size'
 import {
 	ETHTPSDataCoreDataType,
 	ETHTPSDataCoreModelsResponseModelsProviderResponseModel,
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
-import { useEffect, useRef, useState } from 'react'
-import { ETHTPSAnimation, useColors } from '../../..'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ETHTPSAnimation, useQueryStringAndLocalStorageBoundState } from '../../..'
 import {
 	ExtendedTimeInterval,
 	TimeIntervalToStreamProps
 } from '../../../../ethtps.data/src'
 import { ChartControlCenter } from '../ChartControlCenter'
+import { ExpandType, MouseOverDataTypesEvents, expandRatios } from '../Types'
 import { SimpleLiveDataPoint, SimpleLiveDataStat } from '../simple stat'
-import { MouseOverDataTypesEvents } from '../types'
 import { VisStream } from '../vis'
-import { ExpansionEvent } from './Hooks'
+import { ExpansionEvent, useChartControlExpansion } from './Hooks'
 
 interface IStreamingComponentProps extends MouseOverDataTypesEvents, Partial<ETHTPSAnimation> {
 	connected: boolean
@@ -26,8 +26,8 @@ interface IStreamingComponentProps extends MouseOverDataTypesEvents, Partial<ETH
 	showSidechains: boolean
 	showSidechainsToggled?: () => void
 	isLeaving?: boolean
-	controlsFloatOnExpand?: boolean
 	expandedChanged?: ExpansionEvent
+	expandType?: ExpandType
 }
 
 const pad = 100
@@ -45,25 +45,28 @@ export function StreamingComponent({
 	showSidechains,
 	showSidechainsToggled,
 	isLeaving,
-	controlsFloatOnExpand = false,
 	expandedChanged,
+	expandType = ExpandType.ExpandVertically,
 	height = 600
 }: IStreamingComponentProps): JSX.Element {
-	const colors = useColors()
 	const containerRef = useRef<any>(null)
-	const controlRef = useRef<any>(null)
 	const sizeRef = useSize(containerRef)
 	const intervalHook = useState<ExtendedTimeInterval>(ETHTPSDataCoreTimeInterval.ONE_MINUTE)
 	const [interval, setInterval] = intervalHook
 	const [streamConfig, setStreamConfig] = useState(TimeIntervalToStreamProps(interval))
+	const maxedHook = useQueryStringAndLocalStorageBoundState(false, 'smaxed')
+	const [isMaximized] = maxedHook
 	useEffect(() => {
 		setStreamConfig(TimeIntervalToStreamProps(interval))
 	}, [interval])
-	const [paused, setPaused] = useState(false)
-
-
-	const [floaty, setFloaty] = useState()
-
+	const pausedHook = useState<boolean>(() => false)
+	const floaty = useDisclosure({
+		isOpen: isMaximized
+	})
+	const expansion = useChartControlExpansion()
+	const heightMultiplier = useMemo(() => isMaximized || !!floaty.isOpen ? expandRatios[expandType] : 1, [isMaximized, floaty.isOpen, expandType])
+	const [finalHeight, setFinalHeight] = useState(() => height * heightMultiplier)
+	console.log(heightMultiplier)
 	return <>
 		<Grid w={'inherit'}
 			sx={{
@@ -84,13 +87,12 @@ export function StreamingComponent({
 			/>
 			<Box
 				w={sizeRef?.width}
-				h={height}
 				borderRadius="lg"
 				borderWidth={0}
 				overflow="visible">
 				<Box
 					width={sizeRef?.width}
-					height={height}
+					height={finalHeight + (expandType === ExpandType.ExpandVertically ? 0 : pad)}
 					borderWidth={0}
 					sx={{
 						paddingTop: pad,
@@ -98,7 +100,7 @@ export function StreamingComponent({
 					}}>
 					<VisStream
 						width={sizeRef?.width ?? 500}
-						height={height}
+						height={finalHeight}
 						isLeaving={isLeaving}
 						dataType={hoveredDataMode ?? dataMode}
 						newestData={newestData}
@@ -108,14 +110,21 @@ export function StreamingComponent({
 						duration={streamConfig.duration}
 						refreshInterval={streamConfig.refreshInterval}
 						timeInterval={interval}
+						paused={pausedHook[0]}
 						showSidechains={showSidechains}
-						paused={paused}
 					/>
 					<ChartControlCenter
-						height={height}
+						isMaximizedHook={maxedHook}
+						height={finalHeight}
+						floaty={floaty}
+						width={sizeRef?.width ?? 500}
+						pausedHook={pausedHook}
 						intervalHook={intervalHook}
-						expandedChanged={expandedChanged}
-						controlsFloatOnExpand={controlsFloatOnExpand}
+						expandType={expandType}
+						expandedChanged={(e, s) => {
+							expandedChanged?.(expansion.state?.expanded ?? false, expansion.state?.expansionSize ?? { width: 0, height: 0 })
+							setFinalHeight(height + heightMultiplier * (!!!expansion.state?.expanded ? (expansion.state?.expansionSize?.height as number ?? 0) : 0))
+						}}
 						showSidechainsToggled={showSidechainsToggled}
 						showSidechains={showSidechains} />
 				</Box>
@@ -123,19 +132,3 @@ export function StreamingComponent({
 		</Grid>
 	</>
 }
-
-/*
-
-							<CrosshairDiv
-								ssr={false}
-								timeScale={{
-									interval,
-									start: 0,
-									end: -streamConfig.duration,
-								}}
-								verticalPadding={pad}
-								width={sizeRef?.width ?? 0}
-								height={(sizeRef?.height??0*) ?? 0}>
-								<></>
-							</CrosshairDiv>
-*/
