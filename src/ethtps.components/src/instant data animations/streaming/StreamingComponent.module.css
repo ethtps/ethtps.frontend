@@ -1,0 +1,11 @@
+.controlroom {
+  padding: 5px;
+  border-radius: 1rem;
+}
+
+.floaty {
+  position: fixed;
+  display: none;
+  bottom: 0;
+  width: 100ww;
+}
