@@ -12,8 +12,8 @@ export class Interactive<T extends Partial<XYDimensions>> implements Interactibl
         return [this._position.add(this._translation).x + (this.padding?.paddingLeft ?? 0) + (this.margins?.marginLeft ?? 0), this._position.add(this._translation).y + (this.padding?.paddingTop ?? 0) + (this.margins?.marginTop ?? 0), this.innerWidth, this.innerHeight].map(x => Math.round(x)) as [number, number, number, number]
     }
     public get viewBox(): [[number, number], [number, number]] { return [[0, 0], [0, 0]] }
-    public padding?: Partial<Padded> | undefined
-    public margins?: Partial<WithMargins> | undefined
+    public padding: Padded
+    public margins: WithMargins
     public get innerWidth(): number { return this.width - (this.margins?.marginLeft ?? 0) - (this.margins?.marginRight ?? 0) - (this.padding?.paddingLeft ?? 0) - (this.padding?.paddingRight ?? 0) }
     public get innerHeight(): number { return this.height - (this.margins?.marginTop ?? 0) - (this.margins?.marginBottom ?? 0) - (this.padding?.paddingTop ?? 0) - (this.padding?.paddingBottom ?? 0) }
     constructor(public element: T | undefined,
@@ -27,7 +27,19 @@ export class Interactive<T extends Partial<XYDimensions>> implements Interactibl
         this._position = initialPosition
         this._scale = initialScale
         this._translation = initialTranslation
-        this.padding = pad
-        this.margins = margin
+        this.padding = {
+            paddingLeft: 0,
+            paddingRight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            ...pad
+        }
+        this.margins = {
+            marginLeft: 0,
+            marginRight: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            ...margin
+        }
     }
 }

@@ -5,7 +5,7 @@ import { ETHTPSDataCoreTimeInterval } from "ethtps.api"
 import { connected } from "process"
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import ReactDOM from "react-dom"
-import { ExpandType, IChartControlCenterProps, TimeIntervalButtonGroup, conditionalRender, expandIcons, expandRatios, openNewTab, useColors } from ".."
+import { ExpandType, IChartControlCenterProps, TimeIntervalButtonGroup, binaryConditionalRender, conditionalRender, expandIcons, expandRatios, openNewTab, useColors } from ".."
 import { ExtendedTimeInterval, TimeIntervalToStreamProps } from "../../../ethtps.data/src"
 
 /**
@@ -65,7 +65,7 @@ export function ChartControlCenter({
       left={!!floaty.isOpen && expandType === ExpandType.Float ? 0 : undefined}
       borderRadius={'lg'}
       overflowX={'visible'}
-      pos={!!floaty.isOpen ? 'fixed' : 'relative'}>
+      pos={!!floaty.isOpen && expandType === ExpandType.Float ? 'fixed' : 'relative'}>
       <TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
       <Tooltip
         label={`Sidechains ${showSidechains ? 'shown' : 'hidden'
@@ -116,14 +116,15 @@ export function ChartControlCenter({
             }}
           />
         </Tooltip>, expandType !== ExpandType.None)}
-      <Tooltip label={`Open in separate window`}>
-        <Button
-          iconSpacing={0}
-          leftIcon={<IconWindowMaximize />}
-          variant={'ghost'}
-          onClick={() => openNewTab('/live?smaxed=true')}
-        />
-      </Tooltip>
+      {binaryConditionalRender(
+        <Tooltip label={`Open in separate window`}>
+          <Button
+            iconSpacing={0}
+            leftIcon={<IconWindowMaximize />}
+            variant={'ghost'}
+            onClick={() => openNewTab('/live?smaxed=true')}
+          />
+        </Tooltip>, undefined, expandType !== ExpandType.Float)}
       <Tooltip isDisabled label={`Change to ${isLowRes ? 'high-res' : 'low-res'} `}>
         <Button
           isDisabled

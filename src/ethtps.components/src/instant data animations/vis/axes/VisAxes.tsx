@@ -1,8 +1,8 @@
 import { AxisScale } from '@visx/axis'
 import { VisHAxis, VisVAxis } from '.'
-import { IComponentSize, WithMargins } from '../../../..'
+import { Bounded, IComponentSize } from '../../../..'
 
-export type IVisAxesProps = IComponentSize & Partial<WithMargins> & {
+export type IVisAxesProps = IComponentSize & Partial<Bounded> & {
     parentDimensions: IComponentSize
     showControls?: boolean
     vScale?: AxisScale<number>
@@ -24,6 +24,8 @@ export function VisAxes(props: IVisAxesProps) {
             scale={props.vScale} />
         <VisHAxis {...props}
             width={props.width}
+            marginBottom={props.axisWidth / 2}
+            paddingBottom={props.axisWidth / 2}
             height={props.axisWidth - props.axisWidth}
             marginTop={props.height - props.axisWidth}
             scale={props.hScale} />

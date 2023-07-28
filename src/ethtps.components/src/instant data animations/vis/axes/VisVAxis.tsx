@@ -2,21 +2,22 @@ import { Orientation } from '@visx/axis'
 import { GridScale } from "@visx/grid/lib/types"
 import { AnimatedAxis, AnimatedGridRows } from '@visx/react-spring/lib'
 import { useState } from 'react'
-import { AnimationTrajectory, Gradient, IVisVAxisProps, gridColor, tickLabelProps } from '.'
+import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, tickLabelProps } from '.'
 import { useColors } from '../../../..'
 
 
 
-export function VisVAxis({
-  scale,
-  width = 0,
-  height = 0,
-  marginTop = 0,
-  marginBottom = 0,
-  marginLeft = 0,
-  marginRight = 0,
-  axisWidth = 0
-}: IVisVAxisProps) {
+export function VisVAxis(props: IVisAxisProps) {
+  const {
+    scale,
+    width = 0,
+    height = 0,
+    marginTop = 0,
+    marginBottom = 0,
+    marginLeft = 0,
+    marginRight = 0,
+    axisWidth = 0
+  } = props
   const colors = useColors()
   const prefersReducedMotionQuery =
     typeof window === 'undefined' ? false : window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -27,13 +28,14 @@ export function VisVAxis({
     label: 'y',
   } : undefined
   if (!axis) return <></>
+  const eprops = extend(props)
   return <>
     <Gradient />
     <rect
-      x={marginLeft}
-      y={marginTop}
+      x={eprops.left}
+      y={eprops.top}
       width={axisWidth}
-      height={height - marginTop - marginBottom - axisWidth}
+      height={eprops.bottom - axisWidth}
       fill={'url(#visx-axis-gradient)'}
       rx={14}
     />
@@ -43,15 +45,14 @@ export function VisVAxis({
         scale={scale as GridScale}
         stroke={gridColor}
         width={axisWidth}
-        top={marginTop}
-        left={marginLeft}
-
+        top={eprops.top}
+        left={eprops.left}
         animationTrajectory={animationTrajectory}
       />
       <AnimatedAxis
         key={`axis-${animationTrajectory}`}
         orientation={Orientation.right}
-        top={marginTop}
+        top={eprops.top}
         scale={scale as GridScale}
         stroke={colors.chartBackground}
         left={marginLeft + axisWidth}
@@ -78,9 +79,9 @@ export function VisVAxis({
           className: 'unselectable',
         }}
         labelProps={{
-          x: marginLeft + axisWidth + 2 * 18,
-          y1: marginTop,
-          y2: height - marginBottom - axisWidth,
+          x: eprops.left + axisWidth + 2 * 18,
+          y1: eprops.top,
+          y2: eprops.bottom - axisWidth,
           fontSize: 18,
           strokeWidth: 0,
           stroke: '#fff',

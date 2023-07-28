@@ -10,13 +10,14 @@ export type BoundingBox = {
     margin: WithMargins
 }
 
+export type Bounded = Padded & WithMargins
+export type ExtraBounded = Partial<Bounded> & WithAbsoluteBounds & WithDimensions
+
 export type Padded = {
     paddingLeft: number
     paddingRight: number
     paddingTop: number
     paddingBottom: number
-    readonly verticalPadding: number
-    readonly horizontalPadding: number
 }
 
 export type WithMargins = {
@@ -26,7 +27,20 @@ export type WithMargins = {
     marginRight: number
 }
 
+/**
+ * Bounds of the element relative to origin
+ */
+export type WithAbsoluteBounds = {
+    left: number
+    top: number
+    right: number
+    bottom: number
+}
 
+export type WithDimensions = {
+    horizontalSize: number
+    verticalSize: number
+}
 
 export type ViewBoxDimensions = [[x: number, y: number], [width: number, height: number]]
 
@@ -38,23 +52,23 @@ export type Bounds = [x: number, y: number, width: number, height: number]
 
 export type SelectedSVG = d3.Selection<any, unknown, null, undefined>
 
-const extractNumber = (x?: number) => x ?? 0
+const extractOrDefineNumber = (x?: number) => x ?? 0
 const normalizePadding = (p?: Partial<Padded>) => ({
-    paddingLeft: extractNumber(p?.paddingLeft),
-    paddingRight: extractNumber(p?.paddingRight),
-    paddingTop: extractNumber(p?.paddingTop),
-    paddingBottom: extractNumber(p?.paddingBottom),
-    verticalPadding: extractNumber(p?.paddingTop) + extractNumber(p?.paddingBottom),
-    horizontalPadding: extractNumber(p?.paddingLeft) + extractNumber(p?.paddingRight),
+    paddingLeft: extractOrDefineNumber(p?.paddingLeft),
+    paddingRight: extractOrDefineNumber(p?.paddingRight),
+    paddingTop: extractOrDefineNumber(p?.paddingTop),
+    paddingBottom: extractOrDefineNumber(p?.paddingBottom),
+    verticalPadding: extractOrDefineNumber(p?.paddingTop) + extractOrDefineNumber(p?.paddingBottom),
+    horizontalPadding: extractOrDefineNumber(p?.paddingLeft) + extractOrDefineNumber(p?.paddingRight),
 })
 
 const normalizeMargins = (m?: Partial<WithMargins>) => ({
-    marginTop: extractNumber(m?.marginTop),
-    marginBottom: extractNumber(m?.marginBottom),
-    marginLeft: extractNumber(m?.marginLeft),
-    marginRight: extractNumber(m?.marginRight),
-    verticalMargin: extractNumber(m?.marginTop) + extractNumber(m?.marginBottom),
-    horizontalMargin: extractNumber(m?.marginLeft) + extractNumber(m?.marginRight),
+    marginTop: extractOrDefineNumber(m?.marginTop),
+    marginBottom: extractOrDefineNumber(m?.marginBottom),
+    marginLeft: extractOrDefineNumber(m?.marginLeft),
+    marginRight: extractOrDefineNumber(m?.marginRight),
+    verticalMargin: extractOrDefineNumber(m?.marginTop) + extractOrDefineNumber(m?.marginBottom),
+    horizontalMargin: extractOrDefineNumber(m?.marginLeft) + extractOrDefineNumber(m?.marginRight),
 })
 
 export type Position = { position: Vector2D }
@@ -62,25 +76,3 @@ export type Scale = { scale: Vector2D }
 export type Translation = { translation: Vector2D }
 export type Interactible = Position & Scale & Translation
 export type WithInteractions<T> = T & Interactible
-/*
-function withBounds<T extends XYDimensions>(element: T,
-    margin?: Partial<WithMargins>,
-    pad?: Partial<Padded>,
-    initialPosition: Vector2D = Vector2D.Zero(),
-    initialScale: Vector2D = Vector2D.Unit(),
-    initialTranslation: Vector2D = Vector2D.Zero()):
-     {
-    const padding = normalizePadding(pad)
-    const margins = normalizeMargins(margin)
-    return {
-        ...element,
-        ...padding,
-        ...margins,
-        innerWidth: element.width - padding.horizontalPadding,
-        innerHeight: element.height - padding.verticalPadding,
-        position: initialPosition,
-        scale: initialScale,
-        translation: initialTranslation,
-        getBounds: () => [0,0,0,0]
-    }
-}*/

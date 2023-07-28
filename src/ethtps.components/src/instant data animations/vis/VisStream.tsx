@@ -1,17 +1,17 @@
+import { useSize } from '@chakra-ui/react-use-size'
 import { animated, useSpring } from '@react-spring/web'
 import { PatternCircles, PatternWaves } from '@visx/pattern'
 import ParentSize from '@visx/responsive/lib/components/ParentSize'
 import { scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Stack } from '@visx/shape'
 import * as d3 from 'd3'
-import { useMemo, useState } from 'react'
-import { conditionalRender, makeInteractive, useColors } from '../../..'
+import { useMemo, useRef, useState } from 'react'
+import { WithMargins, makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisTooltip } from './VisTooltip'
 import { VisAxes } from './axes/VisAxes'
-
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
@@ -34,7 +34,7 @@ type Datum = number[]
 const getY0 = (d: Datum) => yScale(d[0]) ?? 0
 const getY1 = (d: Datum) => yScale(d[1]) ?? 0
 
-export type StreamGraphProps = IInstantDataAnimationProps & {
+export type StreamGraphProps = IInstantDataAnimationProps & Partial<WithMargins> & {
     width: number
     height?: number | undefined
     animate?: boolean
@@ -71,23 +71,15 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         bounds,
         innerWidth,
         innerHeight
-    } = makeInteractive(props, {
-        marginLeft: 10,
-        marginRight: 20,
-        marginTop: 10,
-        marginBottom: 30
-    }, {
+    } = makeInteractive(props, {}, {
         paddingLeft: 10,
         paddingRight: 10,
-        paddingTop: 10,
-        paddingBottom: 10
     })
-    const {
-        horizontalPadding,
-        verticalPadding
-    } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const begin = performance.now()
     const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
+    const svgRef = useRef<any>(null)
+    const svgSize = useSize(svgRef)
+    const actualHeight = svgSize?.height ?? height ?? 500
     const colors = useColors()
     const nx = useMemo(() => Math.min(dataPoints, Math.max(accumulator.timePoints, 1)), [dataPoints, accumulator.timePoints])
 
@@ -105,8 +97,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     }), [width, nx])
     const absY = useMemo(() => scaleLinear<number>({
         domain: [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
-        range: [height, 0]
-    }), [height, dataType, accumulator.maxTotal])
+        range: [actualHeight, 0]
+    }), [actualHeight, accumulator.maxTotal, dataType])
     useGroupedDebugMeasuredEffect(() => {
         if (!newestData) return
         minimalDataPointToLiveDataPoint
@@ -128,7 +120,9 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     })
     return <>
         <ParentSize>{({ width, height }) => <VisTooltip width={width} height={height} >
-            <svg width={width} height={height}>
+            <svg ref={svgRef}
+                width={width}
+                height={height}>
                 <PatternCircles id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
                 <PatternWaves
                     id="cherry"
@@ -162,18 +156,16 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                         {({ stacks, path }) =>
                             stacks.map((stack) => {
                                 // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                const pathString = path(stack)?.replace('NaN', '0') ?? ''
+                                const pathString = path(stack) || ''
                                 const tweened = animate ? useSpring({ pathString }) : { pathString }
-                                const clweeaned = {
-                                    ...tweened,
-                                    pathString: pathString.replace('NaN', '0')
-                                }
                                 const color = colorScale(stack.key)
                                 const pattern = patternScale(stack.key)
-                                return conditionalRender(<g key={`series-${stack.key}`}>
-                                    <animated.path d={clweeaned.pathString} fill={color} />
-                                    <animated.path d={clweeaned.pathString} fill={`url(#${pattern})`} />
-                                </g>, !!pathString)
+                                return (
+                                    <g key={`series-${stack.key}`}>
+                                        <animated.path d={tweened.pathString} fill={color} />
+                                        <animated.path d={tweened.pathString} fill={`url(#${pattern})`} />
+                                    </g>
+                                )
                             })
                         }
                     </Stack>
@@ -192,7 +184,3 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         </ParentSize>
     </>
 }
-/*
-
-
-*/

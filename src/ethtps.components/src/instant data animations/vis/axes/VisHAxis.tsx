@@ -2,52 +2,46 @@ import { Orientation } from '@visx/axis'
 import { GridScale } from "@visx/grid/lib/types"
 import { AnimatedAxis, AnimatedGridColumns } from '@visx/react-spring/lib'
 import { useState } from 'react'
-import { AnimationTrajectory, Gradient, IVisVAxisProps, gridColor, labelColor, tickLabelProps } from '.'
+import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, labelColor, tickLabelProps } from '.'
 import { useColors } from '../../../..'
-export function VisHAxis({
-  scale,
-  width = 0,
-  height = 0,
-  marginTop = 0,
-  marginBottom = 0,
-  marginLeft = 0,
-  marginRight = 0,
-  axisWidth = 0
-}: IVisVAxisProps) {
+
+export function VisHAxis(props: IVisAxisProps) {
   const colors = useColors()
   const prefersReducedMotionQuery =
     typeof window === 'undefined' ? false : window.matchMedia('(prefers-reduced-motion: reduce)')
   const [animationTrajectory, setAnimationTrajectory] = useState<AnimationTrajectory>('min')
-  const axis = (!!scale) ? {
-    scale,
+  const axis = (!!props.scale) ? {
+    scale: props.scale,
     label: 'timescale',
   } : undefined
   if (!axis) return <></>
+  const axisWidth = props.axisWidth ?? 50
+  const eprops = extend(props)
   return <>
     <Gradient />
     <rect
-      x={marginLeft}
-      y={marginTop}
-      width={width}
-      height={axisWidth}
+      x={eprops.left}
+      y={eprops.top}
+      width={props.width}
+      height={props.axisWidth}
       fill={'url(#visx-axis-gradient)'}
       rx={14}
     />
     <g>
       <AnimatedGridColumns
         key={`gridcolumns-${animationTrajectory}`}
-        scale={scale as GridScale}
+        scale={props.scale as GridScale}
         stroke={gridColor}
-        height={axisWidth}
-        top={marginTop}
-        left={marginLeft}
+        height={props.axisWidth ?? 50}
+        top={eprops.top}
+        left={eprops.left}
         animationTrajectory={animationTrajectory}
       />
       <AnimatedAxis
         key={`axis-${animationTrajectory}`}
         orientation={Orientation.top}
-        top={marginTop}
-        scale={scale as GridScale}
+        top={eprops.top}
+        scale={props.scale as GridScale}
         stroke={colors.chartBackground}
         tickStroke={colors.chartBackground}
         tickLabelProps={{
@@ -56,9 +50,9 @@ export function VisHAxis({
           className: 'unselectable',
         }}
         labelProps={{
-          x: marginLeft,
-          y1: marginTop,
-          y2: axisWidth + marginTop,
+          x: eprops.left,
+          y1: eprops.top,
+          y2: axisWidth + (props.marginTop ?? 0) - (props.marginBottom ?? 0),
           fill: labelColor,
           fontSize: 18,
           paintOrder: 'stroke',

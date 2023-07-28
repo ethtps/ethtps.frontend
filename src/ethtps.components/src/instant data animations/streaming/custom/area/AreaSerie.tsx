@@ -91,7 +91,7 @@ export function AreaSerie(props: IAreaSerieProps) {
             ref={ref}
             key={props.customKey}
             x={interactions.position.x + (props.width ?? 0) / 2}
-            y={interactions.position.y + (props.height ?? 0) - (interactions.padding?.verticalPadding ?? 0) - (interactions.margins?.marginTop ?? 0) - (interactions.margins?.marginBottom ?? 0)}
+            y={interactions.position.y + (props.height ?? 0) - (interactions.padding.paddingBottom + interactions.padding.paddingTop) - (interactions.margins?.marginTop ?? 0) - (interactions.margins?.marginBottom ?? 0)}
             stroke={props.lineColor ?? colors.text}
             strokeEnabled
             sceneFunc={sceneFunc}
@@ -100,48 +100,3 @@ export function AreaSerie(props: IAreaSerieProps) {
             tension={props.lineTension} />
     )
 }
-
-/**
- *  old.push(...[x, y])
- *  <Line
-            key={props.customKey}
-            x={(props.width ?? 0) / 2}
-            y={(props.height ?? 0) - (props.verticalPadding ?? 0)}
-            data={data}
-            stroke={props.lineColor ?? colors.text}
-            strokeEnabled
-            strokeWidth={props.lineStrokeWidth}
-            tension={props.lineTension} />
-
-
-    <Shape
-            ref={shapeRef}
-            key={props.customKey}
-            x={(props.width ?? 0) / 2}
-            y={(props.height ?? 0) - (props.verticalPadding ?? 0)}
-            sceneFunc={(ctx, shape) => {
-                if (!allData || allData.length === 0) {
-                    return
-                }
-
-                ctx.beginPath()
-                const y0 = yMap(props.mountTime!)
-                const ynow = yMap(Date.now())
-                const lastX = xAt(allData.length - 1)
-                ctx.moveTo(xMap(0), 0)
-                for (let i = 0; i < allData.length; i++) {
-                    const d = allData[i]
-                    const x = xAt(i)
-                    const y = yMap(d.timestamp)
-                    ctx.lineTo(x, y)
-                }
-                ctx.lineTo(xMap(0), ynow)
-                ctx.closePath()
-                ctx.fillStrokeShape(shape)
-            }}
-            stroke={props.lineColor ?? (!!props.index ? interpolateCividis((props.index % 10) / 15) : undefined)}
-            strokeEnabled
-            fill={props.fill ?? (!!props.index ? interpolateCividis((props.index % 10) / 20) : undefined)}
-            strokeWidth={props.lineStrokeWidth}
-            tension={props.lineTension} />
-            */

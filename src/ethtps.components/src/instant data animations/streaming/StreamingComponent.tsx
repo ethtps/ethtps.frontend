@@ -1,4 +1,4 @@
-import { Box, Grid, useDisclosure } from '@chakra-ui/react'
+import { Box, Grid, Skeleton, useDisclosure } from '@chakra-ui/react'
 import { useSize } from '@chakra-ui/react-use-size'
 import {
 	ETHTPSDataCoreDataType,
@@ -97,20 +97,23 @@ export function StreamingComponent({
 						paddingTop: pad,
 						overflow: 'visible',
 					}}>
-					<VisStream // Height is inherited if not defined
-						width={sizeRef?.width ?? 500}
-						isLeaving={isLeaving}
-						dataType={hoveredDataMode ?? dataMode}
-						newestData={newestData}
-						connected={connected}
-						providerData={providerData}
-						maxEntries={streamConfig.limit}
-						duration={streamConfig.duration}
-						refreshInterval={streamConfig.refreshInterval}
-						timeInterval={interval}
-						paused={pausedHook[0]}
-						showSidechains={showSidechains}
-					/>
+					<Skeleton isLoaded={connected} fadeDuration={1} height={'inherit'}>
+						<VisStream // Height is inherited if not defined
+							width={sizeRef?.width ?? 500}
+							isLeaving={isLeaving}
+							dataType={hoveredDataMode ?? dataMode}
+							newestData={newestData}
+							connected={connected}
+							providerData={providerData}
+							maxEntries={streamConfig.limit}
+							duration={streamConfig.duration}
+							refreshInterval={streamConfig.refreshInterval}
+							timeInterval={interval}
+							paused={pausedHook[0]}
+							marginLeft={20}
+							showSidechains={showSidechains}
+						/>
+					</Skeleton>
 					<ChartControlCenter
 						isMaximizedHook={maxedHook as Hook<boolean>}
 						height={finalHeight}
