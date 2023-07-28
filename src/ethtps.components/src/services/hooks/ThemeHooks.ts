@@ -1,4 +1,5 @@
 import { useColorMode } from '@chakra-ui/system'
+import { useMemo } from 'react'
 
 
 export interface Theme {
@@ -62,8 +63,8 @@ const darkTheme: Theme = {
 	topBarGradient:
 		'linear-gradient(0deg, #15141A 0%, #000706 50%, #15141A 100%)',
 	grid: '#B799FF',
-	chartBackground: '#385fb3',
-	chartScaleBackgroundGradient: 'radial-gradient(circle, rgba(56,95,179,1) 53%, rgba(255,255,179,0) 100%)'
+	chartBackground: '#313e5a',
+	chartScaleBackgroundGradient: 'linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(87,99,111,0.5) 35%, rgba(59,47,80,0) 100)'
 }
 
 /**
@@ -71,13 +72,8 @@ const darkTheme: Theme = {
  * @returns an object with the current theme colors
  */
 export const useColors = () => {
-	let result = lightTheme
-	try {
-		const { colorMode, toggleColorMode } = useColorMode()
-		result = colorMode === 'light' ? lightTheme : darkTheme
-	}
-	catch (e) {
-		console.log(e)
-	}
-	return result
+	const { colorMode } = useColorMode()
+	return useMemo(() => {
+		return colorMode === 'light' ? lightTheme : darkTheme
+	}, [colorMode])
 }

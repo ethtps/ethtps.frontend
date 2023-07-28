@@ -132,11 +132,11 @@ export default function Stream({
       >
         <>
           <Box sx={{
-            height: '100%',
             marginBottom: '20px',
             overflow: 'visible'
           }}>
             <StreamingComponent
+              controlsFloatOnExpand
               connected={connected}
               data={showSidechains ? data : noSidechainData.data}
               newestData={newestData}

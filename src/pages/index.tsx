@@ -149,6 +149,7 @@ export default function Index({
         <>
           <Box>
             <StreamingComponent
+              controlsFloatOnExpand
               connected={connected}
               data={showSidechains ? data : noSidechainData.data}
               newestData={newestData}

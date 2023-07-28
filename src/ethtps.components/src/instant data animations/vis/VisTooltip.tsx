@@ -6,14 +6,14 @@ import {
     useTooltipInPortal,
 } from '@visx/tooltip'
 import React, { useCallback, useState } from 'react'
-import { Vector2D, conditionalRender } from '../../..'
+import { Vector2D, conditionalRender, useColors } from '../../..'
 
 export type TooltipProps = {
     width: number
     height: number
     showControls?: boolean
     children?: React.ReactNode
-    onMouseMove?: (e?:Vector2D)=>void
+    onMouseMove?: (e?: Vector2D) => void
 }
 
 type TooltipData = string
@@ -30,6 +30,7 @@ const tooltipStyles = {
 }
 
 export function VisTooltip({ width, height, showControls = true, children, onMouseMove }: TooltipProps) {
+    const colors = useColors()
     const [tooltipShouldDetectBounds, setTooltipShouldDetectBounds] = useState(true)
     const [renderTooltipInPortal, setRenderTooltipInPortal] = useState(true)
 
@@ -87,11 +88,11 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
                 {conditionalRender(<>
                     <div
                         className="crosshair horizontal"
-                        style={{ transform: `translateY(${tooltipTop}px)` }}
+                        style={{ stroke: colors.crosshair, transform: `translateY(${tooltipTop}px)` }}
                     />
                     <div
                         className="crosshair vertical"
-                        style={{ transform: `translateX(${tooltipLeft}px)` }}
+                        style={{ stroke: colors.crosshair, transform: `translateX(${tooltipLeft}px)` }}
                     />
                     <TooltipComponent
                         key={Math.random()} // needed for bounds to update correctly
@@ -145,12 +146,12 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
         .crosshair.horizontal {
           width: 100%;
           height: 1px;
-          border-top: 1px dashed #35477d;
+          border-top: 1px dashed ;
         }
         .crosshair.vertical {
           height: 100%;
           width: 1px;
-          border-left: 1px dashed #35477d;
+          border-left: 1px dashed;
         }
         .no-tooltip {
           position: absolute;
