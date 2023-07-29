@@ -14,9 +14,17 @@ export type TooltipProps = {
     showControls?: boolean
     children?: React.ReactNode
     onMouseMove?: (e?: Vector2D) => void
+    /**
+     * Reference to the object whose events are being swallowed by the tooltip.
+     */
+    forwardRef?: React.RefObject<any>
+    /**
+     * What to render in the tooltip. Return undefined to hide the tooltip.
+     */
+    content?: TooltipData
 }
 
-type TooltipData = string
+type TooltipData = JSX.Element
 
 const positionIndicatorSize = 8
 
@@ -29,7 +37,7 @@ const tooltipStyles = {
     padding: 12,
 }
 
-export function VisTooltip({ width, height, showControls = true, children, onMouseMove }: TooltipProps) {
+export function VisTooltip({ width, height, showControls = true, children, onMouseMove, content }: TooltipProps) {
     const colors = useColors()
     const [tooltipShouldDetectBounds, setTooltipShouldDetectBounds] = useState(true)
     const [renderTooltipInPortal, setRenderTooltipInPortal] = useState(true)
@@ -51,18 +59,18 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
         tooltipOpen: false,
         tooltipLeft: width / 3,
         tooltipTop: height / 3,
-        tooltipData: 'nodata',
     })
     // event handlers
     const handlePointerMove = useCallback(
         (event: React.PointerEvent<HTMLDivElement>) => {
+
             // coordinates should be relative to the container in which Tooltip is rendered
             const containerX = ('clientX' in event ? event.clientX : 0) - containerBounds.left
             const containerY = ('clientY' in event ? event.clientY : 0) - containerBounds.top
             showTooltip({
                 tooltipLeft: containerX,
                 tooltipTop: containerY,
-                tooltipData: 'hello'
+                tooltipData: content,
             })
             onMouseMove?.({ x: containerX, y: containerY } as Vector2D)
         },
@@ -82,9 +90,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
                 className="tooltip"
                 style={{ width, height }}
                 onPointerMove={handlePointerMove}
-                onPointerLeave={hideTooltip}
-            >
-                {children}
+                onPointerLeave={hideTooltip}>
                 {conditionalRender(<>
                     <div
                         className="crosshair horizontal"
@@ -114,6 +120,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
                         }}
                     />
                 </>, tooltipOpen)}
+                {children}
             </div>
             <style>{`
         .tooltip {
@@ -131,6 +138,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
         .tooltip-controls label {
           font-size: 14px;
           margin-right: 8px;
+          pointer-events: none;
         }
         .position-indicator {
           width: 8px;
@@ -138,11 +146,13 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
           border-radius: 50%;
           background: #35477d;
           position: absolute;
+          pointer-events: none;
         }
         .crosshair {
           position: absolute;
           top: 0;
           left: 0;
+          pointer-events: none;
         }
         .crosshair.horizontal {
           width: 100%;
@@ -153,6 +163,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
           height: 100%;
           width: 1px;
           border-left: 1px dashed;
+          pointer-events: none;
         }
         .no-tooltip {
           position: absolute;

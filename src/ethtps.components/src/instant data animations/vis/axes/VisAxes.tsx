@@ -1,5 +1,5 @@
 import { AxisScale } from '@visx/axis'
-import { VisHAxis, VisVAxis } from '.'
+import { VisHAxis, VisVAxis, extend } from '.'
 import { Bounded, IComponentSize } from '../../../..'
 
 export type IVisAxesProps = IComponentSize & Partial<Bounded> & {
@@ -16,10 +16,11 @@ export type IVisAxesProps = IComponentSize & Partial<Bounded> & {
  * Component for visualizing XY axes
  */
 export function VisAxes(props: IVisAxesProps) {
+    const eprops = extend(props)
     return <>
         <VisVAxis {...props}
             width={props.axisWidth}
-            height={props.height - (props.marginTop ?? 0) - (props.marginBottom ?? 0) - props.axisWidth}
+            height={props.height - eprops.verticalSize - props.axisWidth}
             marginLeft={Math.max(props.axisWidth ?? 0, 18) / 2}
             scale={props.vScale} />
         <VisHAxis {...props}

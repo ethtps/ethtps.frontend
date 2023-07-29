@@ -4,7 +4,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 
-import { DependencyList, useEffect, useLayoutEffect, useState } from 'react'
+import { DependencyList, useCallback, useEffect, useState } from 'react'
 import {
 	DataResponseModelDictionary,
 	DebugBehaviors,
@@ -87,16 +87,16 @@ export function useLiveDataState(): LiveDataState {
 
 export function useStreamchartData(interval: string) {
 	/*
-  const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
-  const { data, status, refetch } = useQuery("get streamchart data", () =>
+	const sidechainsIncluded = useGetSidechainsIncludedFromAppStore()
+	const { data, status, refetch } = useQuery("get streamchart data", () =>
 	api.getStreamChartData({
-	  interval: ETHTPSDataCoreTimeIntervalFromJSON(`"${interval}"`),
-	  includeSidechains: sidechainsIncluded,
+		interval: ETHTPSDataCoreTimeIntervalFromJSON(`"${interval}"`),
+		includeSidechains: sidechainsIncluded,
 	}),
-  )
-  useEffect(() => {
+	)
+	useEffect(() => {
 	refetch()
-  }, [sidechainsIncluded])*/
+	}, [sidechainsIncluded])*/
 	//return { data, status }
 }
 
@@ -230,4 +230,9 @@ export function measure(effect: () => void, effectName: string, groupName?: stri
 			name: effectName
 		})
 	}
+}
+
+export function useChartTooltip() {
+	const providerHovered = useCallback((provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel | undefined) => {
+	}, [])
 }
