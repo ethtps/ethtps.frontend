@@ -20,6 +20,7 @@
 		"editor.formatOnType": true,
 		"diffEditor.diffAlgorithm": "advanced",
 		"diffEditor.experimental.collapseUnchangedRegions": true,
-		"editor.snippetSuggestions": "top"
+		"editor.snippetSuggestions": "top",
+		"eslint.codeActionsOnSave.mode": "problems"
 	}
 }

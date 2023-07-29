@@ -158,6 +158,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
           width: 100%;
           height: 1px;
           border-top: 1px dashed ;
+          pointer-events: none;
         }
         .crosshair.vertical {
           height: 100%;
@@ -170,6 +171,7 @@ export function VisTooltip({ width, height, showControls = true, children, onMou
           left: 50%;
           top: 50%;
           transform: translate(-50%, -50%);
+          pointer-events: none;
         }
       `}</style>
         </>

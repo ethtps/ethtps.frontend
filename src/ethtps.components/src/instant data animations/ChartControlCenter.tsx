@@ -117,7 +117,7 @@ export function ChartControlCenter({
           />
         </Tooltip>, expandType !== ExpandType.None)}
       {binaryConditionalRender(
-        <Tooltip label={`Open in separate window`}>
+        <Tooltip label={`Open in a new tab`}>
           <Button
             iconSpacing={0}
             leftIcon={<IconWindowMaximize />}

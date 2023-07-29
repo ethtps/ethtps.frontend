@@ -401,3 +401,7 @@ img {
   background-size: 400% 400%;
   animation: gradient-bg 20s ease infinite;
 }
+
+.nopointer {
+  pointer-events: none;
+}
