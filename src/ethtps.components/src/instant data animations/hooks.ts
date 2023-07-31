@@ -22,7 +22,15 @@ import {
 	useGetProvidersFromAppStore,
 	useGetSidechainsIncludedFromAppStore
 } from '../../../ethtps.data/src'
-
+import {
+	motion,
+	useSpring,
+	useMotionValue,
+	useMotionTemplate,
+	animate,
+	MotionValue
+} from "framer-motion"
+import { Vector2D } from '..'
 export type InstantBarChartDataset = {
 	label: string
 	data: [number]
@@ -235,4 +243,25 @@ export function measure(effect: () => void, effectName: string, groupName?: stri
 export function useChartTooltip() {
 	const providerHovered = useCallback((provider: ETHTPSDataCoreModelsResponseModelsProviderResponseModel | undefined) => {
 	}, [])
+}
+
+export function useMotionVector2DTransition(start: Vector2D, end: Vector2D, config = { stiffness: 300, damping: 30 }) {
+	const motionValueX = useMotionValue(start.x)
+	const motionValueY = useMotionValue(start.y)
+
+	const springX = useSpring(motionValueX, config)
+	const springY = useSpring(motionValueY, config)
+
+	useEffect(() => {
+		springX.set(end.x)
+		springY.set(end.y)
+	}, [end.x, end.y, springX, springY])
+
+	useEffect(() => {
+		motionValueX.set(start.x)
+		motionValueY.set(start.y)
+	}, [start.x, start.y, motionValueX, motionValueY])
+	const transform = useMotionTemplate`translate(${springX}, ${springY})`
+	const inverseTransform = useMotionTemplate`translate(${-springX}, ${-springY})`
+	return { x: springX, y: springY, transform, inverseTransform }
 }

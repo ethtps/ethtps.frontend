@@ -33,4 +33,5 @@ export class Vector2D {
     public flipY = () => new Vector2D(this.x, -this.y)
     public flip = () => new Vector2D(-this.x, -this.y)
     public toCSS = () => `translate(${this.x},${this.y})`
+    public invert = () => new Vector2D(- this.x, - this.y)
 }

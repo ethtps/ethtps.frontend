@@ -6,7 +6,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ETHTPSAnimation, Hook, useQueryStringAndLocalStorageBoundState } from '../../..'
+import { ETHTPSAnimation, Hook, useColors, useQueryStringAndLocalStorageBoundState } from '../../..'
 import {
 	ExtendedTimeInterval,
 	TimeIntervalToStreamProps
@@ -49,6 +49,7 @@ export function StreamingComponent({
 	expandType = ExpandType.ExpandVertically,
 	height = 600
 }: IStreamingComponentProps): JSX.Element {
+	const colors = useColors()
 	const containerRef = useRef<any>(null)
 	const sizeRef = useSize(containerRef)
 	const intervalHook = useState<ExtendedTimeInterval>(ETHTPSDataCoreTimeInterval.ONE_MINUTE)
@@ -95,7 +96,7 @@ export function StreamingComponent({
 					borderWidth={0}
 					sx={{
 						paddingTop: pad,
-						overflow: 'visible',
+						overflow: 'visible'
 					}}>
 					<Skeleton isLoaded={connected} fadeDuration={1} height={'inherit'}>
 						<VisStream // Height is inherited if not defined
