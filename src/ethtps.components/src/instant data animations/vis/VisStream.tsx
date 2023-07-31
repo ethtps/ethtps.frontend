@@ -127,95 +127,101 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                  content={tooltipData}
                  width={width}
                  height={height}>*/
-            <Drag
-                key={'streamdrag'}
-                onDragStart={() => console.log('drag start')}
+
+            <svg
+                style={{ cursor: 'grab' }}
+                ref={svgRef}
                 width={width}
-                height={height}
-            >
-                {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (
-                    <svg
-                        transform={`translate(${(x ?? 0 + dx)}px, ${(y ?? 0 + dy)}px)`}
-                        ref={svgRef}
+                height={height}>
+                <PatternCircles
+                    id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
+                <PatternWaves
+                    id="cherry"
+                    height={12}
+                    width={12}
+                    fill="transparent"
+                    stroke="#232493"
+                    strokeWidth={1}
+                />
+                <PatternCircles id="navy" height={60} width={60} radius={10} fill="white" complement />
+                <PatternCircles
+                    complement
+                    id="circles"
+                    height={60}
+                    width={60}
+                    radius={10}
+                    fill="transparent"
+                /> <Drag
+                    key={'streamdrag'}
+                    onDragStart={() => console.log('drag start')}
+                    width={width}
+                    height={height}
+                >
+                    {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (<g
+                        cx={x}
+                        cy={y}
+                        transform={`translate(${(dx)}, ${(dy)})`}
+                        onMouseMove={dragMove}
+                        onMouseUp={dragEnd}
+                        onMouseDown={dragStart}
+                        onTouchStart={dragStart}
+                        onTouchMove={dragMove}
+                        onTouchEnd={dragEnd}>
+                        <rect
+                            cx={-x}
+                            cy={-y}
+                            transform={`translate(${(-dx)}, ${(-dy)})`}
+                            width={width}
+                            height={height}
+                            fill={colors.chartBackground}
+                            rx={14} />
+                        <Stack<number[], number>
+                            data={layers}
+                            keys={keys}
+                            color={colorScale}
+                            offset={'wiggle'}
+                            curve={d3.curveCatmullRom.alpha(0.8)}
+                            x={(_, i) => xAxis(i) ?? 0}
+                            y0={d => absY(d[0])}
+                            y1={d => absY(d[1])}
+                        >
+                            {({ stacks, path }) =>
+                                stacks.map((stack) => {
+                                    // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
+                                    const pathString = path(stack) || ''
+                                    const tweened = animate ? useSpring({ pathString }) : { pathString }
+                                    const color = colorScale(stack.key)
+                                    const pattern = patternScale(stack.key)
+                                    return (
+                                        <g key={`series-${stack.key}`}
+                                            onPointerMove={() => setTooltipData(<>
+                                                {stack.key}
+                                            </>)}
+                                            onPointerOut={() => {
+                                                setTooltipData(undefined)
+                                            }}>
+                                            <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
+                                            <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
+                                        </g>
+
+                                    )
+                                })
+                            }
+                        </Stack>
+                    </g>)
+                    }
+                </Drag>
+                <g>
+                    <VisAxes
+                        parentDimensions={{ ...props }}
                         width={width}
-                        height={height}>
-                        <PatternCircles
-                            id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
-                        <PatternWaves
-                            id="cherry"
-                            height={12}
-                            width={12}
-                            fill="transparent"
-                            stroke="#232493"
-                            strokeWidth={1}
-                        />
-                        <PatternCircles id="navy" height={60} width={60} radius={10} fill="white" complement />
-                        <PatternCircles
-                            complement
-                            id="circles"
-                            height={60}
-                            width={60}
-                            radius={10}
-                            fill="transparent"
-                        />
-                        <g onMouseMove={dragMove}
-                            onMouseUp={dragEnd}
-                            onMouseDown={dragStart}
-                            onTouchStart={dragStart}
-                            onTouchMove={dragMove}
-                            onTouchEnd={dragEnd}>
-                            <rect
-                                width={width}
-                                height={height}
-                                fill={colors.chartBackground} rx={14} />
-                            <Stack<number[], number>
-                                data={layers}
-                                keys={keys}
-                                color={colorScale}
-                                offset={'wiggle'}
-                                curve={d3.curveCatmullRom.alpha(0.8)}
-                                x={(_, i) => xAxis(i) ?? 0}
-                                y0={d => absY(d[0])}
-                                y1={d => absY(d[1])}
-                            >
-                                {({ stacks, path }) =>
-                                    stacks.map((stack) => {
-                                        // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                        const pathString = path(stack) || ''
-                                        const tweened = animate ? useSpring({ pathString }) : { pathString }
-                                        const color = colorScale(stack.key)
-                                        const pattern = patternScale(stack.key)
-                                        return (
-                                            <g key={`series-${stack.key}`}
-                                                onPointerMove={() => setTooltipData(<>
-                                                    {stack.key}
-                                                </>)}
-                                                onPointerOut={() => {
-                                                    setTooltipData(undefined)
-                                                }}>
-                                                <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
-                                                <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
-                                            </g>
-
-                                        )
-                                    })
-                                }
-                            </Stack>
-                            <g>
-                                <VisAxes
-                                    parentDimensions={{ ...props }}
-                                    width={width}
-                                    height={height}
-                                    axisWidth={0}
-                                    hScale={xAxis}
-                                    vScale={absY} />
-                            </g>
-                        </g>
-                    </svg>
-                )}
-
-            </Drag>
+                        height={height}
+                        axisWidth={0}
+                        hScale={xAxis}
+                        vScale={absY} />
+                </g>
+            </svg>
             /* </VisTooltip>*/
-        }</ParentSize>
+        }</ParentSize >
     </>
 }
