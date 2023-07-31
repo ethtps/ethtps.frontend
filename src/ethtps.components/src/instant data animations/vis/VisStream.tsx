@@ -6,12 +6,13 @@ import ParentSize from '@visx/responsive/lib/components/ParentSize'
 import { scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Stack } from '@visx/shape'
 import * as d3 from 'd3'
-import { useMemo, useRef, useState } from 'react'
-import { WithMargins, makeInteractive, useColors } from '../../..'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Vector2D, WithMargins, makeInteractive, useColors } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
+import { motion, useAnimate } from 'framer-motion'
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
 const range = (n: number) => Array.from(new Array(n), (_, i) => i)
@@ -114,9 +115,10 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     const handlePress = () => {
         console.log('pressed')
     }
+    const [dragOffset, setDragOffset] = useState(new Vector2D(0, 0))
     logToOverlay({
         name: `VisStream`,
-        details: `Rendered in ${(performance.now() - begin).toFixed(2)}ms`,
+        details: `Rendered in ${(performance.now() - begin).toFixed(2)}ms\Offset: ${JSON.stringify(dragOffset)}`,
         level: 'info'
     })
     const [tooltipData, setTooltipData] = useState<JSX.Element>()
@@ -153,62 +155,65 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                     fill="transparent"
                 /> <Drag
                     key={'streamdrag'}
-                    onDragStart={() => console.log('drag start')}
                     width={width}
                     height={height}
+                    onDragEnd={(offset) => {
+                        setDragOffset({ x: offset.x ?? 0, y: offset.y ?? 0 } as Vector2D)
+                    }}
                 >
-                    {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (<g
-                        cx={x}
-                        cy={y}
-                        transform={`translate(${(dx)}, ${(dy)})`}
-                        onMouseMove={dragMove}
-                        onMouseUp={dragEnd}
-                        onMouseDown={dragStart}
-                        onTouchStart={dragStart}
-                        onTouchMove={dragMove}
-                        onTouchEnd={dragEnd}>
-                        <rect
-                            cx={-x}
-                            cy={-y}
-                            transform={`translate(${(-dx)}, ${(-dy)})`}
-                            width={width}
-                            height={height}
-                            fill={colors.chartBackground}
-                            rx={14} />
-                        <Stack<number[], number>
-                            data={layers}
-                            keys={keys}
-                            color={colorScale}
-                            offset={'wiggle'}
-                            curve={d3.curveCatmullRom.alpha(0.8)}
-                            x={(_, i) => xAxis(i) ?? 0}
-                            y0={d => absY(d[0])}
-                            y1={d => absY(d[1])}
-                        >
-                            {({ stacks, path }) =>
-                                stacks.map((stack) => {
-                                    // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                    const pathString = path(stack) || ''
-                                    const tweened = animate ? useSpring({ pathString }) : { pathString }
-                                    const color = colorScale(stack.key)
-                                    const pattern = patternScale(stack.key)
-                                    return (
-                                        <g key={`series-${stack.key}`}
-                                            onPointerMove={() => setTooltipData(<>
-                                                {stack.key}
-                                            </>)}
-                                            onPointerOut={() => {
-                                                setTooltipData(undefined)
-                                            }}>
-                                            <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
-                                            <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
-                                        </g>
+                    {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (
+                        <g
+                            cx={x}
+                            cy={y}
+                            transform={`translate(${(dx)}, ${(dy)})`}
+                            onMouseMove={dragMove}
+                            onMouseUp={dragEnd}
+                            onMouseDown={dragStart}
+                            onTouchStart={dragStart}
+                            onTouchMove={dragMove}
+                            onTouchEnd={dragEnd}>
+                            <rect
+                                cx={-(x ?? 0)}
+                                cy={-(y ?? 0)}
+                                transform={`translate(${(-dx)}, ${(-dy)})`}
+                                width={width}
+                                height={height}
+                                fill={colors.chartBackground}
+                                rx={14} />
+                            <Stack<number[], number>
+                                data={layers}
+                                keys={keys}
+                                color={colorScale}
+                                offset={'wiggle'}
+                                curve={d3.curveCatmullRom.alpha(0.8)}
+                                x={(_, i) => xAxis(i) ?? 0}
+                                y0={d => absY(d[0])}
+                                y1={d => absY(d[1])}
+                            >
+                                {({ stacks, path }) =>
+                                    stacks.map((stack) => {
+                                        // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
+                                        const pathString = path(stack) || ''
+                                        const tweened = animate ? useSpring({ pathString }) : { pathString }
+                                        const color = colorScale(stack.key)
+                                        const pattern = patternScale(stack.key)
+                                        return (
+                                            <g key={`series-${stack.key}`}
+                                                onPointerMove={() => setTooltipData(<>
+                                                    {stack.key}
+                                                </>)}
+                                                onPointerOut={() => {
+                                                    setTooltipData(undefined)
+                                                }}>
+                                                <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
+                                                <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
+                                            </g>
 
-                                    )
-                                })
-                            }
-                        </Stack>
-                    </g>)
+                                        )
+                                    })
+                                }
+                            </Stack>
+                        </g>)
                     }
                 </Drag>
                 <g>
