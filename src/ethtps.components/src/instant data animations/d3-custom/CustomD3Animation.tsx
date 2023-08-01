@@ -34,10 +34,6 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
         paddingTop: 10,
         paddingBottom: 10
     })
-    const {
-        horizontalPadding,
-        verticalPadding
-    } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
     useEffect(() => {
         setMountTime(Date.now())

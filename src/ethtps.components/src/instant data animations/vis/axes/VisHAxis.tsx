@@ -4,6 +4,8 @@ import { AnimatedAxis, AnimatedGridColumns } from '@visx/react-spring/lib'
 import { useState } from 'react'
 import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, labelColor, tickLabelProps } from '.'
 import { useColors } from '../../../..'
+import moment from 'moment-timezone'
+import { format } from 'path'
 
 export function VisHAxis(props: IVisAxisProps) {
   const colors = useColors()
@@ -44,6 +46,10 @@ export function VisHAxis(props: IVisAxisProps) {
         scale={props.scale as GridScale}
         stroke={colors.chartBackground}
         tickStroke={colors.chartBackground}
+        tickFormat={(label: number, index) => {
+          const diff = (moment().utc(true).diff(moment(label).utc(true)))
+          return "-" + formatDuration(diff)
+        }}
         tickLabelProps={{
           ...tickLabelProps,
           fill: colors.primaryContrast,
@@ -64,4 +70,26 @@ export function VisHAxis(props: IVisAxisProps) {
       />
     </g>
   </>
+}
+function formatDuration(duration: number) {
+  let remaining = Math.abs(duration)
+
+  const days = Math.floor(remaining / (1000 * 60 * 60 * 24))
+  remaining %= 1000 * 60 * 60 * 24
+
+  const hours = Math.floor(remaining / (1000 * 60 * 60))
+  remaining %= 1000 * 60 * 60
+
+  const minutes = Math.floor(remaining / (1000 * 60))
+  remaining %= 1000 * 60
+
+  const seconds = Math.floor(remaining / 1000)
+
+  let result = ''
+  if (days) result += `${days}d `
+  if (hours) result += `${hours}h `
+  if (minutes) result += `${minutes}m `
+  if (seconds) result += `${seconds}s `
+
+  return result.trim()
 }

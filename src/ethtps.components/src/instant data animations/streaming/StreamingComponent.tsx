@@ -9,6 +9,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ETHTPSAnimation, Hook, useColors, useQueryStringAndLocalStorageBoundState } from '../../..'
 import {
 	ExtendedTimeInterval,
+	IDataModel,
 	TimeIntervalToStreamProps
 } from '../../../../ethtps.data/src'
 import { ChartControlCenter } from '../ChartControlCenter'
@@ -46,6 +47,7 @@ export function StreamingComponent({
 	showSidechainsToggled,
 	isLeaving,
 	expandedChanged,
+	initialData,
 	expandType = ExpandType.ExpandVertically,
 	height = 600
 }: IStreamingComponentProps): JSX.Element {
@@ -112,6 +114,7 @@ export function StreamingComponent({
 							timeInterval={interval}
 							paused={pausedHook[0]}
 							marginLeft={20}
+							initialData={initialData}
 							showSidechains={showSidechains}
 						/>
 					</Skeleton>

@@ -1,6 +1,6 @@
 import { ETHTPSDataCoreDataType, ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api'
 import { XYDimensions } from '../../'
-import { ExtendedTimeInterval, GenericDictionary, L2DataUpdateModel } from '../../../ethtps.data/src'
+import { ExtendedTimeInterval, GenericDictionary, IDataModel, L2DataUpdateModel } from '../../../ethtps.data/src'
 
 export interface IInstantDataAnimationProps extends
     ETHTPSAnimation {
@@ -16,6 +16,7 @@ export type DataAnimationProps<TDataType, TNewestData> = Animation & {
     dataType: TDataType
     newestData?: GenericDictionary<TNewestData>
     maxEntries: number
+    initialData?: IDataModel | undefined
 }
 
 export type Animation = {

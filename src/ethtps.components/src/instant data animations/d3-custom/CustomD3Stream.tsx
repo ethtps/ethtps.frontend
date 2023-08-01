@@ -43,10 +43,6 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         paddingTop: 10,
         paddingBottom: 10
     })
-    const {
-        horizontalPadding,
-        verticalPadding
-    } = padding ?? { horizontalPadding: 0, verticalPadding: 0 }
     const svgRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])

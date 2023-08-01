@@ -185,42 +185,42 @@ export const TimeIntervalToStreamProps = (interval?: ExtendedTimeInterval) => {
 			refreshInterval: 3 * 1000,
 		}
 	switch (interval) {
-		case 'OneMinute':
+		case ETHTPSDataCoreTimeInterval.ONE_MINUTE:
 			return {
 				interval: '1m',
 				limit: 60,
 				duration: 60 * 1000,
 				refreshInterval: 1 * 1000,
 			}
-		case 'OneHour':
+		case ETHTPSDataCoreTimeInterval.ONE_HOUR:
 			return {
 				interval: '1h',
 				limit: 60,
 				duration: 60 * 60 * 1000,
 				refreshInterval: 15 * 1000,
 			}
-		case 'OneDay':
+		case ETHTPSDataCoreTimeInterval.ONE_DAY:
 			return {
 				interval: '1d',
 				limit: 24,
 				duration: 60 * 24 * 1000,
 				refreshInterval: 60 * 1000,
 			}
-		case 'OneWeek':
+		case ETHTPSDataCoreTimeInterval.ONE_WEEK:
 			return {
 				interval: '1w',
 				limit: 24 * 7,
 				duration: 60 * 24 * 7 * 1000,
 				refreshInterval: 60 * 60 * 1000,
 			}
-		case 'OneMonth':
+		case ETHTPSDataCoreTimeInterval.ONE_MONTH:
 			return {
 				interval: '1mo',
 				limit: 31,
 				duration: 60 * 24 * 30 * 1000,
 				refreshInterval: 60 * 60 * 1000,
 			}
-		case 'OneYear':
+		case ETHTPSDataCoreTimeInterval.ONE_YEAR:
 			return {
 				interval: '1y',
 				limit: 365,
