@@ -13,7 +13,7 @@ import { FrequencyLimiter, LiveDataAccumulator, logToOverlay } from '../../../..
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
-import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue } from 'framer-motion'
+import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue, useTransform } from 'framer-motion'
 import { Vector } from 'three'
 import { IconFocus2, IconHome, IconWindowMaximize } from '@tabler/icons-react'
 import { Box, Button, Divider, Tooltip, Text, Kbd } from '@chakra-ui/react'
@@ -132,6 +132,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     }, 'update', 'data', [newestData, accumulator])
     const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100 })
     const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100, })
+    const negTranslateY = useTransform(translateY, v => -v)
+    const negTranslateX = useTransform(translateX, v => -v)
     const [autoResetPosition, setAutoResetPosition] = useState(false)
     const [tooltipData, setTooltipData] = useState<JSX.Element>()
     const resetPosition = useCallback(() => {
@@ -196,7 +198,6 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                         </div>
                     </Box>
                     <motion.svg
-                        style={{ cursor: 'grab' }}
                         ref={svgRef}
                         onDoubleClick={resetPosition}
                         width={width}
@@ -287,6 +288,15 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                             onTouchMove={dragMove}
                                             onTouchEnd={dragEnd}>
                                             <motion.rect
+                                                style={{
+                                                    translateX: negTranslateX,
+                                                    translateY: negTranslateY,
+                                                    cursor: 'grab'
+                                                }}
+                                                key={'drag area'}
+                                                strokeWidth={1}
+                                                stroke={colors.primaryContrast}
+                                                stroke-dasharray={"4"}
                                                 width={width}
                                                 height={height}
                                                 fill={'transparent'}
