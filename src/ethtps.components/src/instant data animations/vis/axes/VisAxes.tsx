@@ -12,6 +12,7 @@ export type IVisAxesProps = IComponentSize & Partial<Bounded> & Partial<Translat
     width: number
     height: number
     axisWidth: number
+    children?: React.ReactNode
 }
 
 /**
@@ -23,7 +24,8 @@ export function VisAxes(props: IVisAxesProps) {
     return <>
         <VisVAxis {...cleanProps}
             ty={props.ty}
-            width={props.axisWidth}
+            width={props.width}
+            axisWidth={props.axisWidth}
             height={props.height - eprops.verticalSize - props.axisWidth}
             marginLeft={Math.max(props.axisWidth ?? 0, 18) / 2}
             scale={props.vScale} />
@@ -35,6 +37,7 @@ export function VisAxes(props: IVisAxesProps) {
             height={props.axisWidth - props.axisWidth}
             marginTop={props.height - props.axisWidth}
             scale={props.hScale} />
+        {props.children}
     </>
 }
 

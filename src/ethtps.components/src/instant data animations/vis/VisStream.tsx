@@ -81,7 +81,10 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         bounds,
         innerWidth,
         innerHeight
-    } = makeInteractive(props, {}, {
+    } = makeInteractive(props, {
+        marginLeft: 10,
+        marginRight: 10,
+    }, {
         paddingLeft: 10,
         paddingRight: 10,
     })
@@ -222,98 +225,105 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                             height={height}
                             fill={colors.chartBackground}
                             rx={14} />
-                        <Drag
-                            key={'streamdrag'}
-                            resetOnStart={autoResetPosition}
+                        <VisAxes
+                            tx={translateX}
+                            ty={translateY}
+                            parentDimensions={{ ...props }}
                             width={width}
                             height={height}
-                            onDragMove={(offset) => {
-                                if (FrequencyLimiter.canExecute('stream drag move'), 100) {
-                                    translateY.set(offset.dy - previousDragOffset.y)
-                                    translateX.set(offset.dx - previousDragOffset.x)
-                                }
-                            }}
-                            snapToPointer={false}
-                            onDragEnd={(offset) => {
-                                setDragOffset(new Vector2D(offset.dx, offset.dy))
-                                if (!autoResetPosition) {
-                                    const x = offset.dx - previousDragOffset.x
-                                    translateX.set(x, false)
-                                    const y = offset.dy - previousDragOffset.y
-                                    translateY.set(y, false)
-                                    //xOffset.set(x, false)
-                                    //yOffset.set(y, false)
-                                    return
-                                }
-                                setDragOffset(Vector2D.Zero())
-                                translateX.set(offset.dx, false)
-                                //xOffset.set(0)
-                                translateY.set(offset.dy, false)
-                                //yOffset.set(0)
-                            }}
-
-                        >
-                            {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (
-                                <motion.g
-                                    cx={x}
-                                    cy={y}
-                                    style={{
-                                        translateX: (isDragging ? dx - previousDragOffset.x : translateX),
-                                        translateY: (isDragging ? dy - previousDragOffset.y : translateY),
-                                    }}
-                                    onMouseMove={dragMove}
-                                    onMouseUp={dragEnd}
-                                    onMouseDown={dragStart}
-                                    onTouchStart={dragStart}
-                                    onTouchMove={dragMove}
-                                    onTouchEnd={dragEnd}>
-                                    <motion.rect
-                                        width={width}
-                                        height={height}
-                                        fill={colors.chartBackground}
-                                        rx={14} />
-                                    <Stack<number[], number>
-                                        data={layers}
-                                        keys={keys}
-                                        color={colorScale}
-                                        offset={normalizeButton.offset}
-                                        curve={d3.curveCatmullRom.alpha(0.8)}
-                                        x={(_, i) => getX(i) ?? 0}
-                                        y0={d => absY(d[0])}
-                                        y1={d => absY(d[1])}
-                                    >
-                                        {({ stacks, path }) =>
-                                            stacks.map((stack) => {
-                                                // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                                const pathString = path(stack) || ''
-                                                const tweened = animate ? useSpring({ pathString }) : { pathString }
-                                                const color = colorScale(stack.key)
-                                                const pattern = patternScale(stack.key)
-                                                return (
-                                                    <g className={'nopointer'}
-                                                        key={`series-${stack.key}`}>
-                                                        .
-                                                        2                     <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
-                                                        <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
-                                                    </g>
-                                                )
-                                            })
-                                        }
-                                    </Stack>
-                                </motion.g>)
-                            }
-                        </Drag>
-                        <g>
-                            <VisAxes
-                                tx={translateX}
-                                ty={translateY}
-                                parentDimensions={{ ...props }}
+                            axisWidth={0}
+                            hScale={xAxis}
+                            vScale={absY} >
+                            <svg
                                 width={width}
                                 height={height}
-                                axisWidth={0}
-                                hScale={xAxis}
-                                vScale={absY} />
-                        </g>
+                                style={{
+                                    marginLeft: 50,
+                                    marginTop: 50,
+                                }}>
+                                <Drag
+                                    key={'streamdrag'}
+                                    resetOnStart={autoResetPosition}
+                                    width={width}
+                                    height={height}
+                                    onDragMove={(offset) => {
+                                        if (FrequencyLimiter.canExecute('stream drag move'), 100) {
+                                            translateY.set(offset.dy - previousDragOffset.y)
+                                            translateX.set(offset.dx - previousDragOffset.x)
+                                        }
+                                    }}
+                                    snapToPointer={false}
+                                    onDragEnd={(offset) => {
+                                        setDragOffset(new Vector2D(offset.dx, offset.dy))
+                                        if (!autoResetPosition) {
+                                            const x = offset.dx - previousDragOffset.x
+                                            translateX.set(x, false)
+                                            const y = offset.dy - previousDragOffset.y
+                                            translateY.set(y, false)
+                                            //xOffset.set(x, false)
+                                            //yOffset.set(y, false)
+                                            return
+                                        }
+                                        setDragOffset(Vector2D.Zero())
+                                        translateX.set(offset.dx, false)
+                                        //xOffset.set(0)
+                                        translateY.set(offset.dy, false)
+                                        //yOffset.set(0)
+                                    }}
+
+                                >
+                                    {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (
+                                        <motion.g
+                                            cx={x}
+                                            cy={y}
+                                            style={{
+                                                translateX: (false ? dx - previousDragOffset.x : translateX),
+                                                translateY: (false ? dy - previousDragOffset.y : translateY),
+                                            }}
+                                            onMouseMove={dragMove}
+                                            onMouseUp={dragEnd}
+                                            onMouseDown={dragStart}
+                                            onTouchStart={dragStart}
+                                            onTouchMove={dragMove}
+                                            onTouchEnd={dragEnd}>
+                                            <motion.rect
+                                                width={width}
+                                                height={height}
+                                                fill={'transparent'}
+                                                rx={14} />
+                                            <Stack<number[], number>
+                                                data={layers}
+                                                keys={keys}
+                                                color={colorScale}
+                                                offset={normalizeButton.offset}
+                                                curve={d3.curveCatmullRom.alpha(0.8)}
+                                                x={(_, i) => getX(i) ?? 0}
+                                                y0={d => absY(d[0])}
+                                                y1={d => absY(d[1])}
+                                            >
+                                                {({ stacks, path }) =>
+                                                    stacks.map((stack) => {
+                                                        // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
+                                                        const pathString = path(stack) || ''
+                                                        const tweened = animate ? useSpring({ pathString }) : { pathString }
+                                                        const color = colorScale(stack.key)
+                                                        const pattern = patternScale(stack.key)
+                                                        return (
+                                                            <g className={'nopointer'}
+                                                                key={`series-${stack.key}`}>
+                                                                .
+                                                                2                     <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
+                                                                <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
+                                                            </g>
+                                                        )
+                                                    })
+                                                }
+                                            </Stack>
+                                        </motion.g>)
+                                    }
+                                </Drag>
+                            </svg>
+                        </VisAxes>
                     </motion.svg>
                 </VisTooltip>
             </div>

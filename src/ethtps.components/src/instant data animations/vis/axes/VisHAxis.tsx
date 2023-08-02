@@ -1,42 +1,33 @@
-import { Orientation } from '@visx/axis'
+import { Orientation, Axis } from '@visx/axis'
 import { GridScale } from "@visx/grid/lib/types"
 import { AnimatedAxis, AnimatedGridColumns } from '@visx/react-spring/lib'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, labelColor, tickLabelProps } from '.'
 import { useColors } from '../../../..'
 import moment from 'moment-timezone'
 import { format } from 'path'
 import { motion } from 'framer-motion'
 import { logToOverlay } from '../../../../../ethtps.data/src'
+import { GridRows, GridColumns } from '@visx/grid'
 
 export function VisHAxis(props: IVisAxisProps) {
   const colors = useColors()
   const prefersReducedMotionQuery =
     typeof window === 'undefined' ? false : window.matchMedia('(prefers-reduced-motion: reduce)')
-  const [animationTrajectory, setAnimationTrajectory] = useState<AnimationTrajectory>('min')
+  const [animationTrajectory, setAnimationTrajectory] = useState<AnimationTrajectory>('outside')
   const axis = (!!props.scale) ? {
     scale: props.scale,
     label: 'timescale',
   } : undefined
   if (!axis) return <></>
-  const axisWidth = props.axisWidth ?? 50
+  const axisWidth = (!props.axisWidth || props.axisWidth === 0) ? 50 : props.axisWidth
   const eprops = extend(props)
   const extent = (props.scale?.domain()[1] ?? 0) - (props.scale?.domain()[0] ?? 0)
   const dxv = (props.tx?.get() ?? 0) / Math.abs((props.scale?.range()[1] ?? 0) - (props.scale?.range()[0] ?? 0)) * extent
-  logToOverlay({
-    name: "Y vars",
-    details: JSON.stringify({
-      extent,
-      tx: props.tx?.get(),
-      dxv,
-      top: eprops.top,
-      bottom: eprops.bottom,
-      axisWidth,
-      range: props.scale?.range(),
-      domain: props.scale?.domain(),
-    }),
-    level: "debug",
-  })
+  const tickFormat = useCallback((label: number, index: number) => {
+    const diff = (moment().utc(true).diff(moment(label).utc(true)))
+    return "-" + formatDuration(diff)
+  }, [props.scale?.domain()[0], props.scale?.domain()[1]])
   return <>
     <Gradient />
     <rect
@@ -50,43 +41,29 @@ export function VisHAxis(props: IVisAxisProps) {
     <motion.g style={{
       translateX: props.tx
     }}>
-      <AnimatedGridColumns
-        key={`gridcolumns-${animationTrajectory}`}
+      <GridColumns
+        key={`xgridcolumns-${animationTrajectory}`}
         scale={props.scale as GridScale}
-        stroke={gridColor}
-        height={props.axisWidth ?? 50}
-        top={eprops.top}
-        left={eprops.left}
-        animationTrajectory={animationTrajectory}
+        stroke={colors.primary}
+        height={eprops.bottom - 0.75 * axisWidth}
+        numTicks={12}
       />
       <AnimatedAxis
-        key={`axis-${animationTrajectory}`}
+        key={`xaxis-${animationTrajectory}`}
+        animationTrajectory={animationTrajectory}
         orientation={Orientation.top}
         top={eprops.top}
         scale={props.scale as GridScale}
-        stroke={colors.chartBackground}
-        tickStroke={colors.chartBackground}
-        tickFormat={(label: number, index) => {
-          const diff = (moment().utc(true).diff(moment(label).utc(true)))
-          return "-" + formatDuration(diff)
-        }}
+        stroke={colors.gray}
+        tickStroke={colors.text}
+        tickLength={5}
+        tickFormat={tickFormat}
         tickLabelProps={{
           ...tickLabelProps,
           fill: colors.primaryContrast,
           className: 'unselectable',
+          y: eprops.bottom - eprops.top - axisWidth / 4,
         }}
-        labelProps={{
-          x: eprops.left,
-          y1: eprops.top,
-          y2: axisWidth + (props.marginTop ?? 0) - (props.marginBottom ?? 0),
-          fill: labelColor,
-          fontSize: 18,
-          paintOrder: 'stroke',
-          fontFamily: 'sans-serif',
-          textAnchor: 'start',
-          className: 'unselectable',
-        }}
-        animationTrajectory={animationTrajectory}
       />
     </motion.g>
   </>
