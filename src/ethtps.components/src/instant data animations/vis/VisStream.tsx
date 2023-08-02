@@ -247,6 +247,11 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                     resetOnStart={autoResetPosition}
                                     width={width}
                                     height={height}
+                                    restrict={{
+                                        xMin: -width / 3,
+                                        yMin: -height / 3,
+                                        yMax: height / 3,
+                                    }}
                                     onDragMove={(offset) => {
                                         if (FrequencyLimiter.canExecute('stream drag move'), 100) {
                                             translateY.set(offset.dy - previousDragOffset.y)
@@ -294,9 +299,10 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                                     cursor: 'grab'
                                                 }}
                                                 key={'drag area'}
+                                                /*
                                                 strokeWidth={1}
                                                 stroke={colors.primaryContrast}
-                                                stroke-dasharray={"4"}
+                                                stroke-dasharray={"4"}*/
                                                 width={width}
                                                 height={height}
                                                 fill={'transparent'}
