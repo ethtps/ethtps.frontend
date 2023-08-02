@@ -8,15 +8,16 @@ import { Stack } from '@visx/shape'
 import { Zoom } from '@visx/zoom'
 import * as d3 from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Vector2D, VisTooltip, WithMargins, conditionalRender, getD3Scale, getXAxisBounds, makeInteractive, useColors, useYAxisBounds } from '../../..'
+import { ExpandType, Vector2D, VisTooltip, WithMargins, binaryConditionalRender, conditionalRender, getD3Scale, getXAxisBounds, makeInteractive, openNewTab, useColors, useQueryStringAndLocalStorageBoundState, useYAxisBounds } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
 import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue } from 'framer-motion'
 import { Vector } from 'three'
-import { IconFocus2, IconHome } from '@tabler/icons-react'
-import { Button, Tooltip } from '@chakra-ui/react'
+import { IconFocus2, IconHome, IconWindowMaximize } from '@tabler/icons-react'
+import { Box, Button, Divider, Tooltip } from '@chakra-ui/react'
+import { useNormalizeButton } from './NormalizeButton'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
@@ -44,6 +45,7 @@ export type StreamGraphProps = IInstantDataAnimationProps & Partial<WithMargins>
     width: number
     height?: number | undefined
     animate?: boolean
+    expandType?: ExpandType
 }
 
 function formatArray(arr: number[], length: number): number[] {
@@ -67,7 +69,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         maxEntries,
         dataPoints = 100,
         animate = true,
-        initialData
+        initialData,
+        expandType
     } = props
     const {
         width,
@@ -83,6 +86,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         paddingRight: 10,
     })
     const begin = performance.now()
+    const normalizeButton = useNormalizeButton()
     const [dragOffset, setDragOffset] = useState<Vector2D>(Vector2D.Zero)
     const [previousDragOffset, setPreviousDragOffset] = useState<Vector2D>(Vector2D.Zero)
     const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
@@ -121,9 +125,9 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     }, [xAxis])
 
     const absY = useMemo(() => scaleLinear<number>({
-        domain: [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
+        domain: normalizeButton.normalize ? [0, 1.1] : [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
         range: [actualHeight, 0]
-    }), [actualHeight, accumulator.maxTotal, dataType])
+    }), [actualHeight, accumulator.maxTotal, dataType, normalizeButton.normalize])
     useGroupedDebugMeasuredEffect(() => {
         if (!newestData) return
         accumulator.insert(newestData)
@@ -136,7 +140,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         })
     }, `transform`, 'data', [dataType, innerWidth, innerHeight, accumulator])
     const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100 })
-    const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100 })
+    const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100, })
     logToOverlay({
         name: `VisStream`,
         details: `Rendered in ${(performance.now() - begin).toFixed(2)}ms`,
@@ -149,6 +153,12 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         details: `offset: ${JSON.stringify(dragOffset)}\r\npreviousOffset: ${JSON.stringify(previousDragOffset)}`,
         level: 'info'
     })
+    const resetPosition = useCallback(() => {
+        setPreviousDragOffset(dragOffset)
+        setDragOffset(Vector2D.Zero())
+        translateX.set(0)
+        translateY.set(0)
+    }, [dragOffset, translateX, translateY])
     return <>
         <ParentSize>{({ width, height }) =>
             <div>
@@ -157,22 +167,43 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                     content={tooltipData}
                     width={width}
                     height={height}>
-                    {conditionalRender(
-                        <Tooltip label={'Reset position'}>
-                            <Button sx={{
-                                position: 'absolute'
-                            }}
-                                leftIcon={<IconFocus2 />}
-                                variant={'solid'}
-                                onClick={() => {
-                                    setPreviousDragOffset(dragOffset)
-                                    setDragOffset(Vector2D.Zero())
-                                    translateX.set(0)
-                                    translateY.set(0)
-                                }}
-                                bgColor={colors.chartBackground} />
+                    <Box position={'absolute'} right={0}>
+                        <div style={{ display: 'flex', flexGrow: 2, flexDirection: 'column' }}>
+                            {binaryConditionalRender(
+                                <>
+                                    <Tooltip label={`Open in a new tab`}>
+                                        <Button
+                                            iconSpacing={0}
+                                            leftIcon={<IconWindowMaximize />}
+                                            variant={'ghost'}
+                                            onClick={() => openNewTab('/live?smaxed=true')}
+                                        />
+                                    </Tooltip>
+                                    <Divider sx={{
+                                        marginTop: 1,
+                                        marginBottom: 1
+                                    }} />
+                                </>, undefined, expandType !== ExpandType.Float)}
+                            <Tooltip label={normalizeButton.text}>
+                                <Button
+                                    iconSpacing={0}
+                                    leftIcon={<normalizeButton.icon />}
+                                    variant={'ghost'}
+                                    onClick={normalizeButton.toggle} />
 
-                        </Tooltip>, dragOffset.x !== 0 || dragOffset.y !== 0)}
+                            </Tooltip>
+                            {conditionalRender(
+                                <Tooltip label={'Reset position'}>
+                                    <Button
+                                        iconSpacing={0}
+                                        leftIcon={<IconFocus2 />}
+                                        variant={'ghost'}
+                                        onClick={resetPosition}
+                                        bgColor={colors.chartBackground} />
+
+                                </Tooltip>, (dragOffset?.x !== 0 || dragOffset.y !== 0) && previousDragOffset?.subtract?.(dragOffset).magnitude() > 100)}
+                        </div>
+                    </Box>
                     <motion.svg
                         style={{ cursor: 'grab' }}
                         ref={svgRef}
@@ -214,7 +245,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                     details: `dx: ${offset.dx}, dy: ${offset.dy} x: ${offset.x} y: ${offset.y}`,
                                     level: 'info'
                                 })
-                                setDragOffset({ x: offset.dx, y: offset.dy } as Vector2D)
+                                setDragOffset(new Vector2D(offset.dx, offset.dy))
                                 if (!autoResetPosition) {
                                     translateX.set(offset.dx - previousDragOffset.x, false)
                                     translateY.set(offset.dy - previousDragOffset.y, false)
@@ -251,7 +282,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                         data={layers}
                                         keys={keys}
                                         color={colorScale}
-                                        offset={'wiggle'}
+                                        offset={normalizeButton.offset}
                                         curve={d3.curveCatmullRom.alpha(0.8)}
                                         x={(_, i) => getX(i) ?? 0}
                                         y0={d => absY(d[0])}

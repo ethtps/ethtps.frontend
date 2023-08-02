@@ -1,5 +1,5 @@
 import { UseDisclosureProps } from '@chakra-ui/react'
-import { IconArrowsDiagonal, IconArrowsDiagonalMinimize, IconLayoutNavbarCollapse, IconLayoutNavbarExpand } from '@tabler/icons-react'
+import { IconArrowAutofitDown, IconArrowAutofitUp, IconArrowsDiagonal, IconArrowsDiagonalMinimize, IconLayoutNavbarCollapse, IconLayoutNavbarExpand } from '@tabler/icons-react'
 import { ETHTPSDataCoreDataType } from 'ethtps.api'
 import { DefinedHook, Hook } from '..'
 import { ExtendedTimeInterval, GenericDictionary } from '../../../ethtps.data/src'
@@ -63,8 +63,8 @@ export const expandIcons: GenericDictionary<ExpansionIconPair> = {
 		collapse: <IconArrowsDiagonalMinimize />
 	},
 	[ExpandType.ExpandVertically]: {
-		expand: <IconLayoutNavbarExpand />,
-		collapse: <IconLayoutNavbarCollapse />
+		expand: <IconArrowAutofitDown />,
+		collapse: <IconArrowAutofitUp />
 	}
 }
 

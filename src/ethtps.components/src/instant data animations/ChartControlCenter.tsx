@@ -116,15 +116,6 @@ export function ChartControlCenter({
             }}
           />
         </Tooltip>, expandType !== ExpandType.None)}
-      {binaryConditionalRender(
-        <Tooltip label={`Open in a new tab`}>
-          <Button
-            iconSpacing={0}
-            leftIcon={<IconWindowMaximize />}
-            variant={'ghost'}
-            onClick={() => openNewTab('/live?smaxed=true')}
-          />
-        </Tooltip>, undefined, expandType !== ExpandType.Float)}
       <Tooltip isDisabled label={`Change to ${isLowRes ? 'high-res' : 'low-res'} `}>
         <Button
           isDisabled

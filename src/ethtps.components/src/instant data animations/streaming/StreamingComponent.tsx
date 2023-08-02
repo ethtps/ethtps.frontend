@@ -114,6 +114,7 @@ export function StreamingComponent({
 							timeInterval={interval}
 							paused={pausedHook[0]}
 							marginLeft={20}
+							expandType={expandType}
 							initialData={initialData}
 							showSidechains={showSidechains}
 						/>
