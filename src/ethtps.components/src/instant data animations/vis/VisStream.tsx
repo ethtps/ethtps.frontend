@@ -108,6 +108,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         range: [0, width]
     }), [width, timeInterval, newestData])
     const getX = useCallback((i: number) => {
+
         const now = Date.now()
         if (i >= accumulator.all.length) return now
         const e = accumulator.all[i]
@@ -115,14 +116,12 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         const timeAt = e[ks[0]]?.x ?? now
         return xAxis(timeAt)
     }, [xAxis, accumulator])
-    useEffect(() => {
 
-        logToOverlay({
-            name: `X range`,
-            details: `${[xAxis.domain()]}\r\n([${new Date(xAxis.domain()[0]).toLocaleTimeString()}, ${new Date(xAxis.domain()[1]).toLocaleTimeString()}])`,
-            level: 'info'
-        })
-    }, [xAxis])
+    logToOverlay({
+        name: `X range`,
+        details: `${[timeInterval]}\r\n([${new Date(xAxis.domain()[0]).toLocaleTimeString()}, ${new Date(xAxis.domain()[1]).toLocaleTimeString()}])`,
+        level: 'info'
+    })
 
     const absY = useMemo(() => scaleLinear<number>({
         domain: normalizeButton.normalize ? [0, 1.1] : [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
@@ -148,11 +147,6 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     })
     const [autoResetPosition, setAutoResetPosition] = useState(false)
     const [tooltipData, setTooltipData] = useState<JSX.Element>()
-    logToOverlay({
-        name: `Vars`,
-        details: `offset: ${JSON.stringify(dragOffset)}\r\npreviousOffset: ${JSON.stringify(previousDragOffset)}`,
-        level: 'info'
-    })
     const resetPosition = useCallback(() => {
         setPreviousDragOffset(dragOffset)
         setDragOffset(Vector2D.Zero())

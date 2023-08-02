@@ -32,7 +32,6 @@ export function ChartControlCenter({
   const controlRef = useRef<any>(null)
   const sizeRef = useSize(containerRef)
   const controlBoxSizeRef = useSize(controlRef)
-  setInterval(ETHTPSDataCoreTimeInterval.ONE_MINUTE)
   const [streamConfig, setStreamConfig] = useState(() => TimeIntervalToStreamProps(interval))
   useEffect(() => {
     setStreamConfig(TimeIntervalToStreamProps(interval))
