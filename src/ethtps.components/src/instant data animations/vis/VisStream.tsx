@@ -108,7 +108,6 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         range: [0, width]
     }), [width, timeInterval, newestData])
     const getX = useCallback((i: number) => {
-
         const now = Date.now()
         if (i >= accumulator.all.length) return now
         const e = accumulator.all[i]
@@ -116,13 +115,6 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         const timeAt = e[ks[0]]?.x ?? now
         return xAxis(timeAt)
     }, [xAxis, accumulator])
-
-    logToOverlay({
-        name: `X range`,
-        details: `${[timeInterval]}\r\n([${new Date(xAxis.domain()[0]).toLocaleTimeString()}, ${new Date(xAxis.domain()[1]).toLocaleTimeString()}])`,
-        level: 'info'
-    })
-
     const absY = useMemo(() => scaleLinear<number>({
         domain: normalizeButton.normalize ? [0, 1.1] : [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
         range: [actualHeight, 0]
@@ -131,20 +123,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         if (!newestData) return
         accumulator.insert(newestData)
     }, 'update', 'data', [newestData, accumulator])
-    measure(() => {
-        logToOverlay({
-            name: `[Nx, Ny]`,
-            details: `[${accumulator.timePoints}, ${accumulator.valuePoints}]`,
-            level: accumulator.loadedCache ? 'info' : 'warn'
-        })
-    }, `transform`, 'data', [dataType, innerWidth, innerHeight, accumulator])
     const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100 })
     const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100, })
-    logToOverlay({
-        name: `VisStream`,
-        details: `Rendered in ${(performance.now() - begin).toFixed(2)}ms`,
-        level: 'info'
-    })
     const [autoResetPosition, setAutoResetPosition] = useState(false)
     const [tooltipData, setTooltipData] = useState<JSX.Element>()
     const resetPosition = useCallback(() => {
@@ -204,6 +184,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                     <motion.svg
                         style={{ cursor: 'grab' }}
                         ref={svgRef}
+                        onDoubleClick={resetPosition}
                         width={width}
                         height={height}>
                         <PatternCircles
