@@ -3,8 +3,9 @@ import { GridColumnsProps } from '@visx/grid/lib/grids/GridColumns'
 import { GridRowsProps } from '@visx/grid/lib/grids/GridRows'
 import { getSeededRandom } from '@visx/mock-data'
 import { coerceNumber } from '@visx/scale'
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Bounded, ExtraBounded, IComponentSize } from '../../../..'
+import { MotionStyle, MotionValue } from 'framer-motion'
 
 export const backgroundColor = '#da7cff'
 export const axisColor = '#fff'
@@ -46,13 +47,23 @@ export type GridColumnsComponentType = React.FC<
 >
 
 
-export interface IVisAxisProps extends Partial<Bounded>, Partial<IComponentSize> {
+export interface IVisAxisProps extends Partial<Bounded>, Partial<IComponentSize>, Partial<Translated> {
   scale?: AxisScale<number>
   width?: number
   height?: number
   axisWidth?: number
 }
 
+export interface Translated {
+  /*
+   * X-axis offset from the left of the chart
+   */
+  tx: MotionValue<number>
+  /*
+   * Y-axis offset from the top of the chart
+   */
+  ty: MotionValue<number>
+}
 export const extend = (props: IVisAxisProps): ExtraBounded => {
   const l = (props.marginLeft ?? 0) + (props.paddingLeft ?? 0)
   const t = props.marginTop ?? 0 + (props.paddingTop ?? 0)

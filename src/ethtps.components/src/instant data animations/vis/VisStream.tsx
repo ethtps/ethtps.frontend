@@ -9,14 +9,14 @@ import { Zoom } from '@visx/zoom'
 import * as d3 from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ExpandType, Vector2D, VisTooltip, WithMargins, binaryConditionalRender, conditionalRender, getD3Scale, getXAxisBounds, makeInteractive, openNewTab, useColors, useQueryStringAndLocalStorageBoundState, useYAxisBounds } from '../../..'
-import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
+import { FrequencyLimiter, LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
 import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue } from 'framer-motion'
 import { Vector } from 'three'
 import { IconFocus2, IconHome, IconWindowMaximize } from '@tabler/icons-react'
-import { Box, Button, Divider, Tooltip } from '@chakra-ui/react'
+import { Box, Button, Divider, Tooltip, Text, Kbd } from '@chakra-ui/react'
 import { useNormalizeButton } from './NormalizeButton'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
@@ -103,10 +103,14 @@ export function VisStream(props: Partial<StreamGraphProps>) {
             nx)
 
         ))
-    const xAxis = useMemo(() => scaleLinear<number>({
-        domain: getXAxisBounds(timeInterval),
-        range: [0, width]
-    }), [width, timeInterval, newestData])
+    const xAxis = useMemo(() => {
+        const domain = getXAxisBounds(timeInterval)
+        return scaleLinear<number>({
+            domain,
+            range: [0, width]
+        })
+    }, [width, dragOffset, timeInterval])
+
     const getX = useCallback((i: number) => {
         const now = Date.now()
         if (i >= accumulator.all.length) return now
@@ -171,14 +175,21 @@ export function VisStream(props: Partial<StreamGraphProps>) {
 
                             </Tooltip>
                             {conditionalRender(
-                                <Tooltip label={'Reset position'}>
+                                <Tooltip label={<>
+                                    <Text>Reset position</Text>
+                                    <span>
+                                        <Kbd
+                                            textColor={'black'}>Double click
+                                        </Kbd>
+                                    </span>
+                                </>}>
                                     <Button
                                         bg={colors.chartBackground}
                                         iconSpacing={0}
                                         leftIcon={<IconFocus2 />}
                                         onClick={resetPosition} />
 
-                                </Tooltip>, (dragOffset?.x !== 0 || dragOffset.y !== 0) && previousDragOffset?.subtract?.(dragOffset).magnitude() > 100)}
+                                </Tooltip>, (dragOffset?.x !== 0 || dragOffset.y !== 0) && previousDragOffset?.subtract?.(dragOffset).magnitude() > 75)}
                         </div>
                     </Box>
                     <motion.svg
@@ -216,19 +227,29 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                             resetOnStart={autoResetPosition}
                             width={width}
                             height={height}
+                            onDragMove={(offset) => {
+                                if (FrequencyLimiter.canExecute('stream drag move'), 100) {
+                                    translateY.set(offset.dy - previousDragOffset.y)
+                                    translateX.set(offset.dx - previousDragOffset.x)
+                                }
+                            }}
                             snapToPointer={false}
                             onDragEnd={(offset) => {
                                 setDragOffset(new Vector2D(offset.dx, offset.dy))
                                 if (!autoResetPosition) {
-                                    translateX.set(offset.dx - previousDragOffset.x, false)
-                                    translateY.set(offset.dy - previousDragOffset.y, false)
+                                    const x = offset.dx - previousDragOffset.x
+                                    translateX.set(x, false)
+                                    const y = offset.dy - previousDragOffset.y
+                                    translateY.set(y, false)
+                                    //xOffset.set(x, false)
+                                    //yOffset.set(y, false)
                                     return
                                 }
                                 setDragOffset(Vector2D.Zero())
                                 translateX.set(offset.dx, false)
-                                translateX.set(0)
+                                //xOffset.set(0)
                                 translateY.set(offset.dy, false)
-                                translateY.set(0)
+                                //yOffset.set(0)
                             }}
 
                         >
@@ -284,6 +305,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                         </Drag>
                         <g>
                             <VisAxes
+                                tx={translateX}
+                                ty={translateY}
                                 parentDimensions={{ ...props }}
                                 width={width}
                                 height={height}

@@ -6,6 +6,8 @@ import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, labelC
 import { useColors } from '../../../..'
 import moment from 'moment-timezone'
 import { format } from 'path'
+import { motion } from 'framer-motion'
+import { logToOverlay } from '../../../../../ethtps.data/src'
 
 export function VisHAxis(props: IVisAxisProps) {
   const colors = useColors()
@@ -19,6 +21,22 @@ export function VisHAxis(props: IVisAxisProps) {
   if (!axis) return <></>
   const axisWidth = props.axisWidth ?? 50
   const eprops = extend(props)
+  const extent = (props.scale?.domain()[1] ?? 0) - (props.scale?.domain()[0] ?? 0)
+  const dxv = (props.tx?.get() ?? 0) / Math.abs((props.scale?.range()[1] ?? 0) - (props.scale?.range()[0] ?? 0)) * extent
+  logToOverlay({
+    name: "Y vars",
+    details: JSON.stringify({
+      extent,
+      tx: props.tx?.get(),
+      dxv,
+      top: eprops.top,
+      bottom: eprops.bottom,
+      axisWidth,
+      range: props.scale?.range(),
+      domain: props.scale?.domain(),
+    }),
+    level: "debug",
+  })
   return <>
     <Gradient />
     <rect
@@ -29,7 +47,9 @@ export function VisHAxis(props: IVisAxisProps) {
       fill={'url(#visx-axis-gradient)'}
       rx={14}
     />
-    <g>
+    <motion.g style={{
+      translateX: props.tx
+    }}>
       <AnimatedGridColumns
         key={`gridcolumns-${animationTrajectory}`}
         scale={props.scale as GridScale}
@@ -68,7 +88,7 @@ export function VisHAxis(props: IVisAxisProps) {
         }}
         animationTrajectory={animationTrajectory}
       />
-    </g>
+    </motion.g>
   </>
 }
 function formatDuration(duration: number) {

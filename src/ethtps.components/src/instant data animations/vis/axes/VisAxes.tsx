@@ -1,8 +1,10 @@
 import { AxisScale } from '@visx/axis'
-import { VisHAxis, VisVAxis, extend } from '.'
+import { Translated, VisHAxis, VisVAxis, extend } from '.'
 import { Bounded, IComponentSize } from '../../../..'
+import { CSSProperties } from 'react'
+import { MotionStyle } from 'framer-motion'
 
-export type IVisAxesProps = IComponentSize & Partial<Bounded> & {
+export type IVisAxesProps = IComponentSize & Partial<Bounded> & Partial<Translated> & {
     parentDimensions: IComponentSize
     showControls?: boolean
     vScale?: AxisScale<number>
@@ -17,13 +19,16 @@ export type IVisAxesProps = IComponentSize & Partial<Bounded> & {
  */
 export function VisAxes(props: IVisAxesProps) {
     const eprops = extend(props)
+    const cleanProps = props as Omit<IVisAxesProps, 'xAxisSX' | 'yAxisSX'>
     return <>
-        <VisVAxis {...props}
+        <VisVAxis {...cleanProps}
+            ty={props.ty}
             width={props.axisWidth}
             height={props.height - eprops.verticalSize - props.axisWidth}
             marginLeft={Math.max(props.axisWidth ?? 0, 18) / 2}
             scale={props.vScale} />
-        <VisHAxis {...props}
+        <VisHAxis {...cleanProps}
+            tx={props.tx}
             width={props.width}
             marginBottom={props.axisWidth / 2}
             paddingBottom={props.axisWidth / 2}

@@ -4,6 +4,9 @@ import { AnimatedAxis, AnimatedGridRows } from '@visx/react-spring/lib'
 import { useState } from 'react'
 import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, tickLabelProps } from '.'
 import { useColors } from '../../../..'
+import { motion } from 'framer-motion'
+import { NumberValue } from 'd3'
+import { logToOverlay } from '../../../../../ethtps.data/src'
 
 
 
@@ -16,7 +19,8 @@ export function VisVAxis(props: IVisAxisProps) {
     marginBottom = 0,
     marginLeft = 0,
     marginRight = 0,
-    axisWidth = 0
+    axisWidth = 0,
+    ty
   } = props
   const colors = useColors()
   const prefersReducedMotionQuery =
@@ -29,6 +33,8 @@ export function VisVAxis(props: IVisAxisProps) {
   } : undefined
   if (!axis) return <></>
   const eprops = extend(props)
+  const extent = (scale?.domain()[1] ?? 0) - (scale?.domain()[0] ?? 0)
+  const dy = (ty?.get() ?? 0) / Math.abs((scale?.range()[1] ?? 0) - (scale?.range()[0] ?? 0)) * extent
   return <>
     <Gradient />
     <rect
@@ -39,7 +45,9 @@ export function VisVAxis(props: IVisAxisProps) {
       fill={'url(#visx-axis-gradient)'}
       rx={14}
     />
-    <g >
+    <motion.g style={{
+      translateY: props.ty
+    }}>
       <AnimatedGridRows
         key={`gridrows-${animationTrajectory}`}
         scale={scale as GridScale}
@@ -71,6 +79,9 @@ export function VisVAxis(props: IVisAxisProps) {
               1000 +
               'k'
             )
+          if (extent < 10) {
+            return label.toFixed(2)
+          }
           return Math.round(label).toString()
         }}
         tickLabelProps={{
@@ -92,6 +103,6 @@ export function VisVAxis(props: IVisAxisProps) {
         }}
         animationTrajectory={animationTrajectory}
       />
-    </g>
+    </motion.g>
   </>
 }
