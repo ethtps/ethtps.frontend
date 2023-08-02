@@ -17,8 +17,8 @@ export const useNormalizeButton = () => {
   return {
     normalize: isOpen,
     toggle: onToggle,
-    text: `Turn ${isOpen ? 'off' : 'on'} normalization`,
+    text: `${isOpen ? 'Turn off normalization' : 'Normalize'}`,
     icon: isOpen ? IconChartSankey : IconChartHistogram,
-    offset: (isOpen ? "expand" : "wiggle") as ("expand" | "wiggle")
+    offset: (isOpen ? "expand" : "silhouette") as ("expand" | "wiggle" | "none" | "diverging" | "silhouette")
   }
 }

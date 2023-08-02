@@ -168,14 +168,18 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                     width={width}
                     height={height}>
                     <Box position={'absolute'} right={0}>
-                        <div style={{ display: 'flex', flexGrow: 2, flexDirection: 'column' }}>
+                        <div style={{
+                            display: 'flex',
+                            flexGrow: 2,
+                            flexDirection: 'column',
+                        }}>
                             {binaryConditionalRender(
                                 <>
                                     <Tooltip label={`Open in a new tab`}>
                                         <Button
+                                            bg={colors.chartBackground}
                                             iconSpacing={0}
                                             leftIcon={<IconWindowMaximize />}
-                                            variant={'ghost'}
                                             onClick={() => openNewTab('/live?smaxed=true')}
                                         />
                                     </Tooltip>
@@ -186,20 +190,19 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                 </>, undefined, expandType !== ExpandType.Float)}
                             <Tooltip label={normalizeButton.text}>
                                 <Button
+                                    bg={colors.chartBackground}
                                     iconSpacing={0}
                                     leftIcon={<normalizeButton.icon />}
-                                    variant={'ghost'}
                                     onClick={normalizeButton.toggle} />
 
                             </Tooltip>
                             {conditionalRender(
                                 <Tooltip label={'Reset position'}>
                                     <Button
+                                        bg={colors.chartBackground}
                                         iconSpacing={0}
                                         leftIcon={<IconFocus2 />}
-                                        variant={'ghost'}
-                                        onClick={resetPosition}
-                                        bgColor={colors.chartBackground} />
+                                        onClick={resetPosition} />
 
                                 </Tooltip>, (dragOffset?.x !== 0 || dragOffset.y !== 0) && previousDragOffset?.subtract?.(dragOffset).magnitude() > 100)}
                         </div>
@@ -240,11 +243,6 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                             height={height}
                             snapToPointer={false}
                             onDragEnd={(offset) => {
-                                logToOverlay({
-                                    name: 'offset @ dragEnd',
-                                    details: `dx: ${offset.dx}, dy: ${offset.dy} x: ${offset.x} y: ${offset.y}`,
-                                    level: 'info'
-                                })
                                 setDragOffset(new Vector2D(offset.dx, offset.dy))
                                 if (!autoResetPosition) {
                                     translateX.set(offset.dx - previousDragOffset.x, false)
