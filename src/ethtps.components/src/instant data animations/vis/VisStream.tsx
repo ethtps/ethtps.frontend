@@ -18,6 +18,7 @@ import { Vector } from 'three'
 import { IconArrowDown, IconArrowLeft, IconArrowRight, IconArrowUp, IconFocus2, IconHome, IconInfoSquare, IconWindowMaximize } from '@tabler/icons-react'
 import { Box, Button, Divider, Tooltip, Text, Kbd, VStack, HStack } from '@chakra-ui/react'
 import { useNormalizeButton } from './NormalizeButton'
+import { VisLegend } from './VisLegend'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 

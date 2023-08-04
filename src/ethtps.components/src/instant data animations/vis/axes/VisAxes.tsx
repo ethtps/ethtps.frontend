@@ -2,7 +2,7 @@ import { AxisScale } from '@visx/axis'
 import { Translated, VisHAxis, VisVAxis, extend } from '.'
 import { Bounded, IComponentSize } from '../../../..'
 import { CSSProperties } from 'react'
-import { MotionStyle } from 'framer-motion'
+import { MotionStyle, motion } from 'framer-motion'
 
 export type IVisAxesProps = IComponentSize & Partial<Bounded> & Partial<Translated> & {
     parentDimensions: IComponentSize
@@ -37,7 +37,12 @@ export function VisAxes(props: IVisAxesProps) {
             height={props.axisWidth - props.axisWidth}
             marginTop={props.height - props.axisWidth}
             scale={props.hScale} />
-        {props.children}
+        <motion.g
+            overflow={'hidden'}
+            width={props.width - props.axisWidth}
+            height={props.height - props.axisWidth}>
+            {props.children}
+        </motion.g>
     </>
 }
 

@@ -1,4 +1,4 @@
-import { Box, Grid, Skeleton, useDisclosure } from '@chakra-ui/react'
+import { Text, Box, Grid, Progress, Skeleton, SkeletonText, Spinner, VStack, useDisclosure, Heading } from '@chakra-ui/react'
 import { useSize } from '@chakra-ui/react-use-size'
 import {
 	ETHTPSDataCoreDataType,
@@ -6,7 +6,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ETHTPSAnimation, Hook, useColors, useQueryStringAndLocalStorageBoundState } from '../../..'
+import { ETHTPSAnimation, Hook, LoadingAnimation, binaryConditionalRender, conditionalRender, useColors, useQueryStringAndLocalStorageBoundState } from '../../..'
 import {
 	ExtendedTimeInterval,
 	IDataModel,
@@ -100,7 +100,11 @@ export function StreamingComponent({
 						paddingTop: pad,
 						overflow: 'visible'
 					}}>
-					<Skeleton isLoaded={connected} fadeDuration={1} height={'inherit'}>
+					<Skeleton
+						content={'Connecting...'}
+						isLoaded={connected}
+						fadeDuration={1}
+						height={'inherit'}>
 						<VisStream // Height is inherited if not defined
 							width={sizeRef?.width ?? 500}
 							isLeaving={isLeaving}
@@ -135,6 +139,27 @@ export function StreamingComponent({
 						showSidechains={showSidechains} />
 				</Box>
 			</Box>
-		</Grid>
+			<Box
+				sx={{
+					marginTop: (sizeRef?.height ?? 500) / 2,
+					position: 'absolute',
+					width: '100%',
+				}}>
+				{conditionalRender(<VStack>
+					<Progress
+						width={(sizeRef?.width ?? 500) / 3}
+						size={'md'}
+						hasStripe={!connected}
+						isAnimated
+						colorScheme={'pink'}
+						isIndeterminate={!connected}
+						value={connected ? 100 : undefined}
+					/>
+					<Heading className={(connected ? 'animated-cell ' : '') + 'unselectable'} as='h4' size='md'>
+						{connected ? 'Connected' : 'Connecting...'}
+					</Heading>
+				</VStack>, !connected)}
+			</Box>
+		</Grid >
 	</>
 }
