@@ -6,7 +6,7 @@ import { AnimationTrajectory, Gradient, IVisAxisProps, extend, gridColor, labelC
 import { useColors } from '../../../..'
 import moment from 'moment-timezone'
 import { format } from 'path'
-import { motion } from 'framer-motion'
+import { motion, useTransform } from 'framer-motion'
 import { logToOverlay } from '../../../../../ethtps.data/src'
 import { GridRows, GridColumns } from '@visx/grid'
 
@@ -25,9 +25,9 @@ export function VisHAxis(props: IVisAxisProps) {
   const extent = (props.scale?.domain()[1] ?? 0) - (props.scale?.domain()[0] ?? 0)
   const dxv = (props.tx?.get() ?? 0) / Math.abs((props.scale?.range()[1] ?? 0) - (props.scale?.range()[0] ?? 0)) * extent
   const tickFormat = useCallback((label: number, index: number) => {
-    const diff = (moment().utc(true).diff(moment(label).utc(true)))
-    return "-" + formatDuration(diff)
-  }, [props.scale?.domain()[0], props.scale?.domain()[1]])
+    const diff = (moment().utc(true).diff(moment(label).utc(true), undefined, true))
+    return "-" + formatDuration(diff + dxv)
+  }, [props.scale?.domain()[0], props.scale?.domain()[1], dxv])
   return <>
     <Gradient />
     <rect
@@ -48,9 +48,9 @@ export function VisHAxis(props: IVisAxisProps) {
         height={eprops.bottom - 0.75 * axisWidth}
         numTicks={12}
       />
-      <AnimatedAxis
+      <Axis
         key={`xaxis-${animationTrajectory}`}
-        animationTrajectory={animationTrajectory}
+        // animationTrajectory={animationTrajectory}
         orientation={Orientation.top}
         top={eprops.top}
         scale={props.scale as GridScale}

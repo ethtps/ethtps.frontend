@@ -37,12 +37,7 @@ export function VisAxes(props: IVisAxesProps) {
             height={props.axisWidth - props.axisWidth}
             marginTop={props.height - props.axisWidth}
             scale={props.hScale} />
-        <motion.g
-            overflow={'hidden'}
-            width={props.width - props.axisWidth}
-            height={props.height - props.axisWidth}>
-            {props.children}
-        </motion.g>
+        {props.children}
     </>
 }
 
