@@ -4,6 +4,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 
+import { useSpring as useMotionSpring, useTransform } from 'framer-motion'
 import { DependencyList, useCallback, useEffect, useState } from 'react'
 import {
 	DataResponseModelDictionary,
@@ -22,15 +23,7 @@ import {
 	useGetProvidersFromAppStore,
 	useGetSidechainsIncludedFromAppStore
 } from '../../../ethtps.data/src'
-import {
-	motion,
-	useSpring,
-	useMotionValue,
-	useMotionTemplate,
-	animate,
-	MotionValue
-} from "framer-motion"
-import { Vector2D } from '..'
+
 export type InstantBarChartDataset = {
 	label: string
 	data: [number]
@@ -69,6 +62,13 @@ export const createDataPoint = (
 	} as LiveDataPoint2
 }
 
+export function useChartTranslations() {
+	const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100 })
+	const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100, })
+	const negTranslateY = useTransform(translateY, v => -v)
+	const negTranslateX = useTransform(translateX, v => -v)
+	return { translateX, translateY, negTranslateY, negTranslateX }
+}
 export function useGet1mTPS() {
 	return useAppSelector((state) => state.liveData.oneMinuteTPSData)
 }

@@ -52,6 +52,7 @@ export interface IVisAxisProps extends Partial<Bounded>, Partial<IComponentSize>
   width?: number
   height?: number
   axisWidth?: number
+  scaleFactor?: number
 }
 
 export interface Translated {

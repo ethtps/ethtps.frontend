@@ -26,7 +26,7 @@ export function VisAxes(props: IVisAxesProps) {
             ty={props.ty}
             width={props.width}
             axisWidth={props.axisWidth}
-            height={props.height - eprops.verticalSize - props.axisWidth}
+            height={props.height - props.axisWidth}
             marginLeft={Math.max(props.axisWidth ?? 0, 18) / 2}
             scale={props.vScale} />
         <VisHAxis {...cleanProps}

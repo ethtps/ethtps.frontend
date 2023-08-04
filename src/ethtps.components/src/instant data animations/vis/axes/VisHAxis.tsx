@@ -41,10 +41,10 @@ export function VisHAxis(props: IVisAxisProps) {
     <motion.g style={{
       translateX: props.tx
     }}>
-      <GridColumns
+      <GridColumns /* Long grid lines */
         key={`xgridcolumns-${animationTrajectory}`}
         scale={props.scale as GridScale}
-        stroke={colors.primary}
+        stroke={colors.grid}
         height={eprops.bottom - 0.75 * axisWidth}
         numTicks={12}
       />

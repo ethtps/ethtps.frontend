@@ -65,7 +65,7 @@ export function ChartControlCenter({
       borderRadius={'lg'}
       overflowX={'visible'}
       pos={!!floaty.isOpen && expandType === ExpandType.Float ? 'fixed' : 'relative'}>
-      <TimeIntervalButtonGroup onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
+      <TimeIntervalButtonGroup shrink={(width ?? 600) < 600} onChange={(v: ExtendedTimeInterval) => setInterval(v)} />
       <Tooltip
         label={`Sidechains ${showSidechains ? 'shown' : 'hidden'
           }. Click to toggle`}>

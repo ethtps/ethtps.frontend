@@ -7,6 +7,8 @@ const state1 = {
 
 }
 
+export type NormalizeButtonStateDef = ReturnType<typeof useNormalizeButton>
+
 export const useNormalizeButton = () => {
   const [normalize, setNormalize] = useQueryStringAndLocalStorageBoundState<boolean>(false, "norm")
   const { isOpen, onToggle } = useDisclosure({

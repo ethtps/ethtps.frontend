@@ -8,15 +8,15 @@ import { Stack } from '@visx/shape'
 import { Zoom } from '@visx/zoom'
 import * as d3 from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ExpandType, Vector2D, VisTooltip, WithMargins, binaryConditionalRender, conditionalRender, getD3Scale, getXAxisBounds, makeInteractive, openNewTab, useColors, useQueryStringAndLocalStorageBoundState, useYAxisBounds } from '../../..'
+import { ExpandType, StreamchartQuickActions, Vector2D, VisTooltip, WithMargins, binaryConditionalRender, conditionalRender, darkenColorIfNecessary, getD3Scale, getXAxisBounds, makeInteractive, openNewTab, useColors, useQueryStringAndLocalStorageBoundState, useYAxisBounds } from '../../..'
 import { FrequencyLimiter, LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
-import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../hooks'
+import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useChartTranslations, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
 import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue, useTransform } from 'framer-motion'
 import { Vector } from 'three'
-import { IconFocus2, IconHome, IconWindowMaximize } from '@tabler/icons-react'
-import { Box, Button, Divider, Tooltip, Text, Kbd } from '@chakra-ui/react'
+import { IconArrowDown, IconArrowLeft, IconArrowRight, IconArrowUp, IconFocus2, IconHome, IconInfoSquare, IconWindowMaximize } from '@tabler/icons-react'
+import { Box, Button, Divider, Tooltip, Text, Kbd, VStack, HStack } from '@chakra-ui/react'
 import { useNormalizeButton } from './NormalizeButton'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
@@ -130,10 +130,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         if (!newestData) return
         accumulator.insert(newestData)
     }, 'update', 'data', [newestData, accumulator])
-    const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100 })
-    const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100, })
-    const negTranslateY = useTransform(translateY, v => -v)
-    const negTranslateX = useTransform(translateX, v => -v)
+    const { translateX, translateY, negTranslateX, negTranslateY } = useChartTranslations()
     const [autoResetPosition, setAutoResetPosition] = useState(false)
     const [tooltipData, setTooltipData] = useState<JSX.Element>()
     const resetPosition = useCallback(() => {
@@ -144,66 +141,45 @@ export function VisStream(props: Partial<StreamGraphProps>) {
     }, [dragOffset, translateX, translateY])
     return <>
         <ParentSize>{({ width, height }) =>
-            <div>
+            <Box
+                role={'streamchart'}>
                 <VisTooltip
                     forwardRef={svgRef}
                     content={tooltipData}
                     width={width}
                     height={height}>
-                    <Box position={'absolute'} right={0}>
-                        <div style={{
-                            display: 'flex',
-                            flexGrow: 2,
-                            flexDirection: 'column',
-                        }}>
-                            {binaryConditionalRender(
-                                <>
-                                    <Tooltip label={`Open in a new tab`}>
-                                        <Button
-                                            bg={colors.chartBackground}
-                                            iconSpacing={0}
-                                            leftIcon={<IconWindowMaximize />}
-                                            onClick={() => openNewTab('/live?smaxed=true')}
-                                        />
-                                    </Tooltip>
-                                    <Divider sx={{
-                                        marginTop: 1,
-                                        marginBottom: 1
-                                    }} />
-                                </>, undefined, expandType !== ExpandType.Float)}
-                            <Tooltip label={normalizeButton.text}>
-                                <Button
-                                    bg={colors.chartBackground}
-                                    iconSpacing={0}
-                                    leftIcon={<normalizeButton.icon />}
-                                    onClick={normalizeButton.toggle} />
+                    <Box
+                        role={'streamchart'}
+                        position={'absolute'}
+                        right={0}>
+                        <div
 
-                            </Tooltip>
-                            {conditionalRender(
-                                <Tooltip label={<>
-                                    <Text>Reset position</Text>
-                                    <span>
-                                        <Kbd
-                                            textColor={'black'}>Double click
-                                        </Kbd>
-                                    </span>
-                                </>}>
-                                    <Button
-                                        bg={colors.chartBackground}
-                                        iconSpacing={0}
-                                        leftIcon={<IconFocus2 />}
-                                        onClick={resetPosition} />
-
-                                </Tooltip>, (dragOffset?.x !== 0 || dragOffset.y !== 0) && previousDragOffset?.subtract?.(dragOffset).magnitude() > 75)}
+                            role={'streamchart'}
+                            style={{
+                                display: 'flex',
+                                flexGrow: 2,
+                                flexDirection: 'column',
+                            }}>
+                            <StreamchartQuickActions
+                                normalizeButton={normalizeButton}
+                                onReset={resetPosition}
+                                showResetPositionButton={((dragOffset?.x !== 0 || dragOffset.y !== 0) && previousDragOffset?.subtract?.(dragOffset).magnitude() > 75)}
+                                showNewTabButton={expandType !== ExpandType.Float} />
                         </div>
                     </Box>
                     <motion.svg
                         ref={svgRef}
+                        role={'streamchart'}
                         onDoubleClick={resetPosition}
                         width={width}
                         height={height}>
                         <PatternCircles
-                            id="mustard" height={40} width={40} radius={5} fill="#036ecf" complement />
+                            id="mustard"
+                            height={40}
+                            width={40}
+                            radius={5}
+                            fill="#036ecf"
+                            complement />
                         <PatternWaves
                             id="cherry"
                             height={12}
@@ -248,9 +224,9 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                     width={width}
                                     height={height}
                                     restrict={{
-                                        xMin: -width / 3,
-                                        yMin: -height / 3,
-                                        yMax: height / 3,
+                                        xMin: 0,
+                                        yMax: 100,
+                                        yMin: -100,
                                     }}
                                     onDragMove={(offset) => {
                                         if (FrequencyLimiter.canExecute('stream drag move'), 100) {
@@ -342,7 +318,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                         </VisAxes>
                     </motion.svg>
                 </VisTooltip>
-            </div>
+            </Box>
         }
         </ParentSize>
     </>

@@ -40,7 +40,7 @@ const lightTheme: Theme = {
 	gray2: 'gray.100',
 	topBarGradient:
 		'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(87,99,111,1) 35%, rgba(59,47,80,1) 100%)',
-	grid: '#B799FF',
+	grid: '#B799FF77',
 	chartBackground: '#ffdede',
 	chartScaleBackgroundGradient: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,222,222,0.4999482528023098) 18%, rgba(255,223,223,0.5030538428644216) 79%, rgba(255,223,223,0) 100%)'
 }
@@ -62,7 +62,7 @@ const darkTheme: Theme = {
 	gray2: 'gray.800',
 	topBarGradient:
 		'linear-gradient(0deg, #15141A 0%, #000706 50%, #15141A 100%)',
-	grid: '#B799FF',
+	grid: '#B799FF77',
 	chartBackground: '#313e5a',
 	chartScaleBackgroundGradient: 'linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(87,99,111,0.5) 35%, rgba(59,47,80,0) 100)'
 }
