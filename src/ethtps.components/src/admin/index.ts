@@ -4,6 +4,7 @@ export * from './buttons';
 export * from './CheckboxGroup';
 export * from './CustomDropdown';
 export * from './data';
+export * from './data-grid';
 export * from './debug';
 export * from './TabPanel';
 export * from './tabs';

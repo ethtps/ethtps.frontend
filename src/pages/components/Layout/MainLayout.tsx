@@ -1,3 +1,4 @@
+import 'react-data-grid/lib/styles.css'
 import { Box, Divider, Flex } from '@chakra-ui/react'
 import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from 'ethtps.api/dist/models'
 import { GetServerSideProps } from 'next'

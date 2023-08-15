@@ -422,13 +422,30 @@ img {
 }
 
 .rdg-cell {
-  background-color: #9370db;
   color: white;
-  max-width: 200px;
+  max-width: 100%;
+  text-align:justify;
+}
+
+.rdg-header {
+  text-transform: capitalize;
+  text-align:center;
 }
 
 .rdg-cell:hover {
-  background-color: #800080;
+  background-color:darkturquoise;
+}
+
+.rdg-cell:focus {
+    background-color: #253e82;
+    font-weight: 500;
+    animation: blinker 2.5s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    text-decoration: underline;
+  }
 }
 
 .fill-grid {

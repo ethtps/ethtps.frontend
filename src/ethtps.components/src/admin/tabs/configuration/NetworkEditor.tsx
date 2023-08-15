@@ -1,21 +1,22 @@
 import { ETHTPSConfigurationDatabaseEnvironment } from "ethtps.admin.api"
 import { useEffect, useState } from "react"
-import { useAPI } from "../experiments"
+import { useAPI, useAdminAPI, useLoadedObject } from "../experiments"
+import { DataGridType, GenericDataGrid } from "../.."
 
 
 export function NetworkEditor() {
     const api = useAPI()
-    const [data, setData] = useState<ETHTPSConfigurationDatabaseEnvironment[]>()
-    useEffect(() => {
-        api.getAllNetworksAsync().then(res => {
-            setData(res.map((x, i) => ({ id: i, name: x })))
-        })
-    }, [api])
+    const adminAPI = useAdminAPI()
+    const data = useLoadedObject(() => api.getAllEnvironmentsAsync())
     const onAddOrUpdate = (data: any) => {
-        //return api.addOrUpdateEnvironment(data)
+        //return api.(data)
     }
 
     return (
-        <>Grid</>
+        <>
+            <GenericDataGrid
+                data={data?.map((x, i) => ({id:i, name: x}))}
+                dataType={DataGridType.Networks} />
+        </>
     )
 }

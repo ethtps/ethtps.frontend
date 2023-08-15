@@ -2,6 +2,7 @@ import { Alert, Container, Divider, Text } from "@chakra-ui/react"
 import { ETHTPSDataIntegrationsMSSQLExternalWebsite } from "ethtps.admin.api"
 import { useEffect, useState } from "react"
 import { useExternalWebsiteCategories, useExternalWebsites } from "./Hooks"
+import { DataGridType, GenericDataGrid } from "../../.."
 
 export function WebsitesTab() {
     const categories = useExternalWebsiteCategories()
@@ -58,7 +59,10 @@ export function WebsitesTab() {
             <Alert security="info">
                 <Text>You can manage external websites here.</Text>
             </Alert>
-            <>Grid</>
+
+            <GenericDataGrid<ETHTPSDataIntegrationsMSSQLExternalWebsite>
+                data={websites}
+                dataType={DataGridType.Environments} />
         </Container>
     </>
 }

@@ -1,10 +1,12 @@
 import { Alert, Box, Container, Divider, Tooltip } from "@chakra-ui/react"
 import { ETHTPSConfigurationConfigurationStringLinksModel, ETHTPSConfigurationDatabaseAllConfigurationStringsModel, ETHTPSConfigurationDatabaseEnvironment, ETHTPSConfigurationIMicroservice, ETHTPSDataIntegrationsMSSQLProvider } from "ethtps.admin.api"
 import { useEffect, useState } from "react"
-import { useAPI } from "../.."
+import { useAPI, useAdminAPI, useETHTPSAPIs } from "../.."
 import { ConfigurationStringLinksEditor } from "./ConfigurationStringLinksEditor"
 import { useProviderHandler } from "./Hooks"
 import DataGrid from 'react-data-grid'
+import { GenericDataGrid } from "../../../data-grid"
+import { DataGridType } from "../../utils/data-grid"
 
 const getRow = (d: ETHTPSConfigurationDatabaseAllConfigurationStringsModel | undefined,
     index: number) => {
@@ -12,7 +14,7 @@ const getRow = (d: ETHTPSConfigurationDatabaseAllConfigurationStringsModel | und
 }
 
 export function ConfigurationEditor() {
-    const api = useAPI()
+    const { api, adminAPI} =useETHTPSAPIs()
     const [saving, setSaving] = useState<boolean>(false)
     const [saveResult, setSaveResult] = useState<JSX.Element>()
     const [providers, setProviders] = useState<ETHTPSDataIntegrationsMSSQLProvider[]>()
@@ -66,18 +68,18 @@ export function ConfigurationEditor() {
                 setAllLinks(res)
             })
         }
-    }, [selected])
+    }, [selected, api])
     useEffect(() => {
         api.getAllProvidersAsync().then(res => {
             setProviders(res)
         })
-    }, [])
+    }, [api])
 
     useEffect(() => {
         api.getAllMicroservicesAsync().then(res => {
             setMicroservices(res)
         })
-    }, [])
+    }, [api])
 
     const onMicroserviceClicked = (microservice: ETHTPSConfigurationIMicroservice) => {
 
@@ -116,21 +118,9 @@ export function ConfigurationEditor() {
         <Divider />
         <Box overflow={'scroll'}>
             {!!configurationData &&
-                <DataGrid
-                    className="fill-grid"
-                    rows={configurationData}
-                    rowClass={(row, index) => 'rdg-cell'}
-                    columns={[
-                        {
-                            key: 'name',
-                            name: 'Name',
-                            resizable: true,
-                        },
-                        { key: 'value', name: 'Value' },
-                        { key: 'isEncrypted', name: 'Encrypted' },
-                        { key: 'isSecret', name: 'Secret' },
-                        { key: 'id', name: 'ID' }
-                    ]}
+                <GenericDataGrid<ETHTPSConfigurationDatabaseAllConfigurationStringsModel>
+                    dataType={DataGridType.Strings}
+                    data={configurationData}
                 />}
         </Box>
     </>
