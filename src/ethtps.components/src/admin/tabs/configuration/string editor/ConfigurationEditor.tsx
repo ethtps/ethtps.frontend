@@ -4,6 +4,12 @@ import { useEffect, useState } from "react"
 import { useAPI } from "../.."
 import { ConfigurationStringLinksEditor } from "./ConfigurationStringLinksEditor"
 import { useProviderHandler } from "./Hooks"
+import DataGrid from 'react-data-grid'
+
+const getRow = (d: ETHTPSConfigurationDatabaseAllConfigurationStringsModel | undefined,
+    index: number) => {
+
+}
 
 export function ConfigurationEditor() {
     const api = useAPI()
@@ -108,8 +114,24 @@ export function ConfigurationEditor() {
                 providers={providers} />
         </Container>
         <Divider />
-        <Box>
-            <>Grid</>
+        <Box overflow={'scroll'}>
+            {!!configurationData &&
+                <DataGrid
+                    className="fill-grid"
+                    rows={configurationData}
+                    rowClass={(row, index) => 'rdg-cell'}
+                    columns={[
+                        {
+                            key: 'name',
+                            name: 'Name',
+                            resizable: true,
+                        },
+                        { key: 'value', name: 'Value' },
+                        { key: 'isEncrypted', name: 'Encrypted' },
+                        { key: 'isSecret', name: 'Secret' },
+                        { key: 'id', name: 'ID' }
+                    ]}
+                />}
         </Box>
     </>
 }

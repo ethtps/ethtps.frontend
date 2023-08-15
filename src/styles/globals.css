@@ -420,3 +420,17 @@ img {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
+
+.rdg-cell {
+  background-color: #9370db;
+  color: white;
+  max-width: 200px;
+}
+
+.rdg-cell:hover {
+  background-color: #800080;
+}
+
+.fill-grid {
+  block-size: 100%;
+}

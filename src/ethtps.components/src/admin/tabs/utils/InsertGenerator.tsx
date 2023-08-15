@@ -16,7 +16,7 @@ const exportableSchemas = [
     "DataUpdaters",
     "Statistics",
     "Feedback"
-]
+] // will be replaced with a call to the API eventually
 
 export function InsertGenerator() {
     const [checkDict, setCheckDict] = useState<{ [key: string]: boolean }>()

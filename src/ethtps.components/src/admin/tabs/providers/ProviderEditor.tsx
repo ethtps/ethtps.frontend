@@ -1,5 +1,6 @@
 import { ETHTPSDataIntegrationsMSSQLProvider } from 'ethtps.admin.api'
 
+import DataGrid from 'react-data-grid'
 
 interface ProviderEditorProps {
     providers?: Array<ETHTPSDataIntegrationsMSSQLProvider>
@@ -13,9 +14,9 @@ export function ProviderEditor(props: ProviderEditorProps) {
         }
     }
 
-    return (
-        <div>
-            Generic grid
-        </div>
+    return !!props.providers && (
+        <DataGrid columns={[
+            { key: 'id', name: 'ID' },
+        ]} rows={props.providers} />
     )
 }
