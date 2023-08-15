@@ -39,7 +39,7 @@ export function VisHAxis(props: IVisAxisProps) {
       rx={14}
     />
     <motion.g style={{
-      translateX: props.tx
+      //translateX: props.tx
     }}>
       <GridColumns /* Long grid lines */
         key={`xgridcolumns-${animationTrajectory}`}
@@ -48,23 +48,27 @@ export function VisHAxis(props: IVisAxisProps) {
         height={eprops.bottom - 0.75 * axisWidth}
         numTicks={12}
       />
-      <Axis
-        key={`xaxis-${animationTrajectory}`}
-        // animationTrajectory={animationTrajectory}
-        orientation={Orientation.top}
-        top={eprops.top}
-        scale={props.scale as GridScale}
-        stroke={colors.gray}
-        tickStroke={colors.text}
-        tickLength={5}
-        tickFormat={tickFormat}
-        tickLabelProps={{
-          ...tickLabelProps,
-          fill: colors.primaryContrast,
-          className: 'unselectable',
-          y: eprops.bottom - eprops.top - axisWidth / 4,
-        }}
-      />
+      <motion.g style={{
+        // translateX: props.tx ? useTransform(props.tx, (v) => -v) : 0
+      }}>
+        <Axis
+          key={`xaxis-${animationTrajectory}`}
+          // animationTrajectory={animationTrajectory}
+          orientation={Orientation.top}
+          top={eprops.top}
+          scale={props.scale as GridScale}
+          stroke={colors.gray}
+          tickStroke={colors.text}
+          tickLength={5}
+          tickFormat={tickFormat}
+          tickLabelProps={{
+            ...tickLabelProps,
+            fill: colors.primaryContrast,
+            className: 'unselectable',
+            y: eprops.bottom - eprops.top - axisWidth / 4,
+          }}
+        />
+      </motion.g>
     </motion.g>
   </>
 }

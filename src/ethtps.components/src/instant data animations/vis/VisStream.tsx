@@ -9,16 +9,17 @@ import { Zoom } from '@visx/zoom'
 import * as d3 from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ExpandType, StreamchartQuickActions, Vector2D, VisTooltip, WithMargins, binaryConditionalRender, conditionalRender, darkenColorIfNecessary, getD3Scale, getXAxisBounds, makeInteractive, openNewTab, useColors, useQueryStringAndLocalStorageBoundState, useYAxisBounds } from '../../..'
-import { FrequencyLimiter, LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
+import { FrequencyLimiter, LiveDataAccumulator, TimeIntervalToSeconds, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
 import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useChartTranslations, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
-import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue, useTransform } from 'framer-motion'
+import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue, useTransform, useAnimationFrame } from 'framer-motion'
 import { Vector } from 'three'
 import { IconArrowDown, IconArrowLeft, IconArrowRight, IconArrowUp, IconFocus2, IconHome, IconInfoSquare, IconWindowMaximize } from '@tabler/icons-react'
 import { Box, Button, Divider, Tooltip, Text, Kbd, VStack, HStack } from '@chakra-ui/react'
 import { useNormalizeButton } from './NormalizeButton'
 import { VisLegend } from './VisLegend'
+import { ScrollableG } from '../Scrollable'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
@@ -71,7 +72,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         dataPoints = 100,
         animate = true,
         initialData,
-        expandType
+        expandType,
+        paused
     } = props
     const {
         width,
@@ -127,11 +129,18 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         domain: normalizeButton.normalize ? [0, 1.1] : [-(liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1), liveDataPointExtractor(accumulator.maxTotal, dataType) ?? 1],
         range: [actualHeight, 0]
     }), [actualHeight, accumulator.maxTotal, dataType, normalizeButton.normalize])
+    const [lastUpdate, setLastUpdate] = useState(() => Date.now())
+    const [msBetweenUpdates, setMsBetweenUpdates] = useState<number>(() => Infinity)
     useGroupedDebugMeasuredEffect(() => {
         if (!newestData) return
         accumulator.insert(newestData)
+        setLastUpdate(u => {
+            const now = Date.now()
+            setMsBetweenUpdates(now - u)
+            return now
+        })
     }, 'update', 'data', [newestData, accumulator])
-    const { translateX, translateY, negTranslateX, negTranslateY } = useChartTranslations()
+    const { translateX, translateY, negTranslateX, negTranslateY } = useChartTranslations({ paused, xAxis, width })
     const [autoResetPosition, setAutoResetPosition] = useState(false)
     const [tooltipData, setTooltipData] = useState<JSX.Element>()
     const resetPosition = useCallback(() => {
@@ -225,9 +234,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                     width={width}
                                     height={height}
                                     restrict={{
-                                        xMin: 0,
-                                        yMax: 100,
-                                        yMin: -100,
+                                        xMin: translateX.get(),
                                     }}
                                     onDragMove={(offset) => {
                                         if (FrequencyLimiter.canExecute('stream drag move'), 100) {
@@ -239,7 +246,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                     onDragEnd={(offset) => {
                                         setDragOffset(new Vector2D(offset.dx, offset.dy))
                                         if (!autoResetPosition) {
-                                            const x = offset.dx - previousDragOffset.x
+                                            let x = offset.dx - previousDragOffset.x
                                             translateX.set(x, false)
                                             const y = offset.dy - previousDragOffset.y
                                             translateY.set(y, false)
@@ -256,64 +263,66 @@ export function VisStream(props: Partial<StreamGraphProps>) {
 
                                 >
                                     {({ dragStart, dragEnd, dragMove, isDragging, x, y, dx, dy }) => (
-                                        <motion.g
-                                            cx={x}
-                                            cy={y}
-                                            style={{
-                                                translateX: (false ? dx - previousDragOffset.x : translateX),
-                                                translateY: (false ? dy - previousDragOffset.y : translateY),
-                                            }}
-                                            onMouseMove={dragMove}
-                                            onMouseUp={dragEnd}
-                                            onMouseDown={dragStart}
-                                            onTouchStart={dragStart}
-                                            onTouchMove={dragMove}
-                                            onTouchEnd={dragEnd}>
-                                            <motion.rect
+                                        <>
+                                            <motion.g
+                                                cx={x}
+                                                cy={y}
                                                 style={{
-                                                    translateX: negTranslateX,
-                                                    translateY: negTranslateY,
-                                                    cursor: 'grab'
+                                                    translateX: (false ? dx - previousDragOffset.x : translateX),
+                                                    translateY: (false ? dy - previousDragOffset.y : translateY),
                                                 }}
-                                                key={'drag area'}
-                                                /*
-                                                strokeWidth={1}
-                                                stroke={colors.primaryContrast}
-                                                stroke-dasharray={"4"}*/
-                                                width={width}
-                                                height={height}
-                                                fill={'transparent'}
-                                                rx={14} />
-                                            <Stack<number[], number>
-                                                data={layers}
-                                                keys={keys}
-                                                color={colorScale}
-                                                offset={normalizeButton.offset}
-                                                curve={d3.curveCatmullRom.alpha(0.8)}
-                                                x={(_, i) => getX(i) ?? 0}
-                                                y0={d => absY(d[0])}
-                                                y1={d => absY(d[1])}
-                                            >
-                                                {({ stacks, path }) =>
-                                                    stacks.map((stack) => {
-                                                        // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                                        const pathString = path(stack) || ''
-                                                        const tweened = animate ? useSpring({ pathString }) : { pathString }
-                                                        const color = colorScale(stack.key)
-                                                        const pattern = patternScale(stack.key)
-                                                        return (
-                                                            <g className={'nopointer'}
-                                                                key={`series-${stack.key}`}>
-                                                                .
-                                                                2                     <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
-                                                                <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
-                                                            </g>
-                                                        )
-                                                    })
-                                                }
-                                            </Stack>
-                                        </motion.g>)
-                                    }
+                                                onMouseMove={dragMove}
+                                                onMouseUp={dragEnd}
+                                                onMouseDown={dragStart}
+                                                onTouchStart={dragStart}
+                                                onTouchMove={dragMove}
+                                                onTouchEnd={dragEnd}>
+                                                <motion.rect
+                                                    style={{
+                                                        translateX: negTranslateX,
+                                                        translateY: negTranslateY,
+                                                        cursor: 'grab'
+                                                    }}
+                                                    key={'drag area'}
+                                                    /*
+                                                    strokeWidth={1}
+                                                    stroke={colors.primaryContrast}
+                                                    stroke-dasharray={"4"}*/
+                                                    width={width}
+                                                    height={height}
+                                                    fill={'transparent'}
+                                                    rx={14} />
+                                                <Stack<number[], number>
+                                                    data={layers}
+                                                    keys={keys}
+                                                    color={colorScale}
+                                                    offset={normalizeButton.offset}
+                                                    curve={d3.curveCatmullRom.alpha(0.8)}
+                                                    x={(_, i) => getX(i) ?? 0}
+                                                    y0={d => absY(d[0])}
+                                                    y1={d => absY(d[1])}
+                                                >
+                                                    {({ stacks, path }) =>
+                                                        stacks.map((stack) => {
+                                                            // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
+                                                            const pathString = path(stack) || ''
+                                                            const tweened = animate ? useSpring({ pathString }) : { pathString }
+                                                            const color = colorScale(stack.key)
+                                                            const pattern = patternScale(stack.key)
+                                                            return (
+                                                                <g className={'nopointer'}
+                                                                    key={`series-${stack.key}`}>
+                                                                    .
+                                                                    2                     <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
+                                                                    <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
+                                                                </g>
+                                                            )
+                                                        })
+                                                    }
+                                                </Stack>
+                                            </motion.g>)
+                                        </>
+                                    )}
                                 </Drag>
                             </svg>
                         </VisAxes>

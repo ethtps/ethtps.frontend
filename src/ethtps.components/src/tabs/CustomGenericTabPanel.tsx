@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useQueryStringAndLocalStorageBoundState } from '..'
 
 export interface TabPanelItem {
 	title: string
@@ -16,7 +17,7 @@ export function CustomGenericTabPanel({
 	localStorageKey,
 }: GenericTabPanelProps): JSX.Element {
 	const generateKey = (tab: string) => `${localStorageKey}${tab}`
-	const [tabIndex, setTabIndex] = useState(0)
+	const [tabIndex, setTabIndex] = useQueryStringAndLocalStorageBoundState(0, localStorageKey)
 
 	const handleTabChange = (index: number) => {
 		setTabIndex(index)

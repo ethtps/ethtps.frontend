@@ -4,7 +4,7 @@ import {
 	ETHTPSDataCoreTimeInterval,
 } from 'ethtps.api'
 
-import { useSpring as useMotionSpring, useTransform } from 'framer-motion'
+import { useAnimate, useSpring as useMotionSpring, useTransform } from 'framer-motion'
 import { DependencyList, useCallback, useEffect, useState } from 'react'
 import {
 	DataResponseModelDictionary,
@@ -23,6 +23,7 @@ import {
 	useGetProvidersFromAppStore,
 	useGetSidechainsIncludedFromAppStore
 } from '../../../ethtps.data/src'
+import { LinScale } from './d3-custom'
 
 export type InstantBarChartDataset = {
 	label: string
@@ -62,9 +63,34 @@ export const createDataPoint = (
 	} as LiveDataPoint2
 }
 
-export function useChartTranslations() {
-	const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100 })
-	const translateY = useMotionSpring(0, { stiffness: 1000, damping: 100, })
+export type AutoScrollingParameters = {
+	paused?: boolean | undefined
+	xAxis: LinScale
+	width: number
+}
+
+function calculateSpeed(range: [number, number] | number[], width: number) {
+	return 10/*
+	const dr = range[1] - range[0]
+	return (dr / width) * 1000*/
+}
+
+function useAutoScrolling({ paused, xAxis, width }: AutoScrollingParameters) {
+	const [speed, setSpeed] = useState(() => calculateSpeed(xAxis.range(), width))
+	useEffect(() => {
+		if (!!paused) {
+			setSpeed(0)
+			return
+		}
+		setSpeed(calculateSpeed(xAxis.range(), width))
+	}, [paused, xAxis, width])
+	return speed
+}
+
+export function useChartTranslations({ paused, xAxis, width }: AutoScrollingParameters) {
+	const speed = useAutoScrolling({ paused, xAxis, width })
+	const translateX = useMotionSpring(0, { stiffness: 1000, damping: 100, restSpeed: 1, restDelta: 1, velocity: speed })
+	const translateY = useMotionSpring(0, { stiffness: 1000, damping: 1000, })
 	const negTranslateY = useTransform(translateY, v => -v)
 	const negTranslateX = useTransform(translateX, v => -v)
 	return { translateX, translateY, negTranslateY, negTranslateX }

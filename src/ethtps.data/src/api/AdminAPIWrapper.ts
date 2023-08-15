@@ -40,9 +40,9 @@ export class AdminAPIWrapper {
     private _providerTypesAPI = new ProviderTypesApi()
     private _configurationAPI = new ConfigurationAPI()
     private _generalAPI = new GeneralApi();
-    private _adminAPIURL: string
+    private _adminAPIURL: string = ADMIN_URL
     private _generalAPIKey: string = ''
-    private _generalAPIURL: string
+    private _generalAPIURL: string = API_URL
     private _adminAPIKey: string = ''
 
     private _genAPIConfig(url: string) {
@@ -82,6 +82,7 @@ export class AdminAPIWrapper {
         this._providerLinksAPI = new ProviderLinksApi(this._genAPIConfig(this._generalAPIURL))
         this._configurationAPI = new ConfigurationAPI(this._genAdminAPIConfig(this._adminAPIURL))
         this._providerTypesAPI = new ProviderTypesApi(this._genAdminAPIConfig(this._adminAPIURL))
+        this._generalAPI = new GeneralApi(this._genAPIConfig(this._generalAPIURL))
     }
 
     public async addOrUpdateStringAsync(model: ETHTPSConfigurationDatabaseAllConfigurationStringsModel, environment?: string, microservice?: string) {
