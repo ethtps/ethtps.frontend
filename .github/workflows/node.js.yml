@@ -24,7 +24,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install global dependencies
-      run: npm install --global prettier yarn typescript npx
+      run: npm install --global prettier yarn typescript npx --force
     - name: Run prettier
       run: npx run prettier
 
