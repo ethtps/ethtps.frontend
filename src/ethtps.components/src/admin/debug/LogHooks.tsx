@@ -38,6 +38,6 @@ export function useLogCards() {
                 </Box>
             </Stack>)
         }, 'logCards@debugOverlay')
-    }, [setCards, DebugBehaviors.logBehavior])
+    }, [setCards, DebugBehaviors.logBehavior, colors.text])
     return cards
 }

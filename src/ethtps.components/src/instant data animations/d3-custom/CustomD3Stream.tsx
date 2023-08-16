@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Axis, getD3Scale, liveDataPointExtractor, makeInteractive, measure, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
+import { Axis, getD3Scale, liveDataPointExtractor, makeInteractive, useMeasurement, minimalDataPointToLiveDataPoint, useGroupedDebugMeasuredEffect } from '../..'
 import { IInstantDataAnimationProps } from '../../..'
 import { LiveDataAccumulator, logToOverlay } from '../../../../ethtps.data/src'
 import { default as VizLines } from './helpers/D3VisualLines'
@@ -63,7 +63,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         setXBounds([...accumulator.timeRange])
         setDx((d) => d + pixelsPerPoint)
     }, 'update', 'data', [newestData, pixelsPerPoint, accumulator])
-    measure(() => {
+    useMeasurement(() => {
         logToOverlay({
             name: `[Nx, Ny]`,
             details: `[${accumulator.timePoints}, ${accumulator.valuePoints}]`,

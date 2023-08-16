@@ -17,6 +17,7 @@ interface IAreaSerieProps extends Partial<IInstantDataAnimationProps> {
     offsetBy?: number
     index?: number
     liveData?: LiveDataPoint[]
+    key?: React.Key
     lastValues?: GenericDictionary<LiveDataPoint>
 }
 
@@ -89,7 +90,7 @@ export function AreaSerie(props: IAreaSerieProps) {
     return (
         <Shape
             ref={ref}
-            key={props.customKey}
+            key={props.customKey ?? props.key}
             x={interactions.position.x + (props.width ?? 0) / 2}
             y={interactions.position.y + (props.height ?? 0) - (interactions.padding.paddingBottom + interactions.padding.paddingTop) - (interactions.margins?.marginTop ?? 0) - (interactions.margins?.marginBottom ?? 0)}
             stroke={props.lineColor ?? colors.text}

@@ -51,5 +51,5 @@ export function useProviderHandler([allLinks, setAllLinks]: Hook<ETHTPSConfigura
                 </>)
             })
         }
-    }, [allLinks, selected])
+    }, [allLinks, selected, api.linkStringToProviderByIDAsync, api.unlinkStringFromProviderByIDAsync, setAllLinks, setProviderSaveResult])
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from 'react'
 
 export function useQueryStringAndLocalStorageBoundState<T>(

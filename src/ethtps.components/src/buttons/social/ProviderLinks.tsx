@@ -80,7 +80,7 @@ export function ProviderLinks(
 				setLoadedWebsiteCategories(true)
 			})
 			.catch(() => setHasError(true))
-	}, [websites, api])
+	}, [api])
 
 	useEffect(() => {
 		if (categories) {
@@ -99,7 +99,7 @@ export function ProviderLinks(
 				).toString()
 			)
 		)
-	}, [categories])
+	}, [props.providerLinks, categories, websites])
 
 	return (
 		<Card

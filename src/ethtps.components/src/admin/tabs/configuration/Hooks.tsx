@@ -14,7 +14,7 @@ export function useMicroserviceBadges(props: IConfigurationStringLinksEditorProp
             selected: props.model.microserviceLinks?.some(x => x.microserviceId === index)
         }))}
         {props.microservices?.length === 0 && <span>No microservices found</span>}
-    </>, [props.model.microserviceLinks])
+    </>, [props, props.model.microserviceLinks])
 }
 
 export const useProviderBadges = (props: IConfigurationStringLinksEditorProps) => useCallback(() => props.providers?.map((provider, index) => ProviderBadge({
@@ -22,4 +22,4 @@ export const useProviderBadges = (props: IConfigurationStringLinksEditorProps) =
     key: index,
     onClick: () => props.onProviderClicked?.(provider),
     selected: props.model.providerLinks?.some(x => x.providerId === provider.id),
-})) ?? [], [props.providers, props.model.providerLinks])
+})) ?? [], [props, props.providers, props.model.providerLinks])

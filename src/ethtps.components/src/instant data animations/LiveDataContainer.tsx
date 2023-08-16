@@ -1,8 +1,9 @@
 'use client'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createSignalRContext } from 'react-signalr'
 import { DEBUG, GenericDictionary, L2DataUpdateModel } from '../../../ethtps.data/src'
+
 const { useSignalREffect, Provider } = createSignalRContext({
 	shareConnectionBetweenTab: true,
 })
@@ -17,55 +18,60 @@ export interface LiveDataContainerProps {
 }
 
 export function LiveDataContainer(props: LiveDataContainerProps): JSX.Element {
-	useRouter().events.on('routeChangeStart', () => {
-		if (!connectEnabled) return
-		if (DEBUG) {
-			console.debug('Disconnecting SignalR...')
-		}
-		setConnectEnabled(false)
-	})
+	const router = useRouter()
 	const [connectEnabled, setConnectEnabled] = useState(true)
-	try {
-		useSignalREffect(
-			'ConnectionEstablished',
-			(data) => {
-				if (props.onConnected) {
-					props.onConnected()
-				}
-			},
-			[]
-		)
-		useSignalREffect(
-			'LiveDataChanged',
-			(data) => {
-				if (props.onDataReceived) {
-					props.onDataReceived(data)
-				}
-			},
-			[]
-		)
-		useSignalREffect(
-			'TotalChanged',
-			(data) => {
-				//console.log("TotalChanged")
-				if (props.onTotalChanged) {
-					props.onTotalChanged(data)
-				}
-			},
-			[]
-		)
-	}
-	catch (e) {
-		console.error(e)
-	}
+
+	// Handle route changes
+	useEffect(() => {
+		const handleRouteChange = () => {
+			if (!connectEnabled) return
+			if (DEBUG) {
+				console.debug('Disconnecting SignalR...')
+			}
+			setConnectEnabled(false)
+		}
+
+		router.events.on('routeChangeStart', handleRouteChange)
+
+		// Cleanup
+		return () => {
+			router.events.off('routeChangeStart', handleRouteChange)
+		}
+	}, [connectEnabled, router])
+
+	useSignalREffect(
+		'ConnectionEstablished',
+		(data) => {
+			props.onConnected?.()
+		},
+		[]
+	)
+
+	useSignalREffect(
+		'LiveDataChanged',
+		(data) => {
+			props.onDataReceived?.(data)
+		},
+		[]
+	)
+
+	useSignalREffect(
+		'TotalChanged',
+		(data) => {
+			props.onTotalChanged?.(data)
+		},
+		[]
+	)
+
 	return (
 		<Provider
 			url={
 				process.env.WSAPI_DEV_ENDPOINT ??
 				'http://localhost:5136/api/v3/wsapi/live-data'
 			}
-			connectEnabled
-			withCredentials={false}>
+			connectEnabled={connectEnabled}
+			withCredentials={false}
+		>
 			{props.children}
 		</Provider>
 	)

@@ -51,7 +51,7 @@ export function ChartControlCenter({
   const f = useMemo<(i: ReactNode) => ReactNode>(() => {
     if (expandType === ExpandType.None || !floaty.isOpen) return (i: React.ReactNode) => (i)
     return (i: React.ReactNode) => (ReactDOM.createPortal(i, document.getElementById('aliens')!))  //are already here
-  }, [floaty.isOpen])
+  }, [floaty.isOpen, expandType])
   const expIcons = useMemo(() => expandIcons[expandType], [expandType])
   return <>
     {(<Box

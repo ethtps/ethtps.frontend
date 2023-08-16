@@ -16,6 +16,7 @@ export function CustomSeries(props: Partial<ICustomSeriesProps>) {
     return <>
         {columns.filter(x => x === "Polygon").map((providerName, i) => {
             return <AreaSerie {...props}
+                key={`area-serie-${providerName}-${i}`}
                 customKey={providerName}
                 providerName={providerName}
                 lineStrokeWidth={2}

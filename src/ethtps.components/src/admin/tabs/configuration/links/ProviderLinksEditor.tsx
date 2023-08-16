@@ -31,8 +31,8 @@ export function ProviderLinksEditor(props: Partial<IProviderLinksEditorProps>) {
         })
     }
     return <>
-        <Text >Quick add</Text>
-        <Text >Use this editor to quickly add links to a provider. These will be displayed in the details page. Please make sure to double-check the website's category after adding a website.</Text>
+        <Text>Quick add</Text>
+        <Text>Use this editor to quickly add links to a provider. These will be displayed in the details page. Please make sure to double-check the website&aposs category after adding a website.</Text>
         <Divider sx={{
             marginTop: '1rem',
             marginBottom: '1rem',

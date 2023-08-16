@@ -117,7 +117,7 @@ export function CustomD3Animation(props: IInstantDataAnimationProps) {
             .attr("stroke", 'black')
             .attr("d", d => line(d.values))
 
-    }, [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime])
+    }, [newestData, maxEntries, dataType, providerData, refreshInterval, width, height, padding, margins, viewBox, bounds, innerWidth, innerHeight, mountTime, columns, liveData])
     useEffect(() => {
         const svg = svgRef.current
         if (!svgRef.current || !svg) return

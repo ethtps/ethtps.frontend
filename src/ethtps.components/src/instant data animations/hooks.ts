@@ -251,7 +251,7 @@ export function useGroupedDebugMeasuredEffect(effect: () => void, effectName: st
  * @param groupName
  * @param deps Not used, but provided so that the method can be easily used in a useEffect debug hook.
  */
-export function measure(effect: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
+export function useMeasurement(effect: () => void, effectName: string, groupName?: string, deps?: DependencyList | undefined) {
 	const willExecute = FrequencyLimiter.willExecute(effectName)
 	const now = performance.now()
 	effect()

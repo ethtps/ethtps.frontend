@@ -1,6 +1,6 @@
 import * as d3 from "d3"
 import { CSSProperties, useRef } from "react"
-import { Padded, WithMargins, addGrid, measure, useGroupedDebugMeasuredEffect } from "../../.."
+import { Padded, WithMargins, addGrid, useMeasurement, useGroupedDebugMeasuredEffect } from "../../.."
 import { FrequencyLimiter } from "../../../../ethtps.data/src"
 
 
@@ -30,7 +30,7 @@ export function Axis({
 }) {
     const svgRef = useRef<any>()
     const areaRef = useRef<any>()
-    measure(() => {
+    useMeasurement(() => {
         if (!FrequencyLimiter.canExecute(`${name} axis change`)) {
             return
         }

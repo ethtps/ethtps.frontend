@@ -53,10 +53,10 @@ export function useYAxisBounds(newestData: GenericDictionary<L2DataUpdateModel> 
         if (min < yBounds[0]) setYBounds([min, yBounds[1]])
         const max = Math.max(...values)
         if (max > yBounds[1]) setYBounds([yBounds[0], max])
-    }, [newestData, dataType])
+    }, [newestData, dataType, t, yBounds])
     useEffect(() => {
         setYBounds(getRange(newestData, t))
-    }, [dataType])
+    }, [dataType, t, newestData])
     return yBounds
 }
 
@@ -77,7 +77,7 @@ export function getD3TimeScale(bounds: TimeInterval, range: NumericInterval): d3
  * @param margins
  * @param name
  */
-export function addD3Axis(axis: d3.ScaleLinear<number, number, never>, orientation: ((scale: d3.AxisScale<d3.NumberValue>) => d3.Axis<d3.NumberValue>),
+export function useD3Axis(axis: d3.ScaleLinear<number, number, never>, orientation: ((scale: d3.AxisScale<d3.NumberValue>) => d3.Axis<d3.NumberValue>),
     svgRef: React.RefObject<any>,
     padding?: Partial<Padded>,
     margins?: Partial<WithMargins>,

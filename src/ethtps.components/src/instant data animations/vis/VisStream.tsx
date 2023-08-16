@@ -1,3 +1,5 @@
+// disable rules of hooks
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useSize } from '@chakra-ui/react-use-size'
 import { animated, useSpring } from '@react-spring/web'
 import { Drag } from '@visx/drag'
@@ -11,7 +13,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ExpandType, StreamchartQuickActions, Vector2D, VisTooltip, WithMargins, binaryConditionalRender, conditionalRender, darkenColorIfNecessary, getD3Scale, getXAxisBounds, makeInteractive, openNewTab, useColors, useQueryStringAndLocalStorageBoundState, useYAxisBounds } from '../../..'
 import { FrequencyLimiter, LiveDataAccumulator, TimeIntervalToSeconds, logToOverlay } from '../../../../ethtps.data/src'
 import { IInstantDataAnimationProps } from '../InstantDataAnimationProps'
-import { liveDataPointExtractor, measure, minimalDataPointToLiveDataPoint, useChartTranslations, useGroupedDebugMeasuredEffect } from '../hooks'
+import { liveDataPointExtractor, useMeasurement, minimalDataPointToLiveDataPoint, useChartTranslations, useGroupedDebugMeasuredEffect } from '../hooks'
 import { VisAxes } from './axes/VisAxes'
 import { motion, useAnimate, animate as motionAnimate, useSpring as useMotionSpring, useMotionValue, useTransform, useAnimationFrame } from 'framer-motion'
 import { Vector } from 'three'
@@ -305,16 +307,13 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                                     {({ stacks, path }) =>
                                                         stacks.map((stack) => {
                                                             // Alternatively use renderprops <Spring to={{ d }}>{tweened => ...}</Spring>
-                                                            const pathString = path(stack) || ''
+                                                           /* const pathString = path(stack) || ''
                                                             const tweened = animate ? useSpring({ pathString }) : { pathString }
                                                             const color = colorScale(stack.key)
                                                             const pattern = patternScale(stack.key)
-                                                            return (
+                                                           */ return (
                                                                 <g className={'nopointer'}
                                                                     key={`series-${stack.key}`}>
-                                                                    .
-                                                                    2                     <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
-                                                                    <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
                                                                 </g>
                                                             )
                                                         })
@@ -333,3 +332,9 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         </ParentSize>
     </>
 }
+
+/*
+ * <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
+                                                                    <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
+
+*/

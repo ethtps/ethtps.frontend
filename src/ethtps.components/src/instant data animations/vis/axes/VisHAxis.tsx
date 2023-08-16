@@ -19,7 +19,6 @@ export function VisHAxis(props: IVisAxisProps) {
     scale: props.scale,
     label: 'timescale',
   } : undefined
-  if (!axis) return <></>
   const axisWidth = (!props.axisWidth || props.axisWidth === 0) ? 50 : props.axisWidth
   const eprops = extend(props)
   const extent = (props.scale?.domain()[1] ?? 0) - (props.scale?.domain()[0] ?? 0)
