@@ -1,15 +1,15 @@
-name: Node.js build
+name: Build ethtps.frontend
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "main", "dev", "testing" ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "main", "dev","testing"  ]
 
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: Windows
 
     strategy:
       matrix:
@@ -23,6 +23,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install --global yarn
-    - run: yarn install
-    - run: npm run build
+    - name: Install global dependencies
+      run: npm install --global prettier yarn typescript npx
+    - name: Run prettier
+      run: npx run prettier
+
+    - name: Install dependencies and build
+      run: npm run relink-deps ; npx yarn install --force ; npm run build
