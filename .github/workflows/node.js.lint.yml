@@ -2,14 +2,14 @@ name: Prettier test
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "main", "dev", "testing" ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "main", "dev","testing"  ]
 
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: Windows
 
     strategy:
       matrix:
@@ -24,4 +24,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install --global prettier
-    - run: npm run prettier
+    - run: npm run prettier:fix
+
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Install global dependencies
+      run: yarn global add typescript
+
+    - name: Install dependencies and build
+      run: npm run relink-deps ; npx yarn install --force ; npm run build
