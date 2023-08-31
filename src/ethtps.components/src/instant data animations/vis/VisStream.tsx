@@ -20,6 +20,7 @@ import { Box, Button, Divider, Tooltip, Text, Kbd, VStack, HStack } from '@chakr
 import { useNormalizeButton } from './NormalizeButton'
 import { VisLegend } from './VisLegend'
 import { ScrollableG } from '../Scrollable'
+import { ProviderPattern } from './patterns/ProviderPattern'
 
 const MAX_LAYERS = 20 // preset number of layers to show because of hooks and springs 🪝🔧
 
@@ -208,11 +209,17 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                             radius={10}
                             fill="transparent"
                         />
+                        {accumulator.distinctProviders.map((p, i) => (<ProviderPattern
+                            provider={p}
+                            radius={10}
+                            width={20}
+                            height={20} />))}
                         <motion.rect
                             width={width}
                             height={height}
                             fill={colors.chartBackground}
                             rx={14} />
+
                         <VisAxes
                             tx={translateX}
                             ty={translateY}
@@ -309,12 +316,11 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                                             const pathString = path(stack) || ''
                                                             const tweened = animate ? useSpring({ pathString }) : { pathString }
                                                             const color = colorScale(stack.key)
-                                                            const pattern = patternScale(stack.key)
+                                                            const pattern = `${accumulator.distinctProviders[stack.key]}-pattern` // 'PP-TEST'//patternScale(stack.key)
                                                             return (
                                                                 <g className={'nopointer'}
                                                                     key={`series-${stack.key}`}>
-                                                                    .
-                                                                    2                     <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
+                                                                    <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
                                                                     <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
                                                                 </g>
                                                             )
