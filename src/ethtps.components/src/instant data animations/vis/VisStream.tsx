@@ -137,6 +137,7 @@ export function VisStream(props: Partial<StreamGraphProps>) {
         setLastUpdate(u => {
             const now = Date.now()
             setMsBetweenUpdates(now - u)
+            translateX.set(translateX.get() - (xAxis(now) - xAxis(u)), true)
             return now
         })
     }, 'update', 'data', [newestData, accumulator])

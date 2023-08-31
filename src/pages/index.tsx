@@ -50,29 +50,6 @@ export const getStaticProps: GetServerSideProps = async (context) => {
         tpsData: instant[ETHTPSDataCoreDataType.TPS],
         gpsData: instant[ETHTPSDataCoreDataType.GPS],
         gtpsData: instant[ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS]
-      },
-      defaultIntervalData: {
-        tpsData: (await api.getJunkL2Data(
-          ETHTPSDataCoreDataType.TPS,
-          ETHTPSDataCoreTimeInterval.ONE_HOUR,
-          'All',
-          undefined,
-          true
-        )).data,
-        gpsData: await api.getData(
-          ETHTPSDataCoreDataType.GPS,
-          ETHTPSDataCoreTimeInterval.ONE_HOUR,
-          'All',
-          undefined,
-          true
-        ),
-        gtpsData: await api.getData(
-          ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS,
-          ETHTPSDataCoreTimeInterval.ONE_HOUR,
-          'All',
-          undefined,
-          true
-        )
       }
     } as IIndexPageProps)
   }

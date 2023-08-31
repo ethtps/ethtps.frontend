@@ -1,7 +1,6 @@
 {
   "name": "ethtps.frontend",
-  "version": "1.5.0",
-  "private": true,
+  "version": "1.8.2",
   "license": "ISC",
   "author": {
     "name": "Mister_Eth"
@@ -11,12 +10,10 @@
     "build": "next build",
     "start": "next start -p 3007",
     "start:dev": "next dev -p 3007",
-    "start:dev:f": "npm run relink-deps && npx yarn install --force && npm run start:dev",
     "lint": "npm eslint --",
     "lint:fix": "npm run lint src/*.ts --fix",
     "prettier": "npx prettier --check src/",
-    "prettier:fix": "npx prettier src/ --write",
-    "relink-deps": "npx yarn unlink ethtps.api && npx yarn link ethtps.api && npx yarn unlink ethtps.admin.api && npx yarn link ethtps.admin.api"
+    "prettier:fix": "npx prettier src/ --write"
   },
   "dependencies": {
     "@babel/core": "^7.21.4",
@@ -69,8 +66,8 @@
     "dotenv": "^16.0.3",
     "embla-carousel-react": "^7.1.0",
     "eslint-config-next": "^13.4.3",
-    "ethtps.admin.api": "link:ethtps.admin.api",
-    "ethtps.api": "link:ethtps.api",
+    "ethtps.admin.api": "^1.9.0",
+    "ethtps.api": "^1.9.0",
     "events": "^3.3.0",
     "framer-motion": "^10.12.18",
     "groupby-js": "^1.1.9",

@@ -74,7 +74,7 @@ export function TimeIntervalButtonGroup({
 							<MenuList>
 								{EnumerateIntervals().map((x, i) => {
 									const v = TimeIntervalToLabel(x as ExtendedTimeInterval)
-									return <MenuItem onClick={() => change(v)}>{v}</MenuItem>
+									return <MenuItem key={`tibg${i}`} onClick={() => change(v)}>{v}</MenuItem>
 								}
 								)}
 							</MenuList>

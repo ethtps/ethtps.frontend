@@ -46,7 +46,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
     const svgRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
     const pixelsPerPoint = useMemo(() => innerWidth / maxEntries, [innerWidth, maxEntries])
-    const [dx, setDx] = useState<number>(0)
+    const [dx, setDx] = useState<number>(() => 0)
     const [xBounds, setXBounds] = useState<[number, number]>(() => [0, 0])
     const [accumulator] = useState<LiveDataAccumulator>(() => new LiveDataAccumulator({}))
     const xAxis = useMemo(() =>
@@ -77,8 +77,8 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
         selectArea().call(Viz.streamAreaFrom(accumulator, dataType, { x: xAxis, y: yAxis }, d3.schemeRdBu[Math.min(11, accumulator.distinctProviders.length)], 0.8))
 
 
-    }, `transform`, 'data', [dataType, innerWidth, innerHeight, xAxis, yAxis, areaRef.current, pixelsPerPoint, accumulator])
-
+    }, `transform`, 'data', [accumulator, dataType, xAxis, yAxis, areaRef, pixelsPerPoint, innerWidth, innerHeight, xBounds, dx])
+    console.log(dx)
     return <>
         <svg
             ref={svgRef}
@@ -114,7 +114,7 @@ export function CustomD3Stream(props: IInstantDataAnimationProps) {
                 padding={padding}
                 margins={margins}
             />
-            <svg ref={areaRef}>
+            <svg transform={`translateX(${-dx})`} ref={areaRef}>
 
             </svg>
         </svg>
