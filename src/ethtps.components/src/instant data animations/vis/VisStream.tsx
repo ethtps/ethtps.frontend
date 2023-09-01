@@ -243,6 +243,8 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                     height={height}
                                     restrict={{
                                         xMin: translateX.get(),
+                                        yMax: 0,
+                                        yMin: 0
                                     }}
                                     onDragMove={(offset) => {
                                         if (FrequencyLimiter.canExecute('stream drag move'), 100) {
@@ -318,10 +320,10 @@ export function VisStream(props: Partial<StreamGraphProps>) {
                                                             const color = colorScale(stack.key)
                                                             const pattern = `${accumulator.distinctProviders[stack.key]}-pattern` // 'PP-TEST'//patternScale(stack.key)
                                                             return (
-                                                                <g className={'nopointer'}
+                                                                <g
                                                                     key={`series-${stack.key}`}>
-                                                                    <animated.path className={'nopointer'} d={tweened.pathString} fill={color} />
-                                                                    <animated.path className={'nopointer'} d={tweened.pathString} fill={`url(#${pattern})`} />
+                                                                    <animated.path d={tweened.pathString} fill={color} />
+                                                                    <animated.path d={tweened.pathString} fill={`url(#${pattern})`} />
                                                                 </g>
                                                             )
                                                         })

@@ -420,3 +420,19 @@ img {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
+
+.provider-pattern-circle {
+  opacity: 1;
+}
+
+.provider-pattern-circle:hover {
+  opacity: 0.5;
+}
+
+.provider-pattern-image {
+  opacity: 0.5;
+}
+
+.provider-pattern-image:hover {
+  opacity: 1;
+}

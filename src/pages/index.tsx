@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import {
   ETHTPSDataCoreDataType,
+  ETHTPSDataCoreModelsDataPointsXYPointsXPointType,
   ETHTPSDataCoreModelsResponseModelsProviderResponseModel,
   ETHTPSDataCoreTimeInterval
 } from 'ethtps.api'
@@ -20,9 +21,12 @@ import {
   IDataModel,
   L2DataUpdateModel,
   LiveDataAggregator,
-  createHandlerFromCallback
+  ExtendedTimeInterval,
+  createHandlerFromCallback,
+  toMoment
 } from '../ethtps.data/src'
 import { OrderProvidersByMax, api } from '../services'
+import moment from 'moment'
 
 export interface IIndexPageProps {
   providerData?: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
@@ -35,6 +39,17 @@ export interface IIndexPageProps {
 
 export const getStaticProps: GetServerSideProps = async (context) => {
   const instant = await api.getInstantData(ETHTPSDataCoreTimeInterval.INSTANT)
+  const m = toMoment(ETHTPSDataCoreTimeInterval.ONE_DAY)
+  const requestModel = {
+    returnXAxisType:
+      ETHTPSDataCoreModelsDataPointsXYPointsXPointType.NUMBER,
+    includeEmptyDatasets: false,
+    includeSimpleAnalysis: false,
+    includeComplexAnalysis: false,
+    endDate: moment().toDate(),
+    startDate: moment().subtract(m.amount, m.unit).toDate(),
+    providers: ['All'],
+  }
   return {
     props: OrderProvidersByMax({
       providerData: await api.getProvidersAsync(),
@@ -50,6 +65,20 @@ export const getStaticProps: GetServerSideProps = async (context) => {
         tpsData: instant[ETHTPSDataCoreDataType.TPS],
         gpsData: instant[ETHTPSDataCoreDataType.GPS],
         gtpsData: instant[ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS]
+      },
+      defaultIntervalData: {
+        tpsData: await api.getL2Data({
+          dataType: ETHTPSDataCoreDataType.TPS,
+          eTHTPSDataCoreModelsQueriesDataRequestsL2DataRequestModel: requestModel
+        }),
+        gpsData: await api.getL2Data({
+          dataType: ETHTPSDataCoreDataType.GPS,
+          eTHTPSDataCoreModelsQueriesDataRequestsL2DataRequestModel: requestModel
+        }),
+        gtpsData: await api.getL2Data({
+          dataType: ETHTPSDataCoreDataType.GAS_ADJUSTED_TPS,
+          eTHTPSDataCoreModelsQueriesDataRequestsL2DataRequestModel: requestModel
+        }),
       }
     } as IIndexPageProps)
   }

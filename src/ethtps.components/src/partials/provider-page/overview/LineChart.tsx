@@ -131,7 +131,6 @@ export function LineChart(props: ILineChartProps): JSX.Element {
 						provider: props.provider ?? 'All',
 					},
 				}
-				console.log(requestModel)
 				const data = await api.getL2Data(requestModel)
 				const processed = {} as Record<
 					string,

@@ -66,7 +66,7 @@ export function ProviderOverview(
 					{binaryConditionalRender(
 						<Image
 							alt={`${provider?.name} icon`}
-							src={`/provider-icons/${provider?.name}.png`}
+							src={`/provider-icons-sm/${provider?.name}.png`}
 							width={iconSize}
 							height={iconSize}
 						/>,

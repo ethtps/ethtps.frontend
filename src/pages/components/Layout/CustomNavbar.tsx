@@ -67,7 +67,7 @@ href={`/providers/${x.name}`}
 label={x.name}
 icon={<Image
 alt={`${x.name} icon`}
-src={`/provider-icons/${x.name}.png`}
+src={`/provider-icons-sm/${x.name}.png`}
 width={'20px'}
 height={'20px'}
 />}

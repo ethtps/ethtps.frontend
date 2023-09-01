@@ -48,7 +48,7 @@ const createProviderButton = (
 		}>
 		<Image
 			alt={`${provider.name}-image`}
-			src={`/provider-icons/${provider.name}.png`}
+			src={`/provider-icons-sm/${provider.name}.png`}
 			sx={{
 				width: '20px',
 				height: '20px',
@@ -107,8 +107,8 @@ export const ProviderListSidebar: React.FC<SidePanelProps> = ({
 		allProviders[(currentProviderIndex + 1) % allProviders.length]
 	const prevProvider =
 		allProviders[
-			(currentProviderIndex - 1 + allProviders.length) %
-				allProviders.length
+		(currentProviderIndex - 1 + allProviders.length) %
+		allProviders.length
 		]
 
 	return (

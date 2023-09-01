@@ -15,8 +15,8 @@ type ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel =
 
 type SortState = {
 	column:
-		| keyof ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel
-		| null
+	| keyof ExtendedETHTPSDataCoreModelsResponseModelsProviderResponseModel
+	| null
 	ascending: boolean
 }
 
@@ -125,7 +125,7 @@ export function ProviderTable(props: IProviderTableProps): JSX.Element {
 							<Link href={`/providers/${provider.name}`}>
 								<Stack spacing={'xs'}>
 									<Image
-										src={`/provider-icons/${provider.name}.png`}
+										src={`/provider-icons-sm/${provider.name}.png`}
 										alt={
 											provider.name ??
 											'provider name here'

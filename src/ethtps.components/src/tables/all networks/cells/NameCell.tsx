@@ -32,7 +32,7 @@ export function NameCell(config: INameCellProps): JSX.Element {
 						<HStack>
 							<Image
 								alt={`${config.provider?.name} icon`}
-								src={`/provider-icons/${config.provider?.name}.png`}
+								src={`/provider-icons-sm/${config.provider?.name}.png`}
 								className={'inline'}
 								width={30}
 								height={30}

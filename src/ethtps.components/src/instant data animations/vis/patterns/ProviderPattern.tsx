@@ -8,7 +8,6 @@ interface ProviderPatternProps {
   stroke?: string
   strokeWidth?: number
   strokeDasharray?: string
-  className?: string
   imageSpacing?: number
 }
 
@@ -25,7 +24,6 @@ const ProviderPattern: React.FC<ProviderPatternProps> = ({
   provider,
   strokeWidth,
   strokeDasharray,
-  className,
   imageSpacing = 30
 }) => {
   const id = `${provider}-pattern`
@@ -37,18 +35,21 @@ const ProviderPattern: React.FC<ProviderPatternProps> = ({
       width={patternWidth}
       height={patternHeight}
       patternUnits="userSpaceOnUse"
-      className={className}
+      className={`provider-pattern`}
     >
       <image
-        href={`/provider-icons/${provider}.png`}
+        href={`/provider-icons-sm/${provider}.png`}
         x="0"
         y="0"
+        className={'provider-pattern-image'}
+        aria-label={`${provider} pattern logo`}
         width={width}
         height={height} />
       <circle
         cx={width / 2}
         cy={height / 2}
         r={radius}
+        className={`provider-pattern-circle`}
         stroke={stroke}
         strokeWidth={strokeWidth}
         strokeDasharray={strokeDasharray}
