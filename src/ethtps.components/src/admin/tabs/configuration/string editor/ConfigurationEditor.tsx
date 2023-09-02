@@ -1,12 +1,20 @@
 import { Alert, Box, Container, Divider, Tooltip } from "@chakra-ui/react"
 import { ETHTPSConfigurationConfigurationStringLinksModel, ETHTPSConfigurationDatabaseAllConfigurationStringsModel, ETHTPSConfigurationDatabaseEnvironment, ETHTPSConfigurationIMicroservice, ETHTPSDataIntegrationsMSSQLProvider } from "ethtps.admin.api"
 import { useEffect, useState } from "react"
-import { useAPI } from "../.."
+import { useAPI, useAdminAPI, useETHTPSAPIs } from "../.."
 import { ConfigurationStringLinksEditor } from "./ConfigurationStringLinksEditor"
 import { useProviderHandler } from "./Hooks"
+import DataGrid from 'react-data-grid'
+import { GenericDataGrid } from "../../../data-grid"
+import { DataGridType } from "../../utils/data-grid"
+
+const getRow = (d: ETHTPSConfigurationDatabaseAllConfigurationStringsModel | undefined,
+    index: number) => {
+
+}
 
 export function ConfigurationEditor() {
-    const api = useAPI()
+    const { api, adminAPI} =useETHTPSAPIs()
     const [saving, setSaving] = useState<boolean>(false)
     const [saveResult, setSaveResult] = useState<JSX.Element>()
     const [providers, setProviders] = useState<ETHTPSDataIntegrationsMSSQLProvider[]>()
@@ -60,18 +68,18 @@ export function ConfigurationEditor() {
                 setAllLinks(res)
             })
         }
-    }, [selected])
+    }, [selected, api])
     useEffect(() => {
         api.getAllProvidersAsync().then(res => {
             setProviders(res)
         })
-    }, [])
+    }, [api])
 
     useEffect(() => {
         api.getAllMicroservicesAsync().then(res => {
             setMicroservices(res)
         })
-    }, [])
+    }, [api])
 
     const onMicroserviceClicked = (microservice: ETHTPSConfigurationIMicroservice) => {
 
@@ -108,8 +116,12 @@ export function ConfigurationEditor() {
                 providers={providers} />
         </Container>
         <Divider />
-        <Box>
-            <>Grid</>
+        <Box overflow={'scroll'}>
+            {!!configurationData &&
+                <GenericDataGrid<ETHTPSConfigurationDatabaseAllConfigurationStringsModel>
+                    dataType={DataGridType.Strings}
+                    data={configurationData}
+                />}
         </Box>
     </>
 }

@@ -4,6 +4,7 @@ import { ETHTPSDataCoreModelsResponseModelsProviderResponseModel } from "ethtps.
 import { useEffect, useState } from "react"
 import { useAPI, useLoadedObject } from "../../experiments"
 import { ProviderLinksEditor } from "./ProviderLinksEditor"
+import { DataGridType, GenericDataGrid } from "../../.."
 
 interface IProviderLinksTabProps {
     providers: ETHTPSDataCoreModelsResponseModelsProviderResponseModel[]
@@ -35,7 +36,9 @@ export function ProviderLinksTab(props: Partial<IProviderLinksTabProps>) {
             <Text >
                 All provider links
             </Text>
-            <>Grid</>
+            <GenericDataGrid
+                data={loadedLinks}
+                dataType={DataGridType.ProviderLinks} />
         </Container>
     </>
 }

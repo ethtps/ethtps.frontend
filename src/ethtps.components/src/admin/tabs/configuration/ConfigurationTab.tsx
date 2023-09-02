@@ -16,15 +16,9 @@ interface TabPanelProps {
     index: number
     value: number
 }
+
 export function ConfigurationTab() {
     const api = useContext(APIContext)
-    const [value, setValue] = useState(parseInt(localStorage.getItem('conftab') || '0'))
-
-    const handleChange = (newValue: number) => {
-        setValue(newValue)
-        localStorage.setItem('conftab', newValue.toString())
-    }
-
     const [providers, setProviders] = useState<Array<ETHTPSDataIntegrationsMSSQLProvider>>()
 
     useEffect(() => {

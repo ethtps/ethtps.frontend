@@ -17,7 +17,7 @@ export function CustomGenericTabPanel({
 	localStorageKey,
 }: GenericTabPanelProps): JSX.Element {
 	const generateKey = (tab: string) => `${localStorageKey}${tab}`
-	const [tabIndex, setTabIndex] = useQueryStringAndLocalStorageBoundState(0, localStorageKey)
+	const [tabIndex, setTabIndex] = useQueryStringAndLocalStorageBoundState<number | undefined>(undefined, localStorageKey)
 
 	const handleTabChange = (index: number) => {
 		setTabIndex(index)
@@ -26,15 +26,6 @@ export function CustomGenericTabPanel({
 			JSON.stringify(index)
 		)
 	}
-
-	useEffect(() => {
-		items.forEach((item, index) => {
-			const value = localStorage.getItem(generateKey(item.title))
-			if (value != null) {
-				setTabIndex(JSON.parse(value))
-			}
-		})
-	}, [])
 
 	return (
 		<Tabs

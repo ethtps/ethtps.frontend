@@ -20,7 +20,6 @@ const throwExceptionIfNotOk = async (response: Response) => {
 }
 
 export class AdminAPIWrapper {
-
     public static DEFAULT =
         new AdminAPIWrapper(
             ADMIN_URL,

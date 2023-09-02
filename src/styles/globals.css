@@ -421,6 +421,14 @@ img {
   cursor: -webkit-grabbing;
 }
 
+.provider-pattern {
+  opacity: 1;
+}
+
+.provider-pattern:hover {
+  opacity: 0.5;
+}
+
 .provider-pattern-circle {
   opacity: 1;
 }
@@ -435,4 +443,35 @@ img {
 
 .provider-pattern-image:hover {
   opacity: 1;
+}
+
+.rdg-cell {
+  color: white;
+  max-width: 100%;
+  text-align: justify;
+}
+
+.rdg-header {
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.rdg-cell:hover {
+  background-color: darkturquoise;
+}
+
+.rdg-cell:focus {
+  background-color: #253e82;
+  font-weight: 500;
+  animation: blinker 2.5s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    text-decoration: underline;
+  }
+}
+
+.fill-grid {
+  block-size: 100%;
 }
