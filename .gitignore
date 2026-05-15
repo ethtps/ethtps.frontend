@@ -1,9 +1,9 @@
 # dependencies
-/node_modules
+node_modules
 
 # build output
 /dist
-
+.vite
 # local env overrides (do not commit)
 .env.local
 .env.production.local
