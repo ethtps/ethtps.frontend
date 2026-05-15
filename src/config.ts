@@ -4,4 +4,5 @@ export const config = {
   openApiUrl: import.meta.env.VITE_OPENAPI_URL as string,
   globalPollIntervalMs: Number(import.meta.env.VITE_GLOBAL_POLL_INTERVAL_MS ?? 5000),
   staleThresholdMs: Number(import.meta.env.VITE_STALE_THRESHOLD_MS ?? 30000),
+  pageSize: Number(import.meta.env.VITE_PAGE_SIZE ?? 25),
 } as const;
