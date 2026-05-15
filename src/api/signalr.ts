@@ -1,7 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 import { config } from "../config";
 import { store } from "../store";
-import { applyUpdate, MetricsUpdate } from "../store/metricsSlice";
+import { applyBatchUpdate, MetricsUpdate } from "../store/metricsSlice";
 
 const MAX_BACKOFF_MS = 5_000;
 
@@ -17,9 +17,17 @@ const connection = new signalR.HubConnectionBuilder()
   })
   .build();
 
+let batch: MetricsUpdate[] = [];
+
 connection.on("MetricsUpdate", (update: MetricsUpdate) => {
-  store.dispatch(applyUpdate(update));
+  batch.push(update);
 });
+
+setInterval(() => {
+  if (batch.length === 0) return;
+  store.dispatch(applyBatchUpdate(batch));
+  batch = [];
+}, config.signalrBatchMs);
 
 let activeChainIds: number[] = [];
 

@@ -1,8 +1,9 @@
 import { Group, Pagination, ScrollArea, Skeleton, Table, Text } from "@mantine/core";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { config } from "../config";
 import { RootState } from "../store";
+import { LiveMetricsResponse } from "../store/metricsSlice";
 import { ChainRow } from "./ChainRow";
 
 export function ChainList() {
@@ -12,13 +13,34 @@ export function ChainList() {
   const metric = useSelector((s: RootState) => s.ui.metric);
   const [page, setPage] = useState(1);
 
+  // Snapshot of live values used exclusively for sort order.
+  // Updated on an interval so rows don't shuffle on every SignalR push.
+  const [sortSnapshot, setSortSnapshot] = useState<Record<number, LiveMetricsResponse>>(live);
+  const metricRef = useRef(metric);
+  metricRef.current = metric;
+
+  useEffect(() => {
+    // Snap immediately when metric changes so order reflects the new key at once.
+    setSortSnapshot(live);
+  }, [metric]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSortSnapshot((prev) => {
+        // Only trigger a re-render if values actually changed.
+        return prev === live ? prev : live;
+      });
+    }, config.sortIntervalMs);
+    return () => clearInterval(id);
+  }, [live]);
+
   const sorted = useMemo(() => {
     return [...networks].sort((a, b) => {
-      const aVal = live[a.chainId]?.[metric] ?? -1;
-      const bVal = live[b.chainId]?.[metric] ?? -1;
+      const aVal = sortSnapshot[a.chainId]?.[metric] ?? -1;
+      const bVal = sortSnapshot[b.chainId]?.[metric] ?? -1;
       return bVal - aVal;
     });
-  }, [networks, live, metric]);
+  }, [networks, sortSnapshot, metric]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / config.pageSize));
   const safePage = Math.min(page, totalPages);

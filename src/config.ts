@@ -5,4 +5,6 @@ export const config = {
   globalPollIntervalMs: Number(import.meta.env.VITE_GLOBAL_POLL_INTERVAL_MS ?? 5000),
   staleThresholdMs: Number(import.meta.env.VITE_STALE_THRESHOLD_MS ?? 30000),
   pageSize: Number(import.meta.env.VITE_PAGE_SIZE ?? 25),
+  sortIntervalMs: Number(import.meta.env.VITE_SORT_INTERVAL_MS ?? 5000),
+  signalrBatchMs: Number(import.meta.env.VITE_SIGNALR_BATCH_MS ?? 500),
 } as const;

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import {
   Area,
   AreaChart,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -26,6 +25,10 @@ const CHAIN_COLORS = [
   "#ff6b6b",
   "#ffe066",
 ];
+
+function chainColor(id: string): string {
+  return CHAIN_COLORS[Number(id) % CHAIN_COLORS.length] ?? OTHER_COLOR;
+}
 
 function formatTs(ts: number): string {
   const d = new Date(ts);
@@ -83,7 +86,7 @@ export function StreamChart() {
       <Text size="sm" fw={600} mb="xs" c="dimmed" tt="uppercase">
         {metric} — last 60 s
       </Text>
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={400}>
         <AreaChart data={chartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <XAxis
             dataKey="timestamp"
@@ -101,23 +104,21 @@ export function StreamChart() {
               labelFor(name as string),
             ]}
           />
-          <Legend formatter={(v) => labelFor(v as string)} />
-
-          {significantList.map((id, i) => (
+          {significantList.map((id) => (
             <Area
               key={id}
-              type="monotone"
+              type="linear"
               dataKey={id}
               stackId="s"
-              stroke={CHAIN_COLORS[i % CHAIN_COLORS.length]}
-              fill={CHAIN_COLORS[i % CHAIN_COLORS.length]}
+              stroke={chainColor(id)}
+              fill={chainColor(id)}
               fillOpacity={0.55}
               isAnimationActive={false}
             />
           ))}
 
           <Area
-            type="monotone"
+            type="linear"
             dataKey="__other"
             stackId="s"
             stroke={OTHER_COLOR}

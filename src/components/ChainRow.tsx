@@ -1,4 +1,5 @@
 import { Badge, Group, Table, Text } from "@mantine/core";
+import { memo } from "react";
 import { NetworkResponse } from "../store/networksSlice";
 import { LiveMetricsResponse } from "../store/metricsSlice";
 import { config } from "../config";
@@ -14,7 +15,7 @@ function isStale(timestamp: string | undefined): boolean {
   return Date.now() - new Date(timestamp).getTime() > config.staleThresholdMs;
 }
 
-export function ChainRow({ network, live, metric }: Props) {
+export const ChainRow = memo(function ChainRow({ network, live, metric }: Props) {
   const stale = isStale(live?.timestamp);
   const rawValue = live ? live[metric] : null;
   const display = rawValue != null ? rawValue.toFixed(2) : "—";
@@ -39,4 +40,4 @@ export function ChainRow({ network, live, metric }: Props) {
       </Table.Td>
     </Table.Tr>
   );
-}
+});

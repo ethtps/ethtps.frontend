@@ -68,6 +68,17 @@ const metricsSlice = createSlice({
         timestamp: u.timestamp,
       };
     },
+    applyBatchUpdate(state, action: PayloadAction<MetricsUpdate[]>) {
+      for (const u of action.payload) {
+        state.live[u.chainId] = {
+          chainId: u.chainId,
+          tps: u.tps,
+          gps: u.gps,
+          blockNumber: u.blockNumber,
+          timestamp: u.timestamp,
+        };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,5 +109,5 @@ const metricsSlice = createSlice({
   },
 });
 
-export const { applyUpdate } = metricsSlice.actions;
+export const { applyUpdate, applyBatchUpdate } = metricsSlice.actions;
 export default metricsSlice.reducer;
