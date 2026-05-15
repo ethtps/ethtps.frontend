@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startSignalR } from "./api/signalr";
 import { GlobalStatsBanner } from "./components/GlobalStatsBanner";
+import { StreamChart } from "./components/StreamChart";
 import { ChainList } from "./components/ChainList";
 import { TopBar } from "./components/TopBar";
 import { AppDispatch, RootState } from "./store";
@@ -41,6 +42,7 @@ export function App() {
       </AppShell.Header>
       <AppShell.Main>
         <GlobalStatsBanner />
+        <StreamChart />
         <ChainList />
       </AppShell.Main>
     </AppShell>

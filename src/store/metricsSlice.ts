@@ -24,16 +24,28 @@ export interface MetricsUpdate {
   timestamp: string;
 }
 
+export interface MetricsSnapshot {
+  timestamp: number;
+  totalTps: number;
+  totalGps: number;
+  // keyed by string chainId (JS object keys are always strings)
+  chains: Record<string, { tps: number | null; gps: number | null }>;
+}
+
+const HISTORY_MS = 60_000;
+
 interface MetricsState {
   live: Record<number, LiveMetricsResponse>;
   global: GlobalMetricsResponse | null;
   globalStatus: "idle" | "loading" | "error";
+  history: MetricsSnapshot[];
 }
 
 const initialState: MetricsState = {
   live: {},
   global: null,
   globalStatus: "idle",
+  history: [],
 };
 
 export const fetchGlobalMetrics = createAsyncThunk("metrics/fetchGlobal", async () => {
@@ -65,6 +77,20 @@ const metricsSlice = createSlice({
       .addCase(fetchGlobalMetrics.fulfilled, (state, action) => {
         state.global = action.payload;
         state.globalStatus = "idle";
+
+        const now = Date.now();
+        const chains: MetricsSnapshot["chains"] = {};
+        for (const [id, m] of Object.entries(state.live)) {
+          chains[id] = { tps: m.tps, gps: m.gps };
+        }
+        state.history.push({
+          timestamp: now,
+          totalTps: action.payload.totalTps,
+          totalGps: action.payload.totalGps,
+          chains,
+        });
+        const cutoff = now - HISTORY_MS;
+        state.history = state.history.filter((s) => s.timestamp >= cutoff);
       })
       .addCase(fetchGlobalMetrics.rejected, (state) => {
         state.globalStatus = "error";
