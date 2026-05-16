@@ -4,24 +4,27 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { AXIS_W, HEIGHT, MAX_REDRAW_THRESHOLD, SCROLL_DURATION_MS, TIME_AXIS_H } from "./constants";
 import { fillFromSnapshots, collectColumn } from "./columns";
-import { paintAxis, paintColumnData, paintTimeAxis, redrawAll } from "./paint";
+import { paintAxis, paintColumnData, paintTimeAxis, paintCrosshair, redrawAll } from "./paint";
 import { chainColor, hexToRgb } from "./utils";
 import { ColumnData, TooltipState } from "./types";
 import { OTHER_COLOR } from "./constants";
 
 export function StreamChart() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const overlayRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
   const live = useSelector((s: RootState) => s.metrics.live);
   const networks = useSelector((s: RootState) => s.networks.networks);
   const metric = useSelector((s: RootState) => s.ui.metric);
+  const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
   const preloadedSnapshots = useSelector((s: RootState) => s.metrics.preloadedSnapshots);
 
   const liveRef = useRef(live);
   const networksRef = useRef(networks);
   const metricRef = useRef(metric);
+  const colorSchemeRef = useRef(colorScheme);
   const preloadedRef = useRef(preloadedSnapshots);
   const maxRef = useRef(1);
   const prevMetricRef = useRef(metric);
@@ -32,21 +35,27 @@ export function StreamChart() {
   liveRef.current = live;
   networksRef.current = networks;
   metricRef.current = metric;
+  colorSchemeRef.current = colorScheme;
   preloadedRef.current = preloadedSnapshots;
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    const overlay = overlayRef.current;
     const wrap = wrapRef.current;
-    if (!canvas || !wrap) return;
+    if (!canvas || !overlay || !wrap) return;
 
     const W = wrap.getBoundingClientRect().width;
     canvas.width = W;
     canvas.height = HEIGHT + TIME_AXIS_H;
+    overlay.width = W;
+    overlay.height = HEIGHT + TIME_AXIS_H;
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const overlayCtx = overlay.getContext("2d");
+    if (!ctx || !overlayCtx) return;
 
     const c: CanvasRenderingContext2D = ctx;
+    const oc: CanvasRenderingContext2D = overlayCtx;
     const cvs: HTMLCanvasElement = canvas;
     ctxRef.current = c;
     canvasWRef.current = W;
@@ -123,8 +132,11 @@ export function StreamChart() {
 
       if (mx < AXIS_W || mx >= W || my < 0 || my >= HEIGHT) {
         setTooltip(null);
+        oc.clearRect(0, 0, W, HEIGHT + TIME_AXIS_H);
         return;
       }
+
+      paintCrosshair(oc, W, mx, my, maxRef.current, metricRef.current.toUpperCase(), colorSchemeRef.current === "dark");
 
       const [r, g, b, a] = c.getImageData(mx, my, 1, 1).data;
       if (a === 0) { setTooltip(null); return; }
@@ -155,7 +167,10 @@ export function StreamChart() {
       setTooltip({ x: e.clientX, y: e.clientY, name, value });
     }
 
-    function onMouseLeave() { setTooltip(null); }
+    function onMouseLeave() {
+      setTooltip(null);
+      oc.clearRect(0, 0, W, HEIGHT + TIME_AXIS_H);
+    }
 
     cvs.addEventListener("mousemove", onMouseMove);
     cvs.addEventListener("mouseleave", onMouseLeave);
@@ -187,6 +202,7 @@ export function StreamChart() {
       </Text>
       <div ref={wrapRef} style={{ position: "relative" }}>
         <canvas ref={canvasRef} style={{ display: "block" }} />
+        <canvas ref={overlayRef} style={{ display: "block", position: "absolute", top: 0, left: 0, pointerEvents: "none" }} />
       </div>
       {tooltip && (
         <div

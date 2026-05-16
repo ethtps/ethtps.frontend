@@ -30,6 +30,8 @@ export function App() {
   const networksStatus = useSelector((s: RootState) => s.networks.status);
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
+  const globalMetrics = useSelector((s: RootState) => s.metrics.global);
+  const metric = useSelector((s: RootState) => s.ui.metric);
   const signalRStarted = useRef(false);
 
   useEffect(() => {
@@ -58,6 +60,13 @@ export function App() {
     const ids = filteredChainIds(networks, includeTestnets, includeSidechains);
     updateSubscription(ids).catch(console.error);
   }, [networks, includeTestnets, includeSidechains]);
+
+  useEffect(() => {
+    const value = metric === "tps" ? globalMetrics?.totalTps : globalMetrics?.totalGps;
+    document.title = value != null
+      ? `ethtps.info - ${value.toFixed(2)} ${metric.toUpperCase()}`
+      : "ethtps.info";
+  }, [globalMetrics, metric]);
 
   return (
     <AppShell header={{ height: 56 }} footer={{ height: 36 }} padding="md">
