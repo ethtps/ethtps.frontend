@@ -1,10 +1,21 @@
 import { Group, Pagination, ScrollArea, Skeleton, Table, Text } from "@mantine/core";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { config } from "../config";
 import { RootState } from "../store";
 import { LiveMetricsResponse } from "../store/metricsSlice";
 import { ChainRow } from "./ChainRow";
+
+type SortCol = "chain" | "type" | "metric" | "status";
+type SortDir = "asc" | "desc";
+
+function SortIndicator({ active, dir }: { active: boolean; dir: SortDir }) {
+  return (
+    <span style={{ marginLeft: 4, opacity: active ? 0.8 : 0.25, fontSize: 10 }}>
+      {active ? (dir === "asc" ? "▲" : "▼") : "▲▼"}
+    </span>
+  );
+}
 
 export function ChainList() {
   const networks = useSelector((s: RootState) => s.networks.networks);
@@ -14,12 +25,25 @@ export function ChainList() {
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const [page, setPage] = useState(1);
+  const [sortCol, setSortCol] = useState<SortCol>("metric");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   const [sortSnapshot, setSortSnapshot] = useState<Record<number, LiveMetricsResponse>>(live);
   const liveRef = useRef(live);
   liveRef.current = live;
   const metricRef = useRef(metric);
   metricRef.current = metric;
+
+  function handleSort(col: SortCol) {
+    setSortSnapshot(liveRef.current);
+    if (col === sortCol) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortCol(col);
+      setSortDir(col === "metric" ? "desc" : "asc");
+    }
+    setPage(1);
+  }
 
   useEffect(() => {
     setSortSnapshot(liveRef.current);
@@ -41,13 +65,39 @@ export function ChainList() {
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
-      const aVal = sortSnapshot[a.chainId]?.[metric] ?? -1;
-      const bVal = sortSnapshot[b.chainId]?.[metric] ?? -1;
-      return bVal - aVal;
+      let cmp = 0;
+      switch (sortCol) {
+        case "chain":
+          cmp = a.name.localeCompare(b.name);
+          break;
+        case "type": {
+          const ta = (a.networkType ?? "") + (a.isTestnet ? "1" : "0");
+          const tb = (b.networkType ?? "") + (b.isTestnet ? "1" : "0");
+          cmp = ta.localeCompare(tb);
+          break;
+        }
+        case "metric": {
+          const aVal = sortSnapshot[a.chainId]?.[metric] ?? -1;
+          const bVal = sortSnapshot[b.chainId]?.[metric] ?? -1;
+          cmp = aVal - bVal;
+          break;
+        }
+        case "status": {
+          const now = Date.now();
+          const aLive = live[a.chainId]?.timestamp
+            ? now - new Date(live[a.chainId].timestamp).getTime() <= config.staleThresholdMs
+            : false;
+          const bLive = live[b.chainId]?.timestamp
+            ? now - new Date(live[b.chainId].timestamp).getTime() <= config.staleThresholdMs
+            : false;
+          cmp = Number(aLive) - Number(bLive);
+          break;
+        }
+      }
+      return sortDir === "asc" ? cmp : -cmp;
     });
-  }, [filtered, sortSnapshot, metric]);
+  }, [filtered, sortSnapshot, metric, sortCol, sortDir, live]);
 
-  // Reset to page 1 when filter changes
   useEffect(() => {
     setPage(1);
   }, [includeTestnets, includeSidechains]);
@@ -55,6 +105,8 @@ export function ChainList() {
   const totalPages = Math.max(1, Math.ceil(sorted.length / config.pageSize));
   const safePage = Math.min(page, totalPages);
   const pageSlice = sorted.slice((safePage - 1) * config.pageSize, safePage * config.pageSize);
+
+  const thStyle: React.CSSProperties = { cursor: "pointer", userSelect: "none", textAlign: "center" };
 
   if (networksStatus === "loading" && networks.length === 0) {
     return (
@@ -76,10 +128,18 @@ export function ChainList() {
         <Table striped highlightOnHover>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Chain</Table.Th>
-              <Table.Th>Type</Table.Th>
-              <Table.Th>{metric.toUpperCase()}</Table.Th>
-              <Table.Th>Status</Table.Th>
+              <Table.Th style={thStyle} onClick={() => handleSort("chain")}>
+                Chain <SortIndicator active={sortCol === "chain"} dir={sortDir} />
+              </Table.Th>
+              <Table.Th style={thStyle} onClick={() => handleSort("type")}>
+                Type <SortIndicator active={sortCol === "type"} dir={sortDir} />
+              </Table.Th>
+              <Table.Th style={thStyle} onClick={() => handleSort("metric")}>
+                {metric.toUpperCase()} <SortIndicator active={sortCol === "metric"} dir={sortDir} />
+              </Table.Th>
+              <Table.Th style={thStyle} onClick={() => handleSort("status")}>
+                Status <SortIndicator active={sortCol === "status"} dir={sortDir} />
+              </Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>

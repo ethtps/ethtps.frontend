@@ -1,4 +1,5 @@
 import { AppShell } from "@mantine/core";
+import { useMantineColorScheme } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startSignalR, updateSubscription } from "./api/signalr";
@@ -10,18 +11,13 @@ import { Footer } from "./components/Footer";
 import { AppDispatch, RootState } from "./store";
 import { fetchGlobalMetrics, fetchHistoryPreload } from "./store/metricsSlice";
 import { NetworkResponse, fetchNetworks } from "./store/networksSlice";
+import { setColorScheme } from "./store/uiSlice";
 import { config } from "./config";
 
-function filteredChainIds(
-  networks: NetworkResponse[],
-  includeTestnets: boolean,
-  includeSidechains: boolean,
-): number[] {
-  return networks
-    .filter((n) => n.enabled)
-    .filter((n) => includeTestnets || !n.isTestnet)
-    .filter((n) => includeSidechains || (n.networkType?.toLowerCase() ?? "") !== "sidechain")
-    .map((n) => n.chainId);
+// Subscribe to all enabled chains regardless of UI display filters so the
+// stream chart always has live data for every chain.
+function enabledChainIds(networks: NetworkResponse[]): number[] {
+  return networks.filter((n) => n.enabled).map((n) => n.chainId);
 }
 
 export function App() {
@@ -32,6 +28,8 @@ export function App() {
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const globalMetrics = useSelector((s: RootState) => s.metrics.global);
   const metric = useSelector((s: RootState) => s.ui.metric);
+  const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
+  const { setColorScheme: mantineSetColorScheme } = useMantineColorScheme();
   const signalRStarted = useRef(false);
 
   useEffect(() => {
@@ -49,17 +47,27 @@ export function App() {
   useEffect(() => {
     if (networksStatus !== "idle" || networks.length === 0 || signalRStarted.current) return;
     signalRStarted.current = true;
-    const ids = filteredChainIds(networks, includeTestnets, includeSidechains);
-    startSignalR(ids).catch(console.error);
+    startSignalR(enabledChainIds(networks)).catch(console.error);
     dispatch(fetchHistoryPreload());
   }, [networks, networksStatus, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Re-subscribe when filters change after initial connection
+  // Re-subscribe when the network list itself changes (new chains added/removed)
   useEffect(() => {
     if (!signalRStarted.current || networks.length === 0) return;
-    const ids = filteredChainIds(networks, includeTestnets, includeSidechains);
-    updateSubscription(ids).catch(console.error);
-  }, [networks, includeTestnets, includeSidechains]);
+    updateSubscription(enabledChainIds(networks)).catch(console.error);
+  }, [networks]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key === "t" || e.key === "T") && e.target === document.body) {
+        const next = colorScheme === "dark" ? "light" : "dark";
+        dispatch(setColorScheme(next));
+        mantineSetColorScheme(next);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [colorScheme, dispatch, mantineSetColorScheme]);
 
   useEffect(() => {
     const value = metric === "tps" ? globalMetrics?.totalTps : globalMetrics?.totalGps;

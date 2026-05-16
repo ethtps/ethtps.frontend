@@ -1,7 +1,56 @@
-import { CHAIN_COLORS, OTHER_COLOR } from "./constants";
+import {
+  schemeTableau10,
+  schemeObservable10,
+  schemeSet1,
+  schemeDark2,
+  schemeAccent,
+  schemePaired,
+  schemeSet2,
+  schemeSet3,
+} from "d3-scale-chromatic";
 
-export function chainColor(id: string): string {
-  return CHAIN_COLORS[Number(id) % CHAIN_COLORS.length] ?? OTHER_COLOR;
+function buildPalette(): string[] {
+  // Interleave multiple palettes so successive color assignments stay distinct.
+  // Pastel schemes are omitted — too low-contrast on the chart canvas.
+  const palettes: readonly (readonly string[])[] = [
+    schemeTableau10,
+    schemeObservable10,
+    schemeSet1,
+    schemeDark2,
+    schemeAccent,
+    schemePaired,
+    schemeSet2,
+    schemeSet3,
+  ];
+  const seen = new Set<string>();
+  const result: string[] = [];
+  const maxLen = Math.max(...palettes.map((p) => p.length));
+  for (let i = 0; i < maxLen; i++) {
+    for (const palette of palettes) {
+      if (i < palette.length) {
+        const key = palette[i].toLowerCase();
+        if (!seen.has(key)) {
+          seen.add(key);
+          result.push(palette[i]);
+        }
+      }
+    }
+  }
+  return result;
+}
+
+const PALETTE = buildPalette();
+const colorRegistry = new Map<number, string>();
+let nextSlot = 0;
+
+export function chainColor(chainId: number): string {
+  let color = colorRegistry.get(chainId);
+  if (color === undefined) {
+    color = PALETTE[nextSlot % PALETTE.length];
+    nextSlot++;
+    colorRegistry.set(chainId, color);
+  }
+  return color;
 }
 
 export function siFormat(v: number): string {

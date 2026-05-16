@@ -1,6 +1,28 @@
 import { AXIS_W, HEIGHT, TIME_AXIS_H } from "./constants";
-import { ColumnData } from "./types";
+import { ColumnData, Segment } from "./types";
 import { siFormat } from "./utils";
+
+export function smoothColumn(history: ColumnData[], idx: number, radius: number): ColumnData {
+  const colorMap = new Map<string, number>();
+  let totalSum = 0;
+  let count = 0;
+  for (let di = -radius; di <= 0; di++) {
+    const i = idx + di;
+    if (i < 0) continue;
+    count++;
+    for (const seg of history[i].segments) {
+      colorMap.set(seg.color, (colorMap.get(seg.color) ?? 0) + seg.value);
+    }
+    totalSum += history[i].total;
+  }
+  if (count === 0) return { segments: [], total: 0 };
+  const segments: Segment[] = [];
+  for (const [color, sum] of colorMap) {
+    const avg = sum / count;
+    if (avg > 0) segments.push({ color, value: avg });
+  }
+  return { segments, total: totalSum / count };
+}
 
 export function paintColumnData(
   ctx: CanvasRenderingContext2D,
@@ -138,11 +160,14 @@ export function redrawAll(
   history: ColumnData[],
   max: number,
   lookbackMs: number,
+  smooth = false,
+  smoothRadius = 8,
 ) {
   ctx.clearRect(0, 0, W, H + TIME_AXIS_H);
   const startX = W - history.length;
   for (let i = 0; i < history.length; i++) {
-    paintColumnData(ctx, startX + i, H, history[i], max);
+    const col = smooth ? smoothColumn(history, i, smoothRadius) : history[i];
+    paintColumnData(ctx, startX + i, H, col, max);
   }
   paintAxis(ctx, H, max);
   paintTimeAxis(ctx, W, W - AXIS_W, H, lookbackMs);

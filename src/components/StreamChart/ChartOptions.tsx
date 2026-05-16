@@ -1,4 +1,5 @@
 import { Switch } from "@mantine/core";
+import { IconAdjustments } from "@tabler/icons-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
@@ -6,6 +7,7 @@ import {
   setExcludeLowThroughputChains,
   setIncludeSidechains,
   setIncludeTestnets,
+  setSmoothGraph,
 } from "../../store/uiSlice";
 import { AXIS_W } from "./constants";
 
@@ -14,6 +16,7 @@ export function ChartOptions() {
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const excludeLowThroughput = useSelector((s: RootState) => s.ui.excludeLowThroughputChains);
+  const smoothGraph = useSelector((s: RootState) => s.ui.smoothGraph);
 
   const [hovered, setHovered] = useState(false);
   const [locked, setLocked] = useState(false);
@@ -28,21 +31,23 @@ export function ChartOptions() {
       <button
         onClick={() => setLocked((l) => !l)}
         style={{
-          display: "block",
-          background: "rgba(128,128,128,0.15)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 28,
+          height: 28,
+          background: open ? "rgba(128,128,128,0.25)" : "rgba(128,128,128,0.15)",
           border: "1px solid rgba(128,128,128,0.25)",
           borderRadius: 6,
-          padding: "3px 8px",
-          fontSize: 11,
-          fontFamily: "inherit",
+          padding: 0,
           cursor: "pointer",
           color: "var(--mantine-color-dimmed)",
           backdropFilter: "blur(4px)",
-          letterSpacing: "0.03em",
-          opacity: 1,
+          transition: "background 0.15s ease",
         }}
+        aria-label="Chart options"
       >
-        Options
+        <IconAdjustments size={16} />
       </button>
       <div
         style={{
@@ -80,6 +85,12 @@ export function ChartOptions() {
           label="Low-throughput"
           checked={!excludeLowThroughput}
           onChange={(e) => dispatch(setExcludeLowThroughputChains(!e.currentTarget.checked))}
+        />
+        <Switch
+          size="xs"
+          label="Smooth"
+          checked={smoothGraph}
+          onChange={(e) => dispatch(setSmoothGraph(e.currentTarget.checked))}
         />
       </div>
     </div>

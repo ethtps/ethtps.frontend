@@ -6,6 +6,7 @@ interface UiState {
   includeTestnets: boolean;
   includeSidechains: boolean;
   excludeLowThroughputChains: boolean;
+  smoothGraph: boolean;
 }
 
 const savedMetric = (localStorage.getItem("ui_metric") as "tps" | "gps") ?? "tps";
@@ -17,6 +18,7 @@ const initialState: UiState = {
   includeTestnets: localStorage.getItem("ui_includeTestnets") === "true",
   includeSidechains: localStorage.getItem("ui_includeSidechains") === "true",
   excludeLowThroughputChains: localStorage.getItem("ui_excludeLowThroughputChains") !== "false",
+  smoothGraph: localStorage.getItem("ui_smoothGraph") === "true",
 };
 
 const uiSlice = createSlice({
@@ -43,8 +45,12 @@ const uiSlice = createSlice({
       state.excludeLowThroughputChains = action.payload;
       localStorage.setItem("ui_excludeLowThroughputChains", String(action.payload));
     },
+    setSmoothGraph(state, action: PayloadAction<boolean>) {
+      state.smoothGraph = action.payload;
+      localStorage.setItem("ui_smoothGraph", String(action.payload));
+    },
   },
 });
 
-export const { setMetric, setColorScheme, setIncludeTestnets, setIncludeSidechains, setExcludeLowThroughputChains } = uiSlice.actions;
+export const { setMetric, setColorScheme, setIncludeTestnets, setIncludeSidechains, setExcludeLowThroughputChains, setSmoothGraph } = uiSlice.actions;
 export default uiSlice.reducer;

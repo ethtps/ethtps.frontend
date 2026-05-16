@@ -16,7 +16,7 @@ export function collectColumn(
   for (const n of networks) {
     const v = live[n.chainId]?.[metric] ?? 0;
     if (excludeLowThroughput ? v >= THRESHOLD : v > 0) {
-      segments.push({ color: chainColor(String(n.chainId)), value: v });
+      segments.push({ color: chainColor(n.chainId), value: v });
     } else {
       other += v;
     }
@@ -45,7 +45,7 @@ export function snapshotToColumnData(
     const entry = snap.chains[String(n.chainId)];
     const v = (entry?.[metric] ?? 0) as number;
     if (v >= THRESHOLD) {
-      segments.push({ color: chainColor(String(n.chainId)), value: v });
+      segments.push({ color: chainColor(n.chainId), value: v });
     } else {
       other += v;
     }

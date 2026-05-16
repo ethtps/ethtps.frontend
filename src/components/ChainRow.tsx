@@ -33,15 +33,13 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
 
   return (
     <Table.Tr>
-      <Table.Td>
-        <Group gap="xs">
+      <Table.Td ta="center">
+        <Group gap="xs" justify="center">
           <Text fw={600}>{network.name}</Text>
-          <Text size="xs" c="dimmed">
-            #{network.chainId}
-          </Text>
+          <Text size="xs" c="dimmed">#{network.chainId}</Text>
         </Group>
       </Table.Td>
-      <Table.Td>
+      <Table.Td ta="center">
         {network.networkType ? (
           <Badge color={typeColor(network.networkType, network.isTestnet)} variant="light" size="sm">
             {network.networkType}
@@ -51,10 +49,10 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
           <Text size="xs" c="dimmed">—</Text>
         )}
       </Table.Td>
-      <Table.Td>
+      <Table.Td ta="center">
         <Text fw={500}>{display}</Text>
       </Table.Td>
-      <Table.Td>
+      <Table.Td ta="center">
         <Badge color={stale ? "gray" : "green"} variant="dot">
           {stale ? "stale" : "live"}
         </Badge>
