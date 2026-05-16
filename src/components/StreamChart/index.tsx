@@ -4,9 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { fetchHistoryPreload } from "../../store/metricsSlice";
-import { AXIS_W, HEIGHT, MAX_LOOKBACK_MS, MAX_REDRAW_THRESHOLD, MIN_LOOKBACK_MS, SCROLL_DURATION_MS, TIME_AXIS_H } from "./constants";
+import {
+  AXIS_W,
+  HEIGHT,
+  MAX_LOOKBACK_MS,
+  MAX_REDRAW_THRESHOLD,
+  MIN_LOOKBACK_MS,
+  SCROLL_DURATION_MS,
+  TIME_AXIS_H,
+} from "./constants";
 import { fillFromSnapshots, collectColumn } from "./columns";
-import { paintAxis, paintColumnData, paintTimeAxis, paintCrosshair, redrawAll } from "./paint";
+import {
+  paintAxis,
+  paintColumnData,
+  paintTimeAxis,
+  paintCrosshair,
+  redrawAll,
+} from "./paint";
 import { chainColor, hexToRgb } from "./utils";
 import { ColumnData, TooltipState } from "./types";
 import { OTHER_COLOR } from "./constants";
@@ -24,13 +38,17 @@ export function StreamChart() {
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(() => window.location.pathname === "/live");
+  const [isFullscreen, setIsFullscreen] = useState(
+    () => window.location.pathname === "/live",
+  );
 
   const live = useSelector((s: RootState) => s.metrics.live);
   const networks = useSelector((s: RootState) => s.networks.networks);
   const metric = useSelector((s: RootState) => s.ui.metric);
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
-  const preloadedSnapshots = useSelector((s: RootState) => s.metrics.preloadedSnapshots);
+  const preloadedSnapshots = useSelector(
+    (s: RootState) => s.metrics.preloadedSnapshots,
+  );
 
   const liveRef = useRef(live);
   const networksRef = useRef(networks);
@@ -93,7 +111,10 @@ export function StreamChart() {
         const oldLen = history.length;
         const rescaled: ColumnData[] = new Array(newStreamW);
         for (let i = 0; i < newStreamW; i++) {
-          rescaled[i] = history[Math.min(Math.round((i / newStreamW) * oldLen), oldLen - 1)];
+          rescaled[i] =
+            history[
+              Math.min(Math.round((i / newStreamW) * oldLen), oldLen - 1)
+            ];
         }
         history.length = 0;
         for (const col of rescaled) history.push(col);
@@ -125,11 +146,27 @@ export function StreamChart() {
     streamWRef.current = initW - AXIS_W;
 
     if (preloadedRef.current.length > 0 && history.length === 0) {
-      fillFromSnapshots(preloadedRef.current, history, streamWRef.current, networksRef.current, metricRef.current);
+      fillFromSnapshots(
+        preloadedRef.current,
+        history,
+        streamWRef.current,
+        networksRef.current,
+        metricRef.current,
+      );
       if (history.length > 0) {
-        lastMaxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
+        lastMaxRef.current = history.reduce(
+          (m, col) => Math.max(m, col.total),
+          1,
+        );
         maxRef.current = lastMaxRef.current;
-        redrawAll(c, initW, HEIGHT, history, lastMaxRef.current, lookbackMsRef.current);
+        redrawAll(
+          c,
+          initW,
+          HEIGHT,
+          history,
+          lastMaxRef.current,
+          lookbackMsRef.current,
+        );
       }
     }
 
@@ -158,14 +195,22 @@ export function StreamChart() {
 
       if (px >= 1) {
         subPixelRef.current -= px;
-        const col = collectColumn(liveRef.current, networksRef.current, metricRef.current);
+        const col = collectColumn(
+          liveRef.current,
+          networksRef.current,
+          metricRef.current,
+        );
 
         for (let i = 0; i < px; i++) history.push(col);
-        if (history.length > streamW) history.splice(0, history.length - streamW);
+        if (history.length > streamW)
+          history.splice(0, history.length - streamW);
 
         maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
 
-        if (Math.abs(maxRef.current - lastMaxRef.current) / lastMaxRef.current > MAX_REDRAW_THRESHOLD) {
+        if (
+          Math.abs(maxRef.current - lastMaxRef.current) / lastMaxRef.current >
+          MAX_REDRAW_THRESHOLD
+        ) {
           lastMaxRef.current = maxRef.current;
           redrawAll(c, W, H, history, maxRef.current, lookbackMsRef.current);
         } else {
@@ -199,13 +244,27 @@ export function StreamChart() {
         return;
       }
 
-      paintCrosshair(oc, W, mx, my, maxRef.current, metricRef.current.toUpperCase(), colorSchemeRef.current === "dark", H, lookbackMsRef.current);
+      paintCrosshair(
+        oc,
+        W,
+        mx,
+        my,
+        maxRef.current,
+        metricRef.current.toUpperCase(),
+        colorSchemeRef.current === "dark",
+        H,
+        lookbackMsRef.current,
+      );
 
       const [r, g, b, a] = c.getImageData(mx, my, 1, 1).data;
-      if (a === 0) { setTooltip(null); return; }
+      if (a === 0) {
+        setTooltip(null);
+        return;
+      }
 
       const histIdx = mx - (W - history.length);
-      const col = histIdx >= 0 && histIdx < history.length ? history[histIdx] : null;
+      const col =
+        histIdx >= 0 && histIdx < history.length ? history[histIdx] : null;
 
       const nets = networksRef.current;
       let name = "Unknown";
@@ -241,7 +300,10 @@ export function StreamChart() {
       e.preventDefault();
       const oldLookback = lookbackMsRef.current;
       const factor = e.deltaY > 0 ? 1.25 : 1 / 1.25;
-      const newLookback = Math.max(MIN_LOOKBACK_MS, Math.min(MAX_LOOKBACK_MS, oldLookback * factor));
+      const newLookback = Math.max(
+        MIN_LOOKBACK_MS,
+        Math.min(MAX_LOOKBACK_MS, oldLookback * factor),
+      );
       if (newLookback === oldLookback) return;
 
       // Rescale history: zoom in = keep newest slice and stretch; zoom out = compress into right portion, pad left with empty
@@ -249,16 +311,34 @@ export function StreamChart() {
         const streamW = streamWRef.current;
         const rescaled: ColumnData[] = new Array(streamW);
         if (newLookback < oldLookback) {
-          const keepCount = Math.max(1, Math.round(history.length * newLookback / oldLookback));
+          const keepCount = Math.max(
+            1,
+            Math.round((history.length * newLookback) / oldLookback),
+          );
           const slice = history.slice(history.length - keepCount);
           for (let i = 0; i < streamW; i++)
-            rescaled[i] = slice[Math.min(Math.round((i / streamW) * slice.length), slice.length - 1)];
+            rescaled[i] =
+              slice[
+                Math.min(
+                  Math.round((i / streamW) * slice.length),
+                  slice.length - 1,
+                )
+              ];
         } else {
-          const coveredPx = Math.min(streamW, Math.round(streamW * oldLookback / newLookback));
+          const coveredPx = Math.min(
+            streamW,
+            Math.round((streamW * oldLookback) / newLookback),
+          );
           const empty: ColumnData = { segments: [], total: 0 };
           for (let i = 0; i < streamW - coveredPx; i++) rescaled[i] = empty;
           for (let i = 0; i < coveredPx; i++)
-            rescaled[streamW - coveredPx + i] = history[Math.min(Math.round((i / coveredPx) * history.length), history.length - 1)];
+            rescaled[streamW - coveredPx + i] =
+              history[
+                Math.min(
+                  Math.round((i / coveredPx) * history.length),
+                  history.length - 1,
+                )
+              ];
         }
         history.length = 0;
         for (const col of rescaled) history.push(col);
@@ -273,7 +353,10 @@ export function StreamChart() {
 
       if (newLookback > oldLookback) {
         clearTimeout(refetchTimer);
-        refetchTimer = setTimeout(() => dispatchRef.current(fetchHistoryPreload()), 300);
+        refetchTimer = setTimeout(
+          () => dispatchRef.current(fetchHistoryPreload()),
+          300,
+        );
       }
     }
 
@@ -284,16 +367,34 @@ export function StreamChart() {
       if (history.length > 0) {
         const rescaled: ColumnData[] = new Array(streamW);
         if (SCROLL_DURATION_MS < oldLookback) {
-          const keepCount = Math.max(1, Math.round(history.length * SCROLL_DURATION_MS / oldLookback));
+          const keepCount = Math.max(
+            1,
+            Math.round((history.length * SCROLL_DURATION_MS) / oldLookback),
+          );
           const slice = history.slice(history.length - keepCount);
           for (let i = 0; i < streamW; i++)
-            rescaled[i] = slice[Math.min(Math.round((i / streamW) * slice.length), slice.length - 1)];
+            rescaled[i] =
+              slice[
+                Math.min(
+                  Math.round((i / streamW) * slice.length),
+                  slice.length - 1,
+                )
+              ];
         } else {
-          const coveredPx = Math.min(streamW, Math.round(streamW * oldLookback / SCROLL_DURATION_MS));
+          const coveredPx = Math.min(
+            streamW,
+            Math.round((streamW * oldLookback) / SCROLL_DURATION_MS),
+          );
           const empty: ColumnData = { segments: [], total: 0 };
           for (let i = 0; i < streamW - coveredPx; i++) rescaled[i] = empty;
           for (let i = 0; i < coveredPx; i++)
-            rescaled[streamW - coveredPx + i] = history[Math.min(Math.round((i / coveredPx) * history.length), history.length - 1)];
+            rescaled[streamW - coveredPx + i] =
+              history[
+                Math.min(
+                  Math.round((i / coveredPx) * history.length),
+                  history.length - 1,
+                )
+              ];
         }
         history.length = 0;
         for (const col of rescaled) history.push(col);
@@ -334,8 +435,14 @@ export function StreamChart() {
   }, []);
 
   useEffect(() => {
-    if (!isFullscreen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setIsFullscreen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isFullscreen) {
+        setIsFullscreen(false);
+        return;
+      }
+      if ((e.key === "f" || e.key === "F") && e.target === document.body)
+        setIsFullscreen((f) => !f);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isFullscreen]);
@@ -344,7 +451,13 @@ export function StreamChart() {
     if (preloadedSnapshots.length === 0) return;
     const W = canvasWRef.current;
     const history = historyBufRef.current;
-    fillFromSnapshots(preloadedSnapshots, history, W - AXIS_W, networksRef.current, metricRef.current);
+    fillFromSnapshots(
+      preloadedSnapshots,
+      history,
+      W - AXIS_W,
+      networksRef.current,
+      metricRef.current,
+    );
     const ctx = ctxRef.current;
     if (ctx && W > 0) {
       const max = history.reduce((m, col) => Math.max(m, col.total), 1);
@@ -355,27 +468,52 @@ export function StreamChart() {
 
   return (
     <div
-      style={isFullscreen ? {
-        position: "fixed",
-        inset: 0,
-        zIndex: 9999,
-        background: "var(--mantine-color-body)",
-        display: "flex",
-        flexDirection: "column",
-      } : undefined}
+      style={
+        isFullscreen
+          ? {
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              background: "var(--mantine-color-body)",
+              display: "flex",
+              flexDirection: "column",
+            }
+          : undefined
+      }
     >
       {isFullscreen && (
-        <div style={{ height: 56, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px" }}>
+        <div
+          style={{
+            height: 56,
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 16px",
+          }}
+        >
           <Group gap="md" align="center">
-            <Logo />
-            <Text size="sm" fw={600} c="dimmed" tt="uppercase" style={{ paddingTop: 10 }}>{metric} — live stream</Text>
+            <Logo onClick={() => setIsFullscreen(false)} />
+            <Text
+              size="sm"
+              fw={600}
+              c="dimmed"
+              tt="uppercase"
+              style={{ paddingTop: 5 }}
+            >
+              {metric} - live stream
+            </Text>
           </Group>
           <Group gap="sm">
             <ViewerCount />
             <MetricToggle />
             <ThemeToggle />
             <Tooltip label="Minimize" withArrow zIndex={10001}>
-              <ActionIcon variant="subtle" size="lg" onClick={() => setIsFullscreen(false)}>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                onClick={() => setIsFullscreen(false)}
+              >
                 <IconMinimize size={20} />
               </ActionIcon>
             </Tooltip>
@@ -386,13 +524,35 @@ export function StreamChart() {
         bg="transparent"
         p="md"
         mb={isFullscreen ? 0 : "md"}
-        style={isFullscreen ? { flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" } : undefined}
+        style={
+          isFullscreen
+            ? {
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden",
+              }
+            : undefined
+        }
       >
         {!isFullscreen && (
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-            <Text size="sm" fw={600} c="dimmed" tt="uppercase">{metric} — live stream</Text>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 8,
+            }}
+          >
+            <Text size="sm" fw={600} c="dimmed" tt="uppercase">
+              {metric} - live stream
+            </Text>
             <Tooltip label="Expand" withArrow zIndex={10001}>
-              <ActionIcon variant="subtle" size="lg" onClick={() => setIsFullscreen(true)}>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                onClick={() => setIsFullscreen(true)}
+              >
                 <IconMaximize size={20} />
               </ActionIcon>
             </Tooltip>
@@ -403,7 +563,16 @@ export function StreamChart() {
           style={{ position: "relative", ...(isFullscreen ? { flex: 1 } : {}) }}
         >
           <canvas ref={canvasRef} style={{ display: "block" }} />
-          <canvas ref={overlayRef} style={{ display: "block", position: "absolute", top: 0, left: 0, pointerEvents: "none" }} />
+          <canvas
+            ref={overlayRef}
+            style={{
+              display: "block",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              pointerEvents: "none",
+            }}
+          />
         </div>
       </Card>
       {tooltip && (
@@ -412,7 +581,10 @@ export function StreamChart() {
             position: "fixed",
             left: tooltip.x + 14,
             top: tooltip.y - 32,
-            transform: tooltip.x > window.innerWidth - 160 ? "translateX(calc(-100% - 28px))" : undefined,
+            transform:
+              tooltip.x > window.innerWidth - 160
+                ? "translateX(calc(-100% - 28px))"
+                : undefined,
             background: "rgba(0,0,0,0.75)",
             color: "#fff",
             padding: "4px 10px",

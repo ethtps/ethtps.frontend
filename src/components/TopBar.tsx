@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { useEffect } from "react";
 import { useMantineColorScheme } from "@mantine/core";
+import { DiscordButton } from "./DiscordButton";
 import { GitHubStarButton } from "./GitHubStarButton";
 import { Logo } from "./Logo";
 import { MetricToggle } from "./MetricToggle";
@@ -23,6 +24,7 @@ export function TopBar() {
       <Group gap="sm">
         <ViewerCount />
         <GitHubStarButton />
+        <DiscordButton />
         <MetricToggle />
         <ThemeToggle />
       </Group>

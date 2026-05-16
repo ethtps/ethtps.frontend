@@ -16,22 +16,25 @@ export function ChainList() {
   const [page, setPage] = useState(1);
 
   const [sortSnapshot, setSortSnapshot] = useState<Record<number, LiveMetricsResponse>>(live);
+  const liveRef = useRef(live);
+  liveRef.current = live;
   const metricRef = useRef(metric);
   metricRef.current = metric;
 
   useEffect(() => {
-    setSortSnapshot(live);
+    setSortSnapshot(liveRef.current);
   }, [metric]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const id = setInterval(() => {
-      setSortSnapshot((prev) => (prev === live ? prev : live));
+      setSortSnapshot(liveRef.current);
     }, config.sortIntervalMs);
     return () => clearInterval(id);
-  }, [live]);
+  }, []);
 
   const filtered = useMemo(() => {
     return networks
+      .filter((n) => n.enabled)
       .filter((n) => includeTestnets || !n.isTestnet)
       .filter((n) => includeSidechains || (n.networkType?.toLowerCase() ?? "") !== "sidechain");
   }, [networks, includeTestnets, includeSidechains]);

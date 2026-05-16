@@ -1,5 +1,17 @@
 import styles from "./TopBar.module.css";
 
-export function Logo() {
-  return <span className={styles.logo}>ETHTPS.info</span>;
+interface LogoProps {
+  onClick?: () => void;
+}
+
+export function Logo({ onClick }: LogoProps) {
+  return (
+    <span
+      className={styles.logo}
+      onClick={onClick}
+      style={onClick ? { cursor: "pointer" } : undefined}
+    >
+      ETHTPS.info
+    </span>
+  );
 }
