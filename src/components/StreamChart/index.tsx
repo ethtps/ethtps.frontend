@@ -76,6 +76,19 @@ export function StreamChart() {
       const newH = isFullscreenRef.current
         ? Math.max(wrap!.clientHeight - TIME_AXIS_H, HEIGHT)
         : HEIGHT;
+      const newStreamW = newW - AXIS_W;
+
+      // Proportionally rescale existing history to the new pixel width so data
+      // always fills the full stream area after a resize (nearest-neighbour mapping)
+      if (history.length > 0 && newStreamW !== streamWRef.current) {
+        const oldLen = history.length;
+        const rescaled: ColumnData[] = new Array(newStreamW);
+        for (let i = 0; i < newStreamW; i++) {
+          rescaled[i] = history[Math.min(Math.round((i / newStreamW) * oldLen), oldLen - 1)];
+        }
+        history.length = 0;
+        for (const col of rescaled) history.push(col);
+      }
 
       canvas!.width = newW;
       canvas!.height = newH + TIME_AXIS_H;
@@ -84,11 +97,8 @@ export function StreamChart() {
 
       canvasWRef.current = newW;
       HRef.current = newH;
-      streamWRef.current = newW - AXIS_W;
+      streamWRef.current = newStreamW;
       lastTsRef.current = 0; // prevent dt spike after resize
-
-      const newStreamW = newW - AXIS_W;
-      if (history.length > newStreamW) history.splice(0, history.length - newStreamW);
 
       maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
       lastMaxRef.current = maxRef.current;
