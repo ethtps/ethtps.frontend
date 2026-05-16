@@ -11,36 +11,43 @@ export function ChainList() {
   const networksStatus = useSelector((s: RootState) => s.networks.status);
   const live = useSelector((s: RootState) => s.metrics.live);
   const metric = useSelector((s: RootState) => s.ui.metric);
+  const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
+  const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const [page, setPage] = useState(1);
 
-  // Snapshot of live values used exclusively for sort order.
-  // Updated on an interval so rows don't shuffle on every SignalR push.
   const [sortSnapshot, setSortSnapshot] = useState<Record<number, LiveMetricsResponse>>(live);
   const metricRef = useRef(metric);
   metricRef.current = metric;
 
   useEffect(() => {
-    // Snap immediately when metric changes so order reflects the new key at once.
     setSortSnapshot(live);
   }, [metric]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const id = setInterval(() => {
-      setSortSnapshot((prev) => {
-        // Only trigger a re-render if values actually changed.
-        return prev === live ? prev : live;
-      });
+      setSortSnapshot((prev) => (prev === live ? prev : live));
     }, config.sortIntervalMs);
     return () => clearInterval(id);
   }, [live]);
 
+  const filtered = useMemo(() => {
+    return networks
+      .filter((n) => includeTestnets || !n.isTestnet)
+      .filter((n) => includeSidechains || (n.networkType?.toLowerCase() ?? "") !== "sidechain");
+  }, [networks, includeTestnets, includeSidechains]);
+
   const sorted = useMemo(() => {
-    return [...networks].sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       const aVal = sortSnapshot[a.chainId]?.[metric] ?? -1;
       const bVal = sortSnapshot[b.chainId]?.[metric] ?? -1;
       return bVal - aVal;
     });
-  }, [networks, sortSnapshot, metric]);
+  }, [filtered, sortSnapshot, metric]);
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [includeTestnets, includeSidechains]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / config.pageSize));
   const safePage = Math.min(page, totalPages);
@@ -67,6 +74,7 @@ export function ChainList() {
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Chain</Table.Th>
+              <Table.Th>Type</Table.Th>
               <Table.Th>{metric.toUpperCase()}</Table.Th>
               <Table.Th>Status</Table.Th>
             </Table.Tr>

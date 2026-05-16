@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { config } from "../config";
+import { getApiV1MetricsGlobalHistory, getApiV1MetricsGlobalLive } from "../api/generated/services.gen";
 
 export interface LiveMetricsResponse {
   chainId: number;
@@ -32,6 +32,19 @@ export interface MetricsSnapshot {
   chains: Record<string, { tps: number | null; gps: number | null }>;
 }
 
+interface GlobalHistoryBucket {
+  bucket: string;
+  avgTps: number;
+  avgGps: number;
+}
+
+interface GlobalHistoryResponse {
+  resolution: string;
+  from: string;
+  to: string;
+  buckets: GlobalHistoryBucket[];
+}
+
 const HISTORY_MS = 60_000;
 
 interface MetricsState {
@@ -39,6 +52,7 @@ interface MetricsState {
   global: GlobalMetricsResponse | null;
   globalStatus: "idle" | "loading" | "error";
   history: MetricsSnapshot[];
+  preloadedSnapshots: MetricsSnapshot[];
 }
 
 const initialState: MetricsState = {
@@ -46,13 +60,38 @@ const initialState: MetricsState = {
   global: null,
   globalStatus: "idle",
   history: [],
+  preloadedSnapshots: [],
 };
 
-export const fetchGlobalMetrics = createAsyncThunk("metrics/fetchGlobal", async () => {
-  const res = await fetch(`${config.apiBaseUrl}/api/v1/metrics/global/live`);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return (await res.json()) as GlobalMetricsResponse;
-});
+export const fetchGlobalMetrics = createAsyncThunk(
+  "metrics/fetchGlobal",
+  async (params: { includeTestnets: boolean; includeSidechains: boolean }) => {
+    const result = await getApiV1MetricsGlobalLive(params);
+    return result as GlobalMetricsResponse;
+  },
+);
+
+export const fetchHistoryPreload = createAsyncThunk(
+  "metrics/fetchHistoryPreload",
+  async () => {
+    const now = new Date();
+    const from = new Date(now.getTime() - 120_000).toISOString();
+    const to = now.toISOString();
+
+    const result = await getApiV1MetricsGlobalHistory({ from, to, resolution: "1m" });
+    const hist = result as GlobalHistoryResponse;
+    if (!hist?.buckets) return [];
+
+    return hist.buckets
+      .map((b) => ({
+        timestamp: new Date(b.bucket).getTime(),
+        totalTps: b.avgTps,
+        totalGps: b.avgGps,
+        chains: {} as Record<string, { tps: number | null; gps: number | null }>,
+      }))
+      .sort((a, b) => a.timestamp - b.timestamp);
+  },
+);
 
 const metricsSlice = createSlice({
   name: "metrics",
@@ -105,6 +144,9 @@ const metricsSlice = createSlice({
       })
       .addCase(fetchGlobalMetrics.rejected, (state) => {
         state.globalStatus = "error";
+      })
+      .addCase(fetchHistoryPreload.fulfilled, (state, action) => {
+        state.preloadedSnapshots = action.payload;
       });
   },
 });

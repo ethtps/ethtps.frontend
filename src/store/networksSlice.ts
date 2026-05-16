@@ -6,6 +6,8 @@ export interface NetworkResponse {
   name: string;
   rpcUrls: string[];
   enabled: boolean;
+  networkType?: string;
+  isTestnet?: boolean;
 }
 
 interface NetworksState {

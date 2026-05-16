@@ -1,9 +1,11 @@
-import { ActionIcon, Group, SegmentedControl, Text, useMantineColorScheme } from "@mantine/core";
+import { ActionIcon, Group, SegmentedControl, useMantineColorScheme } from "@mantine/core";
+import styles from "./TopBar.module.css";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { setColorScheme, setMetric } from "../store/uiSlice";
 import { useEffect } from "react";
+import { GitHubStarButton } from "./GitHubStarButton";
 
 export function TopBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,16 +24,10 @@ export function TopBar() {
 
   return (
     <Group h="100%" px="md" justify="space-between">
-      <Text fw={900} size="xl" style={{ letterSpacing: -1 }}>
-        <Text span c="blue" inherit>
-          ETHTPS
-        </Text>
-        <Text span c="dimmed" fw={400} inherit>
-          .info
-        </Text>
-      </Text>
+      <span className={styles.logo}>ETHTPS.info</span>
 
       <Group gap="sm">
+        <GitHubStarButton />
         <SegmentedControl
           size="xs"
           value={metric.toUpperCase()}

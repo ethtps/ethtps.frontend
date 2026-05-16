@@ -60,6 +60,14 @@ export async function startSignalR(chainIds: number[]): Promise<void> {
   await connection.invoke("Subscribe", chainIds);
 }
 
+export async function updateSubscription(chainIds: number[]): Promise<void> {
+  const toUnsub = activeChainIds.filter((id) => !chainIds.includes(id));
+  const toSub = chainIds.filter((id) => !activeChainIds.includes(id));
+  activeChainIds = chainIds;
+  if (toUnsub.length > 0) await connection.invoke("Unsubscribe", toUnsub).catch(console.error);
+  if (toSub.length > 0) await connection.invoke("Subscribe", toSub).catch(console.error);
+}
+
 export async function stopSignalR(): Promise<void> {
   stopped.value = true;
   if (activeChainIds.length > 0) {

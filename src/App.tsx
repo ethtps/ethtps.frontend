@@ -1,42 +1,66 @@
 import { AppShell } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startSignalR } from "./api/signalr";
+import { startSignalR, updateSubscription } from "./api/signalr";
 import { GlobalStatsBanner } from "./components/GlobalStatsBanner";
 import { StreamChart } from "./components/StreamChart";
 import { ChainList } from "./components/ChainList";
 import { TopBar } from "./components/TopBar";
+import { Footer } from "./components/Footer";
 import { AppDispatch, RootState } from "./store";
-import { fetchGlobalMetrics } from "./store/metricsSlice";
-import { fetchNetworks } from "./store/networksSlice";
+import { fetchGlobalMetrics, fetchHistoryPreload } from "./store/metricsSlice";
+import { NetworkResponse, fetchNetworks } from "./store/networksSlice";
 import { config } from "./config";
+
+function filteredChainIds(
+  networks: NetworkResponse[],
+  includeTestnets: boolean,
+  includeSidechains: boolean,
+): number[] {
+  return networks
+    .filter((n) => n.enabled)
+    .filter((n) => includeTestnets || !n.isTestnet)
+    .filter((n) => includeSidechains || (n.networkType?.toLowerCase() ?? "") !== "sidechain")
+    .map((n) => n.chainId);
+}
 
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
   const networks = useSelector((s: RootState) => s.networks.networks);
   const networksStatus = useSelector((s: RootState) => s.networks.status);
+  const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
+  const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const signalRStarted = useRef(false);
 
   useEffect(() => {
+    const filters = { includeTestnets, includeSidechains };
     dispatch(fetchNetworks());
-    dispatch(fetchGlobalMetrics());
+    dispatch(fetchGlobalMetrics(filters));
 
     const intervalId = setInterval(() => {
-      dispatch(fetchGlobalMetrics());
+      dispatch(fetchGlobalMetrics(filters));
     }, config.globalPollIntervalMs);
 
     return () => clearInterval(intervalId);
-  }, [dispatch]);
+  }, [dispatch, includeTestnets, includeSidechains]);
 
   useEffect(() => {
     if (networksStatus !== "idle" || networks.length === 0 || signalRStarted.current) return;
     signalRStarted.current = true;
-    const chainIds = networks.map((n) => n.chainId);
-    startSignalR(chainIds).catch(console.error);
-  }, [networks, networksStatus]);
+    const ids = filteredChainIds(networks, includeTestnets, includeSidechains);
+    startSignalR(ids).catch(console.error);
+    dispatch(fetchHistoryPreload());
+  }, [networks, networksStatus, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Re-subscribe when filters change after initial connection
+  useEffect(() => {
+    if (!signalRStarted.current || networks.length === 0) return;
+    const ids = filteredChainIds(networks, includeTestnets, includeSidechains);
+    updateSubscription(ids).catch(console.error);
+  }, [networks, includeTestnets, includeSidechains]);
 
   return (
-    <AppShell header={{ height: 56 }} padding="md">
+    <AppShell header={{ height: 56 }} footer={{ height: 36 }} padding="md">
       <AppShell.Header>
         <TopBar />
       </AppShell.Header>
@@ -45,6 +69,9 @@ export function App() {
         <StreamChart />
         <ChainList />
       </AppShell.Main>
+      <AppShell.Footer>
+        <Footer />
+      </AppShell.Footer>
     </AppShell>
   );
 }

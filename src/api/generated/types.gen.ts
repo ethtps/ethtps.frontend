@@ -15,6 +15,11 @@ export type GetApiV1MetricsByChainIdHistoryData = {
 
 export type GetApiV1MetricsByChainIdHistoryResponse = unknown;
 
+export type GetApiV1MetricsGlobalLiveData = {
+    includeSidechains?: boolean;
+    includeTestnets?: boolean;
+};
+
 export type GetApiV1MetricsGlobalLiveResponse = unknown;
 
 export type GetApiV1MetricsGlobalHistoryData = {
@@ -58,6 +63,7 @@ export type $OpenApiTs = {
     };
     '/api/v1/metrics/global/live': {
         get: {
+            req: GetApiV1MetricsGlobalLiveData;
             res: {
                 /**
                  * OK

@@ -15,6 +15,17 @@ function isStale(timestamp: string | undefined): boolean {
   return Date.now() - new Date(timestamp).getTime() > config.staleThresholdMs;
 }
 
+function typeColor(networkType: string | undefined, isTestnet: boolean | undefined): string {
+  if (isTestnet) return "orange";
+  switch (networkType?.toLowerCase()) {
+    case "l1":
+    case "mainnet": return "green";
+    case "l2": return "blue";
+    case "sidechain": return "grape";
+    default: return "gray";
+  }
+}
+
 export const ChainRow = memo(function ChainRow({ network, live, metric }: Props) {
   const stale = isStale(live?.timestamp);
   const rawValue = live ? live[metric] : null;
@@ -29,6 +40,16 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
             #{network.chainId}
           </Text>
         </Group>
+      </Table.Td>
+      <Table.Td>
+        {network.networkType ? (
+          <Badge color={typeColor(network.networkType, network.isTestnet)} variant="light" size="sm">
+            {network.networkType}
+            {network.isTestnet ? " · testnet" : ""}
+          </Badge>
+        ) : (
+          <Text size="xs" c="dimmed">—</Text>
+        )}
       </Table.Td>
       <Table.Td>
         <Text fw={500}>{display}</Text>
