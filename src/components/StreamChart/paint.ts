@@ -41,7 +41,7 @@ export function paintAxis(ctx: CanvasRenderingContext2D, H: number, max: number)
 }
 
 export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number) {
-  ctx.clearRect(AXIS_W, HEIGHT, streamW, TIME_AXIS_H);
+  ctx.clearRect(0, HEIGHT, W, TIME_AXIS_H);
   ctx.fillStyle = "#444";
   ctx.fillRect(AXIS_W, HEIGHT, streamW, 1);
   ctx.font = "10px monospace";
