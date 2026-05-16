@@ -12,7 +12,6 @@ function backoffDelay(attempt: number): number {
 const connection = new signalR.HubConnectionBuilder()
   .withUrl(config.signalrHubUrl)
   .withAutomaticReconnect({
-    // reuse the same exponential backoff for transport-level reconnects
     nextRetryDelayInMilliseconds: (ctx) => backoffDelay(ctx.previousRetryCount),
   })
   .build();
@@ -29,13 +28,13 @@ setInterval(() => {
   batch = [];
 }, config.signalrBatchMs);
 
-let activeChainIds: number[] = [];
+let activeFilters = { includeTestnets: true, includeSidechains: true };
 
-// Re-subscribe after the transport layer reconnects (server loses subscription state on disconnect)
+// Re-subscribe after transport-level reconnects (server loses subscription state on disconnect)
 connection.onreconnected(() => {
-  if (activeChainIds.length > 0) {
-    connection.invoke("Subscribe", activeChainIds).catch(console.error);
-  }
+  connection
+    .invoke("SubscribeAll", activeFilters.includeTestnets, activeFilters.includeSidechains)
+    .catch(console.error);
 });
 
 async function connectWithBackoff(stopped: { value: boolean }): Promise<void> {
@@ -53,26 +52,19 @@ async function connectWithBackoff(stopped: { value: boolean }): Promise<void> {
 
 const stopped = { value: false };
 
-export async function startSignalR(chainIds: number[]): Promise<void> {
+export async function startSignalR(includeTestnets: boolean, includeSidechains: boolean): Promise<void> {
   stopped.value = false;
-  activeChainIds = chainIds;
+  activeFilters = { includeTestnets, includeSidechains };
   await connectWithBackoff(stopped);
-  await connection.invoke("Subscribe", chainIds);
+  await connection.invoke("SubscribeAll", includeTestnets, includeSidechains);
 }
 
-export async function updateSubscription(chainIds: number[]): Promise<void> {
-  const toUnsub = activeChainIds.filter((id) => !chainIds.includes(id));
-  const toSub = chainIds.filter((id) => !activeChainIds.includes(id));
-  activeChainIds = chainIds;
-  if (toUnsub.length > 0) await connection.invoke("Unsubscribe", toUnsub).catch(console.error);
-  if (toSub.length > 0) await connection.invoke("Subscribe", toSub).catch(console.error);
+export async function updateSubscription(includeTestnets: boolean, includeSidechains: boolean): Promise<void> {
+  activeFilters = { includeTestnets, includeSidechains };
+  await connection.invoke("SubscribeAll", includeTestnets, includeSidechains).catch(console.error);
 }
 
 export async function stopSignalR(): Promise<void> {
   stopped.value = true;
-  if (activeChainIds.length > 0) {
-    await connection.invoke("Unsubscribe", activeChainIds).catch(() => undefined);
-  }
-  activeChainIds = [];
   await connection.stop();
 }

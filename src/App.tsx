@@ -10,20 +10,12 @@ import { TopBar } from "./components/TopBar";
 import { Footer } from "./components/Footer";
 import { AppDispatch, RootState } from "./store";
 import { fetchGlobalMetrics, fetchHistoryPreload } from "./store/metricsSlice";
-import { NetworkResponse, fetchNetworks } from "./store/networksSlice";
+import { fetchNetworks } from "./store/networksSlice";
 import { setColorScheme } from "./store/uiSlice";
 import { config } from "./config";
 
-// Subscribe to all enabled chains regardless of UI display filters so the
-// stream chart always has live data for every chain.
-function enabledChainIds(networks: NetworkResponse[]): number[] {
-  return networks.filter((n) => n.enabled).map((n) => n.chainId);
-}
-
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const networks = useSelector((s: RootState) => s.networks.networks);
-  const networksStatus = useSelector((s: RootState) => s.networks.status);
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const globalMetrics = useSelector((s: RootState) => s.metrics.global);
@@ -31,6 +23,7 @@ export function App() {
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
   const { setColorScheme: mantineSetColorScheme } = useMantineColorScheme();
   const signalRStarted = useRef(false);
+  const filtersMounted = useRef(false);
 
   useEffect(() => {
     const filters = { includeTestnets, includeSidechains };
@@ -44,18 +37,21 @@ export function App() {
     return () => clearInterval(intervalId);
   }, [dispatch, includeTestnets, includeSidechains]);
 
+  // Start SignalR once on mount; server handles chain filtering via SubscribeAll
   useEffect(() => {
-    if (networksStatus !== "idle" || networks.length === 0 || signalRStarted.current) return;
     signalRStarted.current = true;
-    startSignalR(enabledChainIds(networks)).catch(console.error);
+    startSignalR(includeTestnets, includeSidechains).catch(console.error);
     dispatch(fetchHistoryPreload());
-  }, [networks, networksStatus, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Re-subscribe when the network list itself changes (new chains added/removed)
+  // Re-subscribe when filter toggles change (skip initial mount)
   useEffect(() => {
-    if (!signalRStarted.current || networks.length === 0) return;
-    updateSubscription(enabledChainIds(networks)).catch(console.error);
-  }, [networks]);
+    if (!filtersMounted.current) {
+      filtersMounted.current = true;
+      return;
+    }
+    updateSubscription(includeTestnets, includeSidechains).catch(console.error);
+  }, [includeTestnets, includeSidechains]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
