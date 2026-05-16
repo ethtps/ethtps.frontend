@@ -8,13 +8,14 @@ export function collectColumn(
   live: Record<number, LiveMetricsResponse>,
   networks: NetworkResponse[],
   metric: "tps" | "gps",
+  excludeLowThroughput = true,
 ): ColumnData {
   const segments: Segment[] = [];
   let other = 0;
   let total = 0;
   for (const n of networks) {
     const v = live[n.chainId]?.[metric] ?? 0;
-    if (v >= THRESHOLD) {
+    if (excludeLowThroughput ? v >= THRESHOLD : v > 0) {
       segments.push({ color: chainColor(String(n.chainId)), value: v });
     } else {
       other += v;

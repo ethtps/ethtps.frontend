@@ -1,6 +1,6 @@
 import { ActionIcon, Card, Group, Text, Tooltip } from "@mantine/core";
 import { IconMaximize, IconMinimize } from "@tabler/icons-react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { fetchHistoryPreload } from "../../store/metricsSlice";
@@ -24,12 +24,17 @@ import {
 import { chainColor, hexToRgb } from "./utils";
 import { ColumnData, TooltipState } from "./types";
 import { OTHER_COLOR } from "./constants";
+import { ChartOptions } from "./ChartOptions";
 import { Logo } from "../Logo";
 import { MetricToggle } from "../MetricToggle";
 import { ThemeToggle } from "../ThemeToggle";
 import { ViewerCount } from "../ViewerCount";
 
-export function StreamChart() {
+interface StreamChartProps {
+  excludeLowThroughputChains?: boolean;
+}
+
+export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamChartProps = {}) {
   const dispatch = useDispatch<AppDispatch>();
   const dispatchRef = useRef(dispatch);
   dispatchRef.current = dispatch;
@@ -46,14 +51,18 @@ export function StreamChart() {
   const networks = useSelector((s: RootState) => s.networks.networks);
   const metric = useSelector((s: RootState) => s.ui.metric);
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
+  const excludeLowThroughputRedux = useSelector((s: RootState) => s.ui.excludeLowThroughputChains);
   const preloadedSnapshots = useSelector(
     (s: RootState) => s.metrics.preloadedSnapshots,
   );
+
+  const excludeLowThroughput = excludeProp ?? excludeLowThroughputRedux;
 
   const liveRef = useRef(live);
   const networksRef = useRef(networks);
   const metricRef = useRef(metric);
   const colorSchemeRef = useRef(colorScheme);
+  const excludeLowThroughputRef = useRef(excludeLowThroughput);
   const preloadedRef = useRef(preloadedSnapshots);
   const isFullscreenRef = useRef(isFullscreen);
   const maxRef = useRef(1);
@@ -69,11 +78,13 @@ export function StreamChart() {
   const lastTsRef = useRef(0);
   const subPixelRef = useRef(0);
   const lookbackMsRef = useRef(SCROLL_DURATION_MS);
+  const resetLookbackRef = useRef<() => void>(() => {});
 
   liveRef.current = live;
   networksRef.current = networks;
   metricRef.current = metric;
   colorSchemeRef.current = colorScheme;
+  excludeLowThroughputRef.current = excludeLowThroughput;
   preloadedRef.current = preloadedSnapshots;
   isFullscreenRef.current = isFullscreen;
 
@@ -199,6 +210,7 @@ export function StreamChart() {
           liveRef.current,
           networksRef.current,
           metricRef.current,
+          excludeLowThroughputRef.current,
         );
 
         for (let i = 0; i < px; i++) history.push(col);
@@ -407,6 +419,8 @@ export function StreamChart() {
       redrawAll(c, W, H, history, maxRef.current, SCROLL_DURATION_MS);
     }
 
+    resetLookbackRef.current = onDblClick;
+
     cvs.addEventListener("mousemove", onMouseMove);
     cvs.addEventListener("mouseleave", onMouseLeave);
     cvs.addEventListener("wheel", onWheel, { passive: false });
@@ -442,6 +456,8 @@ export function StreamChart() {
       }
       if ((e.key === "f" || e.key === "F") && e.target === document.body)
         setIsFullscreen((f) => !f);
+      if ((e.key === "r" || e.key === "R") && e.target === document.body)
+        resetLookbackRef.current();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -465,6 +481,15 @@ export function StreamChart() {
       redrawAll(ctx, W, HRef.current, history, max, lookbackMsRef.current);
     }
   }, [preloadedSnapshots]);
+
+  const kbdStyle: React.CSSProperties = {
+    fontFamily: "inherit",
+    fontSize: 10,
+    padding: "1px 4px",
+    borderRadius: 3,
+    border: "1px solid currentColor",
+    opacity: 0.7,
+  };
 
   return (
     <div
@@ -573,6 +598,21 @@ export function StreamChart() {
               pointerEvents: "none",
             }}
           />
+          <ChartOptions />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            justifyContent: "flex-end",
+            marginTop: 6,
+            opacity: 0.45,
+            fontSize: 11,
+            letterSpacing: "0.02em",
+          }}
+        >
+          <span><kbd style={kbdStyle}>F</kbd> fullscreen</span>
+          <span><kbd style={kbdStyle}>R</kbd> / double-click — reset zoom</span>
         </div>
       </Card>
       {tooltip && (
