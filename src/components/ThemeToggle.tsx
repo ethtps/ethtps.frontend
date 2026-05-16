@@ -1,4 +1,4 @@
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Tooltip } from "@mantine/core";
 import { useMantineColorScheme } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +17,10 @@ export function ThemeToggle() {
   }
 
   return (
-    <ActionIcon variant="subtle" onClick={toggle} aria-label="Toggle color scheme">
-      {colorScheme === "dark" ? <IconSun size={18} /> : <IconMoon size={18} />}
-    </ActionIcon>
+    <Tooltip label="Change theme (T)" withArrow>
+      <ActionIcon variant="subtle" onClick={toggle} aria-label="Toggle color scheme">
+        {colorScheme === "dark" ? <IconSun size={18} /> : <IconMoon size={18} />}
+      </ActionIcon>
+    </Tooltip>
   );
 }

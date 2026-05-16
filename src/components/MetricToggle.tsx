@@ -1,7 +1,12 @@
-import { SegmentedControl } from "@mantine/core";
+import { SegmentedControl, Tooltip } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { setMetric } from "../store/uiSlice";
+
+const DATA = [
+  { value: "TPS", label: <Tooltip label="Transactions per second" withArrow><span>TPS</span></Tooltip> },
+  { value: "GPS", label: <Tooltip label="Gas per second" withArrow><span>GPS</span></Tooltip> },
+];
 
 export function MetricToggle() {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,7 +16,7 @@ export function MetricToggle() {
       size="xs"
       value={metric.toUpperCase()}
       onChange={(v) => dispatch(setMetric(v.toLowerCase() as "tps" | "gps"))}
-      data={["TPS", "GPS"]}
+      data={DATA}
     />
   );
 }
