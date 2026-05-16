@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetApiV1MetricsByChainIdLiveData, GetApiV1MetricsByChainIdLiveResponse, GetApiV1MetricsByChainIdHistoryData, GetApiV1MetricsByChainIdHistoryResponse, GetApiV1MetricsGlobalLiveData, GetApiV1MetricsGlobalLiveResponse, GetApiV1MetricsGlobalHistoryData, GetApiV1MetricsGlobalHistoryResponse, GetApiV1NetworksResponse, GetApiV1NetworksByChainIdData, GetApiV1NetworksByChainIdResponse } from './types.gen';
+import type { GetApiV1MetricsByChainIdLiveData, GetApiV1MetricsByChainIdLiveResponse, GetApiV1MetricsByChainIdHistoryData, GetApiV1MetricsByChainIdHistoryResponse, GetApiV1MetricsViewersResponse, GetApiV1MetricsGlobalLiveData, GetApiV1MetricsGlobalLiveResponse, GetApiV1MetricsGlobalHistoryData, GetApiV1MetricsGlobalHistoryResponse, GetApiV1NetworksResponse, GetApiV1NetworksByChainIdData, GetApiV1NetworksByChainIdResponse } from './types.gen';
 
 /**
  * @param data The data for the request.
@@ -39,6 +39,15 @@ export const getApiV1MetricsByChainIdHistory = (data: GetApiV1MetricsByChainIdHi
         to: data.to,
         resolution: data.resolution
     }
+}); };
+
+/**
+ * @returns unknown OK
+ * @throws ApiError
+ */
+export const getApiV1MetricsViewers = (): CancelablePromise<GetApiV1MetricsViewersResponse> => { return __request(OpenAPI, {
+    method: 'GET',
+    url: '/api/v1/metrics/viewers'
 }); };
 
 /**

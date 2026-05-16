@@ -1,18 +1,25 @@
 import { ActionIcon, Card, Group, Text, Tooltip } from "@mantine/core";
 import { IconMaximize, IconMinimize } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
+import { fetchHistoryPreload } from "../../store/metricsSlice";
 import { AXIS_W, HEIGHT, MAX_LOOKBACK_MS, MAX_REDRAW_THRESHOLD, MIN_LOOKBACK_MS, SCROLL_DURATION_MS, TIME_AXIS_H } from "./constants";
 import { fillFromSnapshots, collectColumn } from "./columns";
 import { paintAxis, paintColumnData, paintTimeAxis, paintCrosshair, redrawAll } from "./paint";
 import { chainColor, hexToRgb } from "./utils";
 import { ColumnData, TooltipState } from "./types";
 import { OTHER_COLOR } from "./constants";
+import { Logo } from "../Logo";
 import { MetricToggle } from "../MetricToggle";
 import { ThemeToggle } from "../ThemeToggle";
+import { ViewerCount } from "../ViewerCount";
 
 export function StreamChart() {
+  const dispatch = useDispatch<AppDispatch>();
+  const dispatchRef = useRef(dispatch);
+  dispatchRef.current = dispatch;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -69,6 +76,7 @@ export function StreamChart() {
 
     const history = historyBufRef.current;
     let rafId: number;
+    let refetchTimer: ReturnType<typeof setTimeout> | undefined;
 
     function doResize() {
       const newW = wrap!.clientWidth;
@@ -262,6 +270,11 @@ export function StreamChart() {
       maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
       lastMaxRef.current = maxRef.current;
       redrawAll(c, W, H, history, maxRef.current, newLookback);
+
+      if (newLookback > oldLookback) {
+        clearTimeout(refetchTimer);
+        refetchTimer = setTimeout(() => dispatchRef.current(fetchHistoryPreload()), 300);
+      }
     }
 
     function onDblClick() {
@@ -299,6 +312,7 @@ export function StreamChart() {
     cvs.addEventListener("dblclick", onDblClick);
     return () => {
       cancelAnimationFrame(rafId);
+      clearTimeout(refetchTimer);
       ro.disconnect();
       cvs.removeEventListener("mousemove", onMouseMove);
       cvs.removeEventListener("mouseleave", onMouseLeave);
@@ -318,6 +332,13 @@ export function StreamChart() {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setIsFullscreen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isFullscreen]);
 
   useEffect(() => {
     if (preloadedSnapshots.length === 0) return;
@@ -341,38 +362,42 @@ export function StreamChart() {
         background: "var(--mantine-color-body)",
         display: "flex",
         flexDirection: "column",
-        padding: 12,
-        boxSizing: "border-box",
       } : undefined}
     >
+      {isFullscreen && (
+        <div style={{ height: 56, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px" }}>
+          <Group gap="md" align="center">
+            <Logo />
+            <Text size="sm" fw={600} c="dimmed" tt="uppercase" style={{ paddingTop: 10 }}>{metric} — live stream</Text>
+          </Group>
+          <Group gap="sm">
+            <ViewerCount />
+            <MetricToggle />
+            <ThemeToggle />
+            <Tooltip label="Minimize" withArrow zIndex={10001}>
+              <ActionIcon variant="subtle" size="lg" onClick={() => setIsFullscreen(false)}>
+                <IconMinimize size={20} />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+        </div>
+      )}
       <Card
         bg="transparent"
         p="md"
         mb={isFullscreen ? 0 : "md"}
         style={isFullscreen ? { flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" } : undefined}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-          <Text size="sm" fw={600} c="dimmed" tt="uppercase">
-            {metric} — live stream
-          </Text>
-          <Group gap="sm">
-            {isFullscreen && (
-              <>
-                <MetricToggle />
-                <ThemeToggle />
-              </>
-            )}
-            <Tooltip label={isFullscreen ? "Minimize" : "Expand"} withArrow zIndex={10001}>
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                onClick={() => setIsFullscreen(f => !f)}
-              >
-                {isFullscreen ? <IconMinimize size={20} /> : <IconMaximize size={20} />}
+        {!isFullscreen && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+            <Text size="sm" fw={600} c="dimmed" tt="uppercase">{metric} — live stream</Text>
+            <Tooltip label="Expand" withArrow zIndex={10001}>
+              <ActionIcon variant="subtle" size="lg" onClick={() => setIsFullscreen(true)}>
+                <IconMaximize size={20} />
               </ActionIcon>
             </Tooltip>
-          </Group>
-        </div>
+          </div>
+        )}
         <div
           ref={wrapRef}
           style={{ position: "relative", ...(isFullscreen ? { flex: 1 } : {}) }}
