@@ -34,11 +34,13 @@ export interface MetricsSnapshot {
 
 interface GlobalHistoryBucket {
   bucket: string;
+  chainId: number;
   avgTps: number;
   avgGps: number;
 }
 
 interface GlobalHistoryResponse {
+  chainId: number;
   resolution: string;
   from: string;
   to: string;
@@ -84,14 +86,20 @@ export const fetchHistoryPreload = createAsyncThunk(
     const hist = result as GlobalHistoryResponse;
     if (!hist?.buckets) return [];
 
-    return hist.buckets
-      .map((b) => ({
-        timestamp: new Date(b.bucket).getTime(),
-        totalTps: b.avgTps,
-        totalGps: b.avgGps,
-        chains: {} as Record<string, { tps: number | null; gps: number | null }>,
-      }))
-      .sort((a, b) => a.timestamp - b.timestamp);
+    // Group per-chain bucket entries by timestamp into unified snapshots
+    const byTime = new Map<number, MetricsSnapshot>();
+    for (const b of hist.buckets) {
+      const ts = new Date(b.bucket).getTime();
+      let snap = byTime.get(ts);
+      if (!snap) {
+        snap = { timestamp: ts, totalTps: 0, totalGps: 0, chains: {} };
+        byTime.set(ts, snap);
+      }
+      snap.chains[String(b.chainId)] = { tps: b.avgTps, gps: b.avgGps };
+      snap.totalTps += b.avgTps;
+      snap.totalGps += b.avgGps;
+    }
+    return Array.from(byTime.values()).sort((a, b) => a.timestamp - b.timestamp);
   },
 );
 
