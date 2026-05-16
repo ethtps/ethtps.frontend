@@ -15,6 +15,7 @@
     "@microsoft/signalr": "^8.0.7",
     "@reduxjs/toolkit": "^2.5.0",
     "@tabler/icons-react": "^3.31.0",
+    "d3-scale-chromatic": "^3.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
