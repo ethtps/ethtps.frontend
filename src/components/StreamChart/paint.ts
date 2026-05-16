@@ -40,7 +40,16 @@ export function paintAxis(ctx: CanvasRenderingContext2D, H: number, max: number)
   ctx.fillRect(AXIS_W - 1, 0, 1, H);
 }
 
-export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number, H: number) {
+function fmtTimeLabel(ms: number): string {
+  if (ms === 0) return "0s";
+  const totalS = Math.round(Math.abs(ms) / 1000);
+  if (totalS < 60) return `-${totalS}s`;
+  const m = Math.floor(totalS / 60);
+  const s = totalS % 60;
+  return s === 0 ? `-${m}m` : `-${m}m${s}s`;
+}
+
+export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number, H: number, lookbackMs: number) {
   ctx.clearRect(0, H, W, TIME_AXIS_H);
   ctx.fillStyle = "#444";
   ctx.fillRect(AXIS_W, H, streamW, 1);
@@ -49,8 +58,8 @@ export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW:
   const tickCount = 4;
   for (let i = 0; i <= tickCount; i++) {
     const x = AXIS_W + Math.round((streamW * i) / tickCount);
-    const seconds = -60 + (60 * i) / tickCount;
-    const label = seconds === 0 ? "0s" : `${seconds}s`;
+    const ms = -lookbackMs + (lookbackMs * i) / tickCount;
+    const label = fmtTimeLabel(ms);
     ctx.fillStyle = "#444";
     ctx.fillRect(x, H, 1, 4);
     ctx.fillStyle = "#888";
@@ -68,6 +77,7 @@ export function paintCrosshair(
   metricLabel: string,
   isDark: boolean,
   H: number,
+  lookbackMs: number,
 ) {
   const streamW = W - AXIS_W;
   const lineColor = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
@@ -107,8 +117,8 @@ export function paintCrosshair(
   ctx.fillText(yLabel, 5, yLY);
 
   // Time-axis label
-  const seconds = Math.round(-60 + (60 * (mx - AXIS_W)) / streamW);
-  const tLabel = seconds === 0 ? "now" : `${seconds}s`;
+  const ms = -lookbackMs + (lookbackMs * (mx - AXIS_W)) / streamW;
+  const tLabel = fmtTimeLabel(ms);
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   const tTw = ctx.measureText(tLabel).width + 6;
@@ -127,6 +137,7 @@ export function redrawAll(
   H: number,
   history: ColumnData[],
   max: number,
+  lookbackMs: number,
 ) {
   ctx.clearRect(0, 0, W, H + TIME_AXIS_H);
   const startX = W - history.length;
@@ -134,5 +145,5 @@ export function redrawAll(
     paintColumnData(ctx, startX + i, H, history[i], max);
   }
   paintAxis(ctx, H, max);
-  paintTimeAxis(ctx, W, W - AXIS_W, H);
+  paintTimeAxis(ctx, W, W - AXIS_W, H, lookbackMs);
 }

@@ -3,7 +3,7 @@ import { IconMaximize, IconMinimize } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { AXIS_W, HEIGHT, MAX_REDRAW_THRESHOLD, SCROLL_DURATION_MS, TIME_AXIS_H } from "./constants";
+import { AXIS_W, HEIGHT, MAX_LOOKBACK_MS, MAX_REDRAW_THRESHOLD, MIN_LOOKBACK_MS, SCROLL_DURATION_MS, TIME_AXIS_H } from "./constants";
 import { fillFromSnapshots, collectColumn } from "./columns";
 import { paintAxis, paintColumnData, paintTimeAxis, paintCrosshair, redrawAll } from "./paint";
 import { chainColor, hexToRgb } from "./utils";
@@ -43,6 +43,7 @@ export function StreamChart() {
   const lastMaxRef = useRef(1);
   const lastTsRef = useRef(0);
   const subPixelRef = useRef(0);
+  const lookbackMsRef = useRef(SCROLL_DURATION_MS);
 
   liveRef.current = live;
   networksRef.current = networks;
@@ -102,7 +103,7 @@ export function StreamChart() {
 
       maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
       lastMaxRef.current = maxRef.current;
-      redrawAll(c, newW, newH, history, maxRef.current);
+      redrawAll(c, newW, newH, history, maxRef.current, lookbackMsRef.current);
     }
 
     // Initial sizing
@@ -120,7 +121,7 @@ export function StreamChart() {
       if (history.length > 0) {
         lastMaxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
         maxRef.current = lastMaxRef.current;
-        redrawAll(c, initW, HEIGHT, history, lastMaxRef.current);
+        redrawAll(c, initW, HEIGHT, history, lastMaxRef.current, lookbackMsRef.current);
       }
     }
 
@@ -140,11 +141,11 @@ export function StreamChart() {
         history.length = 0;
         c.clearRect(0, 0, W, H + TIME_AXIS_H);
         paintAxis(c, H, 1);
-        paintTimeAxis(c, W, streamW, H);
+        paintTimeAxis(c, W, streamW, H, lookbackMsRef.current);
         prevMetricRef.current = metricRef.current;
       }
 
-      subPixelRef.current += dt * (streamW / SCROLL_DURATION_MS);
+      subPixelRef.current += dt * (streamW / lookbackMsRef.current);
       const px = Math.floor(subPixelRef.current);
 
       if (px >= 1) {
@@ -158,7 +159,7 @@ export function StreamChart() {
 
         if (Math.abs(maxRef.current - lastMaxRef.current) / lastMaxRef.current > MAX_REDRAW_THRESHOLD) {
           lastMaxRef.current = maxRef.current;
-          redrawAll(c, W, H, history, maxRef.current);
+          redrawAll(c, W, H, history, maxRef.current, lookbackMsRef.current);
         } else {
           c.globalCompositeOperation = "copy";
           c.drawImage(cvs, -px, 0);
@@ -168,7 +169,7 @@ export function StreamChart() {
             paintColumnData(c, W - px + i, H, col, maxRef.current);
           }
           paintAxis(c, H, maxRef.current);
-          paintTimeAxis(c, W, streamW, H);
+          paintTimeAxis(c, W, streamW, H, lookbackMsRef.current);
         }
       }
 
@@ -190,7 +191,7 @@ export function StreamChart() {
         return;
       }
 
-      paintCrosshair(oc, W, mx, my, maxRef.current, metricRef.current.toUpperCase(), colorSchemeRef.current === "dark", H);
+      paintCrosshair(oc, W, mx, my, maxRef.current, metricRef.current.toUpperCase(), colorSchemeRef.current === "dark", H, lookbackMsRef.current);
 
       const [r, g, b, a] = c.getImageData(mx, my, 1, 1).data;
       if (a === 0) { setTooltip(null); return; }
@@ -204,7 +205,7 @@ export function StreamChart() {
 
       const [or, og, ob] = hexToRgb(OTHER_COLOR);
       if (r === or && g === og && b === ob) {
-        name = "Other";
+        name = "Others";
         value = col?.segments.find((s) => s.color === OTHER_COLOR)?.value ?? 0;
       } else {
         for (const n of nets) {
@@ -228,13 +229,81 @@ export function StreamChart() {
       oc.clearRect(0, 0, W, H + TIME_AXIS_H);
     }
 
+    function onWheel(e: WheelEvent) {
+      e.preventDefault();
+      const oldLookback = lookbackMsRef.current;
+      const factor = e.deltaY > 0 ? 1.25 : 1 / 1.25;
+      const newLookback = Math.max(MIN_LOOKBACK_MS, Math.min(MAX_LOOKBACK_MS, oldLookback * factor));
+      if (newLookback === oldLookback) return;
+
+      // Rescale history: zoom in = keep newest slice and stretch; zoom out = compress into right portion, pad left with empty
+      if (history.length > 0) {
+        const streamW = streamWRef.current;
+        const rescaled: ColumnData[] = new Array(streamW);
+        if (newLookback < oldLookback) {
+          const keepCount = Math.max(1, Math.round(history.length * newLookback / oldLookback));
+          const slice = history.slice(history.length - keepCount);
+          for (let i = 0; i < streamW; i++)
+            rescaled[i] = slice[Math.min(Math.round((i / streamW) * slice.length), slice.length - 1)];
+        } else {
+          const coveredPx = Math.min(streamW, Math.round(streamW * oldLookback / newLookback));
+          const empty: ColumnData = { segments: [], total: 0 };
+          for (let i = 0; i < streamW - coveredPx; i++) rescaled[i] = empty;
+          for (let i = 0; i < coveredPx; i++)
+            rescaled[streamW - coveredPx + i] = history[Math.min(Math.round((i / coveredPx) * history.length), history.length - 1)];
+        }
+        history.length = 0;
+        for (const col of rescaled) history.push(col);
+      }
+
+      lookbackMsRef.current = newLookback;
+      const W = canvasWRef.current;
+      const H = HRef.current;
+      maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
+      lastMaxRef.current = maxRef.current;
+      redrawAll(c, W, H, history, maxRef.current, newLookback);
+    }
+
+    function onDblClick() {
+      const oldLookback = lookbackMsRef.current;
+      if (oldLookback === SCROLL_DURATION_MS) return;
+      const streamW = streamWRef.current;
+      if (history.length > 0) {
+        const rescaled: ColumnData[] = new Array(streamW);
+        if (SCROLL_DURATION_MS < oldLookback) {
+          const keepCount = Math.max(1, Math.round(history.length * SCROLL_DURATION_MS / oldLookback));
+          const slice = history.slice(history.length - keepCount);
+          for (let i = 0; i < streamW; i++)
+            rescaled[i] = slice[Math.min(Math.round((i / streamW) * slice.length), slice.length - 1)];
+        } else {
+          const coveredPx = Math.min(streamW, Math.round(streamW * oldLookback / SCROLL_DURATION_MS));
+          const empty: ColumnData = { segments: [], total: 0 };
+          for (let i = 0; i < streamW - coveredPx; i++) rescaled[i] = empty;
+          for (let i = 0; i < coveredPx; i++)
+            rescaled[streamW - coveredPx + i] = history[Math.min(Math.round((i / coveredPx) * history.length), history.length - 1)];
+        }
+        history.length = 0;
+        for (const col of rescaled) history.push(col);
+      }
+      lookbackMsRef.current = SCROLL_DURATION_MS;
+      const W = canvasWRef.current;
+      const H = HRef.current;
+      maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
+      lastMaxRef.current = maxRef.current;
+      redrawAll(c, W, H, history, maxRef.current, SCROLL_DURATION_MS);
+    }
+
     cvs.addEventListener("mousemove", onMouseMove);
     cvs.addEventListener("mouseleave", onMouseLeave);
+    cvs.addEventListener("wheel", onWheel, { passive: false });
+    cvs.addEventListener("dblclick", onDblClick);
     return () => {
       cancelAnimationFrame(rafId);
       ro.disconnect();
       cvs.removeEventListener("mousemove", onMouseMove);
       cvs.removeEventListener("mouseleave", onMouseLeave);
+      cvs.removeEventListener("wheel", onWheel);
+      cvs.removeEventListener("dblclick", onDblClick);
       ctxRef.current = null;
     };
   }, []);
@@ -259,7 +328,7 @@ export function StreamChart() {
     if (ctx && W > 0) {
       const max = history.reduce((m, col) => Math.max(m, col.total), 1);
       maxRef.current = max;
-      redrawAll(ctx, W, HRef.current, history, max);
+      redrawAll(ctx, W, HRef.current, history, max, lookbackMsRef.current);
     }
   }, [preloadedSnapshots]);
 
