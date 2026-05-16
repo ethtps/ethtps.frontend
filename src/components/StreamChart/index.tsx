@@ -1,8 +1,14 @@
 import { ActionIcon, Card, Text, Tooltip } from "@mantine/core";
 import { IconMaximize } from "@tabler/icons-react";
-import { useRef } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
+import {
+  setExcludeLowThroughputChains,
+  setIncludeSidechains,
+  setIncludeTestnets,
+  setSmoothGraph,
+} from "../../store/uiSlice";
 import { ChartHotkeys } from "./ChartHotkeys";
 import { ChartOptions } from "./ChartOptions";
 import { ChartTooltip } from "./ChartTooltip";
@@ -15,9 +21,13 @@ interface StreamChartProps {
 }
 
 export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamChartProps = {}) {
+  const dispatch = useDispatch<AppDispatch>();
   const excludeLowThroughputRedux = useSelector((s: RootState) => s.ui.excludeLowThroughputChains);
   const excludeLowThroughput = excludeProp ?? excludeLowThroughputRedux;
   const metric = useSelector((s: RootState) => s.ui.metric);
+  const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
+  const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
+  const smoothGraph = useSelector((s: RootState) => s.ui.smoothGraph);
 
   const resetLookbackRef = useRef<() => void>(() => {});
   const { isFullscreen, setIsFullscreen } = useFullscreen(resetLookbackRef);
@@ -26,6 +36,39 @@ export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamC
     isFullscreen,
     resetLookbackRef,
   );
+
+  // Capture URL search string before any effects can overwrite it
+  const initialSearch = useRef(
+    window.location.pathname === "/live" ? window.location.search : ""
+  );
+  // Skip option→URL sync on the first render so the parse effect can apply first
+  const optionsSyncReady = useRef(false);
+
+  // On direct navigation to /live?o=..., apply the encoded options to Redux
+  useEffect(() => {
+    if (!initialSearch.current) return;
+    const o = new URLSearchParams(initialSearch.current).get("o") ?? "";
+    dispatch(setIncludeTestnets(o.includes("tn")));
+    dispatch(setIncludeSidechains(o.includes("sd")));
+    dispatch(setExcludeLowThroughputChains(!o.includes("lt")));
+    dispatch(setSmoothGraph(o.includes("sm")));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Keep the URL in sync with current options while in fullscreen
+  useEffect(() => {
+    if (!optionsSyncReady.current) {
+      optionsSyncReady.current = true;
+      return;
+    }
+    if (!isFullscreen) return;
+    const o = [
+      includeTestnets ? "tn" : "",
+      includeSidechains ? "sd" : "",
+      !excludeLowThroughputRedux ? "lt" : "",
+      smoothGraph ? "sm" : "",
+    ].join("");
+    history.replaceState(null, "", `/live${o ? `?o=${o}` : ""}`);
+  }, [isFullscreen, includeTestnets, includeSidechains, excludeLowThroughputRedux, smoothGraph]);
 
   return (
     <div
