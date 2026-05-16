@@ -164,7 +164,7 @@ export function useChartEngine(
     streamWRef.current = initW - AXIS_W;
 
     if (preloadedRef.current.length > 0 && history.length === 0) {
-      fillFromSnapshots(preloadedRef.current, history, streamWRef.current, networksRef.current, metricRef.current);
+      fillFromSnapshots(preloadedRef.current, history, streamWRef.current, networksRef.current, metricRef.current, lookbackMsRef.current);
       if (history.length > 0) {
         lastMaxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
         maxRef.current = lastMaxRef.current;
@@ -338,7 +338,7 @@ export function useChartEngine(
     if (preloadedSnapshots.length === 0) return;
     const W = canvasWRef.current;
     const history = historyBufRef.current;
-    fillFromSnapshots(preloadedSnapshots, history, W - AXIS_W, networksRef.current, metricRef.current);
+    fillFromSnapshots(preloadedSnapshots, history, W - AXIS_W, networksRef.current, metricRef.current, lookbackMsRef.current);
     const ctx = ctxRef.current;
     if (ctx && W > 0) {
       const max = history.reduce((m, col) => Math.max(m, col.total), 1);

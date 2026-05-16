@@ -61,17 +61,29 @@ export function fillFromSnapshots(
   streamW: number,
   networks: NetworkResponse[],
   metric: "tps" | "gps",
+  lookbackMs: number,
 ) {
   if (snapshots.length === 0 || streamW === 0) return;
   history.length = 0;
-  const cols = snapshots.map((s) => snapshotToColumnData(s, networks, metric));
-  const pxPerCol = streamW / cols.length;
-  let carry = 0;
-  for (const col of cols) {
-    carry += pxPerCol;
-    const px = Math.round(carry);
-    carry -= px;
-    for (let i = 0; i < px; i++) history.push(col);
+
+  // Derive bucket duration from consecutive timestamps; fall back to 1 minute
+  const bucketMs =
+    snapshots.length >= 2 ? snapshots[1].timestamp - snapshots[0].timestamp : 60_000;
+
+  const now = Date.now();
+  const pxPerMs = streamW / lookbackMs;
+  const empty: ColumnData = { segments: [], total: 0 };
+  const result: ColumnData[] = Array.from({ length: streamW }, () => empty);
+
+  for (const snap of snapshots) {
+    const col = snapshotToColumnData(snap, networks, metric);
+    // Bucket covers [snap.timestamp, snap.timestamp + bucketMs); map to pixel range
+    const leftPx = Math.round(streamW - (now - snap.timestamp) * pxPerMs);
+    const rightPx = Math.round(streamW - (now - snap.timestamp - bucketMs) * pxPerMs);
+    for (let x = Math.max(0, leftPx); x < Math.min(streamW, rightPx); x++) {
+      result[x] = col;
+    }
   }
-  if (history.length > streamW) history.splice(0, history.length - streamW);
+
+  for (const col of result) history.push(col);
 }
