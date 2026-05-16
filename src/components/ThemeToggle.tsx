@@ -17,9 +17,17 @@ export function ThemeToggle() {
   }
 
   return (
-    <Tooltip label="Change theme (T)" withArrow>
-      <ActionIcon variant="subtle" onClick={toggle} aria-label="Toggle color scheme">
-        {colorScheme === "dark" ? <IconSun size={18} /> : <IconMoon size={18} />}
+    <Tooltip label="Change theme [T]" withArrow zIndex={10001}>
+      <ActionIcon
+        variant="subtle"
+        onClick={toggle}
+        aria-label="Toggle color scheme"
+      >
+        {colorScheme === "dark" ? (
+          <IconSun size={18} />
+        ) : (
+          <IconMoon size={18} />
+        )}
       </ActionIcon>
     </Tooltip>
   );
