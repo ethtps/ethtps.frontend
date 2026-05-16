@@ -1,4 +1,5 @@
-import { Card, Text } from "@mantine/core";
+import { ActionIcon, Card, Group, Text, Tooltip } from "@mantine/core";
+import { IconMaximize, IconMinimize } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -8,12 +9,15 @@ import { paintAxis, paintColumnData, paintTimeAxis, paintCrosshair, redrawAll } 
 import { chainColor, hexToRgb } from "./utils";
 import { ColumnData, TooltipState } from "./types";
 import { OTHER_COLOR } from "./constants";
+import { MetricToggle } from "../MetricToggle";
+import { ThemeToggle } from "../ThemeToggle";
 
 export function StreamChart() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(() => window.location.pathname === "/live");
 
   const live = useSelector((s: RootState) => s.metrics.live);
   const networks = useSelector((s: RootState) => s.networks.networks);
@@ -26,29 +30,32 @@ export function StreamChart() {
   const metricRef = useRef(metric);
   const colorSchemeRef = useRef(colorScheme);
   const preloadedRef = useRef(preloadedSnapshots);
+  const isFullscreenRef = useRef(isFullscreen);
   const maxRef = useRef(1);
   const prevMetricRef = useRef(metric);
   const historyBufRef = useRef<ColumnData[]>([]);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+  // Dynamic dimension refs — updated by doResize
   const canvasWRef = useRef(0);
+  const HRef = useRef(HEIGHT);
+  const streamWRef = useRef(0);
+  // Animation state refs — survive resize without restarting the rAF loop
+  const lastMaxRef = useRef(1);
+  const lastTsRef = useRef(0);
+  const subPixelRef = useRef(0);
 
   liveRef.current = live;
   networksRef.current = networks;
   metricRef.current = metric;
   colorSchemeRef.current = colorScheme;
   preloadedRef.current = preloadedSnapshots;
+  isFullscreenRef.current = isFullscreen;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const overlay = overlayRef.current;
     const wrap = wrapRef.current;
     if (!canvas || !overlay || !wrap) return;
-
-    const W = wrap.getBoundingClientRect().width;
-    canvas.width = W;
-    canvas.height = HEIGHT + TIME_AXIS_H;
-    overlay.width = W;
-    overlay.height = HEIGHT + TIME_AXIS_H;
 
     const ctx = canvas.getContext("2d");
     const overlayCtx = overlay.getContext("2d");
@@ -58,45 +65,80 @@ export function StreamChart() {
     const oc: CanvasRenderingContext2D = overlayCtx;
     const cvs: HTMLCanvasElement = canvas;
     ctxRef.current = c;
-    canvasWRef.current = W;
 
-    const streamW = W - AXIS_W;
-    const PIXELS_PER_MS = streamW / SCROLL_DURATION_MS;
     const history = historyBufRef.current;
-    let lastMax = 1;
-    let lastTs = 0;
-    let subPixel = 0;
     let rafId: number;
 
+    function doResize() {
+      const newW = wrap!.clientWidth;
+      if (newW === 0) return;
+      // In fullscreen the wrap has explicit flex height; otherwise its height equals the canvas
+      const newH = isFullscreenRef.current
+        ? Math.max(wrap!.clientHeight - TIME_AXIS_H, HEIGHT)
+        : HEIGHT;
+
+      canvas!.width = newW;
+      canvas!.height = newH + TIME_AXIS_H;
+      overlay!.width = newW;
+      overlay!.height = newH + TIME_AXIS_H;
+
+      canvasWRef.current = newW;
+      HRef.current = newH;
+      streamWRef.current = newW - AXIS_W;
+      lastTsRef.current = 0; // prevent dt spike after resize
+
+      const newStreamW = newW - AXIS_W;
+      if (history.length > newStreamW) history.splice(0, history.length - newStreamW);
+
+      maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
+      lastMaxRef.current = maxRef.current;
+      redrawAll(c, newW, newH, history, maxRef.current);
+    }
+
+    // Initial sizing
+    const initW = wrap.clientWidth || wrap.getBoundingClientRect().width;
+    canvas.width = initW;
+    canvas.height = HEIGHT + TIME_AXIS_H;
+    overlay.width = initW;
+    overlay.height = HEIGHT + TIME_AXIS_H;
+    canvasWRef.current = initW;
+    HRef.current = HEIGHT;
+    streamWRef.current = initW - AXIS_W;
+
     if (preloadedRef.current.length > 0 && history.length === 0) {
-      fillFromSnapshots(preloadedRef.current, history, streamW, networksRef.current, metricRef.current);
+      fillFromSnapshots(preloadedRef.current, history, streamWRef.current, networksRef.current, metricRef.current);
       if (history.length > 0) {
-        lastMax = history.reduce((m, col) => Math.max(m, col.total), 1);
-        maxRef.current = lastMax;
-        redrawAll(c, W, HEIGHT, history, lastMax);
+        lastMaxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
+        maxRef.current = lastMaxRef.current;
+        redrawAll(c, initW, HEIGHT, history, lastMaxRef.current);
       }
     }
 
+    const ro = new ResizeObserver(doResize);
+    ro.observe(wrap);
+
     function frame(ts: number) {
-      const dt = lastTs === 0 ? 0 : ts - lastTs;
-      lastTs = ts;
+      const W = canvasWRef.current;
+      const H = HRef.current;
+      const streamW = streamWRef.current;
+      const dt = lastTsRef.current === 0 ? 0 : ts - lastTsRef.current;
+      lastTsRef.current = ts;
 
       if (metricRef.current !== prevMetricRef.current) {
         maxRef.current = 1;
-        lastMax = 1;
+        lastMaxRef.current = 1;
         history.length = 0;
-        c.clearRect(0, 0, W, HEIGHT + TIME_AXIS_H);
-        paintAxis(c, HEIGHT, 1);
-        paintTimeAxis(c, W, streamW);
+        c.clearRect(0, 0, W, H + TIME_AXIS_H);
+        paintAxis(c, H, 1);
+        paintTimeAxis(c, W, streamW, H);
         prevMetricRef.current = metricRef.current;
       }
 
-      subPixel += dt * PIXELS_PER_MS;
-      const px = Math.floor(subPixel);
+      subPixelRef.current += dt * (streamW / SCROLL_DURATION_MS);
+      const px = Math.floor(subPixelRef.current);
 
       if (px >= 1) {
-        subPixel -= px;
-
+        subPixelRef.current -= px;
         const col = collectColumn(liveRef.current, networksRef.current, metricRef.current);
 
         for (let i = 0; i < px; i++) history.push(col);
@@ -104,19 +146,19 @@ export function StreamChart() {
 
         maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
 
-        if (Math.abs(maxRef.current - lastMax) / lastMax > MAX_REDRAW_THRESHOLD) {
-          lastMax = maxRef.current;
-          redrawAll(c, W, HEIGHT, history, maxRef.current);
+        if (Math.abs(maxRef.current - lastMaxRef.current) / lastMaxRef.current > MAX_REDRAW_THRESHOLD) {
+          lastMaxRef.current = maxRef.current;
+          redrawAll(c, W, H, history, maxRef.current);
         } else {
           c.globalCompositeOperation = "copy";
           c.drawImage(cvs, -px, 0);
           c.globalCompositeOperation = "source-over";
-          c.clearRect(W - px, 0, px, HEIGHT);
+          c.clearRect(W - px, 0, px, H);
           for (let i = 0; i < px; i++) {
-            paintColumnData(c, W - px + i, HEIGHT, col, maxRef.current);
+            paintColumnData(c, W - px + i, H, col, maxRef.current);
           }
-          paintAxis(c, HEIGHT, maxRef.current);
-          paintTimeAxis(c, W, streamW);
+          paintAxis(c, H, maxRef.current);
+          paintTimeAxis(c, W, streamW, H);
         }
       }
 
@@ -126,17 +168,19 @@ export function StreamChart() {
     rafId = requestAnimationFrame(frame);
 
     function onMouseMove(e: MouseEvent) {
+      const W = canvasWRef.current;
+      const H = HRef.current;
       const rect = cvs.getBoundingClientRect();
       const mx = Math.round(e.clientX - rect.left);
       const my = Math.round(e.clientY - rect.top);
 
-      if (mx < AXIS_W || mx >= W || my < 0 || my >= HEIGHT) {
+      if (mx < AXIS_W || mx >= W || my < 0 || my >= H) {
         setTooltip(null);
-        oc.clearRect(0, 0, W, HEIGHT + TIME_AXIS_H);
+        oc.clearRect(0, 0, W, H + TIME_AXIS_H);
         return;
       }
 
-      paintCrosshair(oc, W, mx, my, maxRef.current, metricRef.current.toUpperCase(), colorSchemeRef.current === "dark");
+      paintCrosshair(oc, W, mx, my, maxRef.current, metricRef.current.toUpperCase(), colorSchemeRef.current === "dark", H);
 
       const [r, g, b, a] = c.getImageData(mx, my, 1, 1).data;
       if (a === 0) { setTooltip(null); return; }
@@ -168,18 +212,32 @@ export function StreamChart() {
     }
 
     function onMouseLeave() {
+      const W = canvasWRef.current;
+      const H = HRef.current;
       setTooltip(null);
-      oc.clearRect(0, 0, W, HEIGHT + TIME_AXIS_H);
+      oc.clearRect(0, 0, W, H + TIME_AXIS_H);
     }
 
     cvs.addEventListener("mousemove", onMouseMove);
     cvs.addEventListener("mouseleave", onMouseLeave);
     return () => {
       cancelAnimationFrame(rafId);
+      ro.disconnect();
       cvs.removeEventListener("mousemove", onMouseMove);
       cvs.removeEventListener("mouseleave", onMouseLeave);
       ctxRef.current = null;
     };
+  }, []);
+
+  useEffect(() => {
+    const path = isFullscreen ? "/live" : "/";
+    if (window.location.pathname !== path) history.pushState(null, "", path);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    const onPop = () => setIsFullscreen(window.location.pathname === "/live");
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
 
   useEffect(() => {
@@ -191,19 +249,59 @@ export function StreamChart() {
     if (ctx && W > 0) {
       const max = history.reduce((m, col) => Math.max(m, col.total), 1);
       maxRef.current = max;
-      redrawAll(ctx, W, HEIGHT, history, max);
+      redrawAll(ctx, W, HRef.current, history, max);
     }
   }, [preloadedSnapshots]);
 
   return (
-    <Card bg="transparent" p="md" mb="md">
-      <Text size="sm" fw={600} mb="xs" c="dimmed" tt="uppercase">
-        {metric} — live stream
-      </Text>
-      <div ref={wrapRef} style={{ position: "relative" }}>
-        <canvas ref={canvasRef} style={{ display: "block" }} />
-        <canvas ref={overlayRef} style={{ display: "block", position: "absolute", top: 0, left: 0, pointerEvents: "none" }} />
-      </div>
+    <div
+      style={isFullscreen ? {
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        background: "var(--mantine-color-body)",
+        display: "flex",
+        flexDirection: "column",
+        padding: 12,
+        boxSizing: "border-box",
+      } : undefined}
+    >
+      <Card
+        bg="transparent"
+        p="md"
+        mb={isFullscreen ? 0 : "md"}
+        style={isFullscreen ? { flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" } : undefined}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+          <Text size="sm" fw={600} c="dimmed" tt="uppercase">
+            {metric} — live stream
+          </Text>
+          <Group gap="sm">
+            {isFullscreen && (
+              <>
+                <MetricToggle />
+                <ThemeToggle />
+              </>
+            )}
+            <Tooltip label={isFullscreen ? "Minimize" : "Expand"} withArrow zIndex={10001}>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                onClick={() => setIsFullscreen(f => !f)}
+              >
+                {isFullscreen ? <IconMinimize size={20} /> : <IconMaximize size={20} />}
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+        </div>
+        <div
+          ref={wrapRef}
+          style={{ position: "relative", ...(isFullscreen ? { flex: 1 } : {}) }}
+        >
+          <canvas ref={canvasRef} style={{ display: "block" }} />
+          <canvas ref={overlayRef} style={{ display: "block", position: "absolute", top: 0, left: 0, pointerEvents: "none" }} />
+        </div>
+      </Card>
       {tooltip && (
         <div
           style={{
@@ -217,13 +315,13 @@ export function StreamChart() {
             borderRadius: 6,
             fontSize: 12,
             pointerEvents: "none",
-            zIndex: 9999,
+            zIndex: 10000,
             whiteSpace: "nowrap",
           }}
         >
           {tooltip.name} — {tooltip.value.toFixed(2)} {metric.toUpperCase()}
         </div>
       )}
-    </Card>
+    </div>
   );
 }

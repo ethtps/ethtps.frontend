@@ -40,10 +40,10 @@ export function paintAxis(ctx: CanvasRenderingContext2D, H: number, max: number)
   ctx.fillRect(AXIS_W - 1, 0, 1, H);
 }
 
-export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number) {
-  ctx.clearRect(0, HEIGHT, W, TIME_AXIS_H);
+export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number, H: number) {
+  ctx.clearRect(0, H, W, TIME_AXIS_H);
   ctx.fillStyle = "#444";
-  ctx.fillRect(AXIS_W, HEIGHT, streamW, 1);
+  ctx.fillRect(AXIS_W, H, streamW, 1);
   ctx.font = "10px monospace";
   ctx.textBaseline = "top";
   const tickCount = 4;
@@ -52,10 +52,10 @@ export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW:
     const seconds = -60 + (60 * i) / tickCount;
     const label = seconds === 0 ? "0s" : `${seconds}s`;
     ctx.fillStyle = "#444";
-    ctx.fillRect(x, HEIGHT, 1, 4);
+    ctx.fillRect(x, H, 1, 4);
     ctx.fillStyle = "#888";
     ctx.textAlign = i === 0 ? "left" : i === tickCount ? "right" : "center";
-    ctx.fillText(label, x, HEIGHT + 6);
+    ctx.fillText(label, x, H + 6);
   }
 }
 
@@ -67,13 +67,14 @@ export function paintCrosshair(
   max: number,
   metricLabel: string,
   isDark: boolean,
+  H: number,
 ) {
   const streamW = W - AXIS_W;
   const lineColor = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
   const chipBg = isDark ? "rgba(20,20,20,0.85)" : "rgba(230,230,230,0.92)";
   const chipFg = isDark ? "#eee" : "#111";
 
-  ctx.clearRect(0, 0, W, HEIGHT + TIME_AXIS_H);
+  ctx.clearRect(0, 0, W, H + TIME_AXIS_H);
   ctx.save();
 
   ctx.strokeStyle = lineColor;
@@ -82,7 +83,7 @@ export function paintCrosshair(
 
   ctx.beginPath();
   ctx.moveTo(mx + 0.5, 0);
-  ctx.lineTo(mx + 0.5, HEIGHT);
+  ctx.lineTo(mx + 0.5, H);
   ctx.stroke();
 
   ctx.beginPath();
@@ -94,12 +95,12 @@ export function paintCrosshair(
   ctx.font = "10px monospace";
 
   // Y-axis label
-  const value = (1 - my / HEIGHT) * max;
+  const value = (1 - my / H) * max;
   const yLabel = `${siFormat(value)} ${metricLabel}`;
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   const yTw = ctx.measureText(yLabel).width + 6;
-  const yLY = Math.max(8, Math.min(my, HEIGHT - 8));
+  const yLY = Math.max(8, Math.min(my, H - 8));
   ctx.fillStyle = chipBg;
   ctx.fillRect(2, yLY - 8, yTw, 16);
   ctx.fillStyle = chipFg;
@@ -113,9 +114,9 @@ export function paintCrosshair(
   const tTw = ctx.measureText(tLabel).width + 6;
   const tLX = Math.max(AXIS_W + tTw / 2, Math.min(mx, W - tTw / 2));
   ctx.fillStyle = chipBg;
-  ctx.fillRect(tLX - tTw / 2, HEIGHT + 3, tTw, 14);
+  ctx.fillRect(tLX - tTw / 2, H + 3, tTw, 14);
   ctx.fillStyle = chipFg;
-  ctx.fillText(tLabel, tLX, HEIGHT + 5);
+  ctx.fillText(tLabel, tLX, H + 5);
 
   ctx.restore();
 }
@@ -133,5 +134,5 @@ export function redrawAll(
     paintColumnData(ctx, startX + i, H, history[i], max);
   }
   paintAxis(ctx, H, max);
-  paintTimeAxis(ctx, W, W - AXIS_W);
+  paintTimeAxis(ctx, W, W - AXIS_W, H);
 }
