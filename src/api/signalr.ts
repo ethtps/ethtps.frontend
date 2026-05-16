@@ -1,7 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 import { config } from "../config";
 import { store } from "../store";
-import { applyBatchUpdate, MetricsUpdate } from "../store/metricsSlice";
+import { applyBatchUpdate, MetricsUpdate, setGlobalSourceRest } from "../store/metricsSlice";
 
 const MAX_BACKOFF_MS = 5_000;
 
@@ -29,6 +29,11 @@ setInterval(() => {
 }, config.signalrBatchMs);
 
 let activeFilters = { includeTestnets: true, includeSidechains: true };
+
+// Fall back to REST while the transport is down; the next batch update will flip it back
+connection.onreconnecting(() => {
+  store.dispatch(setGlobalSourceRest());
+});
 
 // Re-subscribe after transport-level reconnects (server loses subscription state on disconnect)
 connection.onreconnected(() => {

@@ -51,6 +51,7 @@ interface MetricsState {
   live: Record<number, LiveMetricsResponse>;
   global: GlobalMetricsResponse | null;
   globalStatus: "idle" | "loading" | "error";
+  globalSource: "websocket" | "rest";
   history: MetricsSnapshot[];
   preloadedSnapshots: MetricsSnapshot[];
 }
@@ -59,6 +60,7 @@ const initialState: MetricsState = {
   live: {},
   global: null,
   globalStatus: "idle",
+  globalSource: "rest",
   history: [],
   preloadedSnapshots: [],
 };
@@ -117,6 +119,19 @@ const metricsSlice = createSlice({
           timestamp: u.timestamp,
         };
       }
+      // Derive global totals from live websocket data
+      let totalTps = 0;
+      let totalGps = 0;
+      let activeChains = 0;
+      for (const m of Object.values(state.live)) {
+        if (m.tps != null) { totalTps += m.tps; activeChains++; }
+        if (m.gps != null) totalGps += m.gps;
+      }
+      state.global = { totalTps, totalGps, activeChains, computedAt: new Date().toISOString() };
+      state.globalSource = "websocket";
+    },
+    setGlobalSourceRest(state) {
+      state.globalSource = "rest";
     },
   },
   extraReducers: (builder) => {
@@ -125,8 +140,10 @@ const metricsSlice = createSlice({
         state.globalStatus = "loading";
       })
       .addCase(fetchGlobalMetrics.fulfilled, (state, action) => {
-        state.global = action.payload;
         state.globalStatus = "idle";
+        // WebSocket is the preferred source; only use REST data as a fallback
+        if (state.globalSource === "websocket") return;
+        state.global = action.payload;
 
         const now = Date.now();
         const chains: MetricsSnapshot["chains"] = {};
@@ -151,5 +168,5 @@ const metricsSlice = createSlice({
   },
 });
 
-export const { applyUpdate, applyBatchUpdate } = metricsSlice.actions;
+export const { applyUpdate, applyBatchUpdate, setGlobalSourceRest } = metricsSlice.actions;
 export default metricsSlice.reducer;
