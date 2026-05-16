@@ -51,7 +51,7 @@ interface MetricsState {
   live: Record<number, LiveMetricsResponse>;
   global: GlobalMetricsResponse | null;
   globalStatus: "idle" | "loading" | "error";
-  globalSource: "websocket" | "rest";
+  wsConnected: boolean;
   history: MetricsSnapshot[];
   preloadedSnapshots: MetricsSnapshot[];
 }
@@ -60,7 +60,7 @@ const initialState: MetricsState = {
   live: {},
   global: null,
   globalStatus: "idle",
-  globalSource: "rest",
+  wsConnected: false,
   history: [],
   preloadedSnapshots: [],
 };
@@ -128,10 +128,9 @@ const metricsSlice = createSlice({
         if (m.gps != null) totalGps += m.gps;
       }
       state.global = { totalTps, totalGps, activeChains, computedAt: new Date().toISOString() };
-      state.globalSource = "websocket";
     },
-    setGlobalSourceRest(state) {
-      state.globalSource = "rest";
+    setWsConnected(state, action: PayloadAction<boolean>) {
+      state.wsConnected = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -141,8 +140,7 @@ const metricsSlice = createSlice({
       })
       .addCase(fetchGlobalMetrics.fulfilled, (state, action) => {
         state.globalStatus = "idle";
-        // WebSocket is the preferred source; only use REST data as a fallback
-        if (state.globalSource === "websocket") return;
+        if (state.wsConnected) return;
         state.global = action.payload;
 
         const now = Date.now();
@@ -168,5 +166,5 @@ const metricsSlice = createSlice({
   },
 });
 
-export const { applyUpdate, applyBatchUpdate, setGlobalSourceRest } = metricsSlice.actions;
+export const { applyUpdate, applyBatchUpdate, setWsConnected } = metricsSlice.actions;
 export default metricsSlice.reducer;

@@ -1,7 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 import { config } from "../config";
 import { store } from "../store";
-import { applyBatchUpdate, MetricsUpdate, setGlobalSourceRest } from "../store/metricsSlice";
+import { applyBatchUpdate, MetricsUpdate, setWsConnected } from "../store/metricsSlice";
 
 const MAX_BACKOFF_MS = 5_000;
 
@@ -30,13 +30,14 @@ setInterval(() => {
 
 let activeFilters = { includeTestnets: true, includeSidechains: true };
 
-// Fall back to REST while the transport is down; the next batch update will flip it back
+// Resume REST polling while the transport is down
 connection.onreconnecting(() => {
-  store.dispatch(setGlobalSourceRest());
+  store.dispatch(setWsConnected(false));
 });
 
-// Re-subscribe after transport-level reconnects (server loses subscription state on disconnect)
+// Re-subscribe and resume WS mode after transport-level reconnects
 connection.onreconnected(() => {
+  store.dispatch(setWsConnected(true));
   connection
     .invoke("SubscribeAll", activeFilters.includeTestnets, activeFilters.includeSidechains)
     .catch(console.error);
@@ -62,6 +63,7 @@ export async function startSignalR(includeTestnets: boolean, includeSidechains: 
   activeFilters = { includeTestnets, includeSidechains };
   await connectWithBackoff(stopped);
   await connection.invoke("SubscribeAll", includeTestnets, includeSidechains);
+  store.dispatch(setWsConnected(true));
 }
 
 export async function updateSubscription(includeTestnets: boolean, includeSidechains: boolean): Promise<void> {
@@ -71,5 +73,6 @@ export async function updateSubscription(includeTestnets: boolean, includeSidech
 
 export async function stopSignalR(): Promise<void> {
   stopped.value = true;
+  store.dispatch(setWsConnected(false));
   await connection.stop();
 }

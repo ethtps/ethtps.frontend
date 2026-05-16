@@ -18,6 +18,7 @@ export function App() {
   const dispatch = useDispatch<AppDispatch>();
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
+  const wsConnected = useSelector((s: RootState) => s.metrics.wsConnected);
   const globalMetrics = useSelector((s: RootState) => s.metrics.global);
   const metric = useSelector((s: RootState) => s.ui.metric);
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
@@ -28,14 +29,15 @@ export function App() {
   useEffect(() => {
     const filters = { includeTestnets, includeSidechains };
     dispatch(fetchNetworks());
-    dispatch(fetchGlobalMetrics(filters));
 
+    if (wsConnected) return;
+
+    dispatch(fetchGlobalMetrics(filters));
     const intervalId = setInterval(() => {
       dispatch(fetchGlobalMetrics(filters));
     }, config.globalPollIntervalMs);
-
     return () => clearInterval(intervalId);
-  }, [dispatch, includeTestnets, includeSidechains]);
+  }, [dispatch, includeTestnets, includeSidechains, wsConnected]);
 
   // Start SignalR once on mount; server handles chain filtering via SubscribeAll
   useEffect(() => {
