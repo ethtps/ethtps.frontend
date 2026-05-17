@@ -4,6 +4,9 @@ import { OTHER_COLOR, THRESHOLD } from "./constants";
 import { ColumnData, Segment } from "./types";
 import { chainColor } from "./utils";
 
+// Sentinel for unfilled history slots — identity-checked so live data is never mistaken for empty
+export const EMPTY_COL: ColumnData = Object.freeze({ segments: [], total: 0 }) as ColumnData;
+
 export function collectColumn(
   live: Record<number, LiveMetricsResponse>,
   networks: NetworkResponse[],
@@ -62,9 +65,9 @@ export function fillFromSnapshots(
   networks: NetworkResponse[],
   metric: "tps" | "gps",
   lookbackMs: number,
+  forceReplace = false,
 ) {
   if (snapshots.length === 0 || streamW === 0) return;
-  history.length = 0;
 
   // Derive bucket duration from consecutive timestamps; fall back to 1 minute
   const bucketMs =
@@ -72,18 +75,23 @@ export function fillFromSnapshots(
 
   const now = Date.now();
   const pxPerMs = streamW / lookbackMs;
-  const empty: ColumnData = { segments: [], total: 0 };
-  const result: ColumnData[] = Array.from({ length: streamW }, () => empty);
+
+  // Pre-fill with sentinels. forceReplace wipes existing live data so historical
+  // data wins (needed after metric/filter changes where the rAF has already
+  // repopulated the buffer with live readings before the API response arrives).
+  if (history.length === 0 || forceReplace) {
+    history.length = 0;
+    for (let i = 0; i < streamW; i++) history.push(EMPTY_COL);
+  }
 
   for (const snap of snapshots) {
     const col = snapshotToColumnData(snap, networks, metric);
+    if (col.total === 0) continue;
     // Bucket covers [snap.timestamp, snap.timestamp + bucketMs); map to pixel range
     const leftPx = Math.round(streamW - (now - snap.timestamp) * pxPerMs);
     const rightPx = Math.round(streamW - (now - snap.timestamp - bucketMs) * pxPerMs);
     for (let x = Math.max(0, leftPx); x < Math.min(streamW, rightPx); x++) {
-      result[x] = col;
+      if (history[x] === EMPTY_COL) history[x] = col;
     }
   }
-
-  for (const col of result) history.push(col);
 }

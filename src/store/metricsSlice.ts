@@ -77,12 +77,13 @@ export const fetchGlobalMetrics = createAsyncThunk(
 
 export const fetchHistoryPreload = createAsyncThunk(
   "metrics/fetchHistoryPreload",
-  async () => {
+  async (lookbackMs: number) => {
+    const resolution = lookbackMs < 300_000 ? "1s" : "1m";
     const now = new Date();
-    const from = new Date(now.getTime() - 120_000).toISOString();
+    const from = new Date(now.getTime() - lookbackMs).toISOString();
     const to = now.toISOString();
 
-    const result = await getApiV1MetricsGlobalHistory({ from, to, resolution: "1m" });
+    const result = await getApiV1MetricsGlobalHistory({ from, to, resolution });
     const hist = result as GlobalHistoryResponse;
     if (!hist?.buckets) return [];
 

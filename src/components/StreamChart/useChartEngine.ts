@@ -13,7 +13,7 @@ import {
   SMOOTH_RADIUS,
   TIME_AXIS_H,
 } from "./constants";
-import { collectColumn, fillFromSnapshots } from "./columns";
+import { collectColumn, EMPTY_COL, fillFromSnapshots } from "./columns";
 import {
   paintAxis,
   paintColumnData,
@@ -62,6 +62,8 @@ export function useChartEngine(
   const prevSmoothRef = useRef(smoothGraph);
   const preloadedRef = useRef(preloadedSnapshots);
   const isFullscreenRef = useRef(isFullscreen);
+  const filtersMountedRef = useRef(false);
+  const pendingReplaceRef = useRef(false);
   const maxRef = useRef(1);
   const prevMetricRef = useRef(metric);
   const historyBufRef = useRef<ColumnData[]>([]);
@@ -113,8 +115,7 @@ export function useChartEngine(
           rescaled[i] = slice[Math.min(Math.round((i / sw) * slice.length), slice.length - 1)];
       } else {
         const coveredPx = Math.min(sw, Math.round((sw * oldLookback) / newLookback));
-        const empty: ColumnData = { segments: [], total: 0 };
-        for (let i = 0; i < sw - coveredPx; i++) rescaled[i] = empty;
+        for (let i = 0; i < sw - coveredPx; i++) rescaled[i] = EMPTY_COL;
         for (let i = 0; i < coveredPx; i++)
           rescaled[sw - coveredPx + i] =
             history[Math.min(Math.round((i / coveredPx) * history.length), history.length - 1)];
@@ -300,7 +301,7 @@ export function useChartEngine(
 
       if (newLookback > oldLookback) {
         clearTimeout(refetchTimer);
-        refetchTimer = setTimeout(() => dispatchRef.current(fetchHistoryPreload()), 300);
+        refetchTimer = setTimeout(() => dispatchRef.current(fetchHistoryPreload(lookbackMsRef.current)), 300);
       }
     }
 
@@ -335,17 +336,25 @@ export function useChartEngine(
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (preloadedSnapshots.length === 0) return;
+    if (!filtersMountedRef.current) { filtersMountedRef.current = true; return; }
+    pendingReplaceRef.current = true;
+    dispatchRef.current(fetchHistoryPreload(lookbackMsRef.current));
+  }, [includeTestnets, includeSidechains, metric]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (preloadedRef.current.length === 0 || networksRef.current.length === 0) return;
     const W = canvasWRef.current;
     const history = historyBufRef.current;
-    fillFromSnapshots(preloadedSnapshots, history, W - AXIS_W, networksRef.current, metricRef.current, lookbackMsRef.current);
+    fillFromSnapshots(preloadedRef.current, history, W - AXIS_W, networksRef.current, metricRef.current, lookbackMsRef.current, pendingReplaceRef.current);
+    pendingReplaceRef.current = false;
     const ctx = ctxRef.current;
     if (ctx && W > 0) {
       const max = history.reduce((m, col) => Math.max(m, col.total), 1);
       maxRef.current = max;
+      lastMaxRef.current = max;
       redrawAll(ctx, W, HRef.current, history, max, lookbackMsRef.current, smoothGraphRef.current, SMOOTH_RADIUS);
     }
-  }, [preloadedSnapshots]);
+  }, [preloadedSnapshots, networks]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { canvasRef, overlayRef, wrapRef, tooltip };
 }

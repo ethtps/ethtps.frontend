@@ -10,4 +10,4 @@ export const SCROLL_DURATION_MS = 60_000;
 export const MIN_LOOKBACK_MS = 5_000;
 export const MAX_LOOKBACK_MS = 900_000;
 export const MAX_REDRAW_THRESHOLD = 0.01;
-export const SMOOTH_RADIUS = 8;
+export const SMOOTH_RADIUS = 15;

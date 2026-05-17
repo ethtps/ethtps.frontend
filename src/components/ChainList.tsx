@@ -1,4 +1,5 @@
-import { Group, Pagination, ScrollArea, Skeleton, Table, Text } from "@mantine/core";
+import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { config } from "../config";
@@ -27,6 +28,7 @@ export function ChainList() {
   const [page, setPage] = useState(1);
   const [sortCol, setSortCol] = useState<SortCol>("metric");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
+  const [search, setSearch] = useState("");
 
   const [sortSnapshot, setSortSnapshot] = useState<Record<number, LiveMetricsResponse>>(live);
   const liveRef = useRef(live);
@@ -57,11 +59,23 @@ export function ChainList() {
   }, []);
 
   const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (q) {
+      // Search bypasses testnet/sidechain filters so hidden chains are still findable
+      return networks
+        .filter((n) => n.enabled)
+        .filter(
+          (n) =>
+            n.name.toLowerCase().includes(q) ||
+            String(n.chainId).includes(q) ||
+            (n.networkType?.toLowerCase() ?? "").includes(q),
+        );
+    }
     return networks
       .filter((n) => n.enabled)
       .filter((n) => includeTestnets || !n.isTestnet)
       .filter((n) => includeSidechains || (n.networkType?.toLowerCase() ?? "") !== "sidechain");
-  }, [networks, includeTestnets, includeSidechains]);
+  }, [networks, includeTestnets, includeSidechains, search]);
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
@@ -100,7 +114,7 @@ export function ChainList() {
 
   useEffect(() => {
     setPage(1);
-  }, [includeTestnets, includeSidechains]);
+  }, [includeTestnets, includeSidechains, search]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / config.pageSize));
   const safePage = Math.min(page, totalPages);
@@ -124,6 +138,14 @@ export function ChainList() {
 
   return (
     <>
+      <TextInput
+        placeholder="Search chains by name, ID or type…"
+        leftSection={<IconSearch size={14} />}
+        value={search}
+        onChange={(e) => setSearch(e.currentTarget.value)}
+        mb="sm"
+        size="sm"
+      />
       <ScrollArea>
         <Table striped highlightOnHover>
           <Table.Thead>

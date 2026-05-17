@@ -43,7 +43,7 @@ export function App() {
   useEffect(() => {
     signalRStarted.current = true;
     startSignalR(includeTestnets, includeSidechains).catch(console.error);
-    dispatch(fetchHistoryPreload());
+    dispatch(fetchHistoryPreload(60_000));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Re-subscribe when filter toggles change (skip initial mount)

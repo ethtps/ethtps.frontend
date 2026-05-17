@@ -1,4 +1,4 @@
-import { Badge, Group, Table, Text } from "@mantine/core";
+import { Anchor, Badge, Group, HoverCard, Stack, Table, Text } from "@mantine/core";
 import { memo } from "react";
 import { NetworkResponse } from "../store/networksSlice";
 import { LiveMetricsResponse } from "../store/metricsSlice";
@@ -53,9 +53,32 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
         <Text fw={500}>{display}</Text>
       </Table.Td>
       <Table.Td ta="center">
-        <Badge color={stale ? "gray" : "green"} variant="dot">
-          {stale ? "stale" : "live"}
-        </Badge>
+        {stale && config.rpcOverridesGithubUrl ? (
+          <HoverCard width={220} shadow="md" withArrow openDelay={150} closeDelay={200}>
+            <HoverCard.Target>
+              <Badge color="orange" variant="dot" style={{ cursor: "help" }}>
+                stale
+              </Badge>
+            </HoverCard.Target>
+            <HoverCard.Dropdown p="sm">
+              <Stack gap={4}>
+                <Text size="xs" fw={500}>Stale for a long time?</Text>
+                <Anchor
+                  size="xs"
+                  href={config.rpcOverridesGithubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Add missing RPC URL
+                </Anchor>
+              </Stack>
+            </HoverCard.Dropdown>
+          </HoverCard>
+        ) : (
+          <Badge color={stale ? "orange" : "green"} variant="dot">
+            {stale ? "stale" : "live"}
+          </Badge>
+        )}
       </Table.Td>
     </Table.Tr>
   );
