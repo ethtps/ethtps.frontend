@@ -171,8 +171,11 @@ export function createWheelHandlers(eg: EngineCtx) {
     const newLookback = Math.max(MIN_LOOKBACK_MS, Math.min(MAX_LOOKBACK_MS, oldLookback * factor));
     if (newLookback === oldLookback) return;
 
-    rescaleHistory(eg, newLookback, oldLookback);
+    // Update lookbackMs BEFORE rescale so trimToLive (inside rescaleHistory) computes
+    // bufferOldestTs against the new lookback — otherwise the first pan pixel after zoom
+    // sees a stale bufferOldestTs and triggers an immediate prefetch.
     lookbackMs.current = newLookback;
+    rescaleHistory(eg, newLookback, oldLookback);
     const sw = streamW.current;
     const liveSlice = eg.history.length > sw ? eg.history.slice(-sw) : eg.history;
     const m = liveSlice.reduce((acc, col) => Math.max(acc, col.total), 1);
@@ -191,8 +194,8 @@ export function createWheelHandlers(eg: EngineCtx) {
     const oldLookback = lookbackMs.current;
     if (oldLookback === SCROLL_DURATION_MS) return;
     const wasZoomedIn = oldLookback < SCROLL_DURATION_MS;
-    rescaleHistory(eg, SCROLL_DURATION_MS, oldLookback);
     lookbackMs.current = SCROLL_DURATION_MS;
+    rescaleHistory(eg, SCROLL_DURATION_MS, oldLookback);
     const sw = streamW.current;
     const liveSlice = eg.history.length > sw ? eg.history.slice(-sw) : eg.history;
     const m = liveSlice.reduce((acc, col) => Math.max(acc, col.total), 1);

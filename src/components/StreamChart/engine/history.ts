@@ -41,7 +41,7 @@ export function rescaleHistory(eg: EngineCtx, newLookback: number, oldLookback: 
 export async function fetchOlderHistory(eg: EngineCtx): Promise<void> {
   const {
     history, bufferOldestTs, isFetchingHistory, noMoreHistory, setIsLoadingHistory,
-    streamW, lookbackMs, panOffset, isDragging, dragStartPan, networks, metric,
+    streamW, lookbackMs, networks, metric,
   } = eg;
 
   if (isFetchingHistory.current || noMoreHistory.current) return;
@@ -102,16 +102,17 @@ export async function fetchOlderHistory(eg: EngineCtx): Promise<void> {
       }
     }
 
-    // Prepend without spread to avoid call-stack overflow on large arrays
+    // Prepend without spread to avoid call-stack overflow on large arrays.
+    // Note: do NOT adjust panOffset/dragStartPan here. The view is anchored to the RIGHT edge
+    // (live = now), so prepending older data on the left doesn't shift the visible window —
+    // displayStart/displayEnd in render.ts compute from (history.length - sw - panOffset), which
+    // automatically points to the same old data after the shift. Incrementing panOffset would
+    // teleport the view backward by `extraPx` pixels (the bug that caused "jumps all over the place").
     const tail = history.slice();
     history.length = 0;
     for (const col of newCols) history.push(col);
     for (const col of tail) history.push(col);
 
-    if (panOffset.current > 0) {
-      panOffset.current += extraPx;
-      if (isDragging.current) dragStartPan.current += extraPx;
-    }
     bufferOldestTs.current = fromTs;
   } catch (err) {
     console.error("fetchOlderHistory failed:", err);
