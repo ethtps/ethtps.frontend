@@ -1,13 +1,16 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from ".";
 import { GlobalMetricsResponse } from "./metricsSlice";
 
+const UPDATE_INTERVAL_MS = Number(import.meta.env.VITE_TOTAL_TPS_UPDATE_INTERVAL_MS ?? 1000);
+
 /**
- * Returns global TPS/GPS totals with sidechain and testnet filters applied.
- * When the WebSocket is active the totals are recomputed from per-chain live
- * state so filter toggles take effect immediately. Before WS connects the
- * REST-derived global value is returned (the API already applies the filters).
+ * Returns global TPS/GPS totals with sidechain/testnet filters applied,
+ * throttled to at most one update per VITE_TOTAL_TPS_UPDATE_INTERVAL_MS.
+ * When WS is active the totals are recomputed from per-chain live state so
+ * filter toggles take effect immediately. Before WS connects the REST-derived
+ * global value is returned (the API already applies the filters).
  */
 export function useFilteredGlobalMetrics(): GlobalMetricsResponse | null {
   const live = useSelector((s: RootState) => s.metrics.live);
@@ -17,7 +20,7 @@ export function useFilteredGlobalMetrics(): GlobalMetricsResponse | null {
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
 
-  return useMemo(() => {
+  const filtered = useMemo(() => {
     if (!wsConnected || Object.keys(live).length === 0) return global;
 
     const infoById = new Map(networks.map((n) => [n.chainId, n]));
@@ -33,4 +36,16 @@ export function useFilteredGlobalMetrics(): GlobalMetricsResponse | null {
 
     return { totalTps, totalGps, activeChains, computedAt: global?.computedAt ?? new Date().toISOString() };
   }, [live, networks, includeSidechains, includeTestnets, wsConnected, global]);
+
+  const latestRef = useRef(filtered);
+  latestRef.current = filtered;
+
+  const [throttled, setThrottled] = useState(filtered);
+
+  useEffect(() => {
+    const id = setInterval(() => setThrottled(latestRef.current), UPDATE_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  return throttled;
 }
