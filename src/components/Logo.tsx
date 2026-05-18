@@ -6,14 +6,29 @@ interface LogoProps {
 
 export function Logo({ onClick }: LogoProps) {
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", gap: 1, ...(onClick ? { cursor: "pointer" } : {}) }}
+    <a
+      href="#"
       onClick={onClick}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+        cursor: "pointer",
+        textDecoration: "none",
+        color: "inherit",
+      }}
     >
       <span className={styles.logo}>ETHTPS.info</span>
-      <span style={{ fontSize: 10, color: "var(--mantine-color-dimmed)", lineHeight: 1, userSelect: "none" }}>
-        Real-time throughput across Ethereum and its ecosystem
+      <span
+        style={{
+          fontSize: 12,
+          color: "var(--mantine-color-dimmed)",
+          lineHeight: 1,
+          userSelect: "none",
+        }}
+      >
+        Real-time Ethereum throughput
       </span>
-    </div>
+    </a>
   );
 }
