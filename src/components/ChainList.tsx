@@ -1,5 +1,5 @@
 import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput, Tooltip, SegmentedControl } from "@mantine/core";
-import { IconSearch, IconStar } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { config } from "../config";
@@ -168,12 +168,7 @@ export function ChainList() {
           data={[
             { label: "All", value: "all" },
             {
-              label: (
-                <Group gap={4} align="center">
-                  <IconStar size={12} />
-                  <span>Watchlist{watchlist.length > 0 ? ` (${watchlist.length})` : ""}</span>
-                </Group>
-              ) as unknown as string,
+              label: watchlist.length > 0 ? `★ Watchlist (${watchlist.length})` : "★ Watchlist",
               value: "watchlist",
             },
           ]}
