@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Card, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Card, Loader, Text, Tooltip } from "@mantine/core";
 import { IconMaximize } from "@tabler/icons-react";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamC
 
   const resetLookbackRef = useRef<() => void>(() => {});
   const { isFullscreen, setIsFullscreen } = useFullscreen(resetLookbackRef);
-  const { canvasRef, overlayRef, wrapRef, tooltip, isPanned } = useChartEngine(
+  const { canvasRef, overlayRef, wrapRef, tooltip, isPanned, isLoadingHistory } = useChartEngine(
     excludeLowThroughput,
     isFullscreen,
     resetLookbackRef,
@@ -77,6 +77,7 @@ export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamC
                   </Badge>
                 </Tooltip>
               )}
+              {isLoadingHistory && <Loader size="xs" color="dimmed" />}
             </div>
             <Tooltip label="Expand" withArrow zIndex={10001}>
               <ActionIcon variant="subtle" size="lg" onClick={() => setIsFullscreen(true)}>

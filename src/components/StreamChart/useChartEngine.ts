@@ -1,7 +1,8 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { fetchHistoryPreload } from "../../store/metricsSlice";
+import { fetchHistoryPreload, MetricsSnapshot } from "../../store/metricsSlice";
+import { getApiV1MetricsGlobalHistory } from "../../api/generated/services.gen";
 import {
   AXIS_W,
   HEIGHT,
@@ -13,7 +14,7 @@ import {
   SMOOTH_RADIUS,
   TIME_AXIS_H,
 } from "./constants";
-import { collectColumn, EMPTY_COL, fillFromSnapshots } from "./columns";
+import { collectColumn, EMPTY_COL, fillFromSnapshots, snapshotToColumnData } from "./columns";
 import {
   paintAxis,
   paintColumnData,
@@ -87,6 +88,14 @@ export function useChartEngine(
   const setIsPannedRef = useRef(setIsPanned);
   setIsPannedRef.current = setIsPanned;
 
+  // Infinite pan: track oldest buffered timestamp and fetch state
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const bufferOldestTsRef = useRef<number>(0);
+  const isFetchingHistoryRef = useRef(false);
+  const noMoreHistoryRef = useRef(false);
+  const setIsLoadingHistoryRef = useRef(setIsLoadingHistory);
+  setIsLoadingHistoryRef.current = setIsLoadingHistory;
+
   liveRef.current = live;
   networksRef.current = visibleNetworks;
   metricRef.current = metric;
@@ -124,6 +133,8 @@ export function useChartEngine(
     function trimToLive() {
       const sw = streamWRef.current;
       if (history.length > sw) history.splice(0, history.length - sw);
+      bufferOldestTsRef.current = Date.now() - lookbackMsRef.current;
+      noMoreHistoryRef.current = false;
     }
 
     // Full redraw of the live (rightmost streamW) slice
@@ -153,6 +164,88 @@ export function useChartEngine(
       const panOffsetMs = panOffset * (lookbackMsRef.current / sw);
       redrawAll(c, W, H, slice, max, lookbackMsRef.current, smoothGraphRef.current, SMOOTH_RADIUS, panOffsetMs);
       oc.clearRect(0, 0, W, H + TIME_AXIS_H);
+    }
+
+    // Fetch a chunk of older history and prepend it to the buffer
+    async function fetchOlderHistory() {
+      if (isFetchingHistoryRef.current || noMoreHistoryRef.current) return;
+      const toTs = bufferOldestTsRef.current;
+      if (toTs === 0) return;
+
+      // Capture zoom-level at fetch time; user may zoom while awaiting
+      const sw = streamWRef.current;
+      const lookbackMs = lookbackMsRef.current;
+      const pxPerMs = sw / lookbackMs;
+      const chunkMs = Math.max(lookbackMs, 60_000);
+      const fromTs = toTs - chunkMs;
+      const resolution = chunkMs < 300_000 ? "1s" : "1m";
+
+      isFetchingHistoryRef.current = true;
+      setIsLoadingHistoryRef.current(true);
+      try {
+        const result = await getApiV1MetricsGlobalHistory({
+          from: new Date(fromTs).toISOString(),
+          to: new Date(toTs).toISOString(),
+          resolution,
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const hist = result as any;
+        if (!hist?.buckets || hist.buckets.length === 0) {
+          noMoreHistoryRef.current = true;
+          return;
+        }
+
+        const byTime = new Map<number, MetricsSnapshot>();
+        for (const b of hist.buckets) {
+          const ts = new Date(b.bucket).getTime();
+          let snap = byTime.get(ts);
+          if (!snap) {
+            snap = { timestamp: ts, totalTps: 0, totalGps: 0, chains: {} };
+            byTime.set(ts, snap);
+          }
+          snap.chains[String(b.chainId)] = { tps: b.avgTps, gps: b.avgGps };
+          snap.totalTps += b.avgTps;
+          snap.totalGps += b.avgGps;
+        }
+        const snapshots = Array.from(byTime.values()).sort((a, b) => a.timestamp - b.timestamp);
+        if (snapshots.length === 0) { noMoreHistoryRef.current = true; return; }
+
+        const extraPx = Math.max(1, Math.round((toTs - fromTs) * pxPerMs));
+        const bucketMs = snapshots.length >= 2
+          ? snapshots[1].timestamp - snapshots[0].timestamp
+          : (chunkMs < 300_000 ? 1000 : 60_000);
+
+        // Build pixel columns for the fetched time range
+        const newCols: ColumnData[] = Array.from({ length: extraPx }, () => EMPTY_COL);
+        for (const snap of snapshots) {
+          const col = snapshotToColumnData(snap, networksRef.current, metricRef.current);
+          if (col.total === 0) continue;
+          const leftPx = Math.round((snap.timestamp - fromTs) * pxPerMs);
+          const rightPx = Math.round((snap.timestamp + bucketMs - fromTs) * pxPerMs);
+          for (let x = Math.max(0, leftPx); x < Math.min(extraPx, rightPx); x++) {
+            if (newCols[x] === EMPTY_COL) newCols[x] = col;
+          }
+        }
+
+        // Prepend to history (safe loop, avoids spread-overflow)
+        const tail = history.slice();
+        history.length = 0;
+        for (const col of newCols) history.push(col);
+        for (const col of tail) history.push(col);
+
+        // Keep panned view pointing at the same time window
+        if (panOffsetPxRef.current > 0) {
+          panOffsetPxRef.current += extraPx;
+          dragStartPanRef.current += extraPx; // keep drag math correct
+        }
+        bufferOldestTsRef.current = fromTs;
+      } catch (err) {
+        console.error("Failed to fetch older history:", err);
+      } finally {
+        isFetchingHistoryRef.current = false;
+        setIsLoadingHistoryRef.current(false);
+      }
     }
 
     // Snap out of pan and return to live, triggering a full redraw
@@ -338,6 +431,11 @@ export function useChartEngine(
       const maxPan = Math.max(0, history.length - sw);
       const newPan = Math.max(0, Math.min(maxPan, Math.round(dragStartPanRef.current + dx)));
       panOffsetPxRef.current = newPan;
+
+      // Prefetch older history when within half a screen of the left edge
+      if (newPan > 0 && maxPan - newPan <= Math.round(sw * 0.5)) {
+        fetchOlderHistory();
+      }
       const nowPanned = newPan > 0;
       if (nowPanned !== isPannedRef.current) {
         isPannedRef.current = nowPanned;
@@ -544,6 +642,9 @@ export function useChartEngine(
     const history = historyBufRef.current;
     fillFromSnapshots(preloadedRef.current, history, W - AXIS_W, networksRef.current, metricRef.current, lookbackMsRef.current, pendingReplaceRef.current);
     pendingReplaceRef.current = false;
+    // Track the oldest timestamp in the buffer so fetchOlderHistory knows where to fetch from
+    bufferOldestTsRef.current = preloadedRef.current[0]?.timestamp ?? Date.now() - lookbackMsRef.current;
+    noMoreHistoryRef.current = false;
     const ctx = ctxRef.current;
     if (ctx && W > 0) {
       const sw = W - AXIS_W;
@@ -555,5 +656,5 @@ export function useChartEngine(
     }
   }, [preloadedSnapshots, networks]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { canvasRef, overlayRef, wrapRef, tooltip, isPanned };
+  return { canvasRef, overlayRef, wrapRef, tooltip, isPanned, isLoadingHistory };
 }
