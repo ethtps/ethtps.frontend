@@ -3,6 +3,7 @@ import networksReducer from "./networksSlice";
 import metricsReducer from "./metricsSlice";
 import uiReducer from "./uiSlice";
 import watchlistReducer from "./watchlistSlice";
+import alertsReducer from "./alertsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     metrics: metricsReducer,
     ui: uiReducer,
     watchlist: watchlistReducer,
+    alerts: alertsReducer,
   },
 });
 

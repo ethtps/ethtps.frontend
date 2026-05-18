@@ -13,6 +13,7 @@ import { fetchGlobalMetrics, fetchHistoryPreload } from "./store/metricsSlice";
 import { fetchNetworks } from "./store/networksSlice";
 import { setColorScheme } from "./store/uiSlice";
 import { useFilteredGlobalMetrics } from "./store/useFilteredGlobalMetrics";
+import { useAlertEngine } from "./store/useAlertEngine";
 import { config } from "./config";
 
 export function App() {
@@ -21,6 +22,7 @@ export function App() {
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const wsConnected = useSelector((s: RootState) => s.metrics.wsConnected);
   const globalMetrics = useFilteredGlobalMetrics();
+  useAlertEngine();
   const metric = useSelector((s: RootState) => s.ui.metric);
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
   const { setColorScheme: mantineSetColorScheme } = useMantineColorScheme();
