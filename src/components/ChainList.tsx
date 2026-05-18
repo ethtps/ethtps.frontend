@@ -80,8 +80,19 @@ export function ChainList() {
     return showWatchlist ? base.filter((n) => watchlist.includes(n.chainId)) : base;
   }, [networks, includeTestnets, includeSidechains, search, showWatchlist, watchlist]);
 
+  const watchedSet = useMemo(() => new Set(watchlist), [watchlist]);
+
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
+      const aWatched = watchedSet.has(a.chainId);
+      const bWatched = watchedSet.has(b.chainId);
+
+      // Watchlisted chains always float to the top, sorted by throughput desc
+      if (aWatched !== bWatched) return aWatched ? -1 : 1;
+      if (aWatched && bWatched) {
+        return (sortSnapshot[b.chainId]?.[metric] ?? -1) - (sortSnapshot[a.chainId]?.[metric] ?? -1);
+      }
+
       let cmp = 0;
       switch (sortCol) {
         case "chain":
@@ -113,7 +124,7 @@ export function ChainList() {
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
-  }, [filtered, sortSnapshot, metric, sortCol, sortDir, live]);
+  }, [filtered, watchedSet, sortSnapshot, metric, sortCol, sortDir, live]);
 
   useEffect(() => {
     setPage(1);
