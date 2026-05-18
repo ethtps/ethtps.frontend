@@ -3,7 +3,16 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetApiV1MetricsByChainIdLiveData, GetApiV1MetricsByChainIdLiveResponse, GetApiV1MetricsByChainIdHistoryData, GetApiV1MetricsByChainIdHistoryResponse, GetApiV1MetricsViewersResponse, GetApiV1MetricsGlobalLiveData, GetApiV1MetricsGlobalLiveResponse, GetApiV1MetricsGlobalHistoryData, GetApiV1MetricsGlobalHistoryResponse, GetApiV1NetworksResponse, GetApiV1NetworksByChainIdData, GetApiV1NetworksByChainIdResponse } from './types.gen';
+import type { GetApiV1IngestionStatusResponse, GetApiV1MetricsByChainIdLiveData, GetApiV1MetricsByChainIdLiveResponse, GetApiV1MetricsByChainIdHistoryData, GetApiV1MetricsByChainIdHistoryResponse, GetApiV1MetricsViewersResponse, GetApiV1MetricsGlobalLiveData, GetApiV1MetricsGlobalLiveResponse, GetApiV1MetricsGlobalHistoryData, GetApiV1MetricsGlobalHistoryResponse, GetApiV1NetworksResponse, GetApiV1NetworksByChainIdData, GetApiV1NetworksByChainIdResponse } from './types.gen';
+
+/**
+ * @returns unknown OK
+ * @throws ApiError
+ */
+export const getApiV1IngestionStatus = (): CancelablePromise<GetApiV1IngestionStatusResponse> => { return __request(OpenAPI, {
+    method: 'GET',
+    url: '/api/v1/ingestion/status'
+}); };
 
 /**
  * @param data The data for the request.

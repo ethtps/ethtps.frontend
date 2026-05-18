@@ -1,4 +1,17 @@
-import { ActionIcon, Badge, Button, Checkbox, Group, Modal, NumberInput, Select, Stack, Table, Text, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Checkbox,
+  Group,
+  Modal,
+  NumberInput,
+  Select,
+  Stack,
+  Table,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconBellOff, IconTrash } from "@tabler/icons-react";
 import { memo, useMemo, useState } from "react";
@@ -12,14 +25,26 @@ export const AlertsButton = memo(function AlertsButton() {
 
   return (
     <>
-      <Tooltip label="TPS Alerts" withArrow openDelay={300}>
-        <ActionIcon variant="subtle" size="lg" onClick={open} style={{ position: "relative" }}>
+      <Tooltip label="Alerts" withArrow openDelay={300}>
+        <ActionIcon
+          variant="subtle"
+          size="lg"
+          onClick={open}
+          style={{ position: "relative" }}
+        >
           <IconBell size={18} />
           {alertCount > 0 && (
             <Badge
               size="xs"
               color="red"
-              style={{ position: "absolute", top: 2, right: 2, pointerEvents: "none", minWidth: 14, padding: "0 3px" }}
+              style={{
+                position: "absolute",
+                top: 2,
+                right: 2,
+                pointerEvents: "none",
+                minWidth: 14,
+                padding: "0 3px",
+              }}
             >
               {alertCount}
             </Badge>
@@ -39,7 +64,9 @@ function AlertsModal({ onClose }: { onClose: () => void }) {
   const [chainId, setChainId] = useState<number | null>(null);
   const [threshold, setThreshold] = useState<number | string>(100);
   const [persist, setPersist] = useState(false);
-  const [permDenied, setPermDenied] = useState(Notification.permission === "denied");
+  const [permDenied, setPermDenied] = useState(
+    Notification.permission === "denied",
+  );
 
   const chainOptions = useMemo(
     () =>
@@ -59,7 +86,14 @@ function AlertsModal({ onClose }: { onClose: () => void }) {
     if (chainId == null || !threshold) return;
     const network = networks.find((n) => n.chainId === chainId);
     if (!network) return;
-    dispatch(addAlert({ chainId, chainName: network.name, threshold: Number(threshold), persist }));
+    dispatch(
+      addAlert({
+        chainId,
+        chainName: network.name,
+        threshold: Number(threshold),
+        persist,
+      }),
+    );
     setChainId(null);
     setThreshold(100);
     setPersist(false);
@@ -71,20 +105,31 @@ function AlertsModal({ onClose }: { onClose: () => void }) {
     <Modal opened onClose={onClose} title="TPS Threshold Alerts" size="md">
       <Stack gap="md">
         {!notifSupported && (
-          <Text c="red" size="sm">Browser notifications are not supported in this browser.</Text>
+          <Text c="red" size="sm">
+            Browser notifications are not supported in this browser.
+          </Text>
         )}
         {notifSupported && Notification.permission === "default" && (
           <Group>
-            <Text size="sm" c="dimmed">Enable browser notifications to receive alerts.</Text>
-            <Button size="xs" variant="light" onClick={requestPermission}>Enable notifications</Button>
+            <Text size="sm" c="dimmed">
+              Enable browser notifications to receive alerts.
+            </Text>
+            <Button size="xs" variant="light" onClick={requestPermission}>
+              Enable notifications
+            </Button>
           </Group>
         )}
         {permDenied && (
-          <Text c="orange" size="sm">Notifications are blocked. Enable them in browser settings to receive alerts.</Text>
+          <Text c="orange" size="sm">
+            Notifications are blocked. Enable them in browser settings to
+            receive alerts.
+          </Text>
         )}
 
         <Stack gap="xs">
-          <Text fw={500} size="sm">Add alert</Text>
+          <Text fw={500} size="sm">
+            Add alert
+          </Text>
           <Select
             placeholder="Select chain…"
             data={chainOptions}
@@ -120,7 +165,9 @@ function AlertsModal({ onClose }: { onClose: () => void }) {
 
         {alerts.length > 0 && (
           <Stack gap="xs">
-            <Text fw={500} size="sm">Active alerts</Text>
+            <Text fw={500} size="sm">
+              Active alerts
+            </Text>
             <Table striped withTableBorder>
               <Table.Thead>
                 <Table.Tr>
@@ -137,9 +184,21 @@ function AlertsModal({ onClose }: { onClose: () => void }) {
                     <Table.Td>&gt; {alert.threshold} TPS</Table.Td>
                     <Table.Td>
                       {alert.persist ? (
-                        <Badge color="blue" size="xs" leftSection={<IconBell size={10} />}>Always</Badge>
+                        <Badge
+                          color="blue"
+                          size="xs"
+                          leftSection={<IconBell size={10} />}
+                        >
+                          Always
+                        </Badge>
                       ) : (
-                        <Badge color="gray" size="xs" leftSection={<IconBellOff size={10} />}>Once</Badge>
+                        <Badge
+                          color="gray"
+                          size="xs"
+                          leftSection={<IconBellOff size={10} />}
+                        >
+                          Once
+                        </Badge>
                       )}
                     </Table.Td>
                     <Table.Td>
@@ -160,7 +219,9 @@ function AlertsModal({ onClose }: { onClose: () => void }) {
         )}
 
         {alerts.length === 0 && (
-          <Text c="dimmed" size="sm" ta="center">No active alerts. Add one above.</Text>
+          <Text c="dimmed" size="sm" ta="center">
+            No active alerts. Add one above.
+          </Text>
         )}
       </Stack>
     </Modal>

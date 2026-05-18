@@ -19,7 +19,9 @@ import { config } from "./config";
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
-  const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
+  const includeSidechains = useSelector(
+    (s: RootState) => s.ui.includeSidechains,
+  );
   const wsConnected = useSelector((s: RootState) => s.metrics.wsConnected);
   const globalMetrics = useFilteredGlobalMetrics();
   useAlertEngine();
@@ -71,10 +73,12 @@ export function App() {
   }, [colorScheme, dispatch, mantineSetColorScheme]);
 
   useEffect(() => {
-    const value = metric === "tps" ? globalMetrics?.totalTps : globalMetrics?.totalGps;
-    document.title = value != null
-      ? `ethtps.info - ${value.toFixed(2)} ${metric.toUpperCase()}`
-      : "ethtps.info";
+    const value =
+      metric === "tps" ? globalMetrics?.totalTps : globalMetrics?.totalGps;
+    document.title =
+      value != null
+        ? `ethtps.info - ${value.toFixed(2)} ${metric.toUpperCase()}`
+        : "ethtps.info";
   }, [globalMetrics, metric]);
 
   return (
