@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, Card, Text, Tooltip } from "@mantine/core";
 import { IconMaximize } from "@tabler/icons-react";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamC
 
   const resetLookbackRef = useRef<() => void>(() => {});
   const { isFullscreen, setIsFullscreen } = useFullscreen(resetLookbackRef);
-  const { canvasRef, overlayRef, wrapRef, tooltip } = useChartEngine(
+  const { canvasRef, overlayRef, wrapRef, tooltip, isPanned } = useChartEngine(
     excludeLowThroughput,
     isFullscreen,
     resetLookbackRef,
@@ -66,9 +66,18 @@ export function StreamChart({ excludeLowThroughputChains: excludeProp }: StreamC
               marginBottom: 8,
             }}
           >
-            <Text size="sm" fw={600} c="dimmed" tt="uppercase">
-              {metric} - live stream
-            </Text>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Text size="sm" fw={600} c="dimmed" tt="uppercase">
+                {metric} - {isPanned ? "paused" : "live stream"}
+              </Text>
+              {isPanned && (
+                <Tooltip label="Double-click or press R to return to live" withArrow zIndex={10001}>
+                  <Badge color="orange" variant="light" size="sm" style={{ cursor: "default" }}>
+                    panning
+                  </Badge>
+                </Tooltip>
+              )}
+            </div>
             <Tooltip label="Expand" withArrow zIndex={10001}>
               <ActionIcon variant="subtle" size="lg" onClick={() => setIsFullscreen(true)}>
                 <IconMaximize size={20} />

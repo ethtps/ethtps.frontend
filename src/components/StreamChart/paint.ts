@@ -71,7 +71,7 @@ function fmtTimeLabel(ms: number): string {
   return s === 0 ? `-${m}m` : `-${m}m${s}s`;
 }
 
-export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number, H: number, lookbackMs: number) {
+export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW: number, H: number, lookbackMs: number, panOffsetMs = 0) {
   ctx.clearRect(0, H, W, TIME_AXIS_H);
   ctx.fillStyle = "#444";
   ctx.fillRect(AXIS_W, H, streamW, 1);
@@ -80,7 +80,7 @@ export function paintTimeAxis(ctx: CanvasRenderingContext2D, W: number, streamW:
   const tickCount = 4;
   for (let i = 0; i <= tickCount; i++) {
     const x = AXIS_W + Math.round((streamW * i) / tickCount);
-    const ms = -lookbackMs + (lookbackMs * i) / tickCount;
+    const ms = -(lookbackMs + panOffsetMs) + (lookbackMs * i) / tickCount;
     const label = fmtTimeLabel(ms);
     ctx.fillStyle = "#444";
     ctx.fillRect(x, H, 1, 4);
@@ -100,6 +100,7 @@ export function paintCrosshair(
   isDark: boolean,
   H: number,
   lookbackMs: number,
+  panOffsetMs = 0,
 ) {
   const streamW = W - AXIS_W;
   const lineColor = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
@@ -139,7 +140,7 @@ export function paintCrosshair(
   ctx.fillText(yLabel, 5, yLY);
 
   // Time-axis label
-  const ms = -lookbackMs + (lookbackMs * (mx - AXIS_W)) / streamW;
+  const ms = -(lookbackMs + panOffsetMs) + (lookbackMs * (mx - AXIS_W)) / streamW;
   const tLabel = fmtTimeLabel(ms);
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
@@ -162,6 +163,7 @@ export function redrawAll(
   lookbackMs: number,
   smooth = false,
   smoothRadius = 8,
+  panOffsetMs = 0,
 ) {
   ctx.clearRect(0, 0, W, H + TIME_AXIS_H);
   const startX = W - history.length;
@@ -170,5 +172,5 @@ export function redrawAll(
     paintColumnData(ctx, startX + i, H, col, max);
   }
   paintAxis(ctx, H, max);
-  paintTimeAxis(ctx, W, W - AXIS_W, H, lookbackMs);
+  paintTimeAxis(ctx, W, W - AXIS_W, H, lookbackMs, panOffsetMs);
 }
