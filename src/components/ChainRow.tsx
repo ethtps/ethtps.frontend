@@ -1,4 +1,4 @@
-import { Anchor, Badge, Group, HoverCard, Stack, Table, Text } from "@mantine/core";
+import { Anchor, Badge, Group, HoverCard, Stack, Table, Text, Tooltip } from "@mantine/core";
 import { memo } from "react";
 import { NetworkResponse } from "../store/networksSlice";
 import { LiveMetricsResponse } from "../store/metricsSlice";
@@ -24,6 +24,21 @@ function typeColor(networkType: string | undefined, isTestnet: boolean | undefin
     case "sidechain": return "grape";
     default: return "gray";
   }
+}
+
+function InfoIcon({ label }: { label: string }) {
+  return (
+    <Tooltip label={label} withArrow multiline w={200} openDelay={100}>
+      <Text
+        component="span"
+        size="xs"
+        c="dimmed"
+        style={{ cursor: "help", lineHeight: 1 }}
+      >
+        ⓘ
+      </Text>
+    </Tooltip>
+  );
 }
 
 export const ChainRow = memo(function ChainRow({ network, live, metric }: Props) {
@@ -56,9 +71,12 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
         {stale && config.rpcOverridesGithubUrl ? (
           <HoverCard width={220} shadow="md" withArrow openDelay={150} closeDelay={200}>
             <HoverCard.Target>
-              <Badge color="orange" variant="dot" style={{ cursor: "help" }}>
-                stale
-              </Badge>
+              <Group gap={4} justify="center" style={{ display: "inline-flex" }}>
+                <Badge color="orange" variant="dot" style={{ cursor: "help" }}>
+                  stale
+                </Badge>
+                <InfoIcon label="No update received within the stale threshold. The RPC node may be down or misconfigured." />
+              </Group>
             </HoverCard.Target>
             <HoverCard.Dropdown p="sm">
               <Stack gap={4}>

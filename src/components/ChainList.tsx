@@ -1,4 +1,4 @@
-import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput } from "@mantine/core";
+import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput, Tooltip } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -157,7 +157,15 @@ export function ChainList() {
                 Type <SortIndicator active={sortCol === "type"} dir={sortDir} />
               </Table.Th>
               <Table.Th style={thStyle} onClick={() => handleSort("metric")}>
-                {metric.toUpperCase()} <SortIndicator active={sortCol === "metric"} dir={sortDir} />
+                {metric.toUpperCase()}{" "}
+                <Tooltip
+                  label={metric === "tps" ? "Transactions per second — how many transactions this chain processes each second" : "Gas per second — total gas consumed per second on this chain"}
+                  withArrow multiline w={220} openDelay={100}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Text component="span" size="xs" c="dimmed" style={{ cursor: "help" }}>ⓘ</Text>
+                </Tooltip>
+                {" "}<SortIndicator active={sortCol === "metric"} dir={sortDir} />
               </Table.Th>
               <Table.Th style={thStyle} onClick={() => handleSort("status")}>
                 Status <SortIndicator active={sortCol === "status"} dir={sortDir} />
