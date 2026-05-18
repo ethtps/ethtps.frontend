@@ -1,5 +1,9 @@
-import { Anchor, Badge, Group, HoverCard, Stack, Table, Text, Tooltip } from "@mantine/core";
+import { Anchor, ActionIcon, Badge, Group, HoverCard, Stack, Table, Text, Tooltip } from "@mantine/core";
+import { IconStar, IconStarFilled } from "@tabler/icons-react";
 import { memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store";
+import { toggleWatchlist } from "../store/watchlistSlice";
 import { NetworkResponse } from "../store/networksSlice";
 import { LiveMetricsResponse } from "../store/metricsSlice";
 import { config } from "../config";
@@ -42,6 +46,8 @@ function InfoIcon({ label }: { label: string }) {
 }
 
 export const ChainRow = memo(function ChainRow({ network, live, metric }: Props) {
+  const dispatch = useDispatch<AppDispatch>();
+  const watched = useSelector((s: RootState) => s.watchlist.chainIds.includes(network.chainId));
   const stale = isStale(live?.timestamp);
   const rawValue = live ? live[metric] : null;
   const display = rawValue != null ? rawValue.toFixed(2) : "—";
@@ -50,6 +56,15 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
     <Table.Tr>
       <Table.Td ta="center">
         <Group gap="xs" justify="center">
+          <ActionIcon
+            variant="subtle"
+            size="xs"
+            color={watched ? "yellow" : "gray"}
+            onClick={() => dispatch(toggleWatchlist(network.chainId))}
+            aria-label={watched ? "Remove from watchlist" : "Add to watchlist"}
+          >
+            {watched ? <IconStarFilled size={12} /> : <IconStar size={12} />}
+          </ActionIcon>
           <Text fw={600}>{network.name}</Text>
           <Text size="xs" c="dimmed">#{network.chainId}</Text>
         </Group>

@@ -1,5 +1,5 @@
-import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput, Tooltip } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput, Tooltip, SegmentedControl } from "@mantine/core";
+import { IconSearch, IconStar } from "@tabler/icons-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { config } from "../config";
@@ -25,10 +25,12 @@ export function ChainList() {
   const metric = useSelector((s: RootState) => s.ui.metric);
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
+  const watchlist = useSelector((s: RootState) => s.watchlist.chainIds);
   const [page, setPage] = useState(1);
   const [sortCol, setSortCol] = useState<SortCol>("metric");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [search, setSearch] = useState("");
+  const [showWatchlist, setShowWatchlist] = useState(false);
 
   const [sortSnapshot, setSortSnapshot] = useState<Record<number, LiveMetricsResponse>>(live);
   const liveRef = useRef(live);
@@ -71,11 +73,12 @@ export function ChainList() {
             (n.networkType?.toLowerCase() ?? "").includes(q),
         );
     }
-    return networks
+    const base = networks
       .filter((n) => n.enabled)
       .filter((n) => includeTestnets || !n.isTestnet)
       .filter((n) => includeSidechains || (n.networkType?.toLowerCase() ?? "") !== "sidechain");
-  }, [networks, includeTestnets, includeSidechains, search]);
+    return showWatchlist ? base.filter((n) => watchlist.includes(n.chainId)) : base;
+  }, [networks, includeTestnets, includeSidechains, search, showWatchlist, watchlist]);
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
@@ -114,7 +117,7 @@ export function ChainList() {
 
   useEffect(() => {
     setPage(1);
-  }, [includeTestnets, includeSidechains, search]);
+  }, [includeTestnets, includeSidechains, search, showWatchlist]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / config.pageSize));
   const safePage = Math.min(page, totalPages);
@@ -138,14 +141,33 @@ export function ChainList() {
 
   return (
     <>
-      <TextInput
-        placeholder="Search chains by name, ID or type…"
-        leftSection={<IconSearch size={14} />}
-        value={search}
-        onChange={(e) => setSearch(e.currentTarget.value)}
-        mb="sm"
-        size="sm"
-      />
+      <Group mb="sm" gap="sm">
+        <TextInput
+          placeholder="Search chains by name, ID or type…"
+          leftSection={<IconSearch size={14} />}
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          size="sm"
+          style={{ flex: 1 }}
+        />
+        <SegmentedControl
+          size="sm"
+          value={showWatchlist ? "watchlist" : "all"}
+          onChange={(v) => setShowWatchlist(v === "watchlist")}
+          data={[
+            { label: "All", value: "all" },
+            {
+              label: (
+                <Group gap={4} align="center">
+                  <IconStar size={12} />
+                  <span>Watchlist{watchlist.length > 0 ? ` (${watchlist.length})` : ""}</span>
+                </Group>
+              ) as unknown as string,
+              value: "watchlist",
+            },
+          ]}
+        />
+      </Group>
       <ScrollArea>
         <Table striped highlightOnHover>
           <Table.Thead>
