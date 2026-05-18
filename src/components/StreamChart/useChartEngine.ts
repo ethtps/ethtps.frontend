@@ -308,6 +308,7 @@ export function useChartEngine(
     function onDblClick() {
       const oldLookback = lookbackMsRef.current;
       if (oldLookback === SCROLL_DURATION_MS) return;
+      const wasZoomedIn = oldLookback < SCROLL_DURATION_MS;
       rescaleHistory(SCROLL_DURATION_MS, oldLookback);
       lookbackMsRef.current = SCROLL_DURATION_MS;
       const W = canvasWRef.current;
@@ -315,6 +316,10 @@ export function useChartEngine(
       maxRef.current = history.reduce((m, col) => Math.max(m, col.total), 1);
       lastMaxRef.current = maxRef.current;
       redrawAll(c, W, H, history, maxRef.current, SCROLL_DURATION_MS, smoothGraphRef.current, SMOOTH_RADIUS);
+      if (wasZoomedIn) {
+        clearTimeout(refetchTimer);
+        refetchTimer = setTimeout(() => dispatchRef.current(fetchHistoryPreload(SCROLL_DURATION_MS)), 300);
+      }
     }
 
     resetLookbackRef.current = onDblClick;
