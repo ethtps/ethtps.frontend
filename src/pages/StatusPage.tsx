@@ -1,5 +1,6 @@
-import { AppShell, Badge, Group, ScrollArea, Skeleton, Table, Text, Title, Tooltip } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import { AppShell, Badge, Group, ScrollArea, Skeleton, Table, Text, TextInput, Title, Tooltip } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getApiV1IngestionStatus } from "../api/generated/services.gen";
 import { Footer } from "../components/Footer";
 import { TopBar } from "../components/TopBar";
@@ -24,11 +25,26 @@ type FetchState =
   | { kind: "down" }
   | { kind: "error"; message: string };
 
+type SortCol = "chain" | "block" | "state";
+type SortDir = "asc" | "desc";
+
 function timeAgo(isoString: string): string {
   const diffS = Math.round((Date.now() - new Date(isoString).getTime()) / 1000);
   if (diffS < 60) return `${diffS}s ago`;
   if (diffS < 3600) return `${Math.floor(diffS / 60)}m ${diffS % 60}s ago`;
   return `${Math.floor(diffS / 3600)}h ${Math.floor((diffS % 3600) / 60)}m ago`;
+}
+
+function stateScore(c: ChainStatus) {
+  return (c.state !== "ok" ? 2 : 0) + (c.isStale ? 1 : 0);
+}
+
+function SortIndicator({ active, dir }: { active: boolean; dir: SortDir }) {
+  return (
+    <span style={{ marginLeft: 4, opacity: active ? 0.8 : 0.25, fontSize: 10 }}>
+      {active ? (dir === "asc" ? "▲" : "▼") : "▲▼"}
+    </span>
+  );
 }
 
 function OverallBadge({ chains }: { chains: ChainStatus[] }) {
@@ -45,25 +61,17 @@ function StateBadge({ state, isStale }: { state: string; isStale: boolean }) {
       <Badge color={state === "ok" ? "green" : "red"} size="sm" variant="light">
         {state}
       </Badge>
-      {isStale && (
-        <Badge color="yellow" size="sm" variant="light">stale</Badge>
-      )}
+      {isStale && <Badge color="yellow" size="sm" variant="light">stale</Badge>}
     </Group>
   );
 }
 
-function sortChains(chains: ChainStatus[]): ChainStatus[] {
-  return [...chains].sort((a, b) => {
-    const scoreA = (a.state !== "ok" ? 2 : 0) + (a.isStale ? 1 : 0);
-    const scoreB = (b.state !== "ok" ? 2 : 0) + (b.isStale ? 1 : 0);
-    if (scoreB !== scoreA) return scoreB - scoreA;
-    return a.name.localeCompare(b.name);
-  });
-}
-
 export function StatusPage() {
-  const [state, setState] = useState<FetchState>({ kind: "loading" });
+  const [fetchState, setFetchState] = useState<FetchState>({ kind: "loading" });
   const [tick, setTick] = useState(0);
+  const [search, setSearch] = useState("");
+  const [sortCol, setSortCol] = useState<SortCol>("state");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
 
   async function fetchStatus() {
@@ -71,17 +79,17 @@ export function StatusPage() {
       const result = await getApiV1IngestionStatus();
       const data = result as IngestionStatus;
       if (!data || typeof data !== "object") {
-        setState({ kind: "error", message: "Invalid response" });
+        setFetchState({ kind: "error", message: "Invalid response" });
         return;
       }
-      setState({ kind: "ok", data, fetchedAt: Date.now() });
+      setFetchState({ kind: "ok", data, fetchedAt: Date.now() });
     } catch (err: unknown) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const status = (err as any)?.status;
       if (status === 503) {
-        setState({ kind: "down" });
+        setFetchState({ kind: "down" });
       } else {
-        setState({ kind: "error", message: String(err) });
+        setFetchState({ kind: "error", message: String(err) });
       }
     }
   }
@@ -92,14 +100,55 @@ export function StatusPage() {
     return () => clearInterval(intervalRef.current);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Tick every second so "X ago" labels update live
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(id);
   }, []);
 
-  // Suppress unused-variable warning for tick — it drives re-renders
   void tick;
+
+  function handleSort(col: SortCol) {
+    if (col === sortCol) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortCol(col);
+      setSortDir(col === "state" ? "desc" : "asc");
+    }
+  }
+
+  const thStyle: React.CSSProperties = { cursor: "pointer", userSelect: "none" };
+
+  const chains = fetchState.kind === "ok" ? (fetchState.data.chains ?? []) : [];
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return chains;
+    return chains.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) ||
+        String(c.chainId).includes(q) ||
+        c.state.toLowerCase().includes(q),
+    );
+  }, [chains, search]);
+
+  const sorted = useMemo(() => {
+    return [...filtered].sort((a, b) => {
+      let cmp = 0;
+      switch (sortCol) {
+        case "chain":
+          cmp = a.name.localeCompare(b.name);
+          break;
+        case "block":
+          cmp = (a.lastBlockNumber ?? -1) - (b.lastBlockNumber ?? -1);
+          break;
+        case "state":
+          cmp = stateScore(b) - stateScore(a);
+          if (cmp === 0) cmp = a.name.localeCompare(b.name);
+          break;
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [filtered, sortCol, sortDir]);
 
   return (
     <AppShell header={{ height: 56 }} footer={{ height: 36 }} padding="md">
@@ -108,7 +157,7 @@ export function StatusPage() {
       </AppShell.Header>
 
       <AppShell.Main>
-        {state.kind === "loading" && (
+        {fetchState.kind === "loading" && (
           <>
             <Skeleton height={32} width={240} mb="sm" />
             <Skeleton height={16} width={200} mb="md" />
@@ -118,7 +167,7 @@ export function StatusPage() {
           </>
         )}
 
-        {state.kind === "down" && (
+        {fetchState.kind === "down" && (
           <Group mt="xl" justify="center">
             <div style={{ textAlign: "center" }}>
               <Badge color="red" size="xl" mb="sm">Service unavailable</Badge>
@@ -129,26 +178,25 @@ export function StatusPage() {
           </Group>
         )}
 
-        {state.kind === "error" && (
+        {fetchState.kind === "error" && (
           <Group mt="xl" justify="center">
             <div style={{ textAlign: "center" }}>
               <Badge color="red" size="xl" mb="sm">Error</Badge>
-              <Text c="dimmed" size="sm">{state.message}</Text>
+              <Text c="dimmed" size="sm">{fetchState.message}</Text>
             </div>
           </Group>
         )}
 
-        {state.kind === "ok" && (() => {
-          const { data } = state;
-          const sorted = sortChains(data.chains ?? []);
-          const staleCount = sorted.filter((c) => c.isStale).length;
-          const errorCount = sorted.filter((c) => c.state !== "ok").length;
+        {fetchState.kind === "ok" && (() => {
+          const { data } = fetchState;
+          const staleCount = chains.filter((c) => c.isStale).length;
+          const errorCount = chains.filter((c) => c.state !== "ok").length;
 
           return (
             <>
               <Group mb="xs" align="center" gap="md">
                 <Title order={3}>Ingestion status</Title>
-                <OverallBadge chains={sorted} />
+                <OverallBadge chains={chains} />
               </Group>
 
               <Text c="dimmed" size="sm" mb="md">
@@ -158,13 +206,28 @@ export function StatusPage() {
                 {staleCount > 0 && ` · ${staleCount} stale`}
               </Text>
 
+              <TextInput
+                placeholder="Search by name, ID or state…"
+                leftSection={<IconSearch size={14} />}
+                value={search}
+                onChange={(e) => setSearch(e.currentTarget.value)}
+                size="sm"
+                mb="sm"
+              />
+
               <ScrollArea>
                 <Table striped highlightOnHover>
                   <Table.Thead>
                     <Table.Tr>
-                      <Table.Th>Chain</Table.Th>
-                      <Table.Th style={{ textAlign: "right" }}>Last block</Table.Th>
-                      <Table.Th>State</Table.Th>
+                      <Table.Th style={thStyle} onClick={() => handleSort("chain")}>
+                        Chain <SortIndicator active={sortCol === "chain"} dir={sortDir} />
+                      </Table.Th>
+                      <Table.Th style={{ ...thStyle, textAlign: "right" }} onClick={() => handleSort("block")}>
+                        Last block <SortIndicator active={sortCol === "block"} dir={sortDir} />
+                      </Table.Th>
+                      <Table.Th style={thStyle} onClick={() => handleSort("state")}>
+                        State <SortIndicator active={sortCol === "state"} dir={sortDir} />
+                      </Table.Th>
                     </Table.Tr>
                   </Table.Thead>
                   <Table.Tbody>
@@ -186,11 +249,18 @@ export function StatusPage() {
                         </Table.Td>
                       </Table.Tr>
                     ))}
+                    {sorted.length === 0 && (
+                      <Table.Tr>
+                        <Table.Td colSpan={3}>
+                          <Text c="dimmed" size="sm" ta="center">No chains match your search.</Text>
+                        </Table.Td>
+                      </Table.Tr>
+                    )}
                   </Table.Tbody>
                 </Table>
               </ScrollArea>
 
-              <Tooltip label={new Date(state.fetchedAt).toLocaleTimeString()} withArrow>
+              <Tooltip label={new Date(fetchState.fetchedAt).toLocaleTimeString()} withArrow>
                 <Text size="xs" c="dimmed" mt="sm" style={{ cursor: "default" }}>
                   Refreshes every 30s
                 </Text>
