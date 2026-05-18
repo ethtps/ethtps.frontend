@@ -1,37 +1,37 @@
 import { ActionIcon, Badge, Button, Checkbox, Group, Modal, NumberInput, Select, Stack, Table, Text, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconBellOff, IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { addAlert, removeAlert } from "../store/alertsSlice";
 
-export function AlertsButton() {
+export const AlertsButton = memo(function AlertsButton() {
   const [opened, { open, close }] = useDisclosure(false);
-  const alerts = useSelector((s: RootState) => s.alerts.alerts);
+  const alertCount = useSelector((s: RootState) => s.alerts.alerts.length);
 
   return (
     <>
       <Tooltip label="TPS Alerts" withArrow openDelay={300}>
-        <ActionIcon variant="subtle" size="lg" onClick={open}>
+        <ActionIcon variant="subtle" size="lg" onClick={open} style={{ position: "relative" }}>
           <IconBell size={18} />
-          {alerts.length > 0 && (
+          {alertCount > 0 && (
             <Badge
               size="xs"
               color="red"
               style={{ position: "absolute", top: 2, right: 2, pointerEvents: "none", minWidth: 14, padding: "0 3px" }}
             >
-              {alerts.length}
+              {alertCount}
             </Badge>
           )}
         </ActionIcon>
       </Tooltip>
-      <AlertsModal opened={opened} onClose={close} />
+      {opened && <AlertsModal onClose={close} />}
     </>
   );
-}
+});
 
-function AlertsModal({ opened, onClose }: { opened: boolean; onClose: () => void }) {
+function AlertsModal({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch<AppDispatch>();
   const networks = useSelector((s: RootState) => s.networks.networks);
   const alerts = useSelector((s: RootState) => s.alerts.alerts);
@@ -41,10 +41,14 @@ function AlertsModal({ opened, onClose }: { opened: boolean; onClose: () => void
   const [persist, setPersist] = useState(false);
   const [permDenied, setPermDenied] = useState(Notification.permission === "denied");
 
-  const chainOptions = networks
-    .filter((n) => n.enabled)
-    .map((n) => ({ value: String(n.chainId), label: n.name }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+  const chainOptions = useMemo(
+    () =>
+      networks
+        .filter((n) => n.enabled)
+        .map((n) => ({ value: String(n.chainId), label: n.name }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [networks],
+  );
 
   async function requestPermission() {
     const result = await Notification.requestPermission();
@@ -64,7 +68,7 @@ function AlertsModal({ opened, onClose }: { opened: boolean; onClose: () => void
   const notifSupported = "Notification" in window;
 
   return (
-    <Modal opened={opened} onClose={onClose} title="TPS Threshold Alerts" size="md">
+    <Modal opened onClose={onClose} title="TPS Threshold Alerts" size="md">
       <Stack gap="md">
         {!notifSupported && (
           <Text c="red" size="sm">Browser notifications are not supported in this browser.</Text>

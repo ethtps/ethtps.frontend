@@ -1,7 +1,7 @@
 import { Group } from "@mantine/core";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useMantineColorScheme } from "@mantine/core";
 import { AlertsButton } from "./AlertsModal";
 import { DiscordButton } from "./DiscordButton";
@@ -11,7 +11,7 @@ import { MetricToggle } from "./MetricToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import { ViewerCount } from "./ViewerCount";
 
-export function TopBar() {
+export const TopBar = memo(function TopBar() {
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
   const { setColorScheme: mantineSetColorScheme } = useMantineColorScheme();
 
@@ -32,4 +32,4 @@ export function TopBar() {
       </Group>
     </Group>
   );
-}
+});
