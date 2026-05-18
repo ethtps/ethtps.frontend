@@ -1,5 +1,5 @@
-import { Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput, Tooltip, SegmentedControl } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { ActionIcon, Group, Pagination, ScrollArea, Skeleton, Table, Text, TextInput, Tooltip, SegmentedControl } from "@mantine/core";
+import { IconSearch, IconX } from "@tabler/icons-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { config } from "../config";
@@ -156,6 +156,13 @@ export function ChainList() {
         <TextInput
           placeholder="Search chains by name, ID or type…"
           leftSection={<IconSearch size={14} />}
+          rightSection={
+            search ? (
+              <ActionIcon variant="subtle" size="sm" onClick={() => setSearch("")}>
+                <IconX size={12} />
+              </ActionIcon>
+            ) : null
+          }
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
           size="sm"

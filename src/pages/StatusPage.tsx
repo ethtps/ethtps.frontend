@@ -1,5 +1,5 @@
-import { AppShell, Badge, Group, ScrollArea, Skeleton, Table, Text, TextInput, Title, Tooltip } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { ActionIcon, AppShell, Badge, Group, ScrollArea, Skeleton, Table, Text, TextInput, Title, Tooltip } from "@mantine/core";
+import { IconSearch, IconX } from "@tabler/icons-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getApiV1IngestionStatus } from "../api/generated/services.gen";
 import { Footer } from "../components/Footer";
@@ -209,6 +209,13 @@ export function StatusPage() {
               <TextInput
                 placeholder="Search by name, ID or state…"
                 leftSection={<IconSearch size={14} />}
+                rightSection={
+                  search ? (
+                    <ActionIcon variant="subtle" size="sm" onClick={() => setSearch("")}>
+                      <IconX size={12} />
+                    </ActionIcon>
+                  ) : null
+                }
                 value={search}
                 onChange={(e) => setSearch(e.currentTarget.value)}
                 size="sm"
