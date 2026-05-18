@@ -8,4 +8,5 @@ export const config = {
   sortIntervalMs: Number(import.meta.env.VITE_SORT_INTERVAL_MS ?? 5000),
   signalrBatchMs: Number(import.meta.env.VITE_SIGNALR_BATCH_MS ?? 500),
   rpcOverridesGithubUrl: (import.meta.env.VITE_RPC_OVERRIDES_GITHUB_URL as string) ?? "",
+  donationAddress: (import.meta.env.VITE_DONATION_ADDRESS as string) ?? "",
 } as const;
