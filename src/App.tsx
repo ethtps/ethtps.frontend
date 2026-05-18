@@ -12,6 +12,7 @@ import { AppDispatch, RootState } from "./store";
 import { fetchGlobalMetrics, fetchHistoryPreload } from "./store/metricsSlice";
 import { fetchNetworks } from "./store/networksSlice";
 import { setColorScheme } from "./store/uiSlice";
+import { useFilteredGlobalMetrics } from "./store/useFilteredGlobalMetrics";
 import { config } from "./config";
 
 export function App() {
@@ -19,7 +20,7 @@ export function App() {
   const includeTestnets = useSelector((s: RootState) => s.ui.includeTestnets);
   const includeSidechains = useSelector((s: RootState) => s.ui.includeSidechains);
   const wsConnected = useSelector((s: RootState) => s.metrics.wsConnected);
-  const globalMetrics = useSelector((s: RootState) => s.metrics.global);
+  const globalMetrics = useFilteredGlobalMetrics();
   const metric = useSelector((s: RootState) => s.ui.metric);
   const colorScheme = useSelector((s: RootState) => s.ui.colorScheme);
   const { setColorScheme: mantineSetColorScheme } = useMantineColorScheme();
