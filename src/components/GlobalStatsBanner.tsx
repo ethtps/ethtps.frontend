@@ -32,7 +32,11 @@ export function GlobalStatsBanner({ minimized }: Props) {
 
   if (minimized) {
     return metrics
-      ? <Text fw={600}>{metrics.totalTps.toFixed(2)} TPS</Text>
+      ? (
+        <Text size="sm" fw={600} c="dimmed" tt="uppercase">
+          {metrics.totalTps.toFixed(2)} TPS · {formatGps(metrics.totalGps)} GPS
+        </Text>
+      )
       : null;
   }
 
