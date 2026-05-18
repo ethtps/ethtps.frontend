@@ -1,6 +1,9 @@
 import { Card, Group, Skeleton, Text } from "@mantine/core";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+
+const UPDATE_INTERVAL_MS = Number(import.meta.env.VITE_TOTAL_TPS_UPDATE_INTERVAL_MS ?? 1000);
 
 function formatGps(value: number): string {
   if (value >= 1e9) return `${(value / 1e9).toFixed(2)}B`;
@@ -25,7 +28,17 @@ export function GlobalStatsBanner() {
   const global = useSelector((s: RootState) => s.metrics.global);
   const status = useSelector((s: RootState) => s.metrics.globalStatus);
 
-  const loading = status === "loading" && global === null;
+  const latestRef = useRef(global);
+  latestRef.current = global;
+
+  const [displayed, setDisplayed] = useState(global);
+
+  useEffect(() => {
+    const id = setInterval(() => setDisplayed(latestRef.current), UPDATE_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  const loading = status === "loading" && displayed === null;
 
   return (
     <Card withBorder radius="md" p="md" mb="md">
@@ -36,11 +49,11 @@ export function GlobalStatsBanner() {
             <Skeleton height={48} width={100} />
             <Skeleton height={48} width={100} />
           </>
-        ) : global ? (
+        ) : displayed ? (
           <>
-            <Stat label="Total TPS" value={global.totalTps.toFixed(2)} />
-            <Stat label="Total GPS" value={formatGps(global.totalGps)} />
-            <Stat label="Active Chains" value={String(global.activeChains)} />
+            <Stat label="Total TPS" value={displayed.totalTps.toFixed(2)} />
+            <Stat label="Total GPS" value={formatGps(displayed.totalGps)} />
+            <Stat label="Active Chains" value={String(displayed.activeChains)} />
           </>
         ) : (
           <Text c="dimmed">No global metrics available</Text>
