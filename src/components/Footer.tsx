@@ -24,6 +24,19 @@ export function Footer() {
           {nameHovered ? "Ethereum" : "Mister_Eth"}
         </span>
       </span>
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <a
+          href="#/status"
+          style={{
+            fontSize: 12,
+            color: "var(--mantine-color-dimmed)",
+            textDecorationLine: "underline",
+            textDecorationStyle: "dotted",
+            textUnderlineOffset: 3,
+          }}
+        >
+          Status
+        </a>
       {config.donationAddress && (
         <button
           onClick={handleCopy}
@@ -45,6 +58,7 @@ export function Footer() {
           {copied ? "Copied!" : config.donationAddress}
         </button>
       )}
+      </div>
     </div>
   );
 }
