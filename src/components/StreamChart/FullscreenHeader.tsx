@@ -1,5 +1,6 @@
 import { ActionIcon, Group, Text, Tooltip } from "@mantine/core";
 import { IconMinimize } from "@tabler/icons-react";
+import { GlobalStatsBanner } from "../GlobalStatsBanner";
 import { Logo } from "../Logo";
 import { MetricToggle } from "../MetricToggle";
 import { ThemeToggle } from "../ThemeToggle";
@@ -14,6 +15,7 @@ export function FullscreenHeader({ metric, onClose }: Props) {
   return (
     <div
       style={{
+        position: "relative",
         height: 56,
         flexShrink: 0,
         display: "flex",
@@ -22,6 +24,16 @@ export function FullscreenHeader({ metric, onClose }: Props) {
         padding: "0 16px",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)",
+          pointerEvents: "none",
+        }}
+      >
+        <GlobalStatsBanner minimized />
+      </div>
       <Group gap="md" align="center">
         <Logo onClick={onClose} />
         <Text size="sm" fw={600} c="dimmed" tt="uppercase" style={{ paddingTop: 5 }}>

@@ -22,9 +22,19 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function GlobalStatsBanner() {
+interface Props {
+  minimized?: boolean;
+}
+
+export function GlobalStatsBanner({ minimized }: Props) {
   const status = useSelector((s: RootState) => s.metrics.globalStatus);
   const metrics = useFilteredGlobalMetrics();
+
+  if (minimized) {
+    return metrics
+      ? <Text fw={600}>{metrics.totalTps.toFixed(2)} TPS</Text>
+      : null;
+  }
 
   const loading = status === "loading" && metrics === null;
 
