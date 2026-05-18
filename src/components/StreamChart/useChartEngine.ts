@@ -366,12 +366,17 @@ export function useChartEngine(
       cvs.style.cursor = "grab";
     }
 
+    // Drag tracked on document so it keeps firing when mouse leaves canvas
+    function onDocumentMouseMove(e: MouseEvent) {
+      if (!isDraggingRef.current) return;
+      // Drag right = go back in time; drag left = return toward live
+      const dx = e.clientX - dragStartXRef.current;
+      onDrag(dx);
+    }
+
     function onMouseMove(e: MouseEvent) {
-      if (isDraggingRef.current) {
-        const dx = dragStartXRef.current - e.clientX;
-        onDrag(dx);
-        return;
-      }
+      // tooltip only — drag is handled by onDocumentMouseMove
+      if (isDraggingRef.current) return;
 
       const W = canvasWRef.current;
       const H = HRef.current;
@@ -440,7 +445,8 @@ export function useChartEngine(
     function onTouchMove(e: TouchEvent) {
       if (!isDraggingRef.current) return;
       e.preventDefault();
-      const dx = dragStartXRef.current - e.touches[0].clientX;
+      // Swipe left = return toward live; swipe right = go back in time
+      const dx = e.touches[0].clientX - dragStartXRef.current;
       onDrag(dx);
     }
 
@@ -505,6 +511,7 @@ export function useChartEngine(
     cvs.addEventListener("touchstart", onTouchStart, { passive: true });
     cvs.addEventListener("touchmove", onTouchMove, { passive: false });
     cvs.addEventListener("touchend", onTouchEnd);
+    document.addEventListener("mousemove", onDocumentMouseMove);
     document.addEventListener("mouseup", onMouseUpGlobal);
 
     return () => {
@@ -519,6 +526,7 @@ export function useChartEngine(
       cvs.removeEventListener("touchstart", onTouchStart);
       cvs.removeEventListener("touchmove", onTouchMove);
       cvs.removeEventListener("touchend", onTouchEnd);
+      document.removeEventListener("mousemove", onDocumentMouseMove);
       document.removeEventListener("mouseup", onMouseUpGlobal);
       ctxRef.current = null;
     };
