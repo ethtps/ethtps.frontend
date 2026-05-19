@@ -1,12 +1,13 @@
 import { AppShell, Badge, Group, ScrollArea, Skeleton, Table, Text, Title, Tooltip } from "@mantine/core";
 import { SearchInput } from "../components/SearchInput";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getApiV1IngestionStatus } from "../api/generated/services.gen";
 import { Footer } from "../components/Footer";
 import { TopBar } from "../components/TopBar";
 import { ChainLogo } from "../components/ChainLogo";
-import { RootState } from "../store";
+import { AppDispatch, RootState } from "../store";
+import { fetchNetworks } from "../store/networksSlice";
 
 interface ChainStatus {
   chainId: number;
@@ -70,11 +71,20 @@ function StateBadge({ state, isStale }: { state: string; isStale: boolean }) {
 }
 
 export function StatusPage() {
+  const dispatch = useDispatch<AppDispatch>();
   const networks = useSelector((s: RootState) => s.networks.networks);
+  const networksStatus = useSelector((s: RootState) => s.networks.status);
   const logoUrlByChainId = useMemo(
     () => new Map(networks.filter(n => n.logoUrl).map(n => [n.chainId, n.logoUrl!])),
     [networks],
   );
+
+  // Fetch networks if App isn't mounted (direct navigation to /status)
+  useEffect(() => {
+    if (networks.length === 0 && networksStatus === "idle") {
+      dispatch(fetchNetworks());
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [fetchState, setFetchState] = useState<FetchState>({ kind: "loading" });
   const [tick, setTick] = useState(0);
