@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetApiV1IngestionStatusResponse, GetApiV1MetricsByChainIdLiveData, GetApiV1MetricsByChainIdLiveResponse, GetApiV1MetricsByChainIdHistoryData, GetApiV1MetricsByChainIdHistoryResponse, GetApiV1MetricsViewersResponse, GetApiV1MetricsGlobalLiveData, GetApiV1MetricsGlobalLiveResponse, GetApiV1MetricsGlobalHistoryData, GetApiV1MetricsGlobalHistoryResponse, GetApiV1NetworksResponse, GetApiV1NetworksByChainIdData, GetApiV1NetworksByChainIdResponse } from './types.gen';
+import type { GetApiV1IngestionStatusResponse, GetApiV1MetricsByChainIdLiveData, GetApiV1MetricsByChainIdLiveResponse, GetApiV1MetricsByChainIdHistoryData, GetApiV1MetricsByChainIdHistoryResponse, GetApiV1MetricsViewersResponse, GetApiV1MetricsGlobalLiveData, GetApiV1MetricsGlobalLiveResponse, GetApiV1MetricsGlobalHistoryData, GetApiV1MetricsGlobalHistoryResponse, GetApiV1NetworksResponse, GetApiV1NetworksByChainIdData, GetApiV1NetworksByChainIdResponse, GetApiV1NetworksByChainIdLogoData, GetApiV1NetworksByChainIdLogoResponse } from './types.gen';
 
 /**
  * @returns unknown OK
@@ -111,6 +111,20 @@ export const getApiV1Networks = (): CancelablePromise<GetApiV1NetworksResponse> 
 export const getApiV1NetworksByChainId = (data: GetApiV1NetworksByChainIdData): CancelablePromise<GetApiV1NetworksByChainIdResponse> => { return __request(OpenAPI, {
     method: 'GET',
     url: '/api/v1/networks/{chainId}',
+    path: {
+        chainId: data.chainId
+    }
+}); };
+
+/**
+ * @param data The data for the request.
+ * @param data.chainId
+ * @returns unknown OK
+ * @throws ApiError
+ */
+export const getApiV1NetworksByChainIdLogo = (data: GetApiV1NetworksByChainIdLogoData): CancelablePromise<GetApiV1NetworksByChainIdLogoResponse> => { return __request(OpenAPI, {
+    method: 'GET',
+    url: '/api/v1/networks/{chainId}/logo',
     path: {
         chainId: data.chainId
     }

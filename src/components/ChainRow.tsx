@@ -7,6 +7,7 @@ import { toggleWatchlist } from "../store/watchlistSlice";
 import { NetworkResponse } from "../store/networksSlice";
 import { LiveMetricsResponse } from "../store/metricsSlice";
 import { config } from "../config";
+import { ChainLogo } from "./ChainLogo";
 
 interface Props {
   network: NetworkResponse;
@@ -65,6 +66,7 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
           >
             {watched ? <IconStarFilled size={12} /> : <IconStar size={12} />}
           </ActionIcon>
+          {network.hasLogo && <ChainLogo chainId={network.chainId} />}
           <Text fw={600}>{network.name}</Text>
           <Text size="xs" c="dimmed">#{network.chainId}</Text>
         </Group>

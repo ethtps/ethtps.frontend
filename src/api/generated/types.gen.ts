@@ -42,6 +42,12 @@ export type GetApiV1NetworksByChainIdData = {
 
 export type GetApiV1NetworksByChainIdResponse = unknown;
 
+export type GetApiV1NetworksByChainIdLogoData = {
+    chainId: number;
+};
+
+export type GetApiV1NetworksByChainIdLogoResponse = unknown;
+
 export type $OpenApiTs = {
     '/api/v1/ingestion/status': {
         get: {
@@ -120,6 +126,17 @@ export type $OpenApiTs = {
     '/api/v1/networks/{chainId}': {
         get: {
             req: GetApiV1NetworksByChainIdData;
+            res: {
+                /**
+                 * OK
+                 */
+                200: unknown;
+            };
+        };
+    };
+    '/api/v1/networks/{chainId}/logo': {
+        get: {
+            req: GetApiV1NetworksByChainIdLogoData;
             res: {
                 /**
                  * OK

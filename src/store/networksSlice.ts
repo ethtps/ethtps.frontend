@@ -8,6 +8,7 @@ export interface NetworkResponse {
   enabled: boolean;
   networkType?: string;
   isTestnet?: boolean;
+  hasLogo?: boolean;
 }
 
 interface NetworksState {
