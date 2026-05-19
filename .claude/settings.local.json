@@ -18,7 +18,11 @@
       "Bash(grep -v \"Use \\\\`node\")",
       "Bash(git reset *)",
       "Bash(grep -v \"^$\")",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(git *)",
+      "Bash(New-Item -ItemType Directory -Force \"D:/repos/ethtps.frontend/src/components/StreamChart/engine/webgl\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Host \"ok\")"
     ]
   }
 }

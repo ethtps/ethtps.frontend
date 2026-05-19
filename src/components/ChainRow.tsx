@@ -66,7 +66,7 @@ export const ChainRow = memo(function ChainRow({ network, live, metric }: Props)
           >
             {watched ? <IconStarFilled size={12} /> : <IconStar size={12} />}
           </ActionIcon>
-          {network.hasLogo && <ChainLogo chainId={network.chainId} />}
+          {network.logoUrl && <ChainLogo src={network.logoUrl} />}
           <Text fw={600}>{network.name}</Text>
           <Text size="xs" c="dimmed">#{network.chainId}</Text>
         </Group>

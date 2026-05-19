@@ -9,6 +9,7 @@ export interface NetworkResponse {
   networkType?: string;
   isTestnet?: boolean;
   hasLogo?: boolean;
+  logoUrl?: string;
 }
 
 interface NetworksState {
@@ -37,7 +38,10 @@ const networksSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchNetworks.fulfilled, (state, action) => {
-        state.networks = action.payload;
+        state.networks = action.payload.map(n => ({
+          ...n,
+          logoUrl: n.hasLogo ? `${config.apiBaseUrl}/api/v1/networks/${n.chainId}/logo` : undefined,
+        }));
         state.status = "idle";
       })
       .addCase(fetchNetworks.rejected, (state) => {
