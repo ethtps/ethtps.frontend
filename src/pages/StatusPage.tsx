@@ -1,9 +1,12 @@
 import { AppShell, Badge, Group, ScrollArea, Skeleton, Table, Text, Title, Tooltip } from "@mantine/core";
 import { SearchInput } from "../components/SearchInput";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { getApiV1IngestionStatus } from "../api/generated/services.gen";
 import { Footer } from "../components/Footer";
 import { TopBar } from "../components/TopBar";
+import { ChainLogo } from "../components/ChainLogo";
+import { RootState } from "../store";
 
 interface ChainStatus {
   chainId: number;
@@ -67,6 +70,12 @@ function StateBadge({ state, isStale }: { state: string; isStale: boolean }) {
 }
 
 export function StatusPage() {
+  const networks = useSelector((s: RootState) => s.networks.networks);
+  const logoUrlByChainId = useMemo(
+    () => new Map(networks.filter(n => n.logoUrl).map(n => [n.chainId, n.logoUrl!])),
+    [networks],
+  );
+
   const [fetchState, setFetchState] = useState<FetchState>({ kind: "loading" });
   const [tick, setTick] = useState(0);
   const [search, setSearch] = useState("");
@@ -232,8 +241,15 @@ export function StatusPage() {
                     {sorted.map((chain) => (
                       <Table.Tr key={chain.chainId}>
                         <Table.Td>
-                          <Text size="sm">{chain.name}</Text>
-                          <Text size="xs" c="dimmed">#{chain.chainId}</Text>
+                          <Group gap="xs" wrap="nowrap">
+                            {logoUrlByChainId.get(chain.chainId) && (
+                              <ChainLogo src={logoUrlByChainId.get(chain.chainId)!} />
+                            )}
+                            <div>
+                              <Text size="sm">{chain.name}</Text>
+                              <Text size="xs" c="dimmed">#{chain.chainId}</Text>
+                            </div>
+                          </Group>
                         </Table.Td>
                         <Table.Td style={{ textAlign: "right" }}>
                           <Text size="sm" ff="monospace">
