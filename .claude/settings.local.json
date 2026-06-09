@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(npm install *)",
+      "Bash(npm uninstall *)",
+      "WebFetch(domain:localhost)",
+      "WebFetch(domain:api.ethtps.info)",
+      "Bash(curl -s \"http://localhost:5012/api/v1/metrics/global/history?from=$\\(date -u -d '1 minute ago' +%Y-%m-%dT%H:%M:%SZ\\)&to=$\\(date -u +%Y-%m-%dT%H:%M:%SZ\\)\")",
+      "Bash(curl -s \"http://localhost:5012/api/v1/metrics/global/history?from=$\\(date -u -d '1 minute ago' +%Y-%m-%dT%H:%M:%SZ\\)&to=$\\(date -u +%Y-%m-%dT%H:%M:%SZ\\)&resolution=1s\")",
+      "Bash(curl -s \"http://localhost:5012/api/v1/metrics/global/history?from=$\\(date -u -d '1 minute ago' +%Y-%m-%dT%H:%M:%SZ\\)&to=$\\(date -u +%Y-%m-%dT%H:%M:%SZ\\)&resolution=1m\")",
+      "Bash(curl -s \"http://localhost:5012/api/v1/metrics/global/history?from=$\\(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%SZ\\)&to=$\\(date -u +%Y-%m-%dT%H:%M:%SZ\\)&resolution=1m\")",
+      "Bash(npx tsc *)",
+      "Bash(git commit *)",
+      "Bash(node *)",
+      "Bash(grep -v \"Use \\\\`node\")",
+      "Bash(git reset *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(npx vite *)",
+      "Bash(git *)",
+      "Bash(New-Item -ItemType Directory -Force \"D:/repos/ethtps.frontend/src/components/StreamChart/engine/webgl\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Host \"ok\")"
+    ]
+  }
+}

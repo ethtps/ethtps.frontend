@@ -1,0 +1,6 @@
+Error downloading http://localhost:8090/openapi/v1.json 
+fetch failed
+ResolverError: Error downloading http://localhost:8090/openapi/v1.json 
+fetch failed
+    at download (D:\repos\ethtps.frontend\node_modules\@apidevtools\json-schema-ref-parser\dist\lib\resolvers\http.js:113:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

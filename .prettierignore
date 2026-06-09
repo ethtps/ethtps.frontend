@@ -1,8 +1,0 @@
-*.css
-*.scss
-**/node_modules
-**/.next
-**/build
-**/dist
-*.json
-*.md
